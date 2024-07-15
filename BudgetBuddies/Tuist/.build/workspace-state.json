@@ -1,0 +1,44 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "alamofire",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/Alamofire/Alamofire",
+          "name" : "Alamofire"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
+            "version" : "5.9.1"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "Alamofire"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "snapkit",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/SnapKit/SnapKit",
+          "name" : "SnapKit"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+            "version" : "5.7.1"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "SnapKit"
+      }
+    ]
+  },
+  "version" : 6
+}

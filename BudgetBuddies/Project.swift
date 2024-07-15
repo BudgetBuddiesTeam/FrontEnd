@@ -24,7 +24,10 @@ let project = Project(
               ]),
             sources: ["BudgetBuddies/Sources/**"],
             resources: ["BudgetBuddies/Resources/**"],
-            dependencies: []
+            dependencies: [
+                .external(name: "Alamofire"),
+                .external(name: "SnapKit")
+            ]
         )
     ]
 )

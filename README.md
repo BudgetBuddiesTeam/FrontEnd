@@ -1,7 +1,7 @@
  <div align="center">
    
 # 빈주머니즈_iOS
-<img src="https://github.com/user-attachments/assets/98dd17ec-9019-48f0-b5cb-00a9d0af8e9c" width="100" height="100"/>
+![빈주머니즈_커버_대지 1 사본](https://github.com/user-attachments/assets/744ef4c6-87cd-4db9-9c0b-f848231a203c)
 
 
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white) ![UIkit](https://img.shields.io/badge/UIkit-F54A2A?style=for-the-badge&logo=UIkit&logoColor=white)

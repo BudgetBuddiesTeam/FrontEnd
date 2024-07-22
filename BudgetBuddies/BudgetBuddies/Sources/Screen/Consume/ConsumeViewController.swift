@@ -20,6 +20,7 @@ class ConsumeViewController: UIViewController {
 
     // Do any additional setup after loading the view.
     setConsumeView()
+    setNavigation()
   }
 
   // MARK: - Methods
@@ -32,4 +33,14 @@ class ConsumeViewController: UIViewController {
     }
   }
 
+  private func setNavigation() {
+    navigationItem.title = "소비 추가하기"
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "소비기록", image: UIImage(systemName: "list.clipboard"), target: self, action: #selector(rightBarButtonItemButtonTapped))
+    navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
+  }
+  
+  @objc
+  private func rightBarButtonItemButtonTapped() {
+    debugPrint("소비기록 버튼 탭")
+  }
 }

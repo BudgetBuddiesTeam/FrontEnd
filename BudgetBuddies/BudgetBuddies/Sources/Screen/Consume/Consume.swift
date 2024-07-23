@@ -27,7 +27,7 @@ class Consume: UIView {
   // MARK: - UI Components
 
   // 소비금액 텍스트
-  var consumedPriceString: UILabel = {
+  var consumedPriceText: UILabel = {
     let label = UILabel()
     label.text = "소비금액"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
@@ -46,7 +46,7 @@ class Consume: UIView {
   }()
 
   // 소비내용 텍스트
-  var consumedContentString: UILabel = {
+  var consumedContentText: UILabel = {
     let label = UILabel()
     label.text = "소비내용"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
@@ -64,7 +64,7 @@ class Consume: UIView {
   }()
 
   // 지출일시 텍스트
-  let consumedDateString: UILabel = {
+  let consumedDateText: UILabel = {
     let label = UILabel()
     label.text = "지출일시"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
@@ -108,7 +108,7 @@ class Consume: UIView {
   }()
 
   // 카테고리 텍스트
-  let categorySetString: UILabel = {
+  let categorySetText: UILabel = {
     let label = UILabel()
     label.text = "카테고리 설정"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
@@ -146,11 +146,11 @@ class Consume: UIView {
 
   private func setupLayout() {
     addSubviews(
-      consumedPriceString, consumedPriceTextField, consumedContentString, consumedContentTextField,
-      consumedDateString, consumedDatePicker, categorySetString, categorySettingButton, addButton)
+      consumedPriceText, consumedPriceTextField, consumedContentText, consumedContentTextField,
+      consumedDateText, consumedDatePicker, categorySetText, categorySettingButton, addButton)
 
     // 소비금액 텍스트
-    consumedPriceString.snp.makeConstraints { make in
+    consumedPriceText.snp.makeConstraints { make in
       make.width.equalTo(stringWidth)
       make.height.equalTo(stringHeight)
       make.leading.equalTo(consumedPriceTextField.snp.leading)
@@ -162,11 +162,11 @@ class Consume: UIView {
       make.width.equalTo(rectangleWidth)
       make.height.equalTo(rectangleHeight)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedPriceString.snp.bottom)
+      make.top.equalTo(consumedPriceText.snp.bottom)
     }
 
     // 소비내용 텍스트
-    consumedContentString.snp.makeConstraints { make in
+    consumedContentText.snp.makeConstraints { make in
       make.width.equalTo(stringWidth)
       make.height.equalTo(stringHeight)
       make.leading.equalTo(consumedContentTextField.snp.leading)
@@ -178,11 +178,11 @@ class Consume: UIView {
       make.width.equalTo(rectangleWidth)
       make.height.equalTo(rectangleHeight)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedContentString.snp.bottom)
+      make.top.equalTo(consumedContentText.snp.bottom)
     }
 
     // 지출일시 텍스트
-    consumedDateString.snp.makeConstraints { make in
+    consumedDateText.snp.makeConstraints { make in
       make.width.equalTo(stringWidth)
       make.height.equalTo(stringHeight)
       make.leading.equalTo(consumedContentTextField.snp.leading)
@@ -192,11 +192,11 @@ class Consume: UIView {
     // 지출일시 날짜 피커
     consumedDatePicker.snp.makeConstraints { make in
       make.trailing.equalTo(consumedContentTextField.snp.trailing)
-      make.centerY.equalTo(consumedDateString)
+      make.centerY.equalTo(consumedDateText)
     }
 
     // 카테고리 설정 텍스트
-    categorySetString.snp.makeConstraints { make in
+    categorySetText.snp.makeConstraints { make in
       make.width.equalTo(stringWidth)
       make.height.equalTo(stringHeight)
       make.leading.equalTo(consumedContentTextField.snp.leading)
@@ -206,7 +206,7 @@ class Consume: UIView {
     // 카테고리 설정 버튼
     categorySettingButton.snp.makeConstraints { make in
       make.trailing.equalTo(consumedContentTextField.snp.trailing)
-      make.centerY.equalTo(categorySetString)
+      make.centerY.equalTo(categorySetText)
     }
 
     // 추가하기 버튼

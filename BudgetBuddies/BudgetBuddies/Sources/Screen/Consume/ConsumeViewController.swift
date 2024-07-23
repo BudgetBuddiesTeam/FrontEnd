@@ -38,6 +38,9 @@ class ConsumeViewController: UIViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: "소비기록", image: UIImage(systemName: "list.clipboard"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))
+
+    navigationItem.backBarButtonItem = UIBarButtonItem()
+
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
   }

@@ -123,11 +123,7 @@ class Consume: UIView {
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
     button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    if let customFont = UIFont(name: "Pretendard-SemiBold", size: 18) {
-      button.titleLabel?.font = customFont
-    } else {
-      button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    }
+    button.titleLabel?.font = UIFont(name: "Pretendard-SemiBold", size: 18)
     return button
   }()
 

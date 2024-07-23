@@ -35,6 +35,8 @@ class CategorySelectTableViewCell: UITableViewCell {
   var categoryText: UILabel = {
     let label = UILabel()
     label.text = "별"
+    label.font = UIFont(name: "Pretendard-Regular", size: 16)
+    label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
     return label
   }()
 
@@ -56,8 +58,9 @@ class CategorySelectTableViewCell: UITableViewCell {
   // MARK: - Methods
 
   private func setLayout() {
-    addSubviews(cellContainer)
+    contentView.addSubview(cellContainer)
     cellContainer.addSubviews(categoryIcon, categoryText)
+
     // 셀 컨테이너
     cellContainer.snp.makeConstraints { make in
       make.width.equalTo(containerWidth)

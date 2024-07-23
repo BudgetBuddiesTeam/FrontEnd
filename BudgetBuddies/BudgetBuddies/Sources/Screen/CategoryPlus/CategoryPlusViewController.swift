@@ -5,25 +5,42 @@
 //  Created by Jiwoong CHOI on 7/23/24.
 //
 
+import SnapKit
 import UIKit
 
 class CategoryPlusViewController: UIViewController {
+  // MARK: - Properties
+  private let categoryPlus = CategoryPlus()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  // MARK: - View Life Cycle
 
-        // Do any additional setup after loading the view.
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    setCategoryPlus()
+    setNavigation()
+    setButtonAction()
+  }
+
+  // MARK: - Methods
+
+  private func setCategoryPlus() {
+    view.addSubview(categoryPlus)
+    categoryPlus.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
     }
-    
+  }
 
-    /*
-    // MARK: - Navigation
+  private func setNavigation() {
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  }
+  
+  private func setButtonAction() {
+    categoryPlus.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+  }
+  
+  @objc
+  private func addButtonTapped() {
+    dismiss(animated: true)
+  }
 }

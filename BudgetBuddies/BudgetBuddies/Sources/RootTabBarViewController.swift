@@ -10,8 +10,11 @@ import UIKit
 class RootTabBarViewController: UITabBarController {
   // MARK: - Properties
 
+  private let mainViewController = UINavigationController(rootViewController: MainViewController())
   private let consumeViewController = UINavigationController(
     rootViewController: ConsumeViewController())
+  private let calendarViewController = UINavigationController(
+    rootViewController: CalendarViewController())
 
   // MARK: - View Life Cycle
 
@@ -25,10 +28,15 @@ class RootTabBarViewController: UITabBarController {
   // MARK: - Methods
 
   private func setTabBar() {
+    mainViewController.tabBarItem = UITabBarItem(
+      title: "홈", image: UIImage(systemName: "house"), tag: 0)
     consumeViewController.tabBarItem = UITabBarItem(
       title: "가계부", image: UIImage(systemName: "book.closed.fill"), tag: 1)
+    calendarViewController.tabBarItem = UITabBarItem(
+      title: "정보", image: UIImage(systemName: "calendar"), tag: 2)
 
-    setViewControllers([consumeViewController], animated: true)
+    setViewControllers(
+      [mainViewController, consumeViewController, calendarViewController], animated: true)
   }
 
 }

@@ -33,6 +33,7 @@ class BannerCell: UITableViewCell {
         let lb = UILabel()
         lb.text = "주머니 채우는"
         lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 12)
+        lb.setCharacterSpacing(-0.3)
         lb.textColor = UIColor(red: 0.4, green: 0.34, blue: 0.34, alpha: 0.7)
         return lb
     }()
@@ -41,6 +42,7 @@ class BannerCell: UITableViewCell {
     var poketCalendarLabel: UILabel = {
         let lb = UILabel()
         lb.text = "주머니 캘린더"
+        lb.setCharacterSpacing(-0.45)
         lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
         lb.textColor = BudgetBuddiesAsset.AppColor.white.color
         return lb

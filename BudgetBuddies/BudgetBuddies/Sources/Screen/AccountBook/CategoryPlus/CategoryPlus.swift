@@ -35,7 +35,7 @@ class CategoryPlus: UIView {
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
     button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    button.titleLabel?.font = PretendardFont.semiBold18
+    button.titleLabel?.font = UIFont(name: "Pretendard-SemiBold", size: 18)
     return button
   }()
 

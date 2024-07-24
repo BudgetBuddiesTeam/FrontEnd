@@ -27,7 +27,7 @@ let project = Project(
       dependencies: [
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
-        .external(name: "DGCharts")
+        .external(name: "DGCharts"),
       ]
     )
   ]

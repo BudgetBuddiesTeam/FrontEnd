@@ -48,6 +48,7 @@ final class CalendarViewController: UIViewController {
         
         // 셀 등록
         tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
+        tableView.register(MainCalendarCell.self, forCellReuseIdentifier: MainCalendarCell.identifier)
         
         self.view.addSubview(tableView)
         
@@ -69,9 +70,13 @@ extension CalendarViewController: UITableViewDataSource {
         let tempCell = UITableViewCell()
         tempCell.backgroundColor = .gray
         
-        if indexPath.row == 0 {
+        if indexPath.row == 0 { // 상단 배너
             let bannerCell = tableView.dequeueReusableCell(withIdentifier: BannerCell.identifier, for: indexPath) as! BannerCell
             return bannerCell
+            
+        } else if indexPath.row == 1 { // 메인 캘린더
+            let mainCalendarCell = tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath) as! MainCalendarCell
+            return mainCalendarCell
         }
         
         return tempCell
@@ -82,8 +87,12 @@ extension CalendarViewController: UITableViewDataSource {
 // MARK: - UITableView Delegate
 extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 127
+        if indexPath.row == 0 { // 상단 배너
+            return 127 //
+            
+        } else if indexPath.row == 1 { // 메인 캘린더
+            return 532 + 6
+            
         }
         
         return 100

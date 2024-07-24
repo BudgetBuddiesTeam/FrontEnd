@@ -10,7 +10,9 @@ import UIKit
 class RootTabBarViewController: UITabBarController {
   // MARK: - Properties
 
-  private let consumeViewController = ConsumeViewController()
+  private let consumeViewController = UINavigationController(
+    rootViewController: ConsumeViewController())
+
   // MARK: - View Life Cycle
 
   override func viewDidLoad() {
@@ -19,6 +21,7 @@ class RootTabBarViewController: UITabBarController {
     view.backgroundColor = .white
     setTabBar()
   }
+
   // MARK: - Methods
 
   private func setTabBar() {

@@ -26,6 +26,7 @@ class CategoryPlus: UIView {
   let textFieldBottomLine: UIView = {
     let view = UIView()
     view.backgroundColor = UIColor(red: 0.716, green: 0.716, blue: 0.716, alpha: 1)
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.textExample.color
     return view
   }()
 
@@ -34,8 +35,8 @@ class CategoryPlus: UIView {
     button.layer.backgroundColor = CGColor(red: 1, green: 0.816, blue: 0.114, alpha: 1)
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
-    button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    button.titleLabel?.font = UIFont(name: "Pretendard-SemiBold", size: 18)
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     return button
   }()
 

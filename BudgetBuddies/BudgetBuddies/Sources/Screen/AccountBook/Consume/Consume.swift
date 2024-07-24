@@ -10,10 +10,8 @@ import UIKit
 
 /*
  해야 할 일
- 1. 텍스트 컬러 하드 코딩에서 소프트 코딩으로 리팩터링
- 2. 텍스트 폰트 하드 코딩에서 소프트 코딩으로 리팩터링
- 3. DatePicker 부분을 디자인에서 의도한대로 리팩터링
- 4. chevron의 크기를 재조정. 텍스트의 높이와 동일하게 수정해볼 것.
+ 1. DatePicker 부분을 디자인에서 의도한대로 리팩터링
+ 2. chevron의 크기를 재조정. 텍스트의 높이와 동일하게 수정해볼 것.
  */
 
 class Consume: UIView {
@@ -30,7 +28,7 @@ class Consume: UIView {
   var consumedPriceText: UILabel = {
     let label = UILabel()
     label.text = "소비금액"
-    label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
   }()
@@ -39,8 +37,7 @@ class Consume: UIView {
   var consumedPriceTextField: UITextField = {
     let textField = UITextField()
     textField.layer.cornerRadius = 15
-    textField.layer.backgroundColor =
-      UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1).cgColor
+    textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
     textField.keyboardType = .numberPad
     return textField
   }()
@@ -49,7 +46,7 @@ class Consume: UIView {
   var consumedContentText: UILabel = {
     let label = UILabel()
     label.text = "소비내용"
-    label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
   }()
@@ -58,8 +55,7 @@ class Consume: UIView {
   var consumedContentTextField: UITextField = {
     let textField = UITextField()
     textField.layer.cornerRadius = 15
-    textField.layer.backgroundColor =
-      UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1).cgColor
+    textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
     return textField
   }()
 
@@ -67,7 +63,7 @@ class Consume: UIView {
   let consumedDateText: UILabel = {
     let label = UILabel()
     label.text = "지출일시"
-    label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
   }()
@@ -86,13 +82,13 @@ class Consume: UIView {
 
     // 버튼 타이틀 설정 코드
     button.setTitle("식비", for: .normal)
-    button.setTitleColor(UIColor(red: 0.463, green: 0.463, blue: 0.463, alpha: 1), for: .normal)
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.subGray.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
 
     // 버튼 이미지 "chevron" 설정 코드
     button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
     // chevron의 컬러를 주기 위해서는 title과 달리 메소드를 사용하지 않고 tintColor라는 프로퍼티에 직접 접근합니다.
-    button.tintColor = UIColor(red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
+    button.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
 
     // "텍스트 >" 위치로 설정하는 코드
     var config = UIButton.Configuration.plain()
@@ -107,7 +103,7 @@ class Consume: UIView {
   let categorySetText: UILabel = {
     let label = UILabel()
     label.text = "카테고리 설정"
-    label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
   }()
@@ -118,7 +114,7 @@ class Consume: UIView {
     button.layer.backgroundColor = UIColor(red: 1, green: 0.816, blue: 0.114, alpha: 1).cgColor
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
-    button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     return button
   }()

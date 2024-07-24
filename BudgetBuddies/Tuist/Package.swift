@@ -20,5 +20,6 @@ let package = Package(
     // You can read more about dependencies here: https://docs.tuist.io/documentation/tuist/dependencies
     .package(url: "https://github.com/Alamofire/Alamofire", from: "5.0.0"),
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.7.1"),
+    .package(url: "https://github.com/danielgindi/Charts.git", from: "5.1.0")
   ]
 )

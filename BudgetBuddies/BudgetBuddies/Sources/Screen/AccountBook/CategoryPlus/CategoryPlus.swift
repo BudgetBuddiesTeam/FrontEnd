@@ -22,8 +22,8 @@ class CategoryPlus: UIView {
     textField.placeholder = "카테고리를 입력하세요."
     return textField
   }()
-  
-  let textFieldBottomLine : UIView = {
+
+  let textFieldBottomLine: UIView = {
     let view = UIView()
     view.backgroundColor = UIColor(red: 0.716, green: 0.716, blue: 0.716, alpha: 1)
     return view
@@ -31,11 +31,11 @@ class CategoryPlus: UIView {
 
   let addButton: UIButton = {
     let button = UIButton()
-    button.layer.backgroundColor = UIColor(red: 1, green: 0.816, blue: 0.114, alpha: 1).cgColor
+    button.layer.backgroundColor = CGColor(red: 1, green: 0.816, blue: 0.114, alpha: 1)
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
     button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    button.titleLabel?.font = UIFont(name: "Pretendard-SemiBold", size: 18)
+    button.titleLabel?.font = PretendardFont.semiBold18
     return button
   }()
 
@@ -68,7 +68,7 @@ class CategoryPlus: UIView {
       make.centerX.equalToSuperview()
       make.top.equalTo(coinImage.snp.bottom).offset(79)
     }
-    
+
     textFieldBottomLine.snp.makeConstraints { make in
       make.width.equalTo(279)
       make.height.equalTo(1)

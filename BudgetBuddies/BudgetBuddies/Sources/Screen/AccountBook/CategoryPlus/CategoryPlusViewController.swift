@@ -34,11 +34,11 @@ class CategoryPlusViewController: UIViewController {
   private func setNavigation() {
 
   }
-  
+
   private func setButtonAction() {
     categoryPlus.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
   }
-  
+
   @objc
   private func addButtonTapped() {
     dismiss(animated: true)

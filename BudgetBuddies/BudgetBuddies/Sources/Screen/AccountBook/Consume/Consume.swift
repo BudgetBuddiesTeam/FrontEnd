@@ -31,7 +31,7 @@ class Consume: UIView {
     let label = UILabel()
     label.text = "소비금액"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
-    label.font = UIFont(name: "Pretendard-Medium", size: 16)
+    label.font = PretendardFont.medium16
     return label
   }()
 
@@ -50,7 +50,7 @@ class Consume: UIView {
     let label = UILabel()
     label.text = "소비내용"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
-    label.font = UIFont(name: "Pretendard-Medium", size: 16)
+    label.font = PretendardFont.medium16
     return label
   }()
 
@@ -68,7 +68,7 @@ class Consume: UIView {
     let label = UILabel()
     label.text = "지출일시"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
-    label.font = UIFont(name: "Pretendard-Medium", size: 16)
+    label.font = PretendardFont.medium16
     return label
   }()
 
@@ -87,11 +87,7 @@ class Consume: UIView {
     // 버튼 타이틀 설정 코드
     button.setTitle("식비", for: .normal)
     button.setTitleColor(UIColor(red: 0.463, green: 0.463, blue: 0.463, alpha: 1), for: .normal)
-    if let customFont = UIFont(name: "Pretendard-Medium", size: 16) {
-      button.titleLabel?.font = customFont
-    } else {
-      button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    }
+    button.titleLabel?.font = PretendardFont.medium16
 
     // 버튼 이미지 "chevron" 설정 코드
     button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
@@ -112,7 +108,7 @@ class Consume: UIView {
     let label = UILabel()
     label.text = "카테고리 설정"
     label.textColor = UIColor(red: 0.067, green: 0.067, blue: 0.067, alpha: 1)
-    label.font = UIFont(name: "Pretendard-Medium", size: 16)
+    label.font = PretendardFont.medium16
     return label
   }()
 
@@ -123,7 +119,7 @@ class Consume: UIView {
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
     button.setTitleColor(UIColor(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    button.titleLabel?.font = UIFont(name: "Pretendard-SemiBold", size: 18)
+    button.titleLabel?.font = PretendardFont.semiBold18
     return button
   }()
 

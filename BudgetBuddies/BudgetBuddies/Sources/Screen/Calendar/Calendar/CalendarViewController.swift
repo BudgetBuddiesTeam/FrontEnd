@@ -38,6 +38,9 @@ final class CalendarViewController: UIViewController {
     
     // MARK: - Set up TableView
     private func setupTableView() {
+        
+        registerTableViewCell()
+        
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
@@ -46,10 +49,6 @@ final class CalendarViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        // 셀 등록
-        tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
-        tableView.register(MainCalendarCell.self, forCellReuseIdentifier: MainCalendarCell.identifier)
-        
         self.view.addSubview(tableView)
         
         // 제약조건
@@ -57,6 +56,13 @@ final class CalendarViewController: UIViewController {
             make.top.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
         }
+    }
+    
+    // MARK: - Register TableView Cell
+    private func registerTableViewCell() {
+        tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
+        tableView.register(MainCalendarCell.self, forCellReuseIdentifier: MainCalendarCell.identifier)
+        tableView.register(InfoTitleWithButtonCell.self, forCellReuseIdentifier: InfoTitleWithButtonCell.identifier)
     }
 }
 
@@ -77,6 +83,16 @@ extension CalendarViewController: UITableViewDataSource {
         } else if indexPath.row == 1 { // 메인 캘린더
             let mainCalendarCell = tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath) as! MainCalendarCell
             return mainCalendarCell
+            
+        } else if indexPath.row == 2 { // 할인정보 타이틀, 전체보기 버튼
+            let infoTitleWithButtonCell = tableView.dequeueReusableCell(withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath) as! InfoTitleWithButtonCell
+            infoTitleWithButtonCell.configure(infoType: .discount)
+            return infoTitleWithButtonCell
+            
+        } else if indexPath.row == 5 { // 지원정보 타이틀, 전체보기 버튼
+            let infoTitleWithButtonCell = tableView.dequeueReusableCell(withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath) as! InfoTitleWithButtonCell
+            infoTitleWithButtonCell.configure(infoType: .support)
+            return infoTitleWithButtonCell
         }
         
         return tempCell
@@ -93,7 +109,13 @@ extension CalendarViewController: UITableViewDelegate {
         } else if indexPath.row == 1 { // 메인 캘린더
             return 532 + 6
             
-        }
+        } else if indexPath.row == 2 { // 할인정보 타이틀, 전체보기 버튼
+            return 64
+            
+        } else if indexPath.row == 5 { // 지원정보 타이틀, 전체보기 버튼
+           return 64
+           
+       }
         
         return 100
     }

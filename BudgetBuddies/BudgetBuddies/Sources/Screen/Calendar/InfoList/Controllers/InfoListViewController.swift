@@ -16,9 +16,12 @@ class InfoListViewController: UIViewController {
     
     var infoType: InfoType
     
+    var previousScrollOffset: CGFloat = 0.0
+    var scrollThreshold: CGFloat = 10.0 // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+    
     // MARK: - UI Components
     lazy var tableView = UITableView()
-
+    
     // MARK: - Life Cycle
     init(infoType: InfoType) {
         self.infoType = infoType
@@ -29,10 +32,48 @@ class InfoListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setupNavigationBar()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationBar()
         setupTableView()
+    }
+    
+    // MARK: - Set up NavigationBar
+    private func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.isHidden = false
+        
+        // 백 버튼
+        lazy var backButton: UIBarButtonItem = {
+            let btn = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                      style: .done,
+                                      target: self,
+                                      action: #selector(didTapBarButtonItem))
+            btn.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
+            return btn
+        }()
+        
+        // 네비게이션 바 타이틀 폰트 설정 << 수정 필요
+        let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: titleFont,
+            .foregroundColor: UIColor.red.cgColor
+        ]
+        appearance.titleTextAttributes = titleAttributes
+        
+        navigationItem.leftBarButtonItem = backButton
     }
     
     // MARK: - Set up TableView
@@ -48,13 +89,19 @@ class InfoListViewController: UIViewController {
         tableView.delegate = self
         
         // 셀 등록
-        tableView.register(InformationCell.self, forCellReuseIdentifier: "InfomationCell")
+        tableView.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
         
         self.view.addSubview(tableView)
         
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    // MARK: - Selectors
+    @objc
+    private func didTapBarButtonItem() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -106,5 +153,23 @@ extension InfoListViewController: UITableViewDelegate {
             return 168
             
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let currentOffset = scrollView.contentOffset.y
+        let offsetDifference = currentOffset - previousScrollOffset
+        
+        if currentOffset <= 0 {
+            // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        } else if offsetDifference > scrollThreshold {
+            // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        } else if offsetDifference < -scrollThreshold {
+            // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+        
+        previousScrollOffset = currentOffset
     }
 }

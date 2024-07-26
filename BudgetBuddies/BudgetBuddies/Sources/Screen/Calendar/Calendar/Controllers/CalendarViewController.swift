@@ -183,8 +183,21 @@ extension CalendarViewController: UITableViewDelegate {
 
 // MARK: - InfoTitleWithButtonCell Delegate
 extension CalendarViewController: InfoTitleWithButtonCellDelegate {
-    // 전체보기 버튼 눌리면
+    // 전체보기 버튼 눌리는 시점
     func didTapShowDetailViewButton(in cell: InfoTitleWithButtonCell, infoType: InfoTitleWithButtonCell.InfoType) {
-        print("\(infoType)")
+        
+        let vc: UIViewController
+        
+        switch infoType {
+        case .discount:
+            
+            vc = InfoListViewController(infoType: .discount)
+            vc.title = "8월 할인정보" // 추후에 데이터 받기
+        case .support:
+            vc = InfoListViewController(infoType: .support)
+            vc.title = "8월 지원정보" // 추후에 데이터 받기
+        }
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -164,7 +164,7 @@ class InformationCell: UITableViewCell {
         btn.layer.masksToBounds = true
         btn.layer.cornerRadius = 10
         
-//        btn.addTarget(self, action: #selector(didTapWebButton), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(didTapWebButton), for: .touchUpInside)
         
         return btn
     }()
@@ -278,5 +278,10 @@ class InformationCell: UITableViewCell {
             make.leading.bottom.trailing.equalTo(backView).inset(16)
             make.height.equalTo(39)
         }
+    }
+    
+    // MARK: - Selectors
+    @objc func didTapWebButton() {
+        print("다음 사이트로 이동: \(self.urlString)")
     }
 }

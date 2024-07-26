@@ -54,6 +54,7 @@ class ConsumeViewController: UIViewController {
   @objc
   private func rightBarButtonItemButtonTapped() {
     debugPrint("소비기록 버튼 탭")
+    navigationController?.pushViewController(ConsumedHistoryTableViewController(), animated: true)
   }
 
   @objc

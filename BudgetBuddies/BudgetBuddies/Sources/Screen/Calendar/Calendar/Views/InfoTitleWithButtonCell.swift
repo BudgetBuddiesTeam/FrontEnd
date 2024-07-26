@@ -94,6 +94,7 @@ class InfoTitleWithButtonCell: UITableViewCell {
     
     // MARK: - Set up UI
     private func setupUI() {
+        self.backgroundColor = .clear
         self.contentView.addSubviews(infoTitleLabel, showDetailStackView)
         
         setupConstraints()

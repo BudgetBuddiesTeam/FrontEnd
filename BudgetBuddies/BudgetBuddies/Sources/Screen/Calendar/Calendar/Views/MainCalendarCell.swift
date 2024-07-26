@@ -53,7 +53,9 @@ class MainCalendarCell: UITableViewCell {
     
     // MARK: - Set up UI
     private func setupUI() {
-        self.contentView.addSubviews(backView, infoStackView)
+        self.backgroundColor = .clear
+        self.addSubviews(backView)
+        self.contentView.addSubviews(infoStackView)
         
         setupConstraints()
     }

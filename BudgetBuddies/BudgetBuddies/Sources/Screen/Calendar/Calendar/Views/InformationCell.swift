@@ -208,6 +208,7 @@ class InformationCell: UITableViewCell {
     
     // MARK: - Set up UI
     private func setupUI() {
+        self.backgroundColor = .clear
         self.contentView.addSubviews(backView, webButton)
         self.backView.addSubviews(logoImageView, verticalStackView, likesIconImageView, likesLabel, commentsLabel, commentsIconImageView)
         

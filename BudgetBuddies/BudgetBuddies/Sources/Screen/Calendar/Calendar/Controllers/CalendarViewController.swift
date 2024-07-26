@@ -79,15 +79,18 @@ extension CalendarViewController: UITableViewDataSource {
         
         if indexPath.row == 0 { // 상단 배너
             let bannerCell = tableView.dequeueReusableCell(withIdentifier: BannerCell.identifier, for: indexPath) as! BannerCell
+            bannerCell.selectionStyle = .none
             return bannerCell
             
         } else if indexPath.row == 1 { // 메인 캘린더
             let mainCalendarCell = tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath) as! MainCalendarCell
+            mainCalendarCell.selectionStyle = .none
             return mainCalendarCell
             
         } else if indexPath.row == 2 { // 할인정보 타이틀, 전체보기 버튼
             let infoTitleWithButtonCell = tableView.dequeueReusableCell(withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath) as! InfoTitleWithButtonCell
             infoTitleWithButtonCell.configure(infoType: .discount)
+            infoTitleWithButtonCell.selectionStyle = .none
             return infoTitleWithButtonCell
             
         } else if indexPath.row == 3 || indexPath.row == 4 { // 할인정보 셀
@@ -100,6 +103,7 @@ extension CalendarViewController: UITableViewDataSource {
             informationCell.percentLabel.text = "~80%"
             informationCell.urlString = "https://www.naver.com"
             
+            informationCell.selectionStyle = .none
             return informationCell
             
         } else if indexPath.row == 5 { // 지원정보 타이틀, 전체보기 버튼
@@ -116,6 +120,7 @@ extension CalendarViewController: UITableViewDataSource {
             informationCell.dateLabel.text = "08.17 ~ 08.20"
             informationCell.urlString = "https://www.google.com"
             
+            informationCell.selectionStyle = .none
             return informationCell
         }
         

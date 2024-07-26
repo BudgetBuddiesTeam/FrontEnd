@@ -63,6 +63,7 @@ final class CalendarViewController: UIViewController {
         tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
         tableView.register(MainCalendarCell.self, forCellReuseIdentifier: MainCalendarCell.identifier)
         tableView.register(InfoTitleWithButtonCell.self, forCellReuseIdentifier: InfoTitleWithButtonCell.identifier)
+        tableView.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
     }
 }
 
@@ -89,10 +90,33 @@ extension CalendarViewController: UITableViewDataSource {
             infoTitleWithButtonCell.configure(infoType: .discount)
             return infoTitleWithButtonCell
             
+        } else if indexPath.row == 3 || indexPath.row == 4 { // 할인정보 셀
+            let informationCell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
+            informationCell.configure(infoType: .discount)
+            
+            // 데이터 전달
+            informationCell.infoTitleLabel.text = "지그재그 썸머세일"
+            informationCell.dateLabel.text = "08.17 ~ 08.20"
+            informationCell.percentLabel.text = "~80%"
+            informationCell.urlString = "https://www.naver.com"
+            
+            return informationCell
+            
         } else if indexPath.row == 5 { // 지원정보 타이틀, 전체보기 버튼
             let infoTitleWithButtonCell = tableView.dequeueReusableCell(withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath) as! InfoTitleWithButtonCell
             infoTitleWithButtonCell.configure(infoType: .support)
             return infoTitleWithButtonCell
+            
+        } else if indexPath.row == 6 || indexPath.row == 7 { // 지원정보 셀
+            let informationCell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
+            informationCell.configure(infoType: .support)
+            
+            // 데이터 전달
+            informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
+            informationCell.dateLabel.text = "08.17 ~ 08.20"
+            informationCell.urlString = "https://www.google.com"
+            
+            return informationCell
         }
         
         return tempCell
@@ -112,10 +136,15 @@ extension CalendarViewController: UITableViewDelegate {
         } else if indexPath.row == 2 { // 할인정보 타이틀, 전체보기 버튼
             return 64
             
+        } else if indexPath.row == 3 || indexPath.row == 4 { // 할인정보 셀
+            return 168
+            
         } else if indexPath.row == 5 { // 지원정보 타이틀, 전체보기 버튼
-           return 64
-           
-       }
+            return 64
+            
+        } else if indexPath.row == 6 || indexPath.row == 7 { // 지원정보 셀
+            return 168
+        }
         
         return 100
     }

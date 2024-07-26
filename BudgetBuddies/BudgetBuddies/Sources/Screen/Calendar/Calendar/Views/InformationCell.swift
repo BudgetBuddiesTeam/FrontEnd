@@ -153,20 +153,16 @@ class InformationCell: UITableViewCell {
         return lb
     }()
     
-    // MARK: - 사이트 바로가기 버튼 ⭐️
+    // MARK: - 사이트 바로가기 버튼
     private lazy var webButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("사이트 바로가기", for: .normal)
-        btn.setTitleColor(.white, for: .normal)
-        btn.backgroundColor = #colorLiteral(red: 1, green: 0.8164488077, blue: 0.1144857034, alpha: 1)
+        btn.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
+        btn.setCharacterSpacing(-0.35, for: .normal)
+        btn.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
+        btn.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
         btn.layer.masksToBounds = true
         btn.layer.cornerRadius = 10
-
-        let title = "사이트 바로가기"
-        let font = UIFont(name: "Pretendard-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font,.kern: -0.35]
-        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-        btn.setAttributedTitle(attributedTitle, for: .normal)
         
 //        btn.addTarget(self, action: #selector(didTapWebButton), for: .touchUpInside)
         

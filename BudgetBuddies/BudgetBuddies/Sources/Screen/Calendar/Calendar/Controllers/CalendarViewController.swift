@@ -82,6 +82,7 @@ extension CalendarViewController: UITableViewDataSource {
       let bannerCell =
         tableView.dequeueReusableCell(withIdentifier: BannerCell.identifier, for: indexPath)
         as! BannerCell
+        
       bannerCell.selectionStyle = .none
       return bannerCell
 
@@ -89,6 +90,7 @@ extension CalendarViewController: UITableViewDataSource {
       let mainCalendarCell =
         tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath)
         as! MainCalendarCell
+        
       mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
 
@@ -98,6 +100,10 @@ extension CalendarViewController: UITableViewDataSource {
           withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
         as! InfoTitleWithButtonCell
       infoTitleWithButtonCell.configure(infoType: .discount)
+        
+        // 대리자 설정
+        infoTitleWithButtonCell.delegate = self
+        
       infoTitleWithButtonCell.selectionStyle = .none
       return infoTitleWithButtonCell
 
@@ -122,6 +128,11 @@ extension CalendarViewController: UITableViewDataSource {
           withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
         as! InfoTitleWithButtonCell
       infoTitleWithButtonCell.configure(infoType: .support)
+        
+        // 대리자 설정
+        infoTitleWithButtonCell.delegate = self
+        
+        infoTitleWithButtonCell.selectionStyle = .none
       return infoTitleWithButtonCell
 
     } else if indexPath.row == 6 || indexPath.row == 7 {  // 지원정보 셀
@@ -168,4 +179,12 @@ extension CalendarViewController: UITableViewDelegate {
 
     return 100
   }
+}
+
+// MARK: - InfoTitleWithButtonCell Delegate
+extension CalendarViewController: InfoTitleWithButtonCellDelegate {
+    // 전체보기 버튼 눌리면
+    func didTapShowDetailViewButton(in cell: InfoTitleWithButtonCell, infoType: InfoTitleWithButtonCell.InfoType) {
+        print("\(infoType)")
+    }
 }

@@ -78,11 +78,26 @@ class BottomSheet: UIView {
         tf.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
         
         // 왼쪽에 빈 공간
-        let spacer = UIView()
-        spacer.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
-        tf.leftView = spacer
+        let leftSpacer = UIView()
+        leftSpacer.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
+        tf.leftView = leftSpacer
         tf.leftViewMode = .always
+        
+        // 오른쪽에 빈 공간
+        let rightSpacer = UIView()
+        rightSpacer.frame = CGRect(x: 0, y: 0, width: 28 + 12, height: 28)
+        
+        // 전송 버튼
+        let sendButton = UIButton(type: .custom)
+        sendButton.setImage(UIImage(named: "sendButtonImage"), for: .normal)
+        sendButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+        
+        sendButton.frame.origin = CGPoint(x: 0, y: 0)
+        rightSpacer.addSubview(sendButton)
 
+        tf.rightView = rightSpacer
+        tf.rightViewMode = .always
+        
         return tf
     }()
     

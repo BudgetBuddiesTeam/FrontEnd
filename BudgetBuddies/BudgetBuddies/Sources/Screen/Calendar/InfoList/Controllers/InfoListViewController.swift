@@ -85,7 +85,7 @@ final class InfoListViewController: UIViewController {
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     tableView.backgroundColor = .clear
     tableView.separatorStyle = .none
-    tableView.allowsSelection = false
+    tableView.allowsSelection = true
     tableView.showsVerticalScrollIndicator = false
     tableView.scrollsToTop = true
 
@@ -137,6 +137,7 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.percentLabel.text = "~80%"
         informationCell.urlString = "https://www.naver.com"
 
+          informationCell.selectionStyle = .none
         return informationCell
       case .support:
         let informationCell =
@@ -151,6 +152,7 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.urlString = "https://www.google.com"
 
+          informationCell.selectionStyle = .none
         return informationCell
       }
     }
@@ -168,6 +170,16 @@ extension InfoListViewController: UITableViewDelegate {
 
     }
   }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
+                let vc = BottomSheetViewController()
+                vc.modalPresentationStyle = .overFullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
+    }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y

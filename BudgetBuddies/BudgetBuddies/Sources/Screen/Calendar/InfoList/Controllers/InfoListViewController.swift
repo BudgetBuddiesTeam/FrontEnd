@@ -49,7 +49,16 @@ class InfoListViewController: UIViewController {
         appearance.configureWithDefaultBackground()
         appearance.shadowColor = nil
         
-        navigationController?.navigationBar.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+        // 네비게이션 바 타이틀 폰트, 자간 설정
+        let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: titleFont,
+            .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color, // UIColor.red로 변경하려면 이 부분을 수정하세요.
+            .kern: -0.45
+        ]
+        
+        appearance.titleTextAttributes = titleAttributes
+
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -64,14 +73,6 @@ class InfoListViewController: UIViewController {
             btn.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
             return btn
         }()
-        
-        // 네비게이션 바 타이틀 폰트 설정 << 수정 필요
-        let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: titleFont,
-            .foregroundColor: UIColor.red.cgColor
-        ]
-        appearance.titleTextAttributes = titleAttributes
         
         navigationItem.leftBarButtonItem = backButton
     }

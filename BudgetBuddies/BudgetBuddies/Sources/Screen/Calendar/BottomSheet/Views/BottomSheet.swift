@@ -16,6 +16,7 @@ class BottomSheet: UIView {
         view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 24
+        view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
         return view
     }()
     
@@ -135,7 +136,7 @@ class BottomSheet: UIView {
         textFieldBackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.layoutMarginsGuide.snp.bottom)
-            make.height.equalTo(118)
+            make.height.equalTo(85)
         }
         
         textFieldSeparator.snp.makeConstraints { make in

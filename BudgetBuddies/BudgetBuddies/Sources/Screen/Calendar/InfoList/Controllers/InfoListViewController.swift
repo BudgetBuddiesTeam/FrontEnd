@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class InfoListViewController: UIViewController {
+final class InfoListViewController: UIViewController {
   // MARK: - Properties
   enum InfoType {
     case discount

@@ -181,6 +181,14 @@ extension CalendarViewController: UITableViewDelegate {
 
     return 100
   }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
+            let vc = BottomSheetViewController()
+            vc.modalPresentationStyle = .overFullScreen
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - InfoTitleWithButtonCell Delegate

@@ -108,6 +108,9 @@ extension CalendarViewController: UITableViewDataSource {
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
       informationCell.configure(infoType: .discount)
+        
+        // 대리자 설정
+        informationCell.delegate = self
 
       // 데이터 전달
       informationCell.infoTitleLabel.text = "지그재그 썸머세일"
@@ -136,6 +139,9 @@ extension CalendarViewController: UITableViewDataSource {
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
       informationCell.configure(infoType: .support)
+        
+        // 대리자 설정
+        informationCell.delegate = self
 
       // 데이터 전달
       informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
@@ -179,7 +185,7 @@ extension CalendarViewController: UITableViewDelegate {
 
 // MARK: - InfoTitleWithButtonCell Delegate
 extension CalendarViewController: InfoTitleWithButtonCellDelegate {
-  // 전체보기 버튼 눌리는 시점
+  // infoTitleWithButtonCell: 전체보기 버튼 눌리는 시점
   func didTapShowDetailViewButton(
     in cell: InfoTitleWithButtonCell, infoType: InfoTitleWithButtonCell.InfoType
   ) {
@@ -198,4 +204,13 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
+}
+
+
+// MARK: - InformationCell Delegate
+extension CalendarViewController: InformationCellDelegate {
+    // informationCell: 사이트 바로가기 버튼이 눌리는 시점
+    func didTapWebButton(in cell: InformationCell, urlString: String) {
+        print("CalendarViewController: \(urlString)")
+    }
 }

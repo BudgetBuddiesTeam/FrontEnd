@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol InformationCellDelegate: AnyObject {
+    func didTapWebButton(in cell: InformationCell, urlString: String)
+}
+
 class InformationCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "InfomationCell"
+    
+    weak var delegate: InformationCellDelegate?
 
   // 임시 링크 (모델에 타이틀, 기간, 할인률, 링크 다 가지고 있을 거임)
   var urlString: String = ""
@@ -285,6 +291,6 @@ class InformationCell: UITableViewCell {
 
   // MARK: - Selectors
   @objc func didTapWebButton() {
-    print("다음 사이트로 이동: \(self.urlString)")
+      delegate?.didTapWebButton(in: self, urlString: urlString)
   }
 }

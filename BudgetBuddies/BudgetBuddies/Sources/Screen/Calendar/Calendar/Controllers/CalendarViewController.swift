@@ -211,6 +211,12 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
 extension CalendarViewController: InformationCellDelegate {
     // informationCell: 사이트 바로가기 버튼이 눌리는 시점
     func didTapWebButton(in cell: InformationCell, urlString: String) {
-        print("CalendarViewController: \(urlString)")
+        guard let url = URL(string: urlString) else {
+            print("Error: 유효하지 않은 url \(urlString)")
+            return
+        }
+        
+        // 외부 웹사이트로 이동
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

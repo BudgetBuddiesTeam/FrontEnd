@@ -127,6 +127,9 @@ extension InfoListViewController: UITableViewDataSource {
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
         informationCell.configure(infoType: .discount)
+          
+          // 대리자 설정
+          informationCell.delegate = self
 
         informationCell.infoTitleLabel.text = "지그재그 썸머세일"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
@@ -139,6 +142,9 @@ extension InfoListViewController: UITableViewDataSource {
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
         informationCell.configure(infoType: .support)
+          
+          // 대리자 설정
+          informationCell.delegate = self
 
         informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
@@ -179,4 +185,18 @@ extension InfoListViewController: UITableViewDelegate {
 
     previousScrollOffset = currentOffset
   }
+}
+
+// MARK: - InformationCell Delegate
+extension InfoListViewController: InformationCellDelegate {
+    // informationCell: 사이트 바로가기 버튼이 눌리는 시점
+    func didTapWebButton(in cell: InformationCell, urlString: String) {
+        guard let url = URL(string: urlString) else {
+            print("Error: 유효하지 않은 url \(urlString)")
+            return
+        }
+        
+        // 외부 웹사이트로 이동
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
 }

@@ -5,8 +5,8 @@
 //  Created by 김승원 on 7/26/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 final class InfoListViewController: UIViewController {
   // MARK: - Properties
@@ -22,7 +22,6 @@ final class InfoListViewController: UIViewController {
 
   // MARK: - UI Components
   lazy var tableView = UITableView()
-    
 
   // MARK: - Life Cycle
   init(infoType: InfoType) {
@@ -128,31 +127,31 @@ extension InfoListViewController: UITableViewDataSource {
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
         informationCell.configure(infoType: .discount)
-          
-          // 대리자 설정
-          informationCell.delegate = self
+
+        // 대리자 설정
+        informationCell.delegate = self
 
         informationCell.infoTitleLabel.text = "지그재그 썸머세일"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.percentLabel.text = "~80%"
         informationCell.urlString = "https://www.naver.com"
 
-          informationCell.selectionStyle = .none
+        informationCell.selectionStyle = .none
         return informationCell
       case .support:
         let informationCell =
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
         informationCell.configure(infoType: .support)
-          
-          // 대리자 설정
-          informationCell.delegate = self
+
+        // 대리자 설정
+        informationCell.delegate = self
 
         informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.urlString = "https://www.google.com"
 
-          informationCell.selectionStyle = .none
+        informationCell.selectionStyle = .none
         return informationCell
       }
     }
@@ -170,16 +169,16 @@ extension InfoListViewController: UITableViewDelegate {
 
     }
   }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row != 0 {
-            if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
-                let vc = BottomSheetViewController()
-                vc.modalPresentationStyle = .overFullScreen
-                self.present(vc, animated: true, completion: nil)
-            }
-        }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row != 0 {
+      if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
+        let vc = BottomSheetViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+      }
     }
+  }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y
@@ -202,14 +201,14 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
-    // informationCell: 사이트 바로가기 버튼이 눌리는 시점
-    func didTapWebButton(in cell: InformationCell, urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Error: 유효하지 않은 url \(urlString)")
-            return
-        }
-        
-        // 외부 웹사이트로 이동
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  // informationCell: 사이트 바로가기 버튼이 눌리는 시점
+  func didTapWebButton(in cell: InformationCell, urlString: String) {
+    guard let url = URL(string: urlString) else {
+      print("Error: 유효하지 않은 url \(urlString)")
+      return
     }
+
+    // 외부 웹사이트로 이동
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
 }

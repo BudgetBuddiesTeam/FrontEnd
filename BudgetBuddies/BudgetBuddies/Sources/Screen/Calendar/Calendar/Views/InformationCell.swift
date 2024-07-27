@@ -5,18 +5,18 @@
 //  Created by 김승원 on 7/26/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 protocol InformationCellDelegate: AnyObject {
-    func didTapWebButton(in cell: InformationCell, urlString: String)
+  func didTapWebButton(in cell: InformationCell, urlString: String)
 }
 
 class InformationCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "InfomationCell"
-    
-    weak var delegate: InformationCellDelegate?
+
+  weak var delegate: InformationCellDelegate?
 
   // 임시 링크 (모델에 타이틀, 기간, 할인률, 링크 다 가지고 있을 거임)
   var urlString: String = ""
@@ -25,9 +25,9 @@ class InformationCell: UITableViewCell {
     case discount
     case support
   }
-    
-    var likesToggle: Bool = false
-    var likes: Int = 0
+
+  var likesToggle: Bool = false
+  var likes: Int = 0
 
   // MARK: - UI Components
   // 뒷 배경
@@ -150,11 +150,11 @@ class InformationCell: UITableViewCell {
     let iv = UIImageView()
     iv.image = UIImage(named: "heartIconImage")
     iv.contentMode = .scaleAspectFit
-      
-      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikesButton))
-      iv.addGestureRecognizer(tapGesture)
-      iv.isUserInteractionEnabled = true
-      
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikesButton))
+    iv.addGestureRecognizer(tapGesture)
+    iv.isUserInteractionEnabled = true
+
     return iv
   }()
 
@@ -298,23 +298,23 @@ class InformationCell: UITableViewCell {
   }
 
   // MARK: - Selectors
-  @objc 
-    private func didTapWebButton() {
-      delegate?.didTapWebButton(in: self, urlString: urlString)
+  @objc
+  private func didTapWebButton() {
+    delegate?.didTapWebButton(in: self, urlString: urlString)
   }
-    
-    @objc
-    private func didTapLikesButton() {
-        print(#function)
-        self.likesToggle.toggle()
-        if likesToggle {
-            self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
-            likes += 1
-            self.likesLabel.text = String(self.likes)
-        } else {
-            self.likesIconImageView.image = UIImage(named: "heartIconImage")
-            likes -= 1
-            self.likesLabel.text = String(self.likes)
-        }
+
+  @objc
+  private func didTapLikesButton() {
+    print(#function)
+    self.likesToggle.toggle()
+    if likesToggle {
+      self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
+      likes += 1
+      self.likesLabel.text = String(self.likes)
+    } else {
+      self.likesIconImageView.image = UIImage(named: "heartIconImage")
+      likes -= 1
+      self.likesLabel.text = String(self.likes)
     }
+  }
 }

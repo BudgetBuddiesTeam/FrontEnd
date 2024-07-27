@@ -108,9 +108,9 @@ extension CalendarViewController: UITableViewDataSource {
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
       informationCell.configure(infoType: .discount)
-        
-        // 대리자 설정
-        informationCell.delegate = self
+
+      // 대리자 설정
+      informationCell.delegate = self
 
       // 데이터 전달
       informationCell.infoTitleLabel.text = "지그재그 썸머세일"
@@ -139,9 +139,9 @@ extension CalendarViewController: UITableViewDataSource {
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
       informationCell.configure(infoType: .support)
-        
-        // 대리자 설정
-        informationCell.delegate = self
+
+      // 대리자 설정
+      informationCell.delegate = self
 
       // 데이터 전달
       informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
@@ -181,14 +181,14 @@ extension CalendarViewController: UITableViewDelegate {
 
     return 100
   }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
-            let vc = BottomSheetViewController()
-            vc.modalPresentationStyle = .overFullScreen
-            self.present(vc, animated: true, completion: nil)
-        }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
+      let vc = BottomSheetViewController()
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
     }
+  }
 }
 
 // MARK: - InfoTitleWithButtonCell Delegate
@@ -214,17 +214,16 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
   }
 }
 
-
 // MARK: - InformationCell Delegate
 extension CalendarViewController: InformationCellDelegate {
-    // informationCell: 사이트 바로가기 버튼이 눌리는 시점
-    func didTapWebButton(in cell: InformationCell, urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Error: 유효하지 않은 url \(urlString)")
-            return
-        }
-        
-        // 외부 웹사이트로 이동
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  // informationCell: 사이트 바로가기 버튼이 눌리는 시점
+  func didTapWebButton(in cell: InformationCell, urlString: String) {
+    guard let url = URL(string: urlString) else {
+      print("Error: 유효하지 않은 url \(urlString)")
+      return
     }
+
+    // 외부 웹사이트로 이동
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
 }

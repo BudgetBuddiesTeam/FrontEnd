@@ -5,8 +5,8 @@
 //  Created by 김승원 on 7/24/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 class BannerCell: UITableViewCell {
   // MARK: - Properties

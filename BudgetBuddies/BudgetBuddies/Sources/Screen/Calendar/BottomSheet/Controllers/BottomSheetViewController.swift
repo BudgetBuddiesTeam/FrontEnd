@@ -22,6 +22,7 @@ final class BottomSheetViewController: DimmedViewController {
         
         setupUI()
         setupTapGesture()
+        setupPanGesture()
         setupTextField()
         registerKeyboardNotifications()
     }
@@ -34,7 +35,13 @@ final class BottomSheetViewController: DimmedViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Set up TextField {
+    // MARK: - Set up Pan Gesture
+    private func setupPanGesture() {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        bottomSheet.addGestureRecognizer(panGesture)
+    }
+    
+    // MARK: - Set up TextField
     private func setupTextField() {
         bottomSheet.textField.delegate = self
         
@@ -91,6 +98,7 @@ final class BottomSheetViewController: DimmedViewController {
         let keyboardHeight = keyboardFrame.height
         UIView.animate(withDuration: 0.3) {
             self.bottomSheetBottomConstraint?.update(offset: -keyboardHeight)
+            self.bottomSheetTopConstraint?.update(inset: 0)
             self.view.layoutIfNeeded()
         }
     }
@@ -102,25 +110,51 @@ final class BottomSheetViewController: DimmedViewController {
             self.view.layoutIfNeeded()
         }
     }
-        
+    
+    @objc
+    private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: BottomSheet() as UIView)
+
+        switch gesture.state {
+        case .changed:
+            if let constant = bottomSheetTopConstraint?.layoutConstraints.first?.constant {
+                let newOffset = max(0, min(300, constant + translation.y))
+                self.bottomSheetTopConstraint?.update(offset: newOffset)
+                self.view.layoutIfNeeded()
+                gesture.setTranslation(.zero, in: bottomSheet)
+            }
+            
+            // 작은 상태에서 아래로 스크롤시 댓글창 닫음
+            if bottomSheetTopConstraint?.layoutConstraints.first?.constant == 300 && translation.y > 60 {
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
+            
+        case .ended:
+            UIView.animate(withDuration: 0.3) {
+                if let constant = self.bottomSheetTopConstraint?.layoutConstraints.first?.constant, constant > 150 {
+                    self.bottomSheetTopConstraint?.update(offset: 300)
+                } else {
+                    self.bottomSheetTopConstraint?.update(offset: 0)
+                }
+                self.view.layoutIfNeeded()
+            }
+            
+        default:
+            break
+  
+        }
+    }
 }
 
 extension BottomSheetViewController: UITextFieldDelegate {
     // 입력 시작
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("입력 시작")
-        UIView.animate(withDuration: 0.3) {
-            self.bottomSheetTopConstraint?.update(offset: 0)
-            self.view.layoutIfNeeded()
-        }
     }
     
     // 입력 끝
     func textFieldDidEndEditing(_ textField: UITextField) {
         print("입력 끝")
-        UIView.animate(withDuration: 0.3) {
-            self.bottomSheetTopConstraint?.update(inset: 300)
-            self.view.layoutIfNeeded()
-        }
     }
 }

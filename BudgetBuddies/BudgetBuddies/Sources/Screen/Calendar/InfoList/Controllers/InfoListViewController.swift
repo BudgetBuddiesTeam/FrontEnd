@@ -22,6 +22,7 @@ final class InfoListViewController: UIViewController {
 
   // MARK: - UI Components
   lazy var tableView = UITableView()
+    
 
   // MARK: - Life Cycle
   init(infoType: InfoType) {
@@ -54,7 +55,7 @@ final class InfoListViewController: UIViewController {
     let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     let titleAttributes: [NSAttributedString.Key: Any] = [
       .font: titleFont,
-      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,  // UIColor.red로 변경하려면 이 부분을 수정하세요.
+      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,
       .kern: -0.45,
     ]
 

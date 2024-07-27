@@ -130,6 +130,5 @@ class InfoTitleWithButtonCell: UITableViewCell {
   func didTapShowDetailStackView() {
     guard let infoType = currentInfoType else { return }
     delegate?.didTapShowDetailViewButton(in: self, infoType: infoType)
-    print("\(infoType)")
   }
 }

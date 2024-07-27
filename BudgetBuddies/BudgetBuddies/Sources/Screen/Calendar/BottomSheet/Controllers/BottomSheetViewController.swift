@@ -21,6 +21,10 @@ final class BottomSheetViewController: DimmedViewController {
         setupTapGesture()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     // MARK: - Set up UI
     private func setupUI() {
         self.view.addSubview(bottomSheet)

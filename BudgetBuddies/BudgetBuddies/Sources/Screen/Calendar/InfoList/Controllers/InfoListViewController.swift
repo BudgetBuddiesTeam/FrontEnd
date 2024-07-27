@@ -5,9 +5,10 @@
 //  Created by 김승원 on 7/26/24.
 //
 
+import SnapKit
 import UIKit
 
-class InfoListViewController: UIViewController {
+final class InfoListViewController: UIViewController {
   // MARK: - Properties
   enum InfoType {
     case discount
@@ -53,7 +54,7 @@ class InfoListViewController: UIViewController {
     let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     let titleAttributes: [NSAttributedString.Key: Any] = [
       .font: titleFont,
-      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,  // UIColor.red로 변경하려면 이 부분을 수정하세요.
+      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,
       .kern: -0.45,
     ]
 
@@ -83,7 +84,7 @@ class InfoListViewController: UIViewController {
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     tableView.backgroundColor = .clear
     tableView.separatorStyle = .none
-    tableView.allowsSelection = false
+    tableView.allowsSelection = true
     tableView.showsVerticalScrollIndicator = false
     tableView.scrollsToTop = true
 
@@ -127,11 +128,15 @@ extension InfoListViewController: UITableViewDataSource {
           as! InformationCell
         informationCell.configure(infoType: .discount)
 
+        // 대리자 설정
+        informationCell.delegate = self
+
         informationCell.infoTitleLabel.text = "지그재그 썸머세일"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.percentLabel.text = "~80%"
         informationCell.urlString = "https://www.naver.com"
 
+        informationCell.selectionStyle = .none
         return informationCell
       case .support:
         let informationCell =
@@ -139,10 +144,14 @@ extension InfoListViewController: UITableViewDataSource {
           as! InformationCell
         informationCell.configure(infoType: .support)
 
+        // 대리자 설정
+        informationCell.delegate = self
+
         informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.urlString = "https://www.google.com"
 
+        informationCell.selectionStyle = .none
         return informationCell
       }
     }
@@ -158,6 +167,16 @@ extension InfoListViewController: UITableViewDelegate {
     } else {
       return 168
 
+    }
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row != 0 {
+      if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
+        let vc = BottomSheetViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+      }
     }
   }
 
@@ -177,5 +196,19 @@ extension InfoListViewController: UITableViewDelegate {
     }
 
     previousScrollOffset = currentOffset
+  }
+}
+
+// MARK: - InformationCell Delegate
+extension InfoListViewController: InformationCellDelegate {
+  // informationCell: 사이트 바로가기 버튼이 눌리는 시점
+  func didTapWebButton(in cell: InformationCell, urlString: String) {
+    guard let url = URL(string: urlString) else {
+      print("Error: 유효하지 않은 url \(urlString)")
+      return
+    }
+
+    // 외부 웹사이트로 이동
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }

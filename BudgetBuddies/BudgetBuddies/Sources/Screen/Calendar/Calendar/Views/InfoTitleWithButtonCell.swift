@@ -5,6 +5,7 @@
 //  Created by 김승원 on 7/26/24.
 //
 
+import SnapKit
 import UIKit
 
 protocol InfoTitleWithButtonCellDelegate: AnyObject {

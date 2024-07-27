@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainCalendarCell: UITableViewCell {
   // MARK: - Properties

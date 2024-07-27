@@ -25,6 +25,9 @@ class InformationCell: UITableViewCell {
     case discount
     case support
   }
+    
+    var likesToggle: Bool = false
+    var likes: Int = 0
 
   // MARK: - UI Components
   // 뒷 배경
@@ -143,10 +146,15 @@ class InformationCell: UITableViewCell {
   }()
 
   // 좋아요
-  var likesIconImageView: UIImageView = {
+  lazy var likesIconImageView: UIImageView = {
     let iv = UIImageView()
     iv.image = UIImage(named: "heartIconImage")
     iv.contentMode = .scaleAspectFit
+      
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikesButton))
+      iv.addGestureRecognizer(tapGesture)
+      iv.isUserInteractionEnabled = true
+      
     return iv
   }()
 
@@ -290,7 +298,23 @@ class InformationCell: UITableViewCell {
   }
 
   // MARK: - Selectors
-  @objc func didTapWebButton() {
+  @objc 
+    private func didTapWebButton() {
       delegate?.didTapWebButton(in: self, urlString: urlString)
   }
+    
+    @objc
+    private func didTapLikesButton() {
+        print(#function)
+        self.likesToggle.toggle()
+        if likesToggle {
+            self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
+            likes += 1
+            self.likesLabel.text = String(self.likes)
+        } else {
+            self.likesIconImageView.image = UIImage(named: "heartIconImage")
+            likes -= 1
+            self.likesLabel.text = String(self.likes)
+        }
+    }
 }

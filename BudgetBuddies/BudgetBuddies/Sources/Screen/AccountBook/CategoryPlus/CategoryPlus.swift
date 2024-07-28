@@ -13,7 +13,10 @@ class CategoryPlus: UIView {
 
   let coinImage: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(systemName: "star.fill")
+    imageView.image = BudgetBuddiesAsset.personalCategoryImage.image
+    imageView.snp.makeConstraints { make in
+      make.width.height.equalTo(88)
+    }
     return imageView
   }()
 

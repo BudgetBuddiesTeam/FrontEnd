@@ -70,11 +70,12 @@ class ConsumedHistoryTableViewController: UITableViewController {
   {
     return 64
   }
-  
-  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  {
     return "N일 N요일"
   }
-  
+
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     navigationController?.pushViewController(ConsumedHistoryDetailViewController(), animated: true)
   }

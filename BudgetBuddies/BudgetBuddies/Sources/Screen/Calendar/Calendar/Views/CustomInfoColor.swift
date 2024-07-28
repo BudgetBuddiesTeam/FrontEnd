@@ -1,13 +1,14 @@
 //
-//  InfoColorView.swift
-//  BudgetBuddiesLocal
+//  CustomInfoColor.swift
+//  BudgetBuddies
 //
-//  Created by 김승원 on 7/15/24.
+//  Created by 김승원 on 7/25/24.
 //
 
+import SnapKit
 import UIKit
 
-class CustomInfoColorView: UIView {
+class CustomInfoColor: UIView {
 
   enum InfoType {
     case discount
@@ -24,13 +25,9 @@ class CustomInfoColorView: UIView {
 
   let infoLabel: UILabel = {
     let lb = UILabel()
-    lb.font = UIFont(name: "Pretendard-Regular", size: 12)
-    let attributedString = NSMutableAttributedString(string: lb.text ?? "")
-    let letterSpacing: CGFloat = -0.3
-    attributedString.addAttribute(
-      .kern, value: letterSpacing, range: NSRange(location: 0, length: attributedString.length))
-    lb.textColor = #colorLiteral(
-      red: 0.5098040104, green: 0.5098040104, blue: 0.5098040104, alpha: 1)
+    lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
+    lb.setCharacterSpacing(-0.3)
+    lb.textColor = UIColor(red: 0.51, green: 0.51, blue: 0.51, alpha: 1)
     return lb
   }()
 
@@ -44,18 +41,16 @@ class CustomInfoColorView: UIView {
   }()
 
   // MARK: - override init
-  init(infoType: InfoType, infoText: String) {
+  init(infoType: InfoType) {
     super.init(frame: .zero)
-
-    self.infoLabel.text = infoText
 
     switch infoType {
     case .discount:
-      self.colorView.backgroundColor = #colorLiteral(
-        red: 1, green: 0.7009802461, blue: 0.0008154966054, alpha: 1)
+      self.colorView.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
+      self.infoLabel.text = "할인정보"
     case .support:
-      self.colorView.backgroundColor = #colorLiteral(
-        red: 0, green: 0.6331792474, blue: 0.947116673, alpha: 1)
+      self.colorView.backgroundColor = BudgetBuddiesAsset.AppColor.coreBlue.color
+      self.infoLabel.text = "지원정보"
     }
 
     setupUI()

@@ -44,27 +44,37 @@ class AllLookingViewController: UIViewController {
     let profileContainerViewTapped = UITapGestureRecognizer(
       target: self, action: #selector(profileContainerViewTapped))
     allLookingView.profileContainerView.addGestureRecognizer(profileContainerViewTapped)
-    
+
     // "분석"의 "이번 달 레포트" 탭
-    let thisMonthReportContainerTapped = UITapGestureRecognizer(target: self, action: #selector(thisMonthReportContainerTapped))
-    allLookingView.analysisContainverView.thisMonthReportContainer.addGestureRecognizer(thisMonthReportContainerTapped)
-    
+    let thisMonthReportContainerTapped = UITapGestureRecognizer(
+      target: self, action: #selector(thisMonthReportContainerTapped))
+    allLookingView.analysisContainverView.thisMonthReportContainer.addGestureRecognizer(
+      thisMonthReportContainerTapped)
+
     // "분석"의 "또래 소비분석 레포트" 탭
-    let peerConsumedAnalysisReportContainerTapped = UITapGestureRecognizer(target: self, action: #selector(peerConsumedAnalysisReportContainerTapped))
-    allLookingView.analysisContainverView.peerConsumedAnalysisReportContainer.addGestureRecognizer(peerConsumedAnalysisReportContainerTapped)
-    
+    let peerConsumedAnalysisReportContainerTapped = UITapGestureRecognizer(
+      target: self, action: #selector(peerConsumedAnalysisReportContainerTapped))
+    allLookingView.analysisContainverView.peerConsumedAnalysisReportContainer.addGestureRecognizer(
+      peerConsumedAnalysisReportContainerTapped)
+
     // "전체 서비스"의 "주머니 캘린더" 탭
-    let pocketCalendarContainerTapped = UITapGestureRecognizer(target: self, action: #selector(pocketCalendarContainerTapped))
-    allLookingView.allServiceContainerView.pocketCalendarContainer.addGestureRecognizer(pocketCalendarContainerTapped)
-    
+    let pocketCalendarContainerTapped = UITapGestureRecognizer(
+      target: self, action: #selector(pocketCalendarContainerTapped))
+    allLookingView.allServiceContainerView.pocketCalendarContainer.addGestureRecognizer(
+      pocketCalendarContainerTapped)
+
     // "전체 서비스"의 "이번 달 할인정보 확인하기" 탭
-    let priceEventInfoContainerTapped = UITapGestureRecognizer(target: self, action: #selector(priceEventInfoContainerTapped))
-    allLookingView.allServiceContainerView.priceEventInfoContainer.addGestureRecognizer(priceEventInfoContainerTapped
+    let priceEventInfoContainerTapped = UITapGestureRecognizer(
+      target: self, action: #selector(priceEventInfoContainerTapped))
+    allLookingView.allServiceContainerView.priceEventInfoContainer.addGestureRecognizer(
+      priceEventInfoContainerTapped
     )
     // "전체 서비스"의 "이번 달 지원정보 확인하기" 탭
-    let supportInfoConfirmContainerTapped = UITapGestureRecognizer(target: self, action: #selector(supportInfoConfirmContainerTapped))
-    allLookingView.allServiceContainerView.supportInfoConfirmContainer.addGestureRecognizer(supportInfoConfirmContainerTapped)
-    
+    let supportInfoConfirmContainerTapped = UITapGestureRecognizer(
+      target: self, action: #selector(supportInfoConfirmContainerTapped))
+    allLookingView.allServiceContainerView.supportInfoConfirmContainer.addGestureRecognizer(
+      supportInfoConfirmContainerTapped)
+
     allLookingView.isUserInteractionEnabled = true
   }
 
@@ -73,23 +83,23 @@ class AllLookingViewController: UIViewController {
   @objc private func profileContainerViewTapped() {
     debugPrint("프로필 세부사항 탭")
   }
-  
+
   @objc private func thisMonthReportContainerTapped() {
     debugPrint("이번 달 레포트")
   }
-  
+
   @objc private func peerConsumedAnalysisReportContainerTapped() {
     debugPrint("또래 소비분석 리포트")
   }
-  
+
   @objc private func pocketCalendarContainerTapped() {
     debugPrint("주머니 캘린더")
   }
-  
+
   @objc private func priceEventInfoContainerTapped() {
     debugPrint("이번 달 할인정보 확인하기")
   }
-  
+
   @objc private func supportInfoConfirmContainerTapped() {
     debugPrint("이번 달 지원정보 확인하기")
   }

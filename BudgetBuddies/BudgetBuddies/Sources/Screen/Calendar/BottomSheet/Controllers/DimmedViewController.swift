@@ -1,14 +1,16 @@
 //
 //  DimmedViewController.swift
-//  BudgetBuddiesLocal
+//  BudgetBuddies
 //
-//  Created by 김승원 on 7/21/24.
+//  Created by 김승원 on 7/27/24.
 //
 
+import SnapKit
 import UIKit
 
 class DimmedViewController: UIViewController {
-  private let dimmedView = UIView()
+  // MARK: - UI Components
+  private var dimmedView = UIView()
 
   // MARK: - init
   init() {
@@ -25,9 +27,10 @@ class DimmedViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    guard let presentingViewController else { return }
+    guard let presentingViewController = presentingViewController else { return }
     dimmedView.backgroundColor = .black
     dimmedView.alpha = 0
+
     presentingViewController.view.addSubview(dimmedView)
 
     dimmedView.snp.makeConstraints { make in

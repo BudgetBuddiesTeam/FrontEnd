@@ -10,7 +10,7 @@ import UIKit
 class AnalysisContainerView: UIView {
 
   // MARK: - UI Components
-  
+
   // "분석" 텍스트
   private let analysisText: UILabel = {
     let label = UILabel()
@@ -19,11 +19,11 @@ class AnalysisContainerView: UIView {
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
   }()
-  
+
   // MARK: - 이번 달 리포트
 
   // "이번 달 리포트" 컨테이너
-  let thisMonthReportContainer : UIView = {
+  let thisMonthReportContainer: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.snp.makeConstraints { make in
@@ -32,11 +32,12 @@ class AnalysisContainerView: UIView {
     }
     return view
   }()
-  
+
   // "이번 달 리포트" 아이콘
   private let thisMonthReportIcon: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = BudgetBuddiesAsset.AppImage.IconForAllLookingView.AnalysisContainer.analysis.image
+    imageView.image =
+      BudgetBuddiesAsset.AppImage.IconForAllLookingView.AnalysisContainer.analysis.image
     imageView.tintColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     return imageView
   }()
@@ -64,7 +65,7 @@ class AnalysisContainerView: UIView {
   // MARK: - "또래 소비분석 리포트"
 
   // "또래 소비분석 리포트" 컨테이너
-  let peerConsumedAnalysisReportContainer : UIView = {
+  let peerConsumedAnalysisReportContainer: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.snp.makeConstraints { make in
@@ -73,11 +74,12 @@ class AnalysisContainerView: UIView {
     }
     return view
   }()
-  
+
   // "또래 소비분석 리포트" 아이콘
-  private let peerConsumedAnalysisReportIcon : UIImageView = {
+  private let peerConsumedAnalysisReportIcon: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = BudgetBuddiesAsset.AppImage.IconForAllLookingView.AnalysisContainer.declineChart.image
+    imageView.image =
+      BudgetBuddiesAsset.AppImage.IconForAllLookingView.AnalysisContainer.declineChart.image
     imageView.tintColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     return imageView
   }()
@@ -124,53 +126,56 @@ class AnalysisContainerView: UIView {
       make.width.equalTo(343)
       make.height.equalTo(144)
     }
-    
+
     addSubviews(analysisText, thisMonthReportContainer, peerConsumedAnalysisReportContainer)
-    
+
     analysisText.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(16)
       make.leading.equalToSuperview().inset(20)
     }
-    
+
     thisMonthReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(52)
       make.leading.equalToSuperview().inset(12)
     }
-    
+
     peerConsumedAnalysisReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(96)
       make.leading.equalToSuperview().inset(12)
     }
-    
-    thisMonthReportContainer.addSubviews(thisMonthReportIcon, thisMonthReportText, thisMonthReportChevronRight)
-    
+
+    thisMonthReportContainer.addSubviews(
+      thisMonthReportIcon, thisMonthReportText, thisMonthReportChevronRight)
+
     thisMonthReportIcon.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(4)
       make.centerY.equalToSuperview()
     }
-    
+
     thisMonthReportText.snp.makeConstraints { make in
       make.leading.equalTo(thisMonthReportIcon.snp.trailing).offset(12.38)
       make.centerY.equalToSuperview()
     }
-    
+
     thisMonthReportChevronRight.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(4)
       make.centerY.equalToSuperview()
     }
-    
-    peerConsumedAnalysisReportContainer.addSubviews(peerConsumedAnalysisReportIcon, peerComsumedAnalysisReportText, peerConsumedAnalysisReportChevronRight)
-    
+
+    peerConsumedAnalysisReportContainer.addSubviews(
+      peerConsumedAnalysisReportIcon, peerComsumedAnalysisReportText,
+      peerConsumedAnalysisReportChevronRight)
+
     peerConsumedAnalysisReportIcon.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(4)
       make.centerY.equalToSuperview()
     }
-    
+
     peerComsumedAnalysisReportText.snp.makeConstraints { make in
       make.leading.equalTo(thisMonthReportIcon.snp.trailing).offset(12.38)
       make.centerY.equalToSuperview()
     }
-    
+
     peerConsumedAnalysisReportChevronRight.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(4)
       make.centerY.equalToSuperview()

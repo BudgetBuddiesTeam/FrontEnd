@@ -92,6 +92,7 @@ class BottomSheet: UIView {
     let sendButton = UIButton(type: .custom)
     sendButton.setImage(UIImage(named: "sendButtonImage"), for: .normal)
     sendButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+      self.sendButton = sendButton
 
     sendButton.frame.origin = CGPoint(x: 0, y: 0)
     rightSpacer.addSubview(sendButton)
@@ -101,6 +102,9 @@ class BottomSheet: UIView {
 
     return tf
   }()
+    
+    // 전송버튼 외부에서 접근 가능
+    private(set) var sendButton: UIButton?
 
   // MARK: - Init
   override init(frame: CGRect) {

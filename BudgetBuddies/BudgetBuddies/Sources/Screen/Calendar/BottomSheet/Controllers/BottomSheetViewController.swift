@@ -44,6 +44,7 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up TextField
   private func setupTextField() {
     bottomSheet.textField.delegate = self
+      bottomSheet.sendButton?.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
 
   }
 
@@ -152,6 +153,10 @@ final class BottomSheetViewController: DimmedViewController {
 
     }
   }
+    @objc
+    func didTapSendButton() {
+        self.bottomSheet.endEditing(true)
+    }
 }
 
 extension BottomSheetViewController: UITextFieldDelegate {

@@ -85,7 +85,7 @@ class AllServiceContainerView: UIView {
   private let priceEventInfoConfirmIcon: UIImageView = {
     let imageView = UIImageView()
     imageView.image =
-      BudgetBuddiesAsset.AppImage.IconForAllLookingView.AllServiceContainer.todayCalendar.image
+      BudgetBuddiesAsset.AppImage.IconForAllLookingView.AllServiceContainer.lightning.image
     return imageView
   }()
 

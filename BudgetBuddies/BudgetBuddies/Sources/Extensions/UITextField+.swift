@@ -10,7 +10,7 @@ import UIKit
 extension UITextField {
 
   /// 입력받는 텍스트의 자간을 조절합니다.
-
+  ///
   /// - Parameter spacing: 각 문자 사이에 추가할 자간의 양입니다.
   /// 양수 값은 자간을 넓히고, 음수 값은 자간을 좁힙니다.
   func setCharacterSpacing(_ spacing: CGFloat) {

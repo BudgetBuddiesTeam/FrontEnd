@@ -11,7 +11,7 @@ import UIKit
 class ConsumedHistoryTableViewController: UITableViewController {
   // MARK: - Properties
 
-  private let consumedHistoryView = ConsumedHistoryView()
+  private var consumedHistoryHeaderView = ConsumedHistoryHeaderView()
 
   // MARK: - View Life Cycle
 
@@ -24,6 +24,7 @@ class ConsumedHistoryTableViewController: UITableViewController {
     tableView.separatorStyle = .none
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     setNavigation()
+    setTableHeaderView()
   }
 
   // MARK: - Methods
@@ -33,12 +34,15 @@ class ConsumedHistoryTableViewController: UITableViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
   }
 
-  private func addAccountBookView() {
-    view.addSubview(consumedHistoryView)
-
-    consumedHistoryView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
+  private func setTableHeaderView() {
+    view.addSubview(consumedHistoryHeaderView)
+    consumedHistoryHeaderView.snp.makeConstraints { make in
+      make.width.equalToSuperview()
+      make.height.equalTo(130)
+      make.centerX.equalToSuperview()
+      make.top.equalToSuperview()
     }
+    tableView.tableHeaderView = consumedHistoryHeaderView
   }
 
   // MARK: - UITableView Delegate & DataSource
@@ -65,5 +69,14 @@ class ConsumedHistoryTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
   {
     return 64
+  }
+
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  {
+    return "N일 N요일"
+  }
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    navigationController?.pushViewController(ConsumedHistoryDetailViewController(), animated: true)
   }
 }

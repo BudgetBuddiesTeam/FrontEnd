@@ -21,7 +21,7 @@ final class BottomSheetViewController: DimmedViewController {
     super.viewDidLoad()
 
     setupUI()
-    setupTapGesture()
+    setupTapGestures()
     setupPanGesture()
     setupTextField()
     registerKeyboardNotifications()
@@ -66,7 +66,7 @@ final class BottomSheetViewController: DimmedViewController {
   }
 
   // MARK: - Set up View TapGesture
-  private func setupTapGesture() {
+  private func setupTapGestures() {
     self.view.isUserInteractionEnabled = true
     let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
     view.addGestureRecognizer(viewTapGesture)

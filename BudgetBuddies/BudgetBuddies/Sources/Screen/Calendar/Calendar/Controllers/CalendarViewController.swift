@@ -64,6 +64,12 @@ final class CalendarViewController: UIViewController {
       InfoTitleWithButtonCell.self, forCellReuseIdentifier: InfoTitleWithButtonCell.identifier)
     tableView.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
   }
+    
+    // MARK: - Selectors
+    @objc
+    private func didTapYearMonthStackView() {
+        print(#function)
+    }
 }
 
 // MARK: - UITableView DataSource
@@ -92,6 +98,8 @@ extension CalendarViewController: UITableViewDataSource {
         // 임시로 날짜 전달
         mainCalendarCell.ymModel = calendarModel
         mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
+        
+        mainCalendarCell.delegate = self
 
       mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
@@ -206,6 +214,15 @@ extension CalendarViewController: UITableViewDelegate {
   }
 }
 
+// MARK: - MainCalendarCell Delegate
+extension CalendarViewController: MainCalendarCellDelegate {
+    // 년도, 달 바꾸기 버튼 누르는 시점
+    func didTapSelectYearMonth(in cell: MainCalendarCell) {
+        let vc = MonthPickerViewController()
+        self.present(vc, animated: true, completion: nil)
+    }  
+}
+
 // MARK: - InfoTitleWithButtonCell Delegate
 extension CalendarViewController: InfoTitleWithButtonCellDelegate {
   // infoTitleWithButtonCell: 전체보기 버튼 눌리는 시점
@@ -242,3 +259,4 @@ extension CalendarViewController: InformationCellDelegate {
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }
+

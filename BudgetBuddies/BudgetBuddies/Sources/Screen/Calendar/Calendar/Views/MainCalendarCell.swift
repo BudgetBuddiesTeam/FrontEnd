@@ -8,9 +8,15 @@
 import SnapKit
 import UIKit
 
+protocol MainCalendarCellDelegate: AnyObject {
+    func didTapSelectYearMonth(in cell: MainCalendarCell)
+}
+
 class MainCalendarCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "MainCalendarCell"
+    
+    weak var delegate: MainCalendarCellDelegate?
     
     let week = ["일", "월", "화", "수", "목", "금", "토"]
     
@@ -44,7 +50,7 @@ class MainCalendarCell: UITableViewCell {
     return view
   }()
     
-    // MARK: - 년도, 월,  선택 버튼
+    // MARK: - 년도, 월, 선택 버튼
     var yearMonthLabel: UILabel = {
         let lb = UILabel()
         lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 20)
@@ -69,7 +75,11 @@ class MainCalendarCell: UITableViewCell {
         sv.distribution = .fill
         sv.alignment = .center
         sv.spacing = 13
-//        sv.layer.borderWidth = 1.0
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didtapYearMonthStackView))
+        sv.addGestureRecognizer(tapGesture)
+        sv.isUserInteractionEnabled = true
+        
         return sv
     }()
     
@@ -279,4 +289,10 @@ class MainCalendarCell: UITableViewCell {
         make.bottom.equalToSuperview().inset(6) // 셀의 bottom과 간격
     }
   }
+    
+    // MARK: - Selectors
+    @objc
+    private func didtapYearMonthStackView() {
+        delegate?.didTapSelectYearMonth(in: self)
+    }
 }

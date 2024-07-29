@@ -26,7 +26,6 @@ class CustomInfoColor: UIView {
   let infoLabel: UILabel = {
     let lb = UILabel()
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
-    lb.setCharacterSpacing(-0.3)
     lb.textColor = UIColor(red: 0.51, green: 0.51, blue: 0.51, alpha: 1)
     return lb
   }()
@@ -48,9 +47,11 @@ class CustomInfoColor: UIView {
     case .discount:
       self.colorView.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
       self.infoLabel.text = "할인정보"
+        self.infoLabel.setCharacterSpacing(-0.3)
     case .support:
       self.colorView.backgroundColor = BudgetBuddiesAsset.AppColor.coreBlue.color
       self.infoLabel.text = "지원정보"
+        self.infoLabel.setCharacterSpacing(-0.3)
     }
 
     setupUI()

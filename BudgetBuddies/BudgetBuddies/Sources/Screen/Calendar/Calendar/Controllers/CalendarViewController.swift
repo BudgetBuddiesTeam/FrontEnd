@@ -64,12 +64,6 @@ final class CalendarViewController: UIViewController {
       InfoTitleWithButtonCell.self, forCellReuseIdentifier: InfoTitleWithButtonCell.identifier)
     tableView.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
   }
-    
-    // MARK: - Selectors
-    @objc
-    private func didTapYearMonthStackView() {
-        print(#function)
-    }
 }
 
 // MARK: - UITableView DataSource
@@ -131,6 +125,11 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.dateLabel.text = "08.17 ~ 08.20"
       informationCell.percentLabel.text = "~80%"
       informationCell.urlString = "https://www.naver.com"
+        
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
+        informationCell.percentLabel.setCharacterSpacing(-0.3)
 
       informationCell.selectionStyle = .none
       return informationCell
@@ -161,6 +160,10 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
       informationCell.dateLabel.text = "08.17 ~ 08.20"
       informationCell.urlString = "https://www.google.com"
+        
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
 
       informationCell.selectionStyle = .none
       return informationCell
@@ -219,6 +222,7 @@ extension CalendarViewController: MainCalendarCellDelegate {
     // 년도, 달 바꾸기 버튼 누르는 시점
     func didTapSelectYearMonth(in cell: MainCalendarCell) {
         let vc = MonthPickerViewController()
+        vc.calendarModel = calendarModel
         self.present(vc, animated: true, completion: nil)
     }  
 }

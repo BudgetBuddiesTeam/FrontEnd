@@ -135,6 +135,11 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.percentLabel.text = "~80%"
         informationCell.urlString = "https://www.naver.com"
+          
+          // 자간 조절
+          informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+          informationCell.dateLabel.setCharacterSpacing(-0.3)
+          informationCell.percentLabel.setCharacterSpacing(-0.3)
 
         informationCell.selectionStyle = .none
         return informationCell
@@ -150,6 +155,10 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.urlString = "https://www.google.com"
+          
+          // 자간 조절
+          informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+          informationCell.dateLabel.setCharacterSpacing(-0.3)
 
         informationCell.selectionStyle = .none
         return informationCell

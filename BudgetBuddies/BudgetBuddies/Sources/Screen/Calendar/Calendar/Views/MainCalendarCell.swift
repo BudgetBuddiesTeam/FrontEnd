@@ -30,7 +30,6 @@ class MainCalendarCell: UITableViewCell {
     var isSixWeek: Bool? {
         didSet {
             guard let isSixWeek = isSixWeek else { return }
-            print("6주인가?: \(isSixWeek)")
             setupConstraints()
         }
     }
@@ -138,7 +137,6 @@ class MainCalendarCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print(#function)
         // layoutSubviews가 호출될 때 백그라운드 뷰의 크기를 다시 설정
         backView.setNeedsLayout()
         backView.layoutIfNeeded()
@@ -157,7 +155,6 @@ class MainCalendarCell: UITableViewCell {
     private func setupDateOfCalendar(year: Int, month: Int) {
         backViewMargin.subviews.forEach { $0.removeFromSuperview() }
         
-        print("달력 날짜 생성")
         self.yearMonthLabel.text = "\(year).\(String(format: "%02d", month))"
         
         // 그리드 생성
@@ -240,7 +237,6 @@ class MainCalendarCell: UITableViewCell {
 
   // MARK: - Set up Constraints
   private func setupConstraints() {
-      print("제약조건")
     // 캘린더 백뷰
     backView.snp.remakeConstraints { make in
       make.top.equalToSuperview()

@@ -22,14 +22,3 @@ class CustomDayLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-/*
-private let sunLabel: UILabel = {
-    let lb = UILabel()
-    lb.font = UIFont(name: "Pretendard-Regular", size: 16)
-    lb.textColor = #colorLiteral(red: 0.4627450705, green: 0.4627450705, blue: 0.4627450705, alpha: 1)
-    lb.text = "일"
-    lb.textAlignment = .center
-    return lb
-}()
-*/

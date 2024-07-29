@@ -88,9 +88,9 @@ extension CalendarViewController: UITableViewDataSource {
         as! MainCalendarCell
         
         // 임시로 날짜 전달
-        mainCalendarCell.ymModel = YearMonth(year: 2024, month: 9)
+        mainCalendarCell.ymModel = YearMonth(year: 2024, month: 6)
 
-      mainCalendarCell.selectionStyle = .none
+//      mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
 
     } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
@@ -167,7 +167,8 @@ extension CalendarViewController: UITableViewDelegate {
       return 127  //
 
     } else if indexPath.row == 1 {  // 메인 캘린더
-      return 532 + 6
+//      return 538 // 510 + 7 + 15 + 6
+        return UITableView.automaticDimension
 
     } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
       return 64
@@ -184,6 +185,14 @@ extension CalendarViewController: UITableViewDelegate {
 
     return 100
   }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 1 {
+            return 538
+        }
+        
+        return UITableView.automaticDimension
+    }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {

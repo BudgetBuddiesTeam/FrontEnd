@@ -259,7 +259,8 @@ class MainCalendarCell: UITableViewCell {
     infoStackView.snp.makeConstraints { make in
       make.top.equalTo(backView.snp.bottom).offset(7)
       make.leading.equalTo(backView.snp.leading).inset(11)
+        make.height.equalTo(15)
+        make.bottom.equalToSuperview().inset(6) // 셀의 bottom과 간격
     }
-
   }
 }

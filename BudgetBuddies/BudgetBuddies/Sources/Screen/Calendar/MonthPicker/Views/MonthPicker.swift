@@ -31,7 +31,6 @@ class MonthPicker: UIView {
     // 년도 라벪
     var yearLabel: UILabel = {
         let lb = UILabel()
-        
         lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
         lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
         lb.setCharacterSpacing(-0.4)
@@ -130,7 +129,9 @@ class MonthPicker: UIView {
         
         monthCollectionView.snp.makeConstraints { make in
             make.top.equalTo(yearLabel.snp.bottom).offset(16)
-            make.leading.bottom.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(152)
+            
         }
         
         selectButton.snp.makeConstraints { make in

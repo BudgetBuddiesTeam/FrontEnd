@@ -12,8 +12,20 @@ final class MonthPickerViewController: DimmedViewController {
     // MARK: - Properties
     private let monthPicker = MonthPicker()
     
+    var currentSelectedMonth: Int?
+    
+    var selectedMonth: Int? {
+        didSet {
+            guard let selectedMonth = selectedMonth else { return }
+            print("\(selectedMonth)월 선택")
+        }
+    }
+    
     var calendarModel: YearMonth? {
         didSet {
+            guard let calendarModel = calendarModel else { return }
+            guard let month = calendarModel.month else { return }
+            selectedMonth = month
             setupData()
         }
     }
@@ -70,6 +82,7 @@ final class MonthPickerViewController: DimmedViewController {
     private func setupTapGestures() {
       self.view.isUserInteractionEnabled = true
       let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        viewTapGesture.cancelsTouchesInView = false
       view.addGestureRecognizer(viewTapGesture)
 
       // 뒷 배경만을 눌렀을 경우에 dismiss가 되도록
@@ -77,6 +90,7 @@ final class MonthPickerViewController: DimmedViewController {
       // 다른 방법이 있다면 추후에 수정할 예정
       monthPicker.isUserInteractionEnabled = true
       let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
+        tempTapGesture.cancelsTouchesInView = false // 콜랙션 뷰 터치와 겹치지 않게
       monthPicker.addGestureRecognizer(tempTapGesture)
     }
     
@@ -103,6 +117,7 @@ extension MonthPickerViewController: UICollectionViewDataSource {
         monthCell.monthLabel.text = "\(indexPath.row + 1)월"
         monthCell.monthLabel.setCharacterSpacing(-0.4)
         
+        // 지금 현재 month 노란색으로
         if let month = calendarModel?.month {
             if indexPath.row + 1 == month {
                 monthCell.backView.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
@@ -122,17 +137,34 @@ extension MonthPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
-    
-    // minimumLineSpacingForSectionAt
-    // vertical => 아이템 간 간격
-    // horizontal => 위 아래 간격
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
     
-    // 컬렉션 아이템(셀) 사이즈 정하기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (monthPicker.frame.width - 16 - 16 - 8 - 8) / 3
         return CGSize(width: width, height: 32)
+    }
+}
+
+// MARK: - UICollectionView Delegate
+extension MonthPickerViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedColor = BudgetBuddiesAsset.AppColor.coreYellow.color
+        let unSelectedLabelColor = BudgetBuddiesAsset.AppColor.subGray.color
+        
+        if let selectedMonth = selectedMonth {
+            let previousCell = collectionView.cellForItem(at: IndexPath(row: selectedMonth - 1, section: 0)) as? MonthCell
+            previousCell?.backView.backgroundColor = .clear
+            previousCell?.monthLabel.textColor = unSelectedLabelColor
+        }
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! MonthCell
+        cell.backView.backgroundColor = selectedColor
+        cell.monthLabel.textColor = .white
+        
+        selectedMonth = indexPath.row + 1
     }
 }

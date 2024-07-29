@@ -76,6 +76,7 @@ final class BottomSheetViewController: DimmedViewController {
     // 다른 방법이 있다면 추후에 수정할 예정
     bottomSheet.isUserInteractionEnabled = true
     let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
+      tempTapGesture.cancelsTouchesInView = false // 터치 겹치지 않게
     bottomSheet.addGestureRecognizer(tempTapGesture)
   }
 

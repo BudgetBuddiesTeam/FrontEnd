@@ -13,6 +13,13 @@ class MainCalendarCell: UITableViewCell {
   static let identifier = "MainCalendarCell"
     
     let week = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    var ymModel: YearMonth? {
+        didSet {
+            guard let ymModel = ymModel else { return }
+            print("\(ymModel.month)년 \(ymModel.year)월 전달받음")
+        }
+    }
 
   // UI Components
   // MARK: - 뒷 배경

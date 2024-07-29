@@ -86,6 +86,9 @@ extension CalendarViewController: UITableViewDataSource {
       let mainCalendarCell =
         tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath)
         as! MainCalendarCell
+        
+        // 임시로 날짜 전달
+        mainCalendarCell.ymModel = YearMonth(year: 2024, month: 9)
 
       mainCalendarCell.selectionStyle = .none
       return mainCalendarCell

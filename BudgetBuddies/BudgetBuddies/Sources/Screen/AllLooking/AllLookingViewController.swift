@@ -28,7 +28,7 @@ class AllLookingViewController: UIViewController {
   // MARK: - Methods
 
   private func setNavigation() {
-    navigationController?.navigationBar.isHidden = true
+    navigationItem.backBarButtonItem = UIBarButtonItem()
   }
 
   private func connectView() {
@@ -82,6 +82,8 @@ class AllLookingViewController: UIViewController {
 
   @objc private func profileContainerViewTapped() {
     debugPrint("프로필 세부사항 탭")
+    let profileEditViewController = ProfileEditViewController()
+    navigationController?.pushViewController(profileEditViewController, animated: true)
   }
 
   @objc private func thisMonthReportContainerTapped() {

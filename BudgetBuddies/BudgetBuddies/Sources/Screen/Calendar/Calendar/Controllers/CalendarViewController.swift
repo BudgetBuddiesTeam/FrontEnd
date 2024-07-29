@@ -11,6 +11,8 @@ import UIKit
 final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
+    
+    var calendarModel = YearMonth(year: 2024, month: 7)
 
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
@@ -88,9 +90,10 @@ extension CalendarViewController: UITableViewDataSource {
         as! MainCalendarCell
         
         // 임시로 날짜 전달
-        mainCalendarCell.ymModel = YearMonth(year: 2024, month: 6)
+        mainCalendarCell.ymModel = calendarModel
+        mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
 
-//      mainCalendarCell.selectionStyle = .none
+      mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
 
     } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
@@ -188,7 +191,7 @@ extension CalendarViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 1 {
-            return 538
+            return 538 // 캘린더 셀 최소 높이
         }
         
         return UITableView.automaticDimension

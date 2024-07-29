@@ -20,6 +20,14 @@ class MainCalendarCell: UITableViewCell {
             print("\(ymModel.year!)년 \(ymModel.month!)월 전달받음")
         }
     }
+    
+    var isSixWeek: Bool? {
+        didSet {
+            guard let isSixWeek = isSixWeek else { return }
+            print("6주인가?: \(isSixWeek)")
+            setupConstraints()
+        }
+    }
 
   // UI Components
   // MARK: - 뒷 배경
@@ -120,6 +128,7 @@ class MainCalendarCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        print(#function)
         // layoutSubviews가 호출될 때 백그라운드 뷰의 크기를 다시 설정
         backView.setNeedsLayout()
         backView.layoutIfNeeded()
@@ -136,6 +145,7 @@ class MainCalendarCell: UITableViewCell {
   }
     // MARK: - Set up Date of Calendar
     private func setupDateOfCalendar(year: Int, month: Int) {
+        backViewMargin.subviews.forEach { $0.removeFromSuperview() }
         
         print("달력 날짜 생성")
         self.yearMonthLabel.text = "\(year).\(String(format: "%02d", month))"
@@ -205,7 +215,6 @@ class MainCalendarCell: UITableViewCell {
         // 6주 이상 출력되는 달을 감지하여 출력
         if numberOfWeeks > 5 {
             print("\(year)년 \(month)월은 6줄 이상")
-//            delegate?.didEncounterSixWeekMonth(in: self)
         }
     }
 
@@ -221,11 +230,18 @@ class MainCalendarCell: UITableViewCell {
 
   // MARK: - Set up Constraints
   private func setupConstraints() {
+      print("제약조건")
     // 캘린더 백뷰
-    backView.snp.makeConstraints { make in
+    backView.snp.remakeConstraints { make in
       make.top.equalToSuperview()
       make.leading.trailing.equalToSuperview().inset(16)
-      make.height.equalTo(510)
+//        make.height.equalTo(590)
+        guard let isSixWeek = isSixWeek else { return }
+        if isSixWeek == true {
+            make.height.equalTo(590)
+        } else {
+            make.height.equalTo(510)
+        }
     }
       
       // headerView

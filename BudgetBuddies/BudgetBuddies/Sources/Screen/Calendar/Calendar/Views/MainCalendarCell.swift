@@ -17,7 +17,7 @@ class MainCalendarCell: UITableViewCell {
     var ymModel: YearMonth? {
         didSet {
             guard let ymModel = ymModel else { return }
-            print("\(ymModel.month)년 \(ymModel.year)월 전달받음")
+            print("\(ymModel.year!)년 \(ymModel.month!)월 전달받음")
         }
     }
 
@@ -91,10 +91,9 @@ class MainCalendarCell: UITableViewCell {
     }()
     
     
-    // MARK: - 뒷 배경 margin
+    // MARK: - 뒷 배경 margin 뷰
     var backViewMargin: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
         return view
     }()
 
@@ -112,24 +111,110 @@ class MainCalendarCell: UITableViewCell {
   }()
     
 
-  // MARK: - init
+  // MARK: - init ⭐️⭐️⭐️
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
 
     setupUI()
   }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // layoutSubviews가 호출될 때 백그라운드 뷰의 크기를 다시 설정
+        backView.setNeedsLayout()
+        backView.layoutIfNeeded()
+        
+        if let ymModel = ymModel {
+            guard let year = ymModel.year else { return }
+            guard let month = ymModel.month else { return }
+            setupDateOfCalendar(year: year, month: month)
+        }
+    }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    // MARK: - Set up Date of Calendar
+    private func setupDateOfCalendar(year: Int, month: Int) {
+        
+        print("달력 날짜 생성")
+        self.yearMonthLabel.text = "\(year).\(String(format: "%02d", month))"
+        
+        // 그리드 생성
+        let daysInWeek = 7
+        let totalCells = 42 // 7일 * 6주(최대)
+        let cellWidth = (self.backViewMargin.frame.width) / CGFloat(daysInWeek) // 뷰 너비 / 7(일)
+        let cellHeight = CGFloat(80) // 임시로 너비와 같은 길이로 설정
+        
+        // 날짜 계산
+        let components = DateComponents(year: year, month: month) // 구조체 생성
+        let calendar = Calendar.current // 현재 사용 중인 캘린더 객체 반환 (ex 그리고리 달력)
+        let firstOfMonth = calendar.date(from: components)! // DateComponents -> Date객체로 변환 (07/01)
+        let startDay = calendar.component(.weekday, from: firstOfMonth) - 1 // 시작 요일, 0: 일요일, 1: 월요일 ... 6: 토요일
+        let numberOfDays = calendar.range(of: .day, in: .month, for: firstOfMonth)!.count // 달에 몇일까지 있는지 (28, 30, 31...)
+        
+        var weeks: [[Int]] = Array(repeating: Array(repeating: 0, count: daysInWeek), count: 6)
+        var dayCounter = 1
+        var numberOfWeeks = 0
+        
+        // 날짜 레이블 추가
+        for i in 0..<totalCells { // 42개 셀
+            let dayBackView: UIView = {
+                let view = UIView()
+                return view
+            }()
+            
+            let dayLabel: UILabel = {
+                let lb = UILabel()
+                lb.font = UIFont.systemFont(ofSize: 16)
+                lb.textAlignment = .center
+                return lb
+            }()
+            
+            let day = i - startDay + 1
+            if day > 0 && day <= numberOfDays {
+                dayLabel.text = "\(day)"
+                weeks[i / daysInWeek][i % daysInWeek] = day
+            } else {
+                dayLabel.text = ""
+            }
+            
+            backViewMargin.addSubview(dayBackView)
+            dayBackView.addSubview(dayLabel)
+            
+            dayBackView.snp.makeConstraints { make in
+                make.width.equalTo(cellWidth)
+                make.height.equalTo(cellHeight)
+                make.leading.equalTo(backViewMargin.snp.leading).offset(CGFloat(i % daysInWeek) * cellWidth)
+                make.top.equalTo(backViewMargin.snp.top).offset(CGFloat(i / daysInWeek) * cellHeight)
+            }
+            
+            dayLabel.snp.makeConstraints { make in
+                make.top.leading.trailing.equalToSuperview()
+                make.height.equalTo(40)
+            }
+        }
+        
+        // 주 수 계산
+        for week in weeks {
+            if week.contains(where: { $0 != 0 }) {
+                numberOfWeeks += 1
+            }
+        }
+        
+        // 6주 이상 출력되는 달을 감지하여 출력
+        if numberOfWeeks > 5 {
+            print("\(year)년 \(month)월은 6줄 이상")
+//            delegate?.didEncounterSixWeekMonth(in: self)
+        }
+    }
 
   // MARK: - Set up UI
   private func setupUI() {
     self.backgroundColor = .clear
-      self.contentView.addSubviews(backView)
+      self.contentView.addSubviews(backView, infoStackView)
       self.backView.addSubviews(backViewMargin, headerStackView)
       
-    self.contentView.addSubviews(infoStackView)
 
     setupConstraints()
   }

@@ -47,11 +47,11 @@ class CustomInfoColor: UIView {
     case .discount:
       self.colorView.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
       self.infoLabel.text = "할인정보"
-        self.infoLabel.setCharacterSpacing(-0.3)
+      self.infoLabel.setCharacterSpacing(-0.3)
     case .support:
       self.colorView.backgroundColor = BudgetBuddiesAsset.AppColor.coreBlue.color
       self.infoLabel.text = "지원정보"
-        self.infoLabel.setCharacterSpacing(-0.3)
+      self.infoLabel.setCharacterSpacing(-0.3)
     }
 
     setupUI()

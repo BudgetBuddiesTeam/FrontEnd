@@ -16,20 +16,20 @@ class CategorySelectTableViewController: UITableViewController {
 
   // 기본 카테고리는 수정이 되면 안됨
   private var defaultCategory = [
-    "식비",
-    "패션",
-    "문화생활",
-    "교통",
-    "카페",
-    "유흥",
-    "경조사",
-    "정기결제",
-    "기타",
-    "사용자 추가 항목 1",
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, titleText: "식비"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, titleText: "쇼핑"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, titleText: "패션"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, titleText: "문화생활"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, titleText: "교통"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image, titleText: "카페"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image, titleText: "유흥"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image, titleText: "경조사"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image, titleText: "정기결제"),
+    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image, titleText: "기타"),
   ]
 
   // 기본 카테고리를 제거할 수 없도록 설정한 코드
-  private var defaultCategoryIndex = [0, 1, 2, 3, 4, 5, 6, 7]
+  private var defaultCategoryIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   // 사용자 추가 카테고리는 서버에 반영되거나 앱 저장공간에 반영되어야 함
   // MARK: - View Life Cycle
@@ -118,7 +118,8 @@ class CategorySelectTableViewController: UITableViewController {
         withIdentifier: CategorySelectTableViewCell.identifier, for: indexPath)
       as! CategorySelectTableViewCell
 
-    cell.categoryText.text = defaultCategory[indexPath.row]
+    cell.categoryIcon.image = defaultCategory[indexPath.row].iconImage
+    cell.categoryText.text = defaultCategory[indexPath.row].titleText
 
     return cell
   }

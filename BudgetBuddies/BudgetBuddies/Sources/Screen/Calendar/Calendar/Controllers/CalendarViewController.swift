@@ -13,13 +13,14 @@ final class CalendarViewController: UIViewController {
   lazy var tableView = UITableView()
     
     // 일단 임시로 2024.07
-    var calendarModel = YearMonth(year: 2024, month: 7)
+    var calendarModel: YearMonth?
 
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
+      setupData()
     setupNavigationBar()
     setupTableView()
   }
@@ -29,6 +30,11 @@ final class CalendarViewController: UIViewController {
 
     setupNavigationBar()
   }
+    
+    // MARK: - Set up Data
+    private func setupData() {
+        self.calendarModel = YearMonth(year: 2024, month: 7)
+    }
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
@@ -91,8 +97,10 @@ extension CalendarViewController: UITableViewDataSource {
         as! MainCalendarCell
         
         // 임시로 날짜 전달
-        mainCalendarCell.ymModel = calendarModel
-        mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
+        if let calendarModel = calendarModel {
+            mainCalendarCell.ymModel = calendarModel
+            mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
+        }
         
         mainCalendarCell.delegate = self
 
@@ -209,12 +217,25 @@ extension CalendarViewController: UITableViewDelegate {
   }
 }
 
+// MARK: - MonthPickerViewController Delegate
+extension CalendarViewController: MonthPickerViewControllerDelegate {
+    // 년도, 달 바꾸기 완료 버튼을 누르는 시점
+    func didTapSelectButton(year: Int, month: Int) {
+        print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
+        self.calendarModel = YearMonth(year: year, month: month)
+        self.tableView.reloadData()
+    }
+}
+
 // MARK: - MainCalendarCell Delegate
 extension CalendarViewController: MainCalendarCellDelegate {
     // 년도, 달 바꾸기 버튼 누르는 시점
     func didTapSelectYearMonth(in cell: MainCalendarCell) {
         let vc = MonthPickerViewController()
         vc.calendarModel = calendarModel
+        
+        vc.delegate = self
+        
         self.present(vc, animated: true, completion: nil)
     }  
 }

@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol MonthPickerViewControllerDelegate: AnyObject {
+    func didTapSelectButton(year: Int, month: Int)
+}
+
 final class MonthPickerViewController: DimmedViewController {
     // MARK: - Properties
     private let monthPicker = MonthPicker()
+    
+    weak var delegate: MonthPickerViewControllerDelegate?
     
     var currentSelectedMonth: Int?
     
@@ -104,10 +110,12 @@ final class MonthPickerViewController: DimmedViewController {
     private func didTapSelectButton() {
         self.dismiss(animated: true, completion: nil)
         
+        
         guard let year = monthPicker.yearLabel.text else { return }
         guard let month = selectedMonth else { return }
         
-        print("선택된 날짜: \(year)년 \(month)월")
+        guard let year = Int(year) else { return }
+        delegate?.didTapSelectButton(year: year, month: month)
     }
 }
 

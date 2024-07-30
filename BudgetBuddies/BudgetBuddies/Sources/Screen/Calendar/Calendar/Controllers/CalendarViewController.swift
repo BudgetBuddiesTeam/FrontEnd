@@ -13,7 +13,11 @@ final class CalendarViewController: UIViewController {
   lazy var tableView = UITableView()
     
     // 일단 임시로 2024.07
-    var calendarModel: YearMonth?
+    var calendarModel: YearMonth? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
 
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
@@ -200,13 +204,13 @@ extension CalendarViewController: UITableViewDelegate {
     return 100
   }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 1 {
-            return 538 // 캘린더 셀 최소 높이
-        }
-        
-        return UITableView.automaticDimension
-    }
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if indexPath.row == 1 {
+//            return 538 // 캘린더 셀 최소 높이
+//        }
+//        
+//        return UITableView.automaticDimension
+//    }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
@@ -223,7 +227,6 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
     func didTapSelectButton(year: Int, month: Int) {
         print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
         self.calendarModel = YearMonth(year: year, month: month)
-        self.tableView.reloadData()
     }
 }
 

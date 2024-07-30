@@ -30,7 +30,16 @@ class MainCalendarCell: UITableViewCell {
     var isSixWeek: Bool? {
         didSet {
             guard let isSixWeek = isSixWeek else { return }
-            setupConstraints()
+            isSixWeek ? print("6줄") : print("5줄 이하")
+            calendarHeight = isSixWeek ? 590 : 510
+        }
+    }
+    
+    var calendarHeight: Int? {
+        didSet {
+            guard let calendarHeight = calendarHeight else { return }
+            print(calendarHeight)
+            reSetupBackViewConstraints()
         }
     }
 
@@ -221,7 +230,7 @@ class MainCalendarCell: UITableViewCell {
         
         // 6주 이상 출력되는 달을 감지하여 출력
         if numberOfWeeks > 5 {
-            print("\(year)년 \(month)월은 6줄 이상")
+//            print("\(year)년 \(month)월은 6줄 이상")
         }
     }
 
@@ -231,23 +240,27 @@ class MainCalendarCell: UITableViewCell {
       self.contentView.addSubviews(backView, infoStackView)
       self.backView.addSubviews(backViewMargin, headerStackView)
       
-
     setupConstraints()
   }
+    
+    private func reSetupBackViewConstraints() {
+        backView.snp.removeConstraints()
+        backView.snp.remakeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            guard let calendarHeight = calendarHeight else { return }
+            make.height.equalTo(calendarHeight)
+        }
+    }
 
   // MARK: - Set up Constraints
   private func setupConstraints() {
     // 캘린더 백뷰
-    backView.snp.remakeConstraints { make in
+    backView.snp.makeConstraints { make in
       make.top.equalToSuperview()
       make.leading.trailing.equalToSuperview().inset(16)
-//        make.height.equalTo(590)
-        guard let isSixWeek = isSixWeek else { return }
-        if isSixWeek == true {
-            make.height.equalTo(590)
-        } else {
-            make.height.equalTo(510)
-        }
+        guard let calendarHeight = calendarHeight else { return }
+        make.height.equalTo(calendarHeight)
     }
       
       // headerView

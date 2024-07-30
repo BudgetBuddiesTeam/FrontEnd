@@ -136,6 +136,11 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.percentLabel.text = "~80%"
         informationCell.urlString = "https://www.naver.com"
 
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
+        informationCell.percentLabel.setCharacterSpacing(-0.3)
+
         informationCell.selectionStyle = .none
         return informationCell
       case .support:
@@ -150,6 +155,10 @@ extension InfoListViewController: UITableViewDataSource {
         informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
         informationCell.dateLabel.text = "08.17 ~ 08.20"
         informationCell.urlString = "https://www.google.com"
+
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
 
         informationCell.selectionStyle = .none
         return informationCell
@@ -172,11 +181,9 @@ extension InfoListViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row != 0 {
-      if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
-        let vc = BottomSheetViewController()
-        vc.modalPresentationStyle = .overFullScreen
-        self.present(vc, animated: true, completion: nil)
-      }
+      let vc = BottomSheetViewController()
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
     }
   }
 

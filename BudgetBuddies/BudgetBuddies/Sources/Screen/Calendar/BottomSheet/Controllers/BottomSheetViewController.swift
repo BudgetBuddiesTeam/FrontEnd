@@ -21,7 +21,7 @@ final class BottomSheetViewController: DimmedViewController {
     super.viewDidLoad()
 
     setupUI()
-    setupTapGesture()
+    setupTapGestures()
     setupPanGesture()
     setupTextField()
     registerKeyboardNotifications()
@@ -44,6 +44,8 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up TextField
   private func setupTextField() {
     bottomSheet.textField.delegate = self
+    bottomSheet.sendButton?.addTarget(
+      self, action: #selector(didTapSendButton), for: .touchUpInside)
 
   }
 
@@ -65,7 +67,7 @@ final class BottomSheetViewController: DimmedViewController {
   }
 
   // MARK: - Set up View TapGesture
-  private func setupTapGesture() {
+  private func setupTapGestures() {
     self.view.isUserInteractionEnabled = true
     let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
     view.addGestureRecognizer(viewTapGesture)
@@ -75,6 +77,7 @@ final class BottomSheetViewController: DimmedViewController {
     // 다른 방법이 있다면 추후에 수정할 예정
     bottomSheet.isUserInteractionEnabled = true
     let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
+    tempTapGesture.cancelsTouchesInView = false  // 터치 겹치지 않게
     bottomSheet.addGestureRecognizer(tempTapGesture)
   }
 
@@ -151,6 +154,10 @@ final class BottomSheetViewController: DimmedViewController {
       break
 
     }
+  }
+  @objc
+  func didTapSendButton() {
+    self.bottomSheet.endEditing(true)
   }
 }
 

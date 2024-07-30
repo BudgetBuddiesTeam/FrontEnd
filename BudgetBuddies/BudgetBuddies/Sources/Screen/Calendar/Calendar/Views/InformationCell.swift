@@ -56,6 +56,7 @@ class InformationCell: UITableViewCell {
   // 타이틀 라벨
   var infoTitleLabel: UILabel = {
     let lb = UILabel()
+    lb.text = " "
     lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     lb.setCharacterSpacing(-0.4)
     lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
@@ -73,6 +74,7 @@ class InformationCell: UITableViewCell {
   // (기간) 라벨
   var dateLabel: UILabel = {
     let lb = UILabel()
+    lb.text = " "
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     lb.setCharacterSpacing(-0.3)
     lb.textColor = BudgetBuddiesAsset.AppColor.subGray.color
@@ -100,6 +102,7 @@ class InformationCell: UITableViewCell {
 
   var percentLabel: UILabel = {
     let lb = UILabel()
+    lb.text = " "
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     lb.setCharacterSpacing(-0.3)
     lb.textColor = BudgetBuddiesAsset.AppColor.subGray.color

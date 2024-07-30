@@ -12,11 +12,19 @@ final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
 
+  // 일단 임시로 2024.07
+  var calendarModel: YearMonth? {
+    didSet {
+      self.tableView.reloadData()
+    }
+  }
+
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
+    setupData()
     setupNavigationBar()
     setupTableView()
   }
@@ -25,6 +33,11 @@ final class CalendarViewController: UIViewController {
     super.viewWillAppear(animated)
 
     setupNavigationBar()
+  }
+
+  // MARK: - Set up Data
+  private func setupData() {
+    self.calendarModel = YearMonth(year: 2024, month: 7)
   }
 
   // MARK: - Set up NavigationBar
@@ -86,6 +99,14 @@ extension CalendarViewController: UITableViewDataSource {
       let mainCalendarCell =
         tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath)
         as! MainCalendarCell
+
+      // 임시로 날짜 전달
+      if let calendarModel = calendarModel {
+        mainCalendarCell.ymModel = calendarModel
+        mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
+      }
+
+      mainCalendarCell.delegate = self
 
       mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
@@ -164,7 +185,8 @@ extension CalendarViewController: UITableViewDelegate {
       return 127  //
 
     } else if indexPath.row == 1 {  // 메인 캘린더
-      return 532 + 6
+      //      return 538 // 510 + 7 + 15 + 6
+      return UITableView.automaticDimension
 
     } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
       return 64
@@ -182,12 +204,42 @@ extension CalendarViewController: UITableViewDelegate {
     return 100
   }
 
+  //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+  //        if indexPath.row == 1 {
+  //            return 538 // 캘린더 셀 최소 높이
+  //        }
+  //
+  //        return UITableView.automaticDimension
+  //    }
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
       let vc = BottomSheetViewController()
       vc.modalPresentationStyle = .overFullScreen
       self.present(vc, animated: true, completion: nil)
     }
+  }
+}
+
+// MARK: - MonthPickerViewController Delegate
+extension CalendarViewController: MonthPickerViewControllerDelegate {
+  // 년도, 달 바꾸기 완료 버튼을 누르는 시점
+  func didTapSelectButton(year: Int, month: Int) {
+    print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
+    self.calendarModel = YearMonth(year: year, month: month)
+  }
+}
+
+// MARK: - MainCalendarCell Delegate
+extension CalendarViewController: MainCalendarCellDelegate {
+  // 년도, 달 바꾸기 버튼 누르는 시점
+  func didTapSelectYearMonth(in cell: MainCalendarCell) {
+    let vc = MonthPickerViewController()
+    vc.calendarModel = calendarModel
+
+    vc.delegate = self
+
+    self.present(vc, animated: true, completion: nil)
   }
 }
 

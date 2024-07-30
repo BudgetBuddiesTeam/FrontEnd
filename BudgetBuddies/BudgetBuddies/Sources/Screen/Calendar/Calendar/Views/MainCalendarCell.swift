@@ -46,7 +46,7 @@ class MainCalendarCell: UITableViewCell {
   // MARK: - 뒷 배경
   var backView: UIView = {
     let view = UIView()
-    view.backgroundColor = .white
+      view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.layer.cornerRadius = 15
 
     view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -119,6 +119,8 @@ class MainCalendarCell: UITableViewCell {
   // MARK: - 뒷 배경 margin 뷰
   var backViewMargin: UIView = {
     let view = UIView()
+      view.layer.borderColor = UIColor.red.cgColor
+      view.layer.borderWidth = 1.0
     return view
   }()
 
@@ -230,7 +232,22 @@ class MainCalendarCell: UITableViewCell {
     //        if numberOfWeeks > 5 {
     //            print("\(year)년 \(month)월은 6줄 이상")
     //        }
+      
+      // RaisedView 올리기
+      setupRaisedViews()
   }
+    
+    // MARK: - Set up RaisedViews
+    private func setupRaisedViews() {
+        let raisedView = RaisedInfoView()
+        backViewMargin.addSubview(raisedView)
+        raisedView.snp.makeConstraints { make in
+            make.top.equalTo(headerStackView.snp.bottom).inset(-40 - 80) // 정확한 수치는 나중에 계산..
+            make.leading.equalToSuperview().inset(0)
+            make.height.equalTo(17)
+            make.width.equalTo((backViewMargin.frame.width/7) * 4)
+        }
+    }
 
   // MARK: - Set up UI
   private func setupUI() {

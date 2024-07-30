@@ -12,6 +12,7 @@ final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
     
+    // 일단 임시로 2024.07
     var calendarModel = YearMonth(year: 2024, month: 7)
 
   // MARK: - Life Cycle ⭐️
@@ -125,11 +126,6 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.dateLabel.text = "08.17 ~ 08.20"
       informationCell.percentLabel.text = "~80%"
       informationCell.urlString = "https://www.naver.com"
-        
-        // 자간 조절
-        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
-        informationCell.dateLabel.setCharacterSpacing(-0.3)
-        informationCell.percentLabel.setCharacterSpacing(-0.3)
 
       informationCell.selectionStyle = .none
       return informationCell
@@ -160,10 +156,6 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
       informationCell.dateLabel.text = "08.17 ~ 08.20"
       informationCell.urlString = "https://www.google.com"
-        
-        // 자간 조절
-        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
-        informationCell.dateLabel.setCharacterSpacing(-0.3)
 
       informationCell.selectionStyle = .none
       return informationCell

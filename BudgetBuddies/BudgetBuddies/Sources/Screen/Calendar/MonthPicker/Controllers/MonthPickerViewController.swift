@@ -103,6 +103,11 @@ final class MonthPickerViewController: DimmedViewController {
     @objc
     private func didTapSelectButton() {
         self.dismiss(animated: true, completion: nil)
+        
+        guard let year = monthPicker.yearLabel.text else { return }
+        guard let month = selectedMonth else { return }
+        
+        print("선택된 날짜: \(year)년 \(month)월")
     }
 }
 
@@ -115,7 +120,6 @@ extension MonthPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let monthCell = monthPicker.monthCollectionView.dequeueReusableCell(withReuseIdentifier: MonthCell.identifier, for: indexPath) as! MonthCell
         monthCell.monthLabel.text = "\(indexPath.row + 1)월"
-        monthCell.monthLabel.setCharacterSpacing(-0.4)
         
         // 지금 현재 month 노란색으로
         if let month = calendarModel?.month {

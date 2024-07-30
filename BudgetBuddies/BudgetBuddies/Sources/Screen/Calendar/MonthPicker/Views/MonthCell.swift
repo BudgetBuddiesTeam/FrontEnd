@@ -23,9 +23,10 @@ class MonthCell: UICollectionViewCell {
     
     var monthLabel: UILabel = {
         let lb = UILabel()
+        lb.text = " "
         lb.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
         lb.textColor = BudgetBuddiesAsset.AppColor.subGray.color
-//        lb.setCharacterSpacing(-0.4)
+        lb.setCharacterSpacing(-0.4)
         lb.textAlignment = .center
         return lb
     }()

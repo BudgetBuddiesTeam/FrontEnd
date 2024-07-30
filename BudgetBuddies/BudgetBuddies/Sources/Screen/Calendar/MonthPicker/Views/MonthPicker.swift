@@ -31,6 +31,7 @@ class MonthPicker: UIView {
     // 년도 라벪
     var yearLabel: UILabel = {
         let lb = UILabel()
+        lb.text = " "
         lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
         lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
         lb.setCharacterSpacing(-0.4)

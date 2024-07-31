@@ -43,7 +43,7 @@ class MainCalendarCell: UITableViewCell {
   }
     
     // 임시로 만들
-    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-07", endDate: "2024-07-12")
+    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-17", endDate: "2024-07-31")
 
   // UI Components
   // MARK: - 뒷 배경
@@ -250,15 +250,60 @@ class MainCalendarCell: UITableViewCell {
         guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
         // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
         
-        // 기간이 한줄에 걸친 기간이라면...
-        let raisedView = RaisedInfoView()
-        backViewMargin.addSubview(raisedView)
-        raisedView.snp.makeConstraints { make in
-            make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
-            make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
-            make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
-            make.height.equalTo(17)
+        guard let numberOfRows = infoModel.numberOfRows() else { return }
+        
+        if numberOfRows == 1 {
+            // 한 줄에 걸쳐있으면 하나만 생성
+            let raisedView = RaisedInfoView()
+            backViewMargin.addSubview(raisedView)
+            raisedView.snp.makeConstraints { make in
+                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
+                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+                make.height.equalTo(17)
+            }
+            
+        } else {
+            print("일정이\(numberOfRows)줄에 걸쳐있습니다.")
+            let firstRaisedView = RaisedInfoView()
+            backViewMargin.addSubview(firstRaisedView)
+            firstRaisedView.snp.makeConstraints { make in
+                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
+                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+//                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+                make.trailing.equalToSuperview().inset(0)
+                make.height.equalTo(17)
+            }
+            
+            // 중간 뷰 그리기
+            if numberOfRows >= 3 {
+                print("3줄 이상인 뷰")
+                for i in 1..<numberOfRows - 1 {
+                    let middleRaisedView = RaisedInfoView()
+                    backViewMargin.addSubview(middleRaisedView)
+                    middleRaisedView.snp.makeConstraints { make in
+                        make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + i))) // -40 기본, 80기준으로 한칸위아래
+                        make.leading.trailing.equalToSuperview().inset(0)
+                    }
+                }
+                
+            }
+            
+            let lastRaisedView = RaisedInfoView()
+            backViewMargin.addSubview(lastRaisedView)
+            lastRaisedView.snp.makeConstraints { make in
+                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + numberOfRows - 1))) // -40 기본, 80기준으로 한칸위아래
+//                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+                make.leading.equalToSuperview().inset(0)
+                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+//                make.trailing.equalToSuperview().inset(0)
+                make.height.equalTo(17)
+            }
         }
+        // 두 줄 이상에 걸쳐있으면
+        // leading은 그대로, trailng은 inset 0 (첫줄)
+        // 중간에는 leading, trailng inset 0 (만약 세 줄 이상이면 중간 줄)
+        // trailng은 그대로, leading은 inset 0 (마지막)
     }
 
   // MARK: - Set up UI

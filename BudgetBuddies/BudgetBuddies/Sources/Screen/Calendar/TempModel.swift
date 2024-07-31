@@ -103,15 +103,32 @@ extension InfoModel {
         return (row, column)
     }
     
+    // 기간의 시작하는 위치를 (row, column)형태로 반환하는 함수
     func startDatePosition() -> (row: Int, column: Int)? {
         guard let startDateString = startDate,
               let date = date(from: startDateString) else { return nil }
         return positionOfDate(for: date)
     }
     
+    // 기간의 끝나는 위치를 (row, column)형태로 반환하는 함수
     func endDatePosition() -> (row: Int, column: Int)? {
         guard let endDateString = endDate,
               let date = date(from: endDateString) else { return nil }
         return positionOfDate(for: date)
+    }
+    
+    // 일정이 캘린ㄹ더에서 몇줄에 걸쳐있는지 반환하는 함수
+    func numberOfRows() -> Int? {
+        guard let startDateString = startDate,
+              let endDateString = endDate,
+              let startDate = date(from: startDateString),
+              let endDate = date(from: endDateString) else { return nil }
+        
+        guard let startPosition = positionOfDate(for: startDate),
+              let endPosition = positionOfDate(for: endDate) else { return nil }
+        
+        // 시작 날짜와 끝나는 날짜가 위치한 줄을 계산
+        let numberOfRows = endPosition.row - startPosition.row + 1
+        return numberOfRows
     }
 }

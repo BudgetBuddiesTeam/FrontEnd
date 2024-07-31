@@ -41,6 +41,9 @@ class MainCalendarCell: UITableViewCell {
       reSetupBackViewConstraints()
     }
   }
+    
+    // 임시로 만들
+    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-07", endDate: "2024-07-12")
 
   // UI Components
   // MARK: - 뒷 배경
@@ -119,8 +122,8 @@ class MainCalendarCell: UITableViewCell {
   // MARK: - 뒷 배경 margin 뷰
   var backViewMargin: UIView = {
     let view = UIView()
-      view.layer.borderColor = UIColor.red.cgColor
-      view.layer.borderWidth = 1.0
+//      view.layer.borderColor = UIColor.red.cgColor
+//      view.layer.borderWidth = 1.0
     return view
   }()
 
@@ -180,8 +183,8 @@ class MainCalendarCell: UITableViewCell {
     let numberOfDays = calendar.range(of: .day, in: .month, for: firstOfMonth)!.count  // 달에 몇일까지 있는지 (28, 30, 31...)
 
     var weeks: [[Int]] = Array(repeating: Array(repeating: 0, count: daysInWeek), count: 6)
-    //        var dayCounter = 1
-    var numberOfWeeks = 0
+//            var dayCounter = 1
+//    var numberOfWeeks = 0
 
     // 날짜 레이블 추가
     for i in 0..<totalCells {  // 42개 셀
@@ -234,18 +237,27 @@ class MainCalendarCell: UITableViewCell {
     //        }
       
       // RaisedView 올리기
-      setupRaisedViews()
+      guard let myInfoModel = myInfoModel else { return }
+      setupRaisedViews(myInfoModel)
   }
     
     // MARK: - Set up RaisedViews
-    private func setupRaisedViews() {
+    private func setupRaisedViews(_ infoModel: InfoModel) {
+        
+        let widthInt = Int(backViewMargin.frame.width / 7) // 7일로 나눔
+        
+        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .colum: 0 = 1번째
+        guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
+        // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
+        
+        // 기간이 한줄에 걸친 기간이라면...
         let raisedView = RaisedInfoView()
         backViewMargin.addSubview(raisedView)
         raisedView.snp.makeConstraints { make in
-            make.top.equalTo(headerStackView.snp.bottom).inset(-40 - 80) // 정확한 수치는 나중에 계산..
-            make.leading.equalToSuperview().inset(0)
+            make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
+            make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+            make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
             make.height.equalTo(17)
-            make.width.equalTo((backViewMargin.frame.width/7) * 4)
         }
     }
 

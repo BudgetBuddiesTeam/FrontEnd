@@ -52,3 +52,66 @@ extension YearMonth {
     return numberOfWeeks > 5
   }
 }
+
+
+
+
+struct InfoModel {
+    let title: String?
+    let startDate: String?
+    let endDate: String?
+}
+
+extension InfoModel {
+    private func date(from dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: dateString)
+    }
+
+    private func startOfMonth(for date: Date) -> Int? {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month], from: date)
+        components.day = 1
+        
+        guard let firstDayOfMonth = calendar.date(from: components) else { return nil }
+        return calendar.component(.weekday, from: firstDayOfMonth)
+    }
+    
+    private func numberOfDaysInMonth(for date: Date) -> Int? {
+        let calendar = Calendar.current
+        guard let range = calendar.range(of: .day, in: .month, for: date) else { return nil }
+        return range.count
+    }
+    
+    private func positionOfDate(for date: Date) -> (row: Int, column: Int)? {
+        guard let startDay = startOfMonth(for: date),
+              let numberOfDays = numberOfDaysInMonth(for: date) else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        guard let day = components.day else { return nil }
+        
+        let startDayIndex = startDay - 1
+        let dayIndex = startDayIndex + (day - 1)
+        
+        let row = dayIndex / 7
+        let column = dayIndex % 7
+        
+        return (row, column)
+    }
+    
+    func startDatePosition() -> (row: Int, column: Int)? {
+        guard let startDateString = startDate,
+              let date = date(from: startDateString) else { return nil }
+        return positionOfDate(for: date)
+    }
+    
+    func endDatePosition() -> (row: Int, column: Int)? {
+        guard let endDateString = endDate,
+              let date = date(from: endDateString) else { return nil }
+        return positionOfDate(for: date)
+    }
+}

@@ -16,23 +16,25 @@ class RaisedInfoView: UIView {
     // 왼쪽 뷰
     var leftView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
+//        view.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
         return view
     }()
     
     // 타이틀
     var titleLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "지그재그 썸머 세일"
+        lb.text = " "
         lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
-        lb.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1)
+//        lb.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
         lb.setCharacterSpacing(-0.3)
         return lb
     }()
     
     // MARK: - init
-    init(infoType: InfoType) {
+    init(title: String, infoType: InfoType) {
+        self.titleLabel.text = title
         self.infoType = infoType
+        
         super.init(frame: .zero)
         setupUI()
     }
@@ -46,15 +48,28 @@ class RaisedInfoView: UIView {
         self.addSubviews(leftView, titleLabel)
             
         // 배경
-        self.backgroundColor = BudgetBuddiesAsset.AppColor.calendarYellow.color
+        switch infoType {
+        case .discount:
+            self.backgroundColor = BudgetBuddiesAsset.AppColor.calendarYellow.color
+            self.layer.borderColor = UIColor(red: 1, green: 0.83, blue: 0.44, alpha: 1).cgColor
+            self.leftView.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
+            self.titleLabel.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
+            
+        case .support:
+            self.backgroundColor = BudgetBuddiesAsset.AppColor.calendarBlue.color
+            self.layer.borderColor = UIColor(red: 0.33, green: 0.78, blue: 1, alpha: 1).cgColor
+            self.leftView.backgroundColor = BudgetBuddiesAsset.AppColor.coreBlue.color
+            self.titleLabel.textColor = UIColor(red: 0, green: 0.18, blue: 0.27, alpha: 1)
+            
+        }
         
         self.layer.borderWidth = 1.0
-        self.layer.borderColor = UIColor(red: 1, green: 0.83, blue: 0.44, alpha: 1).cgColor
         
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 3
         
         setupConstraints()
+        
         
     }
     

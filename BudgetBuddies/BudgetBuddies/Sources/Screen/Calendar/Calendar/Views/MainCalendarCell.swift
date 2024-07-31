@@ -43,7 +43,7 @@ class MainCalendarCell: UITableViewCell {
   }
     
     // 임시로 만들
-    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-17", endDate: "2024-07-31", infoType: .discount)
+    var myInfoModel: InfoModel? = InfoModel(title: "캘린더 너무 어려워요", startDate: "2024-07-17", endDate: "2024-07-31", infoType: .support)
 
   // UI Components
   // MARK: - 뒷 배경
@@ -232,19 +232,19 @@ class MainCalendarCell: UITableViewCell {
     // MARK: - Set up RaisedViews
     private func setupRaisedViews(_ infoModel: InfoModel) {
         let infoType = infoModel.infoType
-        
+        guard let title = infoModel.title else { return }
+        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .column: 0 = 1번째
+        guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
         
         let widthInt = Int(backViewMargin.frame.width / 7) // 7일로 나눔
         
-        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .column: 0 = 1번째
-        guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
         // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
         
         guard let numberOfRows = infoModel.numberOfRows() else { return }
         
         if numberOfRows == 1 {
             // 한 줄에 걸쳐있으면 하나만 생성
-            let raisedView = RaisedInfoView(infoType: infoType)
+            let raisedView = RaisedInfoView(title: title, infoType: infoType)
             backViewMargin.addSubview(raisedView)
             raisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
@@ -254,7 +254,7 @@ class MainCalendarCell: UITableViewCell {
             }
             
         } else {
-            let firstRaisedView = RaisedInfoView(infoType: infoType)
+            let firstRaisedView = RaisedInfoView(title: title, infoType: infoType)
             backViewMargin.addSubview(firstRaisedView)
             firstRaisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
@@ -267,7 +267,7 @@ class MainCalendarCell: UITableViewCell {
             // 중간 뷰 그리기
             if numberOfRows >= 3 {
                 for i in 1..<numberOfRows - 1 {
-                    let middleRaisedView = RaisedInfoView(infoType: infoType)
+                    let middleRaisedView = RaisedInfoView(title: title, infoType: infoType)
                     backViewMargin.addSubview(middleRaisedView)
                     middleRaisedView.snp.makeConstraints { make in
                         make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + i))) // -40 기본, 80기준으로 한칸위아래
@@ -277,7 +277,7 @@ class MainCalendarCell: UITableViewCell {
                 
             }
             
-            let lastRaisedView = RaisedInfoView(infoType: infoType)
+            let lastRaisedView = RaisedInfoView(title: title, infoType: infoType)
             backViewMargin.addSubview(lastRaisedView)
             lastRaisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + numberOfRows - 1))) // -40 기본, 80기준으로 한칸위아래

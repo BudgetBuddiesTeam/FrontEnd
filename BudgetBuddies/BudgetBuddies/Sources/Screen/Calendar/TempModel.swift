@@ -54,12 +54,16 @@ extension YearMonth {
 }
 
 
-
+enum InfoType {
+    case discount
+    case support
+}
 
 struct InfoModel {
     let title: String?
     let startDate: String?
     let endDate: String?
+    let infoType: InfoType
 }
 
 extension InfoModel {

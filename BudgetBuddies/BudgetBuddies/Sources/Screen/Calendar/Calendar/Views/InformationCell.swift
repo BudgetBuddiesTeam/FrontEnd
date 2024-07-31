@@ -21,10 +21,12 @@ class InformationCell: UITableViewCell {
   // 임시 링크 (모델에 타이틀, 기간, 할인률, 링크 다 가지고 있을 거임)
   var urlString: String = ""
 
-  enum InfoType {
-    case discount
-    case support
-  }
+//  enum InfoType {
+//    case discount
+//    case support
+//  }
+    
+    var infoType: InfoType?
 
   var likesToggle: Bool = false
   var likes: Int = 0
@@ -200,6 +202,7 @@ class InformationCell: UITableViewCell {
 
   // MARK: - Configure
   func configure(infoType: InfoType) {
+      self.infoType = infoType
     // 기존 arragedSubviews제거
     for view in verticalStackView.arrangedSubviews {
       verticalStackView.removeArrangedSubview(view)

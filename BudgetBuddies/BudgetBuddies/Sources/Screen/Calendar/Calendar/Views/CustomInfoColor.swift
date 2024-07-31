@@ -10,10 +10,12 @@ import UIKit
 
 class CustomInfoColor: UIView {
 
-  enum InfoType {
-    case discount
-    case support
-  }
+//  enum InfoType {
+//    case discount
+//    case support
+//  }
+    
+    var infoType: InfoType
 
   // MARK: - Properties
   let colorView: UIView = {
@@ -41,6 +43,7 @@ class CustomInfoColor: UIView {
 
   // MARK: - override init
   init(infoType: InfoType) {
+      self.infoType = infoType
     super.init(frame: .zero)
 
     switch infoType {

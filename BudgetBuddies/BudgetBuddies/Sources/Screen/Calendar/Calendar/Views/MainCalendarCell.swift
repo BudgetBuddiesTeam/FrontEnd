@@ -43,7 +43,7 @@ class MainCalendarCell: UITableViewCell {
   }
     
     // 임시로 만들
-    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-17", endDate: "2024-07-31")
+    var myInfoModel: InfoModel? = InfoModel(title: "지그재그 썸머 세일", startDate: "2024-07-17", endDate: "2024-07-31", infoType: .discount)
 
   // UI Components
   // MARK: - 뒷 배경
@@ -224,18 +224,6 @@ class MainCalendarCell: UITableViewCell {
       }
     }
 
-    //        // 주 수 계산
-    //        for week in weeks {
-    //            if week.contains(where: { $0 != 0 }) {
-    //                numberOfWeeks += 1
-    //            }
-    //        }
-    //
-    //        // 6주 이상 출력되는 달을 감지하여 출력
-    //        if numberOfWeeks > 5 {
-    //            print("\(year)년 \(month)월은 6줄 이상")
-    //        }
-      
       // RaisedView 올리기
       guard let myInfoModel = myInfoModel else { return }
       setupRaisedViews(myInfoModel)
@@ -243,10 +231,12 @@ class MainCalendarCell: UITableViewCell {
     
     // MARK: - Set up RaisedViews
     private func setupRaisedViews(_ infoModel: InfoModel) {
+        let infoType = infoModel.infoType
+        
         
         let widthInt = Int(backViewMargin.frame.width / 7) // 7일로 나눔
         
-        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .colum: 0 = 1번째
+        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .column: 0 = 1번째
         guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
         // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
         
@@ -254,7 +244,7 @@ class MainCalendarCell: UITableViewCell {
         
         if numberOfRows == 1 {
             // 한 줄에 걸쳐있으면 하나만 생성
-            let raisedView = RaisedInfoView()
+            let raisedView = RaisedInfoView(infoType: infoType)
             backViewMargin.addSubview(raisedView)
             raisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
@@ -264,8 +254,7 @@ class MainCalendarCell: UITableViewCell {
             }
             
         } else {
-            print("일정이\(numberOfRows)줄에 걸쳐있습니다.")
-            let firstRaisedView = RaisedInfoView()
+            let firstRaisedView = RaisedInfoView(infoType: infoType)
             backViewMargin.addSubview(firstRaisedView)
             firstRaisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
@@ -277,9 +266,8 @@ class MainCalendarCell: UITableViewCell {
             
             // 중간 뷰 그리기
             if numberOfRows >= 3 {
-                print("3줄 이상인 뷰")
                 for i in 1..<numberOfRows - 1 {
-                    let middleRaisedView = RaisedInfoView()
+                    let middleRaisedView = RaisedInfoView(infoType: infoType)
                     backViewMargin.addSubview(middleRaisedView)
                     middleRaisedView.snp.makeConstraints { make in
                         make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + i))) // -40 기본, 80기준으로 한칸위아래
@@ -289,7 +277,7 @@ class MainCalendarCell: UITableViewCell {
                 
             }
             
-            let lastRaisedView = RaisedInfoView()
+            let lastRaisedView = RaisedInfoView(infoType: infoType)
             backViewMargin.addSubview(lastRaisedView)
             lastRaisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + numberOfRows - 1))) // -40 기본, 80기준으로 한칸위아래

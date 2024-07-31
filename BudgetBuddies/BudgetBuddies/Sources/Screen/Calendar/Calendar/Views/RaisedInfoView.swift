@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class RaisedInfoView: UIView {
+    // MARK: - Properties
+    let infoType: InfoType
+    
     // MARK: - UI Components
     // 왼쪽 뷰
     var leftView: UIView = {
@@ -28,9 +31,9 @@ class RaisedInfoView: UIView {
     }()
     
     // MARK: - init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    init(infoType: InfoType) {
+        self.infoType = infoType
+        super.init(frame: .zero)
         setupUI()
     }
     

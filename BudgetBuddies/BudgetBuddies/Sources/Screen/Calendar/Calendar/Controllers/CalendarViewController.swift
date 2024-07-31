@@ -247,7 +247,7 @@ extension CalendarViewController: MainCalendarCellDelegate {
 extension CalendarViewController: InfoTitleWithButtonCellDelegate {
   // infoTitleWithButtonCell: 전체보기 버튼 눌리는 시점
   func didTapShowDetailViewButton(
-    in cell: InfoTitleWithButtonCell, infoType: InfoTitleWithButtonCell.InfoType
+    in cell: InfoTitleWithButtonCell, infoType: InfoType
   ) {
 
     let vc: UIViewController

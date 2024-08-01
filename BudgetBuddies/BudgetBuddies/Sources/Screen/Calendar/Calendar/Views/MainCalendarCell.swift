@@ -43,6 +43,7 @@ class MainCalendarCell: UITableViewCell {
   }
     
     // 임시로 만들
+    // 추후에 didSet을 통해 특정 월에 맞는 정보들만 받게끔 구현할 예정
     var infoModels: [InfoModel] = [
         InfoModel(title: "캘린더 너무 어려워요", startDate: "2024-07-02", endDate: "2024-07-05", infoType: .support),
         InfoModel(title: "하지만 해야지", startDate: "2024-07-07", endDate: "2024-07-10", infoType: .discount),

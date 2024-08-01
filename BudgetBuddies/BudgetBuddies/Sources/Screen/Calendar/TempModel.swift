@@ -7,10 +7,13 @@
 
 import UIKit
 
+// 임시 모델을 계속 사용하다보니까 이 모델에 대한 의존성이 높아져서
+// 추후에 api연결할 때 제대로 구현하겠습니다!
 // 임시 모델
 struct YearMonth {
   let year: Int?
   let month: Int?
+//    let infoModels: [InfoModel] = []
 }
 
 extension YearMonth {

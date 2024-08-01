@@ -46,6 +46,10 @@ class BottomSheet: UIView {
     view.backgroundColor = BudgetBuddiesAsset.AppColor.circleStroke.color
     return view
   }()
+    
+    // 댓글 tableView
+    lazy var commentsTableView = UITableView()
+    
 
   // 텍스트필드 뒷배경
   var textFieldBackView: UIView = {
@@ -120,8 +124,11 @@ class BottomSheet: UIView {
   // MARK: - Set up UI
   private func setupUI() {
     self.addSubviews(backView)
-    backView.addSubviews(topRectView, commentsLabel, topSeparator, textFieldBackView)
+      
+    backView.addSubviews(topRectView, commentsLabel, topSeparator, commentsTableView, textFieldBackView)
     textFieldBackView.addSubviews(textFieldSeparator, textField)
+      
+      commentsTableView.backgroundColor = .lightGray
 
     setupConstraints()
   }
@@ -151,6 +158,12 @@ class BottomSheet: UIView {
       make.top.equalToSuperview().inset(104)
       make.height.equalTo(2)
     }
+      
+      commentsTableView.snp.makeConstraints { make in
+          make.top.equalTo(topSeparator.snp.bottom)
+          make.leading.trailing.equalToSuperview()
+          make.bottom.equalTo(textFieldSeparator.snp.top)
+      }
 
     textFieldBackView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()

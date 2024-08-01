@@ -23,6 +23,7 @@ final class BottomSheetViewController: DimmedViewController {
     setupUI()
     setupTapGestures()
     setupPanGesture()
+      setupTableView()
     setupTextField()
     registerKeyboardNotifications()
   }
@@ -40,6 +41,15 @@ final class BottomSheetViewController: DimmedViewController {
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     bottomSheet.addGestureRecognizer(panGesture)
   }
+    
+    // MARK: - Set up TableView
+    private func setupTableView() {
+        // 셀 등록
+        bottomSheet.commentsTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+        
+        bottomSheet.commentsTableView.delegate = self
+        bottomSheet.commentsTableView.dataSource = self
+    }
 
   // MARK: - Set up TextField
   private func setupTextField() {
@@ -159,6 +169,24 @@ final class BottomSheetViewController: DimmedViewController {
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
   }
+}
+// MARK: - UITableView DataSource
+extension BottomSheetViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10 // 일단 10개
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+        
+        commentCell.selectionStyle = .none
+        return commentCell
+    }
+}
+
+// MARK: - UITableView Delegate
+extension BottomSheetViewController: UITableViewDelegate {
+    
 }
 
 // MARK: - UITextField Delegate

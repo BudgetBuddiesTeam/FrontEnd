@@ -16,7 +16,6 @@ class RaisedInfoView: UIView {
     // 왼쪽 뷰
     var leftView: UIView = {
         let view = UIView()
-//        view.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
         return view
     }()
     
@@ -25,7 +24,6 @@ class RaisedInfoView: UIView {
         let lb = UILabel()
         lb.text = " "
         lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
-//        lb.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
         lb.setCharacterSpacing(-0.3)
         return lb
     }()
@@ -53,7 +51,7 @@ class RaisedInfoView: UIView {
             self.backgroundColor = BudgetBuddiesAsset.AppColor.calendarYellow.color
             self.layer.borderColor = UIColor(red: 1, green: 0.83, blue: 0.44, alpha: 1).cgColor
             self.leftView.backgroundColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
-            self.titleLabel.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1) // 이것도 두 가지로 바꿔
+            self.titleLabel.textColor = UIColor(red: 0.35, green: 0.15, blue: 0, alpha: 1)
             
         case .support:
             self.backgroundColor = BudgetBuddiesAsset.AppColor.calendarBlue.color

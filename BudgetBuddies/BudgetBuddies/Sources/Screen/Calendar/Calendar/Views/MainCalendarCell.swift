@@ -43,7 +43,13 @@ class MainCalendarCell: UITableViewCell {
   }
     
     // 임시로 만들
-    var myInfoModel: InfoModel? = InfoModel(title: "캘린더 너무 어려워요", startDate: "2024-07-17", endDate: "2024-07-31", infoType: .support)
+    var infoModels: [InfoModel] = [
+        InfoModel(title: "캘린더 너무 어려워요", startDate: "2024-07-02", endDate: "2024-07-05", infoType: .support),
+        InfoModel(title: "하지만 해야지", startDate: "2024-07-07", endDate: "2024-07-10", infoType: .discount),
+        InfoModel(title: "국가장학금 나줘요", startDate: "2024-07-14", endDate: "2024-07-18", infoType: .support),
+        InfoModel(title: "어쩔거야", startDate: "2024-07-17", endDate: "2024-07-24", infoType: .discount),
+        InfoModel(title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-30", infoType: .support)
+    ]
 
   // UI Components
   // MARK: - 뒷 배경
@@ -224,75 +230,163 @@ class MainCalendarCell: UITableViewCell {
       }
     }
 
-      // RaisedView 올리기
-      guard let myInfoModel = myInfoModel else { return }
-      setupRaisedViews(myInfoModel)
+      // raisedView 올리기
+      // 겹치는 일정인지 확인하기
+      // 추가 개발해야하는 거
+      // 3 일정이 연달아 겹치는 경우
+      for idx in 0..<infoModels.count {
+          let currentModel = infoModels[idx]
+          let currentStartDate = dateFromString(currentModel.startDate)
+          let currentEndDate = dateFromString(currentModel.endDate)
+          var isOverlapped = false
+          
+          for otherIdx in 0..<infoModels.count {
+              if idx == otherIdx { continue }
+              
+              let otherModel = infoModels[otherIdx]
+              let otherStartDate = dateFromString(otherModel.startDate)
+              let otherEndDate = dateFromString(otherModel.endDate)
+              
+              if let currentStart = currentStartDate, let currentEnd = currentEndDate, let otherStart = otherStartDate, let otherEnd = otherEndDate {
+                  if currentStart <= otherEnd && currentEnd >= otherStart {
+                      if currentStart > otherStart {
+                          isOverlapped = true
+                          break
+                      }
+                  }
+              }
+          }
+          
+          setupRaisedViews(currentModel, isOverlapped: isOverlapped)
+      }
   }
+    func dateFromString(_ dateString: String?) -> Date? {
+        guard let dateString = dateString else { return nil }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: dateString)
+    }
     
     // MARK: - Set up RaisedViews
-    private func setupRaisedViews(_ infoModel: InfoModel) {
+    private func setupRaisedViews(_ infoModel: InfoModel, isOverlapped: Bool) {
         let infoType = infoModel.infoType
         guard let title = infoModel.title else { return }
-        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .column: 0 = 1번째
-        guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
-        
-        let widthInt = Int(backViewMargin.frame.width / 7) // 7일로 나눔
-        
-        // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
-        
+        guard let startDatePosition = infoModel.startDatePosition() else { return }
+        guard let endDatePosition = infoModel.endDatePosition() else { return }
         guard let numberOfRows = infoModel.numberOfRows() else { return }
         
-        if numberOfRows == 1 {
-            // 한 줄에 걸쳐있으면 하나만 생성
+        let widthInt = Int(backViewMargin.frame.width / 7)
+//        let topInsetBase = isOverlapped ? -61 : -40
+        
+        func createRaisedView(topInsetBase: Int, row: Int, leadingInset: Int, trailingInset: Int) -> RaisedInfoView {
             let raisedView = RaisedInfoView(title: title, infoType: infoType)
             backViewMargin.addSubview(raisedView)
             raisedView.snp.makeConstraints { make in
-                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
-                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
-                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+                make.top.equalTo(headerStackView.snp.bottom).inset(topInsetBase - (80 * row))
+                make.leading.equalToSuperview().inset(leadingInset)
+                make.trailing.equalToSuperview().inset(trailingInset)
                 make.height.equalTo(17)
             }
-            
+            return raisedView
+        }
+        
+        if numberOfRows == 1 {
+            _ = createRaisedView(
+                topInsetBase: isOverlapped ? -61 : -40,
+                row: startDatePosition.row,
+                leadingInset: widthInt * startDatePosition.column,
+                trailingInset: widthInt * (7 - endDatePosition.column - 1)
+            )
         } else {
-            let firstRaisedView = RaisedInfoView(title: title, infoType: infoType)
-            backViewMargin.addSubview(firstRaisedView)
-            firstRaisedView.snp.makeConstraints { make in
-                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row))) // -40 기본, 80기준으로 한칸위아래
-                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
-//                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
-                make.trailing.equalToSuperview().inset(0)
-                make.height.equalTo(17)
-            }
-            
-            // 중간 뷰 그리기
+            _ = createRaisedView(
+                topInsetBase: isOverlapped ? -61 : -40,
+                row: startDatePosition.row,
+                leadingInset: widthInt * startDatePosition.column,
+                trailingInset: 0
+            )
             if numberOfRows >= 3 {
                 for i in 1..<numberOfRows - 1 {
-                    let middleRaisedView = RaisedInfoView(title: title, infoType: infoType)
-                    backViewMargin.addSubview(middleRaisedView)
-                    middleRaisedView.snp.makeConstraints { make in
-                        make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + i))) // -40 기본, 80기준으로 한칸위아래
-                        make.leading.trailing.equalToSuperview().inset(0)
-                    }
+                    _ = createRaisedView(
+                        topInsetBase: -40,
+                        row: startDatePosition.row + i,
+                        leadingInset: 0,
+                        trailingInset: 0
+                    )
                 }
-                
             }
-            
-            let lastRaisedView = RaisedInfoView(title: title, infoType: infoType)
-            backViewMargin.addSubview(lastRaisedView)
-            lastRaisedView.snp.makeConstraints { make in
-                make.top.equalTo(headerStackView.snp.bottom).inset(-40 - (80 * (startDatePosition.row + numberOfRows - 1))) // -40 기본, 80기준으로 한칸위아래
-//                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
-                make.leading.equalToSuperview().inset(0)
-                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
-//                make.trailing.equalToSuperview().inset(0)
-                make.height.equalTo(17)
-            }
+            _ = createRaisedView(
+                topInsetBase: -40,
+                row: startDatePosition.row + numberOfRows - 1,
+                leadingInset: 0,
+                trailingInset: widthInt * (7 - endDatePosition.column - 1)
+            )
         }
-        // 두 줄 이상에 걸쳐있으면
-        // leading은 그대로, trailng은 inset 0 (첫줄)
-        // 중간에는 leading, trailng inset 0 (만약 세 줄 이상이면 중간 줄)
-        // trailng은 그대로, leading은 inset 0 (마지막)
     }
+//    private func setupRaisedViews(_ infoModel: InfoModel, isOverLapped: Bool) {
+//        
+//        let infoType = infoModel.infoType
+//        guard let title = infoModel.title else { return }
+//        guard let startDatePosition = infoModel.startDatePosition() else { return } // .row: 0 = 1번줄 .column: 0 = 1번째
+//        guard let endDatePosition = infoModel.endDatePosition() else { return } // 0 = 1번째
+//        
+//        let widthInt = Int(backViewMargin.frame.width / 7) // 7일로 나눔
+//        
+//        // 얘를 들어 지금 7월 7일이 2번째 줄 1번째 위치라고 하면
+//        
+//        guard let numberOfRows = infoModel.numberOfRows() else { return }
+//        
+//        if numberOfRows == 1 {
+//            // 한 줄에 걸쳐있으면 하나만 생성
+//            let raisedView = RaisedInfoView(title: title, infoType: infoType)
+//            backViewMargin.addSubview(raisedView)
+//            raisedView.snp.makeConstraints { make in
+//                make.top.equalTo(headerStackView.snp.bottom).inset(
+//                    isOverLapped ? -61 - (80 * (startDatePosition.row)) : -40 - (80 * (startDatePosition.row))
+//                )
+//                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+//                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+//                make.height.equalTo(17)
+//            }
+//            
+//        } else {
+//            let firstRaisedView = RaisedInfoView(title: title, infoType: infoType)
+//            backViewMargin.addSubview(firstRaisedView)
+//            firstRaisedView.snp.makeConstraints { make in
+//                make.top.equalTo(headerStackView.snp.bottom).inset(
+//                    isOverLapped ? -61 - (80 * (startDatePosition.row)) : -40 - (80 * (startDatePosition.row))
+//                )
+//                make.leading.equalToSuperview().inset(widthInt * startDatePosition.column) // widthInt를 기준으로 *연산으로 inset값 정함
+//                make.trailing.equalToSuperview().inset(0)
+//                make.height.equalTo(17)
+//            }
+//            
+//            // 중간 뷰 그리기
+//            if numberOfRows >= 3 {
+//                for i in 1..<numberOfRows - 1 {
+//                    let middleRaisedView = RaisedInfoView(title: title, infoType: infoType)
+//                    backViewMargin.addSubview(middleRaisedView)
+//                    middleRaisedView.snp.makeConstraints { make in
+//                        make.top.equalTo(headerStackView.snp.bottom).inset(
+//                            isOverLapped ? -61 - (80 * (startDatePosition.row + i)) : -40 - (80 * (startDatePosition.row + i))
+//                        )
+//                        make.leading.trailing.equalToSuperview().inset(0)
+//                    }
+//                }
+//                
+//            }
+//            
+//            let lastRaisedView = RaisedInfoView(title: title, infoType: infoType)
+//            backViewMargin.addSubview(lastRaisedView)
+//            lastRaisedView.snp.makeConstraints { make in
+//                make.top.equalTo(headerStackView.snp.bottom).inset(
+//                    isOverLapped ? -61 - (80 * (startDatePosition.row - 1)) : -40 - (80 * (startDatePosition.row - 1))
+//                )
+//                make.leading.equalToSuperview().inset(0)
+//                make.trailing.equalToSuperview().inset(widthInt * (7 - endDatePosition.column - 1)) // 7 - widthInt
+//                make.height.equalTo(17)
+//            }
+//        }
+//    }
 
   // MARK: - Set up UI
   private func setupUI() {

@@ -16,16 +16,27 @@ class CategorySelectTableViewController: UITableViewController {
 
   // 기본 카테고리는 수정이 되면 안됨
   private var defaultCategory = [
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, titleText: "식비"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, titleText: "쇼핑"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, titleText: "패션"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, titleText: "문화생활"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, titleText: "교통"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image, titleText: "카페"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image, titleText: "유흥"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image, titleText: "경조사"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image, titleText: "정기결제"),
-    DefaultCategory(iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image, titleText: "기타"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, titleText: "식비"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, titleText: "쇼핑"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, titleText: "패션"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, titleText: "문화생활"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, titleText: "교통"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image, titleText: "카페"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image, titleText: "유흥"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image, titleText: "경조사"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image,
+      titleText: "정기결제"),
+    DefaultCategory(
+      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image, titleText: "기타"),
   ]
 
   // 기본 카테고리를 제거할 수 없도록 설정한 코드

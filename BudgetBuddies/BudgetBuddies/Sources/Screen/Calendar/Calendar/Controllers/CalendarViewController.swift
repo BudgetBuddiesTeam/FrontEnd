@@ -37,7 +37,7 @@ final class CalendarViewController: UIViewController {
 
   // MARK: - Set up Data
   private func setupData() {
-    self.calendarModel = YearMonth(year: 2024, month: 7)
+    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
   }
 
   // MARK: - Set up NavigationBar
@@ -104,6 +104,7 @@ extension CalendarViewController: UITableViewDataSource {
       if let calendarModel = calendarModel {
         mainCalendarCell.ymModel = calendarModel
         mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
+        // 여기서 나중에 특정월에있는 할인지원정보들 fetch해서 보내기
       }
 
       mainCalendarCell.delegate = self
@@ -247,7 +248,7 @@ extension CalendarViewController: MainCalendarCellDelegate {
 extension CalendarViewController: InfoTitleWithButtonCellDelegate {
   // infoTitleWithButtonCell: 전체보기 버튼 눌리는 시점
   func didTapShowDetailViewButton(
-    in cell: InfoTitleWithButtonCell, infoType: InfoTitleWithButtonCell.InfoType
+    in cell: InfoTitleWithButtonCell, infoType: InfoType
   ) {
 
     let vc: UIViewController

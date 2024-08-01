@@ -161,6 +161,7 @@ final class BottomSheetViewController: DimmedViewController {
   }
 }
 
+// MARK: - UITextField Delegate
 extension BottomSheetViewController: UITextFieldDelegate {
   // 입력 시작
   func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -170,5 +171,9 @@ extension BottomSheetViewController: UITextFieldDelegate {
   // 입력 끝
   func textFieldDidEndEditing(_ textField: UITextField) {
     print("입력 끝")
+  }
+
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    self.view.endEditing(true)
   }
 }

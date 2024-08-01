@@ -10,6 +10,6 @@ import UIKit
 
 // 여기에서 사용하는 데이터 모델 파일의 폴더 위치 구조는 변경해야 함
 struct DefaultCategory {
-  let iconImage : UIImage
-  let titleText : String
+  let iconImage: UIImage
+  let titleText: String
 }

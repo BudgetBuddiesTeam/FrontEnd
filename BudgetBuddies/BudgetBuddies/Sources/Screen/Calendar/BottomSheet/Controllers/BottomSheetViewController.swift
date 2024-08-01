@@ -172,8 +172,8 @@ extension BottomSheetViewController: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     print("입력 끝")
   }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-    }
+
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    self.view.endEditing(true)
+  }
 }

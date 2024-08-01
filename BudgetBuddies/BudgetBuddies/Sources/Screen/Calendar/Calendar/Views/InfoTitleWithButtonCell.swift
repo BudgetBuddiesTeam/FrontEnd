@@ -19,13 +19,12 @@ class InfoTitleWithButtonCell: UITableViewCell {
 
   weak var delegate: InfoTitleWithButtonCellDelegate?
 
-//  enum InfoType {
-//    case discount
-//    case support
-//  }
-    
-    var infoType: InfoType?
-    
+  //  enum InfoType {
+  //    case discount
+  //    case support
+  //  }
+
+  var infoType: InfoType?
 
   // 최근 타입을 저장하기 위한 변수
   var currentInfoType: InfoType?
@@ -88,7 +87,7 @@ class InfoTitleWithButtonCell: UITableViewCell {
 
   // MARK: - Configure
   func configure(infoType: InfoType) {
-      self.infoType = infoType
+    self.infoType = infoType
     self.currentInfoType = infoType
 
     switch infoType {

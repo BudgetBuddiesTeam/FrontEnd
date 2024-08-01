@@ -13,7 +13,7 @@ import UIKit
 struct YearMonth {
   let year: Int?
   let month: Int?
-//    let infoModels: [InfoModel] = []
+  //    let infoModels: [InfoModel] = []
 }
 
 extension YearMonth {
@@ -56,86 +56,90 @@ extension YearMonth {
   }
 }
 
-
 enum InfoType {
-    case discount
-    case support
+  case discount
+  case support
 }
 
 struct InfoModel {
-    let title: String?
-    let startDate: String?
-    let endDate: String?
-    let infoType: InfoType
+  let title: String?
+  let startDate: String?
+  let endDate: String?
+  let infoType: InfoType
 }
 
 extension InfoModel {
-    private func date(from dateString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.date(from: dateString)
+  private func date(from dateString: String) -> Date? {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    return dateFormatter.date(from: dateString)
+  }
+
+  private func startOfMonth(for date: Date) -> Int? {
+    let calendar = Calendar.current
+    var components = calendar.dateComponents([.year, .month], from: date)
+    components.day = 1
+
+    guard let firstDayOfMonth = calendar.date(from: components) else { return nil }
+    return calendar.component(.weekday, from: firstDayOfMonth)
+  }
+
+  private func numberOfDaysInMonth(for date: Date) -> Int? {
+    let calendar = Calendar.current
+    guard let range = calendar.range(of: .day, in: .month, for: date) else { return nil }
+    return range.count
+  }
+
+  private func positionOfDate(for date: Date) -> (row: Int, column: Int)? {
+    guard let startDay = startOfMonth(for: date),
+      let numberOfDays = numberOfDaysInMonth(for: date)
+    else {
+      return nil
     }
 
-    private func startOfMonth(for date: Date) -> Int? {
-        let calendar = Calendar.current
-        var components = calendar.dateComponents([.year, .month], from: date)
-        components.day = 1
-        
-        guard let firstDayOfMonth = calendar.date(from: components) else { return nil }
-        return calendar.component(.weekday, from: firstDayOfMonth)
-    }
-    
-    private func numberOfDaysInMonth(for date: Date) -> Int? {
-        let calendar = Calendar.current
-        guard let range = calendar.range(of: .day, in: .month, for: date) else { return nil }
-        return range.count
-    }
-    
-    private func positionOfDate(for date: Date) -> (row: Int, column: Int)? {
-        guard let startDay = startOfMonth(for: date),
-              let numberOfDays = numberOfDaysInMonth(for: date) else {
-            return nil
-        }
-        
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: date)
-        guard let day = components.day else { return nil }
-        
-        let startDayIndex = startDay - 1
-        let dayIndex = startDayIndex + (day - 1)
-        
-        let row = dayIndex / 7
-        let column = dayIndex % 7
-        
-        return (row, column)
-    }
-    
-    // 기간의 시작하는 위치를 (row, column)형태로 반환하는 함수
-    func startDatePosition() -> (row: Int, column: Int)? {
-        guard let startDateString = startDate,
-              let date = date(from: startDateString) else { return nil }
-        return positionOfDate(for: date)
-    }
-    
-    // 기간의 끝나는 위치를 (row, column)형태로 반환하는 함수
-    func endDatePosition() -> (row: Int, column: Int)? {
-        guard let endDateString = endDate,
-              let date = date(from: endDateString) else { return nil }
-        return positionOfDate(for: date)
-    }
-    
-    // 일정이 캘린ㄹ더에서 몇줄에 걸쳐있는지 반환하는 함수
-    func numberOfRows() -> Int? {
-        guard let startDateString = startDate,
-              let endDateString = endDate,
-              let startDate = date(from: startDateString),
-              let endDate = date(from: endDateString) else { return nil }
-        
-        guard let startPosition = positionOfDate(for: startDate),
-              let endPosition = positionOfDate(for: endDate) else { return nil }
-        
-        // 시작 날짜와 끝나는 날짜가 위치한 줄을 계산
-        let numberOfRows = endPosition.row - startPosition.row + 1
-        return numberOfRows
-    }
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.year, .month, .day], from: date)
+    guard let day = components.day else { return nil }
+
+    let startDayIndex = startDay - 1
+    let dayIndex = startDayIndex + (day - 1)
+
+    let row = dayIndex / 7
+    let column = dayIndex % 7
+
+    return (row, column)
+  }
+
+  // 기간의 시작하는 위치를 (row, column)형태로 반환하는 함수
+  func startDatePosition() -> (row: Int, column: Int)? {
+    guard let startDateString = startDate,
+      let date = date(from: startDateString)
+    else { return nil }
+    return positionOfDate(for: date)
+  }
+
+  // 기간의 끝나는 위치를 (row, column)형태로 반환하는 함수
+  func endDatePosition() -> (row: Int, column: Int)? {
+    guard let endDateString = endDate,
+      let date = date(from: endDateString)
+    else { return nil }
+    return positionOfDate(for: date)
+  }
+
+  // 일정이 캘린ㄹ더에서 몇줄에 걸쳐있는지 반환하는 함수
+  func numberOfRows() -> Int? {
+    guard let startDateString = startDate,
+      let endDateString = endDate,
+      let startDate = date(from: startDateString),
+      let endDate = date(from: endDateString)
+    else { return nil }
+
+    guard let startPosition = positionOfDate(for: startDate),
+      let endPosition = positionOfDate(for: endDate)
+    else { return nil }
+
+    // 시작 날짜와 끝나는 날짜가 위치한 줄을 계산
+    let numberOfRows = endPosition.row - startPosition.row + 1
+    return numberOfRows
+  }
 }

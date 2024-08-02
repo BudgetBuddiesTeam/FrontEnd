@@ -191,7 +191,6 @@ class BottomSheet: UIView {
 
         // 현재 텍스트에 필요한 높이 계산
         let textHeight = commentTextView.sizeThatFits(CGSize(width: textViewWidth, height: .infinity)).height
-        print(textHeight)
         
         // 최대 텍스트 뷰 높이 계산 (maxLines 속성을 기준으로)
         let maxTextViewHeight = lineHeight * CGFloat(maxLines)

@@ -20,12 +20,13 @@ final class BottomSheetViewController: DimmedViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    setupUI()
-    setupTapGestures()
-    setupPanGesture()
+      setupUI()
+      setupButtons()
+      setupTapGestures()
+      setupPanGesture()
       setupTableView()
-    setupTextView()
-    registerKeyboardNotifications()
+      setupTextView()
+      registerKeyboardNotifications()
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -35,6 +36,11 @@ final class BottomSheetViewController: DimmedViewController {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    
+    // MARK: - Set up Buttons
+    private func setupButtons() {
+        bottomSheet.sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+    }
 
   // MARK: - Set up Pan Gesture
   private func setupPanGesture() {
@@ -52,6 +58,8 @@ final class BottomSheetViewController: DimmedViewController {
         bottomSheet.commentsTableView.dataSource = self
         
         bottomSheet.commentsTableView.allowsSelection = true
+        bottomSheet.commentsTableView.showsVerticalScrollIndicator = false
+        bottomSheet.commentsTableView.separatorStyle = .none
     }
 
   // MARK: - Set up TextView
@@ -165,9 +173,11 @@ final class BottomSheetViewController: DimmedViewController {
 
     }
   }
+    
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
+      // 여기서 댓글 post?아마
   }
 }
 // MARK: - UITableView DataSource

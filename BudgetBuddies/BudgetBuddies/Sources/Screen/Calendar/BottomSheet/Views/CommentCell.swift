@@ -16,7 +16,7 @@ class CommentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .red
+        self.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {

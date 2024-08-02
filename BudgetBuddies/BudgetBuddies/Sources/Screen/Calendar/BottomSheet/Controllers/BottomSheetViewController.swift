@@ -24,7 +24,7 @@ final class BottomSheetViewController: DimmedViewController {
     setupTapGestures()
     setupPanGesture()
       setupTableView()
-    setupTextField()
+    setupTextView()
     registerKeyboardNotifications()
   }
 
@@ -45,18 +45,18 @@ final class BottomSheetViewController: DimmedViewController {
     // MARK: - Set up TableView
     private func setupTableView() {
         // 셀 등록
+        bottomSheet.commentsTableView.backgroundColor = .clear
         bottomSheet.commentsTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
         
         bottomSheet.commentsTableView.delegate = self
         bottomSheet.commentsTableView.dataSource = self
+        
+        bottomSheet.commentsTableView.allowsSelection = true
     }
 
-  // MARK: - Set up TextField
-  private func setupTextField() {
-    bottomSheet.textField.delegate = self
-    bottomSheet.sendButton?.addTarget(
-      self, action: #selector(didTapSendButton), for: .touchUpInside)
-
+  // MARK: - Set up TextView
+  private func setupTextView() {
+      bottomSheet.commentTextView.delegate = self
   }
 
   // MARK: - Set up UI
@@ -186,22 +186,14 @@ extension BottomSheetViewController: UITableViewDataSource {
 
 // MARK: - UITableView Delegate
 extension BottomSheetViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.view.endEditing(true)
+    }
 }
 
-// MARK: - UITextField Delegate
-extension BottomSheetViewController: UITextFieldDelegate {
-  // 입력 시작
-  func textFieldDidBeginEditing(_ textField: UITextField) {
-    print("입력 시작")
-  }
-
-  // 입력 끝
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    print("입력 끝")
-  }
-
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    self.view.endEditing(true)
-  }
+// MARK: - TextView Delegate
+extension BottomSheetViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        bottomSheet.updateTextViewHeight()
+    }
 }

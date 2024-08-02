@@ -92,6 +92,10 @@ class BottomSheet: UIView {
         tv.showsVerticalScrollIndicator = false
         tv.showsHorizontalScrollIndicator = false
         
+        tv.autocapitalizationType = .none
+        tv.autocorrectionType = .no
+        tv.spellCheckingType = .no
+        
         return tv
     }()
 

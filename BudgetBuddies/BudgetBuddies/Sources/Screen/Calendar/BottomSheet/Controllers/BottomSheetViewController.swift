@@ -14,6 +14,11 @@ final class BottomSheetViewController: DimmedViewController {
 
   private var bottomSheetTopConstraint: Constraint?
   private var bottomSheetBottomConstraint: Constraint?
+    
+    // 댓글창 애니메이션 조절 변수
+    private let bottomSheetValue: CGFloat = 200 // 댓글창 올라올 위치 수치 (0에 가까울 수록 많이 올라옴)
+    private let bottomSheetFullSlideValue: CGFloat = 100 // 댓글창이 다 올라온 상태에서 어느정도까지 내려야 중간상태로 바뀌는지
+    private let bottomSheetHalfSlideValue: CGFloat = 50 // 댓글창이 중간까지만 올라온 상태에서 어느정도 내려야 dismiss 되는지 (터치가 기준점)
 
   // MARK: - Life Cycle
 
@@ -75,12 +80,12 @@ final class BottomSheetViewController: DimmedViewController {
     setupConstraint()
   }
 
-  // MARK: - Set up Constraints {
+  // MARK: - Set up Constraints
   private func setupConstraint() {
     bottomSheet.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       bottomSheetTopConstraint =
-        make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(300).constraint
+        make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(bottomSheetValue).constraint
       bottomSheetBottomConstraint = make.bottom.equalTo(view.snp.bottom).inset(0).constraint
     }
   }
@@ -141,18 +146,18 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
     let translation = gesture.translation(in: BottomSheet() as UIView)
-
+      
     switch gesture.state {
     case .changed:
       if let constant = bottomSheetTopConstraint?.layoutConstraints.first?.constant {
-        let newOffset = max(0, min(300, constant + translation.y))
+        let newOffset = max(0, min(bottomSheetValue, constant + translation.y))
         self.bottomSheetTopConstraint?.update(offset: newOffset)
         self.view.layoutIfNeeded()
         gesture.setTranslation(.zero, in: bottomSheet)
       }
 
       // 작은 상태에서 아래로 스크롤시 댓글창 닫음
-      if bottomSheetTopConstraint?.layoutConstraints.first?.constant == 300 && translation.y > 30 {
+      if bottomSheetTopConstraint?.layoutConstraints.first?.constant == bottomSheetValue && translation.y > bottomSheetHalfSlideValue {
         self.dismiss(animated: true, completion: nil)
         return
       }
@@ -160,9 +165,9 @@ final class BottomSheetViewController: DimmedViewController {
     case .ended:
       UIView.animate(withDuration: 0.3) {
         if let constant = self.bottomSheetTopConstraint?.layoutConstraints.first?.constant,
-          constant > 150
+           constant > self.bottomSheetFullSlideValue
         {
-          self.bottomSheetTopConstraint?.update(offset: 300)
+            self.bottomSheetTopConstraint?.update(offset: self.bottomSheetValue)
         } else {
           self.bottomSheetTopConstraint?.update(offset: 0)
         }

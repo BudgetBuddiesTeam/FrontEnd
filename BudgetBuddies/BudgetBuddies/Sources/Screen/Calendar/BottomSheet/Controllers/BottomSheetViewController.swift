@@ -151,7 +151,7 @@ final class BottomSheetViewController: DimmedViewController {
       }
 
       // 작은 상태에서 아래로 스크롤시 댓글창 닫음
-      if bottomSheetTopConstraint?.layoutConstraints.first?.constant == 300 && translation.y > 60 {
+      if bottomSheetTopConstraint?.layoutConstraints.first?.constant == 300 && translation.y > 30 {
         self.dismiss(animated: true, completion: nil)
         return
       }

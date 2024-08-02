@@ -83,7 +83,8 @@ class BottomSheet: UIView {
     lazy var commentTextView: UITextView = {
         let tv = UITextView()
         tv.backgroundColor = .clear
-        
+        tv.text = " "
+        tv.textColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
         
         tv.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
         tv.setCharacterSpacing(-0.35)

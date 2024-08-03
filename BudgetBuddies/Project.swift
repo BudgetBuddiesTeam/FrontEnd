@@ -34,6 +34,7 @@ let project = Project(
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
+        .external(name: "RxSwift")
       ],
       settings: settings
     )

@@ -15,10 +15,9 @@ final class BottomSheetViewController: DimmedViewController {
   private var bottomSheetTopConstraint: Constraint?
   private var bottomSheetBottomConstraint: Constraint?
     
-    // 댓글창 애니메이션 조절 변수
-    private let bottomSheetValue: CGFloat = 200 // 댓글창 올라올 위치 수치 (0에 가까울 수록 많이 올라옴)
-    private let bottomSheetFullSlideValue: CGFloat = 100 // 댓글창이 다 올라온 상태에서 어느정도까지 내려야 중간상태로 바뀌는지
-    private let bottomSheetHalfSlideValue: CGFloat = 50 // 댓글창이 중간까지만 올라온 상태에서 어느정도 내려야 dismiss 되는지 (터치가 기준점)
+    private var bottomSheetValue: CGFloat {
+        return self.view.bounds.height * 0.225 // bottomSheet이 올라오는 비율
+    }
 
   // MARK: - Life Cycle
 
@@ -144,42 +143,63 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
-  @objc
-  private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
-    let translation = gesture.translation(in: BottomSheet() as UIView)
-      
-    switch gesture.state {
-    case .changed:
-      if let constant = bottomSheetTopConstraint?.layoutConstraints.first?.constant {
-        let newOffset = max(0, min(bottomSheetValue, constant + translation.y))
-        self.bottomSheetTopConstraint?.update(offset: newOffset)
-        self.view.layoutIfNeeded()
-        gesture.setTranslation(.zero, in: bottomSheet)
-      }
-
-      // 작은 상태에서 아래로 스크롤시 댓글창 닫음
-      if bottomSheetTopConstraint?.layoutConstraints.first?.constant == bottomSheetValue && translation.y > bottomSheetHalfSlideValue {
-        self.dismiss(animated: true, completion: nil)
-        return
-      }
-
-    case .ended:
-      UIView.animate(withDuration: 0.3) {
-        if let constant = self.bottomSheetTopConstraint?.layoutConstraints.first?.constant,
-           constant > self.bottomSheetFullSlideValue
-        {
-            self.bottomSheetTopConstraint?.update(offset: self.bottomSheetValue)
-        } else {
-          self.bottomSheetTopConstraint?.update(offset: 0)
+    // MARK: - Handle PanGesture
+    @objc
+    private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.view)
+        
+        let screenHeight = self.view.bounds.height
+        let fullScreenThreshold = screenHeight * 0.1 // 댓글창이 다 올라온 상태엥서 어느정도까지 내려야 중간상태로 바뀌는지
+        let dismissThreshold = screenHeight * 0.65 // 중간 상태에서 어느정도도 내려야 dismiss
+        
+        switch gesture.state {
+        case .changed:
+            if let constant = bottomSheetTopConstraint?.layoutConstraints.first?.constant {
+                // 스크롤 방향에 따라 오프셋 업데이트
+                let newOffset = constant + translation.y // 아래로 드래그하면 negative, 위로 드래그하면 positive
+                
+                // 오프셋을 최소 0까지 제한
+                let clampedOffset = max(0, newOffset)
+                
+                self.bottomSheetTopConstraint?.update(offset: clampedOffset)
+                self.view.layoutIfNeeded()
+                
+                // 스크롤 후의 위치를 gesture에 반영
+                gesture.setTranslation(.zero, in: self.view)
+            }
+            
+            // 중간 상태에서 아래로 스크롤 시에도 스크롤에 따라 댓글창 이동
+            if let constant = bottomSheetTopConstraint?.layoutConstraints.first?.constant {
+                if constant > fullScreenThreshold {
+                    // 특정 높이까지 내려오면 dismiss
+                    if constant > dismissThreshold {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                }
+            }
+            
+        case .ended:
+            UIView.animate(withDuration: 0.3) {
+                if let constant = self.bottomSheetTopConstraint?.layoutConstraints.first?.constant {
+                    if constant > fullScreenThreshold {
+                        // 댓글창이 다 올라온 상태에서 내려가면 원위치로
+                        self.bottomSheetTopConstraint?.update(offset: self.bottomSheetValue)
+                    } else {
+                        // 댓글창이 중간 상태일 때 dismiss 여부 결정
+                        if constant > dismissThreshold {
+                            self.dismiss(animated: true, completion: nil)
+                        } else {
+                            self.bottomSheetTopConstraint?.update(offset: 0)
+                        }
+                    }
+                }
+                self.view.layoutIfNeeded()
+            }
+            
+        default:
+            break
         }
-        self.view.layoutIfNeeded()
-      }
-
-    default:
-      break
-
     }
-  }
     
   @objc
   func didTapSendButton() {

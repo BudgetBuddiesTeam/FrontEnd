@@ -9,7 +9,6 @@ import UIKit
 
 class AlertManager {
     
-    
     /// 화면에 알림을 표시합니다.
     ///
     /// 이 메서드는 'UIViewController'에서 알림을 표시하며,

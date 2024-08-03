@@ -194,7 +194,7 @@ final class BottomSheetViewController: DimmedViewController {
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10 // 일단 10개
+        return 2 // 일단 10개
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

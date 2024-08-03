@@ -238,11 +238,11 @@ extension BottomSheetViewController: UITextViewDelegate {
 // MARK: - CommentCell Delegate
 extension BottomSheetViewController: CommentCellDelegate {
     func didTapEditButton(in cell: CommentCell) {
-        print("수정 버튼 눌림")
+        AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
     }
     
     func didTapDeleteButton(in cell: CommentCell) {
-        print("삭제 버튼 눌림")
+        AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
     }
     
     

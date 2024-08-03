@@ -12,6 +12,7 @@ class CommentCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "CommentCell"
     
+    // 익명1, 2, 3...
     var userName: UILabel = {
         let lb = UILabel()
         lb.text = "익명1"
@@ -22,6 +23,7 @@ class CommentCell: UITableViewCell {
         return lb
     }()
     
+    // 댓글 라벨
     var commentLabel: UILabel = {
         let lb = UILabel()
         lb.text = "이거 한 번 받으면 다시 못 받는 건가요?\n만약이러면?"
@@ -33,6 +35,7 @@ class CommentCell: UITableViewCell {
         return lb
     }()
     
+    // stackView
     lazy var stackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [userName, commentLabel])
         sv.axis = .vertical
@@ -40,6 +43,41 @@ class CommentCell: UITableViewCell {
         sv.alignment = .fill
         sv.distribution = .fill
         return sv
+    }()
+    
+    // 댓글 수정, 삭제 버튼
+    // 백뷰
+    var buttonBackView: UIView = {
+        let view = UIView()
+        view.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 3
+        return view
+    }()
+    
+    // 버튼 구분 선
+    var verticalSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = BudgetBuddiesAsset.AppColor.circleStroke.color
+        return view
+    }()
+    
+    // 수정 버튼 (지우개)
+    lazy var editButtonImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "eraser.fill")
+        iv.contentMode = .scaleAspectFit
+        iv.tintColor = BudgetBuddiesAsset.AppColor.textExample.color
+        return iv
+    }()
+    
+    // 삭제 버튼 (휴지통)
+    lazy var deleteButtonImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "trash.fill")
+        iv.contentMode = .scaleAspectFit
+        iv.tintColor = BudgetBuddiesAsset.AppColor.textExample.color
+        return iv
     }()
     
     
@@ -56,7 +94,8 @@ class CommentCell: UITableViewCell {
     
     // MARK: - Set up UI
     private func setupUI() {
-        self.contentView.addSubviews(stackView)
+        self.contentView.addSubviews(stackView, buttonBackView)
+        buttonBackView.addSubviews(verticalSeparator, editButtonImageView, deleteButtonImageView)
         
         setupConstraints()
     }
@@ -67,12 +106,35 @@ class CommentCell: UITableViewCell {
             make.height.equalTo(18)
         }
         
-        
         stackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(23)
             make.bottom.equalToSuperview().inset(17)
             make.leading.trailing.equalToSuperview().inset(40)
-//            make.centerX.equalToSuperview()
+        }
+        
+        buttonBackView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(22)
+            make.centerY.equalTo(userName)
+            make.height.equalTo(18)
+            make.width.equalTo(62)
+        }
+        
+        verticalSeparator.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(5)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(1)
+        }
+        
+        editButtonImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(verticalSeparator.snp.leading).offset(-10)
+            make.height.width.equalTo(13)
+        }
+        
+        deleteButtonImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
+            make.height.width.equalTo(13)
         }
     }
 }

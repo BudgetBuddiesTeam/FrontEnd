@@ -185,7 +185,7 @@ final class BottomSheetViewController: DimmedViewController {
     self.bottomSheet.endEditing(true)
       // 플레이스홀더 재배치
       bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
-      bottomSheet.commentTextView.textColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
+      bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
       bottomSheet.updateTextViewHeight()
       // 여기서 댓글 post?아마
   }
@@ -218,7 +218,7 @@ extension BottomSheetViewController: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if bottomSheet.commentTextView.textColor == UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1) {
+        if bottomSheet.commentTextView.textColor == BudgetBuddiesAsset.AppColor.textExample.color {
             bottomSheet.commentTextView.text = ""
             bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
         }
@@ -227,7 +227,7 @@ extension BottomSheetViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if bottomSheet.commentTextView.text.isEmpty {
             bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
-            bottomSheet.commentTextView.textColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
+            bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
         }
     }
 }

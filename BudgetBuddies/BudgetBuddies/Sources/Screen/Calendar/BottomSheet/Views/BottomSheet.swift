@@ -80,11 +80,12 @@ class BottomSheet: UIView {
         return btn
     }()
     
+    // lazy var 필수
     lazy var commentTextView: UITextView = {
         let tv = UITextView()
         tv.backgroundColor = .clear
         tv.text = " "
-        tv.textColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
+        tv.textColor = BudgetBuddiesAsset.AppColor.textExample.color
         
         tv.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
         tv.setCharacterSpacing(-0.35)
@@ -157,7 +158,7 @@ class BottomSheet: UIView {
       make.leading.trailing.equalToSuperview()
       make.bottom.equalTo(self.layoutMarginsGuide.snp.bottom)
 //      make.height.equalTo(85)
-        make.top.equalTo(textBox.snp.top).inset(-25)
+        make.top.equalTo(textBox.snp.top).inset(-14)
     }
 
     textViewSeparator.snp.makeConstraints { make in
@@ -168,7 +169,7 @@ class BottomSheet: UIView {
       textBox.snp.makeConstraints { make in
 //          make.top.equalToSuperview().inset(20)
           make.top.equalTo(commentTextView).offset(-9.5)
-          make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(20)
+          make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)
           make.leading.trailing.equalToSuperview().inset(16)
 //          make.height.equalTo(52)
       }

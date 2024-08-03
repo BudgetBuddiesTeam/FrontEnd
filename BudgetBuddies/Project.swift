@@ -1,7 +1,13 @@
 import ProjectDescription
 
+let settings : Settings = .settings(configurations: [
+  .debug(name: "Debug", xcconfig: "BudgetBuddies/Resources/Debug.xcconfig"),
+  .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig")
+])
+
 let project = Project(
   name: "BudgetBuddies",
+  settings: settings,
   targets: [
     .target(
       name: "BudgetBuddies",
@@ -28,7 +34,8 @@ let project = Project(
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
-      ]
+      ],
+      settings: settings
     )
   ]
 )

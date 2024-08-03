@@ -42,6 +42,23 @@ final class BottomSheetViewController: DimmedViewController {
     NotificationCenter.default.removeObserver(self)
   }
     
+    // MARK: - Set up UI
+    private func setupUI() {
+      self.view.addSubview(bottomSheet)
+
+      setupConstraint()
+    }
+
+    // MARK: - Set up Constraints
+    private func setupConstraint() {
+      bottomSheet.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview()
+        bottomSheetTopConstraint =
+          make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(bottomSheetValue).constraint
+        bottomSheetBottomConstraint = make.bottom.equalTo(view.snp.bottom).inset(0).constraint
+      }
+    }
+    
     // MARK: - Set up Buttons
     private func setupButtons() {
         bottomSheet.sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
@@ -52,6 +69,22 @@ final class BottomSheetViewController: DimmedViewController {
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     bottomSheet.addGestureRecognizer(panGesture)
   }
+    
+    // MARK: - Set up TapGesture
+    private func setupTapGestures() {
+        // bottomSheet 자체 Tap
+      self.view.isUserInteractionEnabled = true
+      let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+      view.addGestureRecognizer(viewTapGesture)
+
+      // 뒷 배경만을 눌렀을 경우에 dismiss가 되도록
+      // bottomSheet에 temp gesture 설정
+      // 다른 방법이 있다면 추후에 수정할 예정
+      bottomSheet.isUserInteractionEnabled = true
+      let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
+      tempTapGesture.cancelsTouchesInView = false  // 터치 겹치지 않게
+      bottomSheet.addGestureRecognizer(tempTapGesture)
+    }
     
     // MARK: - Set up TableView
     private func setupTableView() {
@@ -68,42 +101,10 @@ final class BottomSheetViewController: DimmedViewController {
     }
 
   // MARK: - Set up TextView
-  private func setupTextView() {
-      bottomSheet.commentTextView.delegate = self
-      bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
-  }
-
-  // MARK: - Set up UI
-  private func setupUI() {
-    self.view.addSubview(bottomSheet)
-
-    setupConstraint()
-  }
-
-  // MARK: - Set up Constraints
-  private func setupConstraint() {
-    bottomSheet.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      bottomSheetTopConstraint =
-        make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(bottomSheetValue).constraint
-      bottomSheetBottomConstraint = make.bottom.equalTo(view.snp.bottom).inset(0).constraint
+    private func setupTextView() {
+        bottomSheet.commentTextView.delegate = self
+        bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
     }
-  }
-
-  // MARK: - Set up View TapGesture
-  private func setupTapGestures() {
-    self.view.isUserInteractionEnabled = true
-    let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-    view.addGestureRecognizer(viewTapGesture)
-
-    // 뒷 배경만을 눌렀을 경우에 dismiss가 되도록
-    // bottomSheet에 temp gesture 설정
-    // 다른 방법이 있다면 추후에 수정할 예정
-    bottomSheet.isUserInteractionEnabled = true
-    let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
-    tempTapGesture.cancelsTouchesInView = false  // 터치 겹치지 않게
-    bottomSheet.addGestureRecognizer(tempTapGesture)
-  }
 
   // MARK: - register Keyboard Notification
   private func registerKeyboardNotifications() {
@@ -199,6 +200,8 @@ extension BottomSheetViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
         
+        commentCell.delegate = self
+        
         commentCell.selectionStyle = .none
         return commentCell
     }
@@ -230,4 +233,17 @@ extension BottomSheetViewController: UITextViewDelegate {
             bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
         }
     }
+}
+
+// MARK: - CommentCell Delegate
+extension BottomSheetViewController: CommentCellDelegate {
+    func didTapEditButton(in cell: CommentCell) {
+        print("수정 버튼 눌림")
+    }
+    
+    func didTapDeleteButton(in cell: CommentCell) {
+        print("삭제 버튼 눌림")
+    }
+    
+    
 }

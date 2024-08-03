@@ -8,9 +8,16 @@
 import UIKit
 import SnapKit
 
+protocol CommentCellDelegate: AnyObject {
+    func didTapEditButton(in cell: CommentCell)
+    func didTapDeleteButton(in cell: CommentCell)
+}
+
 class CommentCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "CommentCell"
+    
+    weak var delegate: CommentCellDelegate?
     
     // 익명1, 2, 3...
     var userName: UILabel = {
@@ -68,6 +75,11 @@ class CommentCell: UITableViewCell {
         iv.image = UIImage(systemName: "eraser.fill")
         iv.contentMode = .scaleAspectFit
         iv.tintColor = BudgetBuddiesAsset.AppColor.textExample.color
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapEditButton))
+        iv.addGestureRecognizer(tapGesture)
+        iv.isUserInteractionEnabled = true
+        
         return iv
     }()
     
@@ -77,6 +89,11 @@ class CommentCell: UITableViewCell {
         iv.image = UIImage(systemName: "trash.fill")
         iv.contentMode = .scaleAspectFit
         iv.tintColor = BudgetBuddiesAsset.AppColor.textExample.color
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapDeleteButton))
+        iv.addGestureRecognizer(tapGesture)
+        iv.isUserInteractionEnabled = true
+        
         return iv
     }()
     
@@ -136,5 +153,14 @@ class CommentCell: UITableViewCell {
             make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
             make.height.width.equalTo(13)
         }
+    }
+    // MARK: - Selectors
+    @objc
+    private func didTapEditButton() {
+        delegate?.didTapEditButton(in: self)
+    }
+    
+    @objc func didTapDeleteButton() {
+        delegate?.didTapDeleteButton(in: self)
     }
 }

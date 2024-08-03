@@ -150,7 +150,7 @@ final class BottomSheetViewController: DimmedViewController {
         
         let screenHeight = self.view.bounds.height
         let fullScreenThreshold = screenHeight * 0.1 // 댓글창이 다 올라온 상태엥서 어느정도까지 내려야 중간상태로 바뀌는지
-        let dismissThreshold = screenHeight * 0.65 // 중간 상태에서 어느정도도 내려야 dismiss
+        let dismissThreshold = screenHeight * 0.625 // 중간 상태에서 어느정도도 내려야 dismiss
         
         switch gesture.state {
         case .changed:

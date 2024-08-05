@@ -51,7 +51,7 @@ class BottomSheet: UIView {
   }()
 
   // 댓글 tableView
-    lazy var commentsTableView = UITableView()
+  lazy var commentsTableView = UITableView()
 
   // 텍스트필드 뒷배경
   var textViewBackView: UIView = {

@@ -83,11 +83,12 @@ final class BottomSheetViewController: DimmedViewController {
     let tempTapGesture = UITapGestureRecognizer(target: self, action: nil)
     tempTapGesture.cancelsTouchesInView = false  // 터치 겹치지 않게
     bottomSheet.addGestureRecognizer(tempTapGesture)
-      
-      let tableViewTabGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTableView))
-      bottomSheet.commentsTableView.addGestureRecognizer(tableViewTabGesture)
-      bottomSheet.commentsTableView.isUserInteractionEnabled = true
-      
+
+    let tableViewTabGesture = UITapGestureRecognizer(
+      target: self, action: #selector(didTapTableView))
+    bottomSheet.commentsTableView.addGestureRecognizer(tableViewTabGesture)
+    bottomSheet.commentsTableView.isUserInteractionEnabled = true
+
   }
 
   // MARK: - Set up TableView
@@ -148,11 +149,11 @@ final class BottomSheetViewController: DimmedViewController {
       self.view.layoutIfNeeded()
     }
   }
-    
-    @objc
-    private func didTapTableView() {
-        self.view.endEditing(true)
-    }
+
+  @objc
+  private func didTapTableView() {
+    self.view.endEditing(true)
+  }
 
   // MARK: - Handle PanGesture
   @objc
@@ -243,7 +244,7 @@ extension BottomSheetViewController: UITableViewDataSource {
 // MARK: - UITableView Delegate
 extension BottomSheetViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    self.view.endEditing(true)
+    //    self.view.endEditing(true)
   }
 }
 

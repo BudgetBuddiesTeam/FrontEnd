@@ -70,14 +70,14 @@ struct InfoModel {
 }
 
 extension InfoModel {
-    // 날짜 문자열을 Date객체로 변환하는 함수
+  // 날짜 문자열을 Date객체로 변환하는 함수
   private func date(from dateString: String) -> Date? {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
     return dateFormatter.date(from: dateString)
   }
 
-    // 주어진 날짜의 월의 첫 번째 날의 요일을 반환하는 함수
+  // 주어진 날짜의 월의 첫 번째 날의 요일을 반환하는 함수
   private func startOfMonth(for date: Date) -> Int? {
     let calendar = Calendar.current
     var components = calendar.dateComponents([.year, .month], from: date)
@@ -87,18 +87,18 @@ extension InfoModel {
     return calendar.component(.weekday, from: firstDayOfMonth)
   }
 
-    // 주어진 날짜가 포함된 월의 총 일수를 반환하는 함수
+  // 주어진 날짜가 포함된 월의 총 일수를 반환하는 함수
   private func numberOfDaysInMonth(for date: Date) -> Int? {
     let calendar = Calendar.current
     guard let range = calendar.range(of: .day, in: .month, for: date) else { return nil }
     return range.count
   }
 
-    // 주어진 날짜의 위치를 (행, 열) 형태로 반환하는 함수
+  // 주어진 날짜의 위치를 (행, 열) 형태로 반환하는 함수
   private func positionOfDate(for date: Date) -> (row: Int, column: Int)? {
     guard let startDay = startOfMonth(for: date),
-//      let numberOfDays = numberOfDaysInMonth(for: date)
-          let _ = numberOfDaysInMonth(for: date)
+      //      let numberOfDays = numberOfDaysInMonth(for: date)
+      let _ = numberOfDaysInMonth(for: date)
     else {
       return nil
     }
@@ -149,4 +149,3 @@ extension InfoModel {
     return numberOfRows
   }
 }
-

@@ -27,6 +27,7 @@ let project = Project(
             ]
           ],
         ],
+        "BASEURL": "http://$(Base_Domain)"
       ]),
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],
@@ -34,6 +35,7 @@ let project = Project(
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
+        .external(name: "Moya")
       ],
       settings: settings
     )

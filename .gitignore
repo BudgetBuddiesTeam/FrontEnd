@@ -68,3 +68,6 @@ Derived/
 
 ### Tuist managed dependencies ###
 BudgetBuddies/Tuist/.build
+
+### Configuration files ###
+*.xcconfig

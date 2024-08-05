@@ -1,8 +1,8 @@
 import ProjectDescription
 
-let settings : Settings = .settings(configurations: [
+let settings: Settings = .settings(configurations: [
   .debug(name: "Debug", xcconfig: "BudgetBuddies/Resources/Debug.xcconfig"),
-  .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig")
+  .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig"),
 ])
 
 let project = Project(
@@ -27,6 +27,7 @@ let project = Project(
             ]
           ],
         ],
+        "BASEURL": "http://$(Base_Domain)"
       ]),
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],
@@ -34,6 +35,7 @@ let project = Project(
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
+        .external(name: "Moya"),
         .external(name: "RxSwift")
       ],
       settings: settings

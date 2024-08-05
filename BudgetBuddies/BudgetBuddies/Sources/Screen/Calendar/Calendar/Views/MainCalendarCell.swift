@@ -36,8 +36,6 @@ class MainCalendarCell: UITableViewCell {
 
   var calendarHeight: Int? {
     didSet {
-      guard let calendarHeight = calendarHeight else { return }
-      print(calendarHeight)
       reSetupBackViewConstraints()
     }
   }

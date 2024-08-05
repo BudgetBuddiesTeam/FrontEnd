@@ -9,6 +9,9 @@ import SnapKit
 import UIKit
 
 class BottomSheet: UIView {
+  // MARK: - Properties
+  private let maxLines: Int = 4
+
   // MARK: - UI Components
   // 뒷 배경
   lazy var backView: UIView = {
@@ -47,64 +50,55 @@ class BottomSheet: UIView {
     return view
   }()
 
+  // 댓글 tableView
+  lazy var commentsTableView = UITableView()
+
   // 텍스트필드 뒷배경
-  var textFieldBackView: UIView = {
+  var textViewBackView: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     return view
   }()
 
-  var textFieldSeparator: UIView = {
+  var textViewSeparator: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.circleStroke.color
     return view
   }()
 
-  lazy var textField: UITextField = {
-    let tf = UITextField()
-    tf.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
-    tf.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-    tf.placeholder = "댓글을 입력해주세요"
-    tf.borderStyle = .none
-    tf.layer.masksToBounds = true
-    tf.layer.cornerRadius = 10
-    //        tf.clearButtonMode = .always // 텍스트필드에 전체 지우기 버튼 생성
-
-    tf.autocapitalizationType = .none  // 첫 글자 자동 대문자
-    tf.autocorrectionType = .no  // 추천 글자를 보여줄지
-    tf.spellCheckingType = .no  // 오류난 글자를 고쳐줄지
-    tf.clearsOnBeginEditing = false  // 편집시 기존 텍스트필드 값 제거
-
-    tf.setCharacterSpacing(-0.35)
-    tf.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
-
-    // 왼쪽에 빈 공간
-    let leftSpacer = UIView()
-    leftSpacer.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
-    tf.leftView = leftSpacer
-    tf.leftViewMode = .always
-
-    // 오른쪽에 빈 공간
-    let rightSpacer = UIView()
-    rightSpacer.frame = CGRect(x: 0, y: 0, width: 28 + 12, height: 28)
-
-    // 전송 버튼
-    let sendButton = UIButton(type: .custom)
-    sendButton.setImage(UIImage(named: "sendButtonImage"), for: .normal)
-    sendButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
-    self.sendButton = sendButton
-
-    sendButton.frame.origin = CGPoint(x: 0, y: 0)
-    rightSpacer.addSubview(sendButton)
-
-    tf.rightView = rightSpacer
-    tf.rightViewMode = .always
-
-    return tf
+  var textBox: UIView = {
+    let view = UIView()
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
+    view.layer.masksToBounds = true
+    view.layer.cornerRadius = 10
+    return view
   }()
 
-  // 전송버튼 외부에서 접근 가능
-  private(set) var sendButton: UIButton?
+  lazy var sendButton: UIButton = {
+    let btn = UIButton()
+    btn.setImage(UIImage(named: "sendButtonImage"), for: .normal)
+    return btn
+  }()
+
+  // lazy var 필수
+  lazy var commentTextView: UITextView = {
+    let tv = UITextView()
+    tv.backgroundColor = .clear
+    tv.text = " "
+    tv.textColor = BudgetBuddiesAsset.AppColor.textExample.color
+
+    tv.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
+    tv.setCharacterSpacing(-0.35)
+
+    tv.showsVerticalScrollIndicator = false
+    tv.showsHorizontalScrollIndicator = false
+
+    tv.autocapitalizationType = .none
+    tv.autocorrectionType = .no
+    tv.spellCheckingType = .no
+
+    return tv
+  }()
 
   // MARK: - Init
   override init(frame: CGRect) {
@@ -120,8 +114,11 @@ class BottomSheet: UIView {
   // MARK: - Set up UI
   private func setupUI() {
     self.addSubviews(backView)
-    backView.addSubviews(topRectView, commentsLabel, topSeparator, textFieldBackView)
-    textFieldBackView.addSubviews(textFieldSeparator, textField)
+
+    backView.addSubviews(
+      topRectView, commentsLabel, topSeparator, commentsTableView, textViewBackView)
+    textViewBackView.addSubviews(textViewSeparator, textBox)
+    textBox.addSubviews(sendButton, commentTextView)
 
     setupConstraints()
   }
@@ -152,21 +149,82 @@ class BottomSheet: UIView {
       make.height.equalTo(2)
     }
 
-    textFieldBackView.snp.makeConstraints { make in
+    commentsTableView.snp.makeConstraints { make in
+      make.top.equalTo(topSeparator.snp.bottom)
       make.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(self.layoutMarginsGuide.snp.bottom)
-      make.height.equalTo(85)
+      make.bottom.equalTo(textViewSeparator.snp.top)
     }
 
-    textFieldSeparator.snp.makeConstraints { make in
+    textViewBackView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(self.layoutMarginsGuide.snp.bottom)
+      //      make.height.equalTo(85)
+      make.top.equalTo(textBox.snp.top).inset(-14)
+    }
+
+    textViewSeparator.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.height.equalTo(1)
     }
 
-    textField.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(20)
+    textBox.snp.makeConstraints { make in
+      //          make.top.equalToSuperview().inset(20)
+      make.top.equalTo(commentTextView).offset(-9.5)
+      make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)
       make.leading.trailing.equalToSuperview().inset(16)
-      make.height.equalTo(52)
+      //          make.height.equalTo(52)
+    }
+
+    sendButton.snp.makeConstraints { make in
+      make.trailing.bottom.equalToSuperview().inset(12)
+      make.height.width.equalTo(28)
+    }
+
+    commentTextView.snp.makeConstraints { make in
+      make.top.equalToSuperview().inset(9.5)
+      make.bottom.equalToSuperview().inset(9.5)
+      make.leading.equalToSuperview().inset(21)
+      make.trailing.equalTo(sendButton.snp.leading).inset(-12)
+      make.height.equalTo(33)
+    }
+  }
+
+  // MARK: - Functions
+  func updateTextViewHeight() {
+    guard let font = commentTextView.font else { return }
+
+    let textViewWidth = commentTextView.bounds.width
+    let lineHeight = font.lineHeight
+
+    // 현재 텍스트에 필요한 높이 계산
+    let textHeight = commentTextView.sizeThatFits(CGSize(width: textViewWidth, height: .infinity))
+      .height
+
+    // 최대 텍스트 뷰 높이 계산 (maxLines 속성을 기준으로)
+    let maxTextViewHeight = lineHeight * CGFloat(maxLines)
+    let newHeight: CGFloat
+
+    if textHeight <= maxTextViewHeight {
+      // 텍스트 높이가 최대 높이 이하일 경우
+      newHeight = textHeight
+      commentTextView.isScrollEnabled = false
+    } else {
+      // 텍스트 높이가 최대 높이를 초과할 경우
+      newHeight = maxTextViewHeight
+      commentTextView.isScrollEnabled = true
+    }
+
+    // 제약 조건 적용 전 레이아웃을 업데이트하여 반영
+    self.layoutIfNeeded()
+
+    // commentTextView의 제약 조건 업데이트
+    commentTextView.snp.updateConstraints { make in
+      make.height.equalTo(newHeight)
+    }
+
+    // 레이아웃 변경을 애니메이션으로 부드럽게 조정
+    UIView.animate(withDuration: 0.3) {
+      self.layoutIfNeeded()
     }
   }
 }

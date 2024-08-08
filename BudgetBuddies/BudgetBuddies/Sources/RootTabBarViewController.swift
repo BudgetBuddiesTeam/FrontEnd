@@ -15,6 +15,8 @@ class RootTabBarViewController: UITabBarController {
     rootViewController: ConsumeViewController())
   private let calendarViewController = UINavigationController(
     rootViewController: CalendarViewController())
+  private let allLookingViewController = UINavigationController(
+    rootViewController: AllLookingViewController())
 
   // MARK: - View Life Cycle
 
@@ -34,9 +36,13 @@ class RootTabBarViewController: UITabBarController {
       title: "가계부", image: UIImage(systemName: "book.closed.fill"), tag: 1)
     calendarViewController.tabBarItem = UITabBarItem(
       title: "정보", image: UIImage(systemName: "calendar"), tag: 2)
+    allLookingViewController.tabBarItem = UITabBarItem(
+      title: "전체", image: UIImage(systemName: "ellipsis"), tag: 3)
 
     setViewControllers(
-      [mainViewController, consumeViewController, calendarViewController], animated: true)
+      [
+        mainViewController, consumeViewController, calendarViewController, allLookingViewController,
+      ], animated: true)
   }
 
 }

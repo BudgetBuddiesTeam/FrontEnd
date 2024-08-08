@@ -13,8 +13,9 @@ final class FaceChartView: UIView {
   let monthLabel = {
     let label = UILabel()
     label.text = "6월"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 16, weight: .semibold)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.textAlignment = .center
     return label
   }()
 
@@ -44,17 +45,16 @@ final class FaceChartView: UIView {
 
   let centerImageView = {
     let image = UIImageView()
-    image.image = UIImage(named: "BasicFace")
+      image.image = BudgetBuddiesAsset.AppImage.Face.basicFace.image
     image.contentMode = .scaleAspectFit
     return image
   }()
 
   let commentView = {
     let view = UIView()
-    view.backgroundColor = #colorLiteral(red: 1, green: 0.8156862745, blue: 0.1137254902, alpha: 1)
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     view.layer.cornerRadius = 14
-    view.layer.borderColor = #colorLiteral(
-      red: 1, green: 0.8156862745, blue: 0.1137254902, alpha: 1)
+    view.layer.borderColor = BudgetBuddiesAsset.AppColor.logoLine1.color.cgColor
     view.layer.borderWidth = 1
     view.layer.shadowColor = UIColor.black.cgColor
     view.layer.shadowOpacity = 0.3
@@ -67,14 +67,55 @@ final class FaceChartView: UIView {
     let label = UILabel()
     label.text = "이번달에는 유흥에 1만원 이상 쓰면 안돼요!"
     label.textColor = .white
-    label.font = .systemFont(ofSize: 14, weight: .medium)
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textAlignment = .center
     return label
   }()
 
+  let spendTitleLabel = {
+    let label = UILabel()
+    label.text = "총 소비액"
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    label.textAlignment = .center
+    return label
+  }()
+
+  let remainTitleLabel = {
+    let label = UILabel()
+    label.text = "총 잔여액"
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    label.textAlignment = .center
+    return label
+  }()
+
+  let totalSpendLabel = {
+    let label = UILabel()
+    label.text = "612,189원"
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.textAlignment = .center
+    return label
+  }()
+
+  let totalRemainLabel = {
+    let label = UILabel()
+    label.text = "112,189원"
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.textAlignment = .center
+    return label
+  }()
+
+  let separatorView = {
+    let view = UIView()
+    view.backgroundColor = .lightGray
+    return view
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-
     setup()
     setConst()
   }
@@ -85,11 +126,14 @@ final class FaceChartView: UIView {
 
   private func setup() {
 
-    _ = [beforeButton, monthLabel, afterButton].map {
+    [beforeButton, monthLabel, afterButton].forEach {
       self.monthStackView.addArrangedSubview($0)
     }
 
-    [monthStackView, pieChartView, centerImageView, commentView, commentLabel].forEach {
+    [
+      monthStackView, pieChartView, centerImageView, commentView, commentLabel, spendTitleLabel,
+      totalSpendLabel, separatorView, remainTitleLabel, totalRemainLabel,
+    ].forEach {
       self.addSubview($0)
     }
 
@@ -98,17 +142,19 @@ final class FaceChartView: UIView {
 
   private func setConst() {
     beforeButton.snp.makeConstraints {
-      $0.width.height.equalTo(14)
+      $0.width.equalTo(4)
+      $0.height.equalTo(14)
     }
 
     afterButton.snp.makeConstraints {
-      $0.width.height.equalTo(14)
+      $0.width.equalTo(4)
+      $0.height.equalTo(14)
     }
 
     monthStackView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(20)
-      $0.leading.equalToSuperview().offset(140)
-      $0.trailing.equalToSuperview().offset(-140)
+      $0.leading.equalToSuperview().offset(100)
+      $0.trailing.equalToSuperview().offset(-100)
     }
 
     pieChartView.snp.makeConstraints {
@@ -123,7 +169,7 @@ final class FaceChartView: UIView {
     }
 
     commentView.snp.makeConstraints {
-      $0.top.equalTo(pieChartView.snp.bottom).offset(20)
+      $0.top.equalTo(pieChartView.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(40)
       $0.trailing.equalToSuperview().offset(-40)
     }
@@ -131,11 +177,39 @@ final class FaceChartView: UIView {
     commentLabel.snp.makeConstraints {
       $0.edges.equalToSuperview().inset(8)
     }
+    spendTitleLabel.snp.makeConstraints {
+      $0.top.equalTo(commentView.snp.bottom).offset(30)
+      $0.leading.equalToSuperview().offset(70)
+    }
+
+    totalSpendLabel.snp.makeConstraints {
+      $0.top.equalTo(spendTitleLabel.snp.bottom).offset(4)
+      $0.leading.equalToSuperview().offset(60)
+    }
+
+    separatorView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.top.equalTo(spendTitleLabel.snp.top)
+      $0.bottom.equalTo(totalSpendLabel.snp.bottom)
+      $0.width.equalTo(1)
+    }
+
+    remainTitleLabel.snp.makeConstraints {
+      $0.top.equalTo(commentView.snp.bottom).offset(30)
+      $0.trailing.equalToSuperview().offset(-70)
+    }
+
+    totalRemainLabel.snp.makeConstraints {
+      $0.top.equalTo(remainTitleLabel.snp.bottom).offset(4)
+      $0.trailing.equalToSuperview().offset(-60)
+    }
   }
 
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "")
-    dataSet.colors = [UIColor.systemYellow, UIColor.systemGray6]
+    dataSet.colors = [
+      BudgetBuddiesAsset.AppColor.coreYellow.color, BudgetBuddiesAsset.AppColor.barGray.color,
+    ]
     dataSet.drawValuesEnabled = false
     dataSet.sliceSpace = 2
     dataSet.selectionShift = 5  // 슬라이스의 두께를 줄임
@@ -151,5 +225,10 @@ final class FaceChartView: UIView {
     pieChartView.legend.enabled = false
     pieChartView.notifyDataSetChanged()
     pieChartView.animate(xAxisDuration: 1.4, easingOption: .easeOutBack)  // 애니메이션을 추가
+  }
+
+  func updateLabels(spend: String, remain: String) {
+    totalSpendLabel.text = spend
+    totalRemainLabel.text = remain
   }
 }

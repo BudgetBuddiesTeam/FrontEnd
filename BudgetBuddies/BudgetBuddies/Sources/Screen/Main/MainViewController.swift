@@ -20,7 +20,7 @@ final class MainViewController: UIViewController {
     return label
   }()
 
-  let monthNaviButton = {
+  lazy var monthNaviButton = {
     let button = UIButton(type: .custom)
     button.setTitle("이번 달 레포트", for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -35,7 +35,7 @@ final class MainViewController: UIViewController {
     return button
   }()
 
-  let analysisNaviButton = {
+  lazy var analysisNaviButton = {
     let button = UIButton(type: .custom)
     button.setTitle("비교 분석 레포트", for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -50,6 +50,10 @@ final class MainViewController: UIViewController {
     return button
   }()
 
+  override func viewWillAppear(_ animated: Bool) {
+    setNavi()
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -60,6 +64,21 @@ final class MainViewController: UIViewController {
     view.addSubview(analysisNaviButton)
 
     setConst()
+  }
+
+  func setNavi() {
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
+    appearance.shadowColor = nil
+
+    navigationController?.navigationBar.standardAppearance = appearance
+    navigationController?.navigationBar.compactAppearance = appearance
+    navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
+    backBarButtonItem.tintColor = .black
+    self.navigationItem.backBarButtonItem = backBarButtonItem
   }
 
   func setConst() {

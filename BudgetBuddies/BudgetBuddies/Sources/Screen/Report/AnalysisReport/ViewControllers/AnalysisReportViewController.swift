@@ -32,16 +32,16 @@ final class AnalysisReportViewController: UIViewController {
     return label
   }()
 
-  let rangeEditButton = {
+  lazy var rangeEditButton = {
     let button = UIButton(type: .custom)
     button.setTitle("범위변경", for: .normal)
     button.setTitleColor(.orange, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    button.backgroundColor = .systemOrange
+    button.backgroundColor = BudgetBuddiesAsset.AppColor.face.color
     button.layer.cornerRadius = 10
     button.layer.borderWidth = 1
     button.layer.borderColor = UIColor.systemOrange.cgColor
-    button.backgroundColor = .white
+    button.addTarget(self, action: #selector(ageEditButtonTapped), for: .touchUpInside)
     return button
   }()
 
@@ -81,22 +81,35 @@ final class AnalysisReportViewController: UIViewController {
   lazy var comsumeReportView = {
     let view = TopStackView()
     view.titleLabel.text = "소비 레포트"
-    view.totalButton.addTarget(self, action: #selector(goalTotalButtonTapped), for: .touchUpInside)
+    view.totalButton.addTarget(
+      self, action: #selector(consumeTotalButtonTapped), for: .touchUpInside)
     return view
   }()
 
-  let barChartView = BarChartView()
+  let reportBarChartView = {
+    let view = ReportBarChartView()
+    view.backgroundColor = .white
+    view.layer.cornerRadius = 20
+    view.layer.borderWidth = 1
+    view.layer.borderColor = UIColor.white.cgColor
+    view.layer.shadowColor = UIColor.black.cgColor
+    view.layer.shadowOpacity = 0.3
+    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+    view.layer.shadowRadius = 4
+    return view
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupViews()
     setupConstraints()
-    //        setupPieChart()
+    setupChart()
+    setupPieChart()
     setupBarChart()
   }
 
-  func setupViews() {
+  private func setupViews() {
     view.backgroundColor = .white
     navigationItem.title = "또래 비교 분석 레포트"
 
@@ -105,7 +118,7 @@ final class AnalysisReportViewController: UIViewController {
 
     [
       titleLabel, ageGenderLabel, rangeEditButton, ageView, goalReportView, goalChartView,
-      comsumeReportView, barChartView,
+      comsumeReportView, reportBarChartView,
     ].forEach {
       contentView.addSubview($0)
     }
@@ -115,7 +128,7 @@ final class AnalysisReportViewController: UIViewController {
     }
   }
 
-  func setupConstraints() {
+  private func setupConstraints() {
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -132,7 +145,7 @@ final class AnalysisReportViewController: UIViewController {
     }
 
     ageView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+      $0.top.equalTo(titleLabel.snp.bottom).offset(16)
       $0.leading.equalTo(contentView).offset(16)
       $0.trailing.equalTo(contentView).offset(-16)
       $0.height.equalTo(60)
@@ -151,7 +164,7 @@ final class AnalysisReportViewController: UIViewController {
     }
 
     goalReportView.snp.makeConstraints {
-      $0.top.equalTo(ageView.snp.bottom).offset(8)
+      $0.top.equalTo(ageView.snp.bottom).offset(24)
       $0.leading.equalTo(contentView).offset(16)
       $0.trailing.equalTo(contentView).offset(-16)
       $0.height.equalTo(40)
@@ -164,49 +177,78 @@ final class AnalysisReportViewController: UIViewController {
     }
 
     comsumeReportView.snp.makeConstraints {
-      $0.top.equalTo(goalChartView.snp.bottom).offset(30)
+      $0.top.equalTo(goalChartView.snp.bottom).offset(24)
       $0.leading.equalToSuperview().offset(16)
       $0.trailing.equalToSuperview().offset(-16)
+      $0.height.equalTo(40)
     }
 
-    barChartView.snp.makeConstraints { make in
-      make.top.equalTo(comsumeReportView.snp.bottom).offset(16)
-      make.left.equalTo(contentView).offset(16)
-      make.right.equalTo(contentView).offset(-16)
-      make.height.equalTo(200)
-      make.bottom.equalTo(contentView)
+    reportBarChartView.snp.makeConstraints {
+      $0.top.equalTo(comsumeReportView.snp.bottom).offset(10)
+      $0.leading.equalTo(contentView).offset(16)
+      $0.trailing.equalTo(contentView).offset(-16)
+      $0.bottom.equalTo(contentView).offset(-16)
+      $0.height.equalTo(300)
     }
   }
 
-  //    private func setupPieChart() {
-  //        let entries = [
-  //            PieChartDataEntry(value: 40, label: "패션"),
-  //            PieChartDataEntry(value: 30, label: "쇼핑"),
-  //            PieChartDataEntry(value: 20, label: "식비"),
-  //            PieChartDataEntry(value: 10, label: "카페")
+  private func setupPieChart() {
+    let entries = [
+      PieChartDataEntry(value: 40),
+      PieChartDataEntry(value: 30),
+      PieChartDataEntry(value: 20),
+      PieChartDataEntry(value: 10),
+    ]
+    goalChartView.setupChart(entries: entries)
+  }
+
+  private func setupChart() {
+    let chartData = [
+      (rank: "1위", category: "패션", value: 120000, color: UIColor.systemBlue),
+      (rank: "2위", category: "쇼핑", value: 100000, color: UIColor.systemYellow),
+      (rank: "3위", category: "식비", value: 80000, color: UIColor.systemOrange),
+      (rank: "4위", category: "카페", value: 60000, color: UIColor.systemCyan),
+    ]
+    goalChartView.setChartData(data: chartData)
+  }
+
+  //    private func setupChart() {
+  //        let data = [
+  //            (rank: "1위", category: "패션", value: 112, color: BudgetBuddiesAsset.AppColor.logoLine2.color),
+  //            (rank: "2위", category: "유흥", value: 98, color: BudgetBuddiesAsset.AppColor.coreYellow.color),
+  //            (rank: "3위", category: "식비", value: 72, color: BudgetBuddiesAsset.AppColor.face.color),
+  //            (rank: "4위", category: "카페", value: 72, color: BudgetBuddiesAsset.AppColor.face.color)
   //        ]
-  //        let dataSet = PieChartDataSet(entries: entries, label: "소비 습관")
-  //        dataSet.colors = ChartColorTemplates.material()
-  //        let data = PieChartData(dataSet: dataSet)
-  //        pieChartView.data = data
+  //        goalChartView.setChartData(data: data)
   //    }
 
-  func setupBarChart() {
-    let entries = [
-      BarChartDataEntry(x: 1, y: 112),
-      BarChartDataEntry(x: 2, y: 98),
-      BarChartDataEntry(x: 3, y: 72),
+  private func setupBarChart() {
+    let data = [
+      (rank: "1위", category: "패션", value: 112, color: BudgetBuddiesAsset.AppColor.logoLine2.color),
+      (rank: "2위", category: "유흥", value: 98, color: BudgetBuddiesAsset.AppColor.coreYellow.color),
+      (rank: "3위", category: "문화", value: 72, color: BudgetBuddiesAsset.AppColor.face.color),
     ]
-    let dataSet = BarChartDataSet(entries: entries, label: "소비 항목")
-    dataSet.colors = [UIColor.systemOrange]
-    let data = BarChartData(dataSet: dataSet)
-    barChartView.data = data
+    reportBarChartView.setChartData(data: data)
+  }
+
+  @objc func ageEditButtonTapped() {
+    if let naviController = self.navigationController {
+      let AnalysisReportVC = AgeEditViewController()
+      naviController.pushViewController(AnalysisReportVC, animated: true)
+    }
   }
 
   @objc func goalTotalButtonTapped(_ gesture: UITapGestureRecognizer) {
     if let naviController = self.navigationController {
-      let AnalysisReportVC = AnalysisReportViewController()
-      naviController.pushViewController(AnalysisReportVC, animated: true)
+      let goalReportVC = GoalReportViewController()
+      naviController.pushViewController(goalReportVC, animated: true)
+    }
+  }
+
+  @objc func consumeTotalButtonTapped() {
+    if let naviController = self.navigationController {
+      let consumeReportVC = ConsumeReportViewController()
+      naviController.pushViewController(consumeReportVC, animated: true)
     }
   }
 }

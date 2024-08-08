@@ -50,7 +50,7 @@ class MainCalendarCell: UITableViewCell {
     InfoModel(
       title: "국가장학금 나줘요", startDate: "2024-07-14", endDate: "2024-07-18", infoType: .support),
     InfoModel(title: "어쩔거야", startDate: "2024-07-17", endDate: "2024-07-24", infoType: .discount),
-    InfoModel(title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-30", infoType: .support),
+    InfoModel(title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-31", infoType: .support),
   ]
 
   // UI Components

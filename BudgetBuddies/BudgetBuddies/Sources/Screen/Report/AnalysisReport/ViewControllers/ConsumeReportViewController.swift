@@ -23,19 +23,19 @@ final class ConsumeReportViewController: UIViewController {
 
   let reports: [ReportModel] = [
     ReportModel(
-      categoryImage: UIImage(named: "foodIcon2")!, rank: "1", title: "식비", amount: "123,180",
+      categoryImage: UIImage(named: "FoodIcon2") ?? UIImage(), rank: "1", title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-      categoryImage: UIImage(named: "shoppingIcon2")!, rank: "2", title: "식비", amount: "123,180",
+      categoryImage: UIImage(named: "ShoppingIcon2") ?? UIImage(), rank: "2", title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-      categoryImage: UIImage(named: "fashionIcon2")!, rank: "3", title: "식비", amount: "123,180",
+      categoryImage: UIImage(named: "FashionIcon2") ?? UIImage(), rank: "3", title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-      categoryImage: UIImage(named: "cultureIcon2")!, rank: "4", title: "식비", amount: "123,180",
+      categoryImage: UIImage(named: "CultureIcon2") ?? UIImage(), rank: "4", title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-      categoryImage: UIImage(named: "trafficIcon2")!, rank: "5", title: "식비", amount: "123,180",
+      categoryImage: UIImage(named: "TrafficIcon2") ?? UIImage(), rank: "5", title: "식비", amount: "123,180",
       description: "50,000"),
   ]
 

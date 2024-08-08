@@ -45,7 +45,7 @@ final class FaceChartView: UIView {
 
   let centerImageView = {
     let image = UIImageView()
-    image.image = UIImage(named: "basicFace")
+      image.image = BudgetBuddiesAsset.AppImage.Face.basicFace.image
     image.contentMode = .scaleAspectFit
     return image
   }()

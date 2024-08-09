@@ -38,7 +38,8 @@ let project = Project(
         .external(name: "Alamofire"),
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
-        .external(name: "Moya")
+        .external(name: "Moya"),
+        .external(name: "Kingfisher"),
       ],
       settings: settings
     )

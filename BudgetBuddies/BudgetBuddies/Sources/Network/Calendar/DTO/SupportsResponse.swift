@@ -1,5 +1,5 @@
 //
-//  DiscountResponse.swift
+//  SupportsResponse.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/8/24.
@@ -7,41 +7,41 @@
 
 import Foundation
 
-// MARK: - DiscountResponse
-struct DiscountResponse: Codable {
+// MARK: - SupportInfoResponse
+struct SupportsResponse: Codable {
     let totalPages, totalElements, size: Int
-    let content: [DiscountContent]
+    let content: [SupportContent]
     let number: Int
-    let sort: DiscountSort
-    let pageable: DiscountPageable
+    let sort: SupportSort
+    let pageable: SupportPageable
     let numberOfElements: Int
     let first, last, empty: Bool
 }
 
 // MARK: - Content
-struct DiscountContent: Codable {
+struct SupportContent: Codable {
     let id: Int
     let title, startDate, endDate: String
-    let anonymousNumber, discountRate, likeCount: Int
+    let anonymousNumber, likeCount: Int
     let siteURL, thumbnailURL: String
 
     enum CodingKeys: String, CodingKey {
-        case id, title, startDate, endDate, anonymousNumber, discountRate, likeCount
+        case id, title, startDate, endDate, anonymousNumber, likeCount
         case siteURL = "siteUrl"
         case thumbnailURL = "thumbnailUrl"
     }
 }
 
 // MARK: - Pageable
-struct DiscountPageable: Codable {
+struct SupportPageable: Codable {
     let offset: Int
-    let sort: DiscountSort
+    let sort: SupportSort
     let unpaged, paged: Bool
     let pageNumber, pageSize: Int
 }
 
 // MARK: - Sort
-struct DiscountSort: Codable {
+struct SupportSort: Codable {
     let empty, unsorted, sorted: Bool
 }
 

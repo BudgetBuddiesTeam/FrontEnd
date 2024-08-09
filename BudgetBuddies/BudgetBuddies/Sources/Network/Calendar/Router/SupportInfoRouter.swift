@@ -9,13 +9,6 @@ import Foundation
 import Moya
 
 // 입력할 파라미터 값
-// 일단 여기다 구현해놓고, 나중에 빼야할 듯
-struct InfoRequest {
-    let year: Int
-    let month: Int
-    let page: Int
-    let size: Int
-}
 
 enum SupportInfoRouter {
     case getSupports(request: InfoRequest)
@@ -25,7 +18,7 @@ extension SupportInfoRouter: TargetType {
     
     // 기본 도메인 작성
     var baseURL: URL {
-        return URL(string: "http://54.180.148.40:8080")!
+        return URL(string: ServerInfo.baseURL)!
     }
     
     // path 작성

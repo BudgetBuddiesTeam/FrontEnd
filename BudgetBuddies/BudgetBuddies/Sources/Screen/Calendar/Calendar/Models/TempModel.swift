@@ -11,7 +11,7 @@ import UIKit
 // 추후에 api연결할 때 제대로 구현하겠습니다!
 // 임시 모델
 
-// 이거는 할인, 지원 정보 모델
+// 이거는 할인, 지원 정보 모델 (캘린더에 표시되는 일정 모델임)
 struct InfoModel {
   let title: String?
   let startDate: String?

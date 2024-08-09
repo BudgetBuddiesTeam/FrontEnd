@@ -18,15 +18,19 @@ class InformationCell: UITableViewCell {
 
   weak var delegate: InformationCellDelegate?
 
-  // 임시 링크 (모델에 타이틀, 기간, 할인률, 링크 다 가지고 있을 거임)
-  var urlString: String = ""
-
-  //  enum InfoType {
-  //    case discount
-  //    case support
-  //  }
+  var urlString: String = "" // customDelegate로 넘겨줘야하기 때문에 따로 보관
 
   var infoType: InfoType?
+    
+    var support: SupportContent? {
+        didSet {
+            guard let support = support else { return }
+            
+            self.infoTitleLabel.text = support.title
+            self.dateLabel.text = support.dateRangeString
+            self.urlString = support.siteURL
+        }
+    }
 
   var likesToggle: Bool = false
   var likes: Int = 0

@@ -10,20 +10,22 @@ import UIKit
 
 final class InfoListViewController: UIViewController {
   // MARK: - Properties
-  enum InfoType {
-    case discount
-    case support
-  }
 
   var infoType: InfoType
 
   var previousScrollOffset: CGFloat = 0.0
   var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+    
+    // networking
+    var supportInfoManager = SupportInfoManager.shared
+    var supports: [SupportContent] = []
+    var infoRequest: InfoRequest?
 
   // MARK: - UI Components
   lazy var tableView = UITableView()
+    
 
-  // MARK: - Life Cycle
+  // MARK: - Life Cycle ⭐️
   init(infoType: InfoType) {
     self.infoType = infoType
     super.init(nibName: nil, bundle: nil)
@@ -40,9 +42,41 @@ final class InfoListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+      setupData()
     setupNavigationBar()
     setupTableView()
   }
+    // MARK: - Set up Data
+    private func setupData() {
+        // 할인정보, 지원정보 request는 동일
+        self.infoRequest = InfoRequest(year: 2024, month: 8, page: 0, size: 10)
+        guard let infoRequest = self.infoRequest else { return }
+        
+        switch infoType {
+        case .discount:
+            print("할인정도 불러오기")
+        case .support:
+            print("--------------지원정보 불러오기--------------")
+            print(#function)
+            supportInfoManager.fetchSupports(request: infoRequest) { result in
+                switch result {
+                case .success(let response):
+                    print("데이터 디코딩 성공")
+                    self.supports = response.content
+                    dump(self.supports)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
+                case .failure(let error):
+                    print("데이터 디코딩 실패")
+                    print(error.localizedDescription)
+                    
+                }
+            }
+        }
+        
+    }
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
@@ -110,8 +144,18 @@ final class InfoListViewController: UIViewController {
 
 // MARK: - UITableView DataSource
 extension InfoListViewController: UITableViewDataSource {
+    
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+      switch infoType {
+          
+      case .discount:
+          return 10
+          
+      case .support:
+          let supportsCount = self.supports.count
+          print("셀 개수: \(supportsCount)")
+          return supportsCount + 1 // 제일 위에 빈 셀 포함
+       }
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -151,10 +195,11 @@ extension InfoListViewController: UITableViewDataSource {
 
         // 대리자 설정
         informationCell.delegate = self
-
-        informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
-        informationCell.dateLabel.text = "08.17 ~ 08.20"
-        informationCell.urlString = "https://www.google.com"
+          
+          // 데이터 받기
+          let support = supports[indexPath.row - 1]
+          
+          informationCell.support = support
 
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)

@@ -12,7 +12,7 @@ final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
 
-  var calendarModel: YearMonth? {
+  var yearMonth: YearMonth? {
     didSet {
       self.tableView.reloadData()
     }
@@ -42,7 +42,7 @@ final class CalendarViewController: UIViewController {
       let currentYear = calendar.component(.year, from: currentDate)
       let currentMonth = calendar.component(.month, from: currentDate)
 
-      self.calendarModel = YearMonth(year: currentYear, month: currentMonth)
+      self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
 //    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
   }
 
@@ -107,8 +107,8 @@ extension CalendarViewController: UITableViewDataSource {
         as! MainCalendarCell
 
       // 임시로 날짜 전달
-      if let calendarModel = calendarModel {
-        mainCalendarCell.ymModel = calendarModel
+      if let calendarModel = yearMonth {
+        mainCalendarCell.yearMonth = calendarModel
         mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
         // 여기서 나중에 특정월에있는 할인지원정보들 fetch해서 보내기
       }
@@ -233,7 +233,7 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
   // 년도, 달 바꾸기 완료 버튼을 누르는 시점
   func didTapSelectButton(year: Int, month: Int) {
     print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
-    self.calendarModel = YearMonth(year: year, month: month)
+    self.yearMonth = YearMonth(year: year, month: month)
   }
 }
 
@@ -242,7 +242,7 @@ extension CalendarViewController: MainCalendarCellDelegate {
   // 년도, 달 바꾸기 버튼 누르는 시점
   func didTapSelectYearMonth(in cell: MainCalendarCell) {
     let vc = MonthPickerViewController()
-    vc.calendarModel = calendarModel
+    vc.yearMonth = yearMonth
 
     vc.delegate = self
 
@@ -270,7 +270,7 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
       vc.title = "8월 지원정보"  // 추후에 데이터 받기
     }
 
-      vc.yearMonth = self.calendarModel
+      vc.yearMonth = self.yearMonth
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

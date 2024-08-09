@@ -20,9 +20,9 @@ class MainCalendarCell: UITableViewCell {
 
   let week = ["일", "월", "화", "수", "목", "금", "토"]
 
-  var ymModel: YearMonth? {
+  var yearMonth: YearMonth? {
     didSet {
-      guard let ymModel = ymModel else { return }
+      guard let ymModel = yearMonth else { return }
       print("\(ymModel.year!)년 \(ymModel.month!)월 전달받음")
     }
   }
@@ -161,7 +161,7 @@ class MainCalendarCell: UITableViewCell {
     backView.setNeedsLayout()
     backView.layoutIfNeeded()
 
-    if let ymModel = ymModel {
+    if let ymModel = yearMonth {
       guard let year = ymModel.year else { return }
       guard let month = ymModel.month else { return }
       setupDateOfCalendar(year: year, month: month)

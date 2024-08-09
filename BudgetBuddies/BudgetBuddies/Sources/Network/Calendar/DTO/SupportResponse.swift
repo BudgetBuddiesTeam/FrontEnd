@@ -1,5 +1,5 @@
 //
-//  SupportInfoResponse.swift
+//  SupportResponse.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/8/24.
@@ -8,18 +8,18 @@
 import Foundation
 
 // MARK: - SupportInfoResponse
-struct SupportInfoResponse: Codable {
+struct SupportResponse: Codable {
     let totalPages, totalElements, size: Int
-    let content: [SupportInfoContent]
+    let content: [SupportContent]
     let number: Int
-    let sort: SupportInfoSort
-    let pageable: SupportInfoPageable
+    let sort: SupportSort
+    let pageable: SupportPageable
     let numberOfElements: Int
     let first, last, empty: Bool
 }
 
 // MARK: - Content
-struct SupportInfoContent: Codable {
+struct SupportContent: Codable {
     let id: Int
     let title, startDate, endDate: String
     let anonymousNumber, likeCount: Int
@@ -33,15 +33,15 @@ struct SupportInfoContent: Codable {
 }
 
 // MARK: - Pageable
-struct SupportInfoPageable: Codable {
+struct SupportPageable: Codable {
     let offset: Int
-    let sort: SupportInfoSort
+    let sort: SupportSort
     let unpaged, paged: Bool
     let pageNumber, pageSize: Int
 }
 
 // MARK: - Sort
-struct SupportInfoSort: Codable {
+struct SupportSort: Codable {
     let empty, unsorted, sorted: Bool
 }
 

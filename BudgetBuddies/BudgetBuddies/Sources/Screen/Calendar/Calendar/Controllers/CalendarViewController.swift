@@ -12,7 +12,6 @@ final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
 
-  // 일단 임시로 2024.07
   var calendarModel: YearMonth? {
     didSet {
       self.tableView.reloadData()
@@ -37,7 +36,14 @@ final class CalendarViewController: UIViewController {
 
   // MARK: - Set up Data
   private func setupData() {
-    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
+      let currentDate = Date()
+      let calendar = Calendar.current
+
+      let currentYear = calendar.component(.year, from: currentDate)
+      let currentMonth = calendar.component(.month, from: currentDate)
+
+      self.calendarModel = YearMonth(year: currentYear, month: currentMonth)
+//    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
   }
 
   // MARK: - Set up NavigationBar
@@ -251,18 +257,20 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
     in cell: InfoTitleWithButtonCell, infoType: InfoType
   ) {
 
-    let vc: UIViewController
+//    let vc: UIViewController
+      let vc: InfoListViewController
 
     switch infoType {
     case .discount:
-
       vc = InfoListViewController(infoType: .discount)
       vc.title = "8월 할인정보"  // 추후에 데이터 받기
+        
     case .support:
       vc = InfoListViewController(infoType: .support)
       vc.title = "8월 지원정보"  // 추후에 데이터 받기
     }
 
+      vc.yearMonth = self.calendarModel
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

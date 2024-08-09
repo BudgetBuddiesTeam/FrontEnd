@@ -22,6 +22,14 @@ final class InfoListViewController: UIViewController {
     var supports: [SupportContent] = []
     var discounts: [DiscountContent] = []
     var infoRequest: InfoRequest?
+    
+    // 전달받을 년월
+    var yearMonth: YearMonth? { // didSet 지워도 ok
+        didSet {
+            guard let yearMonth = yearMonth else { return }
+            print("InfoListViewController: \(yearMonth)")
+        }
+    }
 
   // MARK: - UI Components
   lazy var tableView = UITableView()
@@ -43,7 +51,8 @@ final class InfoListViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+      print("InfoListViewController: \(#function)")
+      
       setupData()
     setupNavigationBar()
     setupTableView()
@@ -51,7 +60,13 @@ final class InfoListViewController: UIViewController {
     // MARK: - Set up Data
     private func setupData() {
         // 할인정보, 지원정보 request는 동일
-        self.infoRequest = InfoRequest(year: 2024, month: 8, page: 0, size: 10)
+        print("InfoListViewController: \(#function)")
+        guard let yearMonth = self.yearMonth else { return }
+        guard let year = yearMonth.year else { return }
+        guard let month = yearMonth.month else { return }
+        print("InfoListViewController: \(year)년 \(month)월")
+        
+        self.infoRequest = InfoRequest(year: year, month: month, page: 0, size: 10)
         guard let infoRequest = self.infoRequest else { return }
         
         switch infoType {

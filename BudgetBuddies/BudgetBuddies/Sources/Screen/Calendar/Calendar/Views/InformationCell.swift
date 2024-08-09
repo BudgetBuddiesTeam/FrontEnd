@@ -7,6 +7,7 @@
 
 import SnapKit
 import UIKit
+import Kingfisher
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
@@ -29,6 +30,10 @@ class InformationCell: UITableViewCell {
             self.infoTitleLabel.text = support.title
             self.dateLabel.text = support.dateRangeString
             self.urlString = support.siteURL
+            
+            if let url = URL(string: support.thumbnailURL) {
+                self.logoImageView.kf.setImage(with: url)
+            }
         }
     }
     
@@ -39,8 +44,13 @@ class InformationCell: UITableViewCell {
             self.infoTitleLabel.text = discount.title
             self.dateLabel.text = discount.dateRangeString
             self.urlString = discount.siteURL
+            
             if let discountRate = discount.discountRate {
                 self.percentLabel.text = String(discountRate)
+            }
+            
+            if let url = URL(string: discount.thumbnailURL) {
+                self.logoImageView.kf.setImage(with: url)
             }
         }
     }

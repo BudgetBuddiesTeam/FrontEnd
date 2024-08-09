@@ -18,7 +18,9 @@ final class InfoListViewController: UIViewController {
     
     // networking
     var supportInfoManager = SupportInfoManager.shared
+    var discountInfoManager = DiscountInfoManager.shared
     var supports: [SupportContent] = []
+    var discounts: [DiscountContent] = []
     var infoRequest: InfoRequest?
 
   // MARK: - UI Components
@@ -54,10 +56,26 @@ final class InfoListViewController: UIViewController {
         
         switch infoType {
         case .discount:
-            print("할인정도 불러오기")
+            print("--------------할인정보 불러오기--------------")
+            discountInfoManager.fetchDiscounts(request: infoRequest) { result in
+                switch result {
+                case .success(let response):
+                    print("데이터 디코딩 성공")
+                    self.discounts = response.content
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
+                case .failure(let error):
+                    print("데이터 디코딩 실패")
+                    print(error.localizedDescription)
+                }
+            }
+            
         case .support:
             print("--------------지원정보 불러오기--------------")
-            print(#function)
+            
             supportInfoManager.fetchSupports(request: infoRequest) { result in
                 switch result {
                 case .success(let response):
@@ -149,11 +167,11 @@ extension InfoListViewController: UITableViewDataSource {
       switch infoType {
           
       case .discount:
-          return 10
+          let discountsCount = self.discounts.count
+          return discountsCount + 1 // 제일 위에 빈 셀 포함
           
       case .support:
           let supportsCount = self.supports.count
-          print("셀 개수: \(supportsCount)")
           return supportsCount + 1 // 제일 위에 빈 셀 포함
        }
   }
@@ -175,10 +193,9 @@ extension InfoListViewController: UITableViewDataSource {
         // 대리자 설정
         informationCell.delegate = self
 
-        informationCell.infoTitleLabel.text = "지그재그 썸머세일"
-        informationCell.dateLabel.text = "08.17 ~ 08.20"
-        informationCell.percentLabel.text = "~80%"
-        informationCell.urlString = "https://www.naver.com"
+          // 데이터 전달
+          let discount = discounts[indexPath.row - 1]
+          informationCell.discount = discount
 
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)

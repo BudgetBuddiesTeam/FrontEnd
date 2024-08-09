@@ -22,7 +22,8 @@ struct DiscountsResponse: Codable {
 struct DiscountContent: Codable {
     let id: Int
     let title, startDate, endDate: String
-    let anonymousNumber, discountRate, likeCount: Int
+    let anonymousNumber, likeCount: Int
+    let discountRate: Int?
     let siteURL, thumbnailURL: String
 
     enum CodingKeys: String, CodingKey {

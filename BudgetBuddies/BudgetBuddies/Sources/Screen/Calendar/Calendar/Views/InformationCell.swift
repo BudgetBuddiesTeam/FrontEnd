@@ -31,6 +31,19 @@ class InformationCell: UITableViewCell {
             self.urlString = support.siteURL
         }
     }
+    
+    var discount: DiscountContent? {
+        didSet {
+            guard let discount = discount else { return }
+            
+            self.infoTitleLabel.text = discount.title
+            self.dateLabel.text = discount.dateRangeString
+            self.urlString = discount.siteURL
+            if let discountRate = discount.discountRate {
+                self.percentLabel.text = String(discountRate)
+            }
+        }
+    }
 
   var likesToggle: Bool = false
   var likes: Int = 0

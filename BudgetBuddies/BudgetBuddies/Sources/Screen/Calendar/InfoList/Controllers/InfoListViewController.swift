@@ -63,7 +63,7 @@ final class InfoListViewController: UIViewController {
                 case .success(let response):
                     print("데이터 디코딩 성공")
                     self.supports = response.content
-                    dump(self.supports)
+                    
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -166,7 +166,7 @@ extension InfoListViewController: UITableViewDataSource {
 
     } else {
       switch infoType {
-      case .discount:
+      case .discount: // 할인정보
         let informationCell =
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
@@ -187,7 +187,8 @@ extension InfoListViewController: UITableViewDataSource {
 
         informationCell.selectionStyle = .none
         return informationCell
-      case .support:
+          
+      case .support: // 지원정보
         let informationCell =
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
@@ -196,9 +197,8 @@ extension InfoListViewController: UITableViewDataSource {
         // 대리자 설정
         informationCell.delegate = self
           
-          // 데이터 받기
+          // 데이터 전달
           let support = supports[indexPath.row - 1]
-          
           informationCell.support = support
 
         // 자간 조절

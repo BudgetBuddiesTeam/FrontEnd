@@ -15,13 +15,16 @@ class AllLookingViewController: UIViewController {
   private let allLookingView = AllLookingView()
 
   // MARK: - View Life Cycle
+  
+  override func loadView() {
+    view = allLookingView
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
     setNavigation()
-    connectView()
     setTapGesture()
   }
 
@@ -29,14 +32,6 @@ class AllLookingViewController: UIViewController {
 
   private func setNavigation() {
     navigationItem.backBarButtonItem = UIBarButtonItem()
-  }
-
-  private func connectView() {
-    view.addSubview(allLookingView)
-
-    allLookingView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
-    }
   }
 
   private func setTapGesture() {

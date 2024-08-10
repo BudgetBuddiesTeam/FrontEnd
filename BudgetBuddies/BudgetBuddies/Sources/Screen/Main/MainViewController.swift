@@ -2,116 +2,66 @@
 //  MainViewController.swift
 //  BudgetBuddies
 //
-//  Created by 이승진 on 7/24/24.
+//  Created by Jiwoong CHOI on 8/5/24.
 //
 
-import Charts
-import DGCharts
 import SnapKit
 import UIKit
 
-final class MainViewController: UIViewController {
+class MainViewController: UIViewController {
+  
+  // MARK: - Properties
+  
+  private let mainScrollView = UIScrollView()
+  private let mainView = MainView()
 
-  let titleLabel = {
-    let label = UILabel()
-    label.text = "홈"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 22, weight: .semibold)
-    return label
-  }()
-
-  lazy var monthNaviButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("이번 달 레포트", for: .normal)
-    button.setTitleColor(.white, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    button.layer.cornerRadius = 10
-    button.layer.masksToBounds = true
-    button.layer.borderWidth = 1
-    button.layer.borderColor =
-      UIColor(red: 255 / 255, green: 208 / 255, blue: 29 / 255, alpha: 1).cgColor
-    button.backgroundColor = UIColor(red: 255 / 255, green: 208 / 255, blue: 29 / 255, alpha: 1)
-    button.addTarget(self, action: #selector(monthNaviButtonTapped), for: .touchUpInside)
-    return button
-  }()
-
-  lazy var analysisNaviButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("비교 분석 레포트", for: .normal)
-    button.setTitleColor(.white, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    button.layer.cornerRadius = 10
-    button.layer.masksToBounds = true
-    button.layer.borderWidth = 1
-    button.layer.borderColor =
-      UIColor(red: 255 / 255, green: 208 / 255, blue: 29 / 255, alpha: 1).cgColor
-    button.backgroundColor = UIColor(red: 255 / 255, green: 208 / 255, blue: 29 / 255, alpha: 1)
-    button.addTarget(self, action: #selector(analysisNaviButtonTapped), for: .touchUpInside)
-    return button
-  }()
-
-  override func viewWillAppear(_ animated: Bool) {
-    setNavi()
-  }
-
+  // MARK: - View Life Cycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    view.backgroundColor = .white
-
-    view.addSubview(titleLabel)
-    view.addSubview(monthNaviButton)
-    view.addSubview(analysisNaviButton)
-
-    setConst()
+    setLayout()
+    setUICollectionViewDelegate()
   }
 
-  func setNavi() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
-    appearance.shadowColor = nil
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
-  }
-
-  func setConst() {
-    titleLabel.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-      $0.leading.equalToSuperview().offset(16)
+  // MARK: - Methods
+  
+  private func setLayout() {
+    mainScrollView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    mainScrollView.contentInsetAdjustmentBehavior = .never
+    mainScrollView.bounces = false
+    mainScrollView.showsVerticalScrollIndicator = false
+    mainScrollView.showsHorizontalScrollIndicator = false
+    
+    view.addSubview(mainScrollView)
+    mainScrollView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
     }
-
-    monthNaviButton.snp.makeConstraints {
-      $0.centerX.centerY.equalToSuperview()
-      $0.width.equalTo(360)
-      $0.height.equalTo(60)
-    }
-
-    analysisNaviButton.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalToSuperview().offset(-100)
-      $0.width.equalTo(360)
-      $0.height.equalTo(60)
+    
+    mainScrollView.addSubview(mainView)
+    mainView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalToSuperview()
     }
   }
-
-  @objc func monthNaviButtonTapped() {
-    if let naviController = self.navigationController {
-      let MonthReportVC = MonthReportViewController()
-      naviController.pushViewController(MonthReportVC, animated: true)
-    }
+  
+  private func setUICollectionViewDelegate() {
+    mainView.monthlyBudgetInfoCollectionView.delegate = self
+    mainView.monthlyBudgetInfoCollectionView.dataSource = self
   }
+}
 
-  @objc func analysisNaviButtonTapped() {
-    if let naviController = self.navigationController {
-      let AnalysisReportVC = AnalysisReportViewController()
-      naviController.pushViewController(AnalysisReportVC, animated: true)
-    }
+extension MainViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 4
   }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthlyBudgetInfoCollectionViewCell.reuseIdentifier, for: indexPath) as! MonthlyBudgetInfoCollectionViewCell
+    
+    return cell
+  }
+}
+
+extension MainViewController: UICollectionViewDelegate {
+  
 }

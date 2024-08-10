@@ -9,13 +9,13 @@ import Foundation
 
 // MARK: - CategoryResponse
 struct CategoryResponse: Codable {
-    let id, userID: Int
-    let name: String
-    let isDefault: Bool
+  let id, userID: Int
+  let name: String
+  let isDefault: Bool
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userID = "userId"
-        case name, isDefault
-    }
+  enum CodingKeys: String, CodingKey {
+    case id
+    case userID = "userId"
+    case name, isDefault
+  }
 }

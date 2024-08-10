@@ -13,11 +13,11 @@ enum CategoryRouter {
   case getCategory(userID: String, categoryResponse: CategoryResponse)
 }
 
-extension CategoryRouter : TargetType {
+extension CategoryRouter: TargetType {
   var baseURL: URL {
     return URL(string: ServerInfo.baseURL)!
   }
-  
+
   var path: String {
     switch self {
     case .addCategory:
@@ -26,7 +26,7 @@ extension CategoryRouter : TargetType {
       return "/get/\(userID)"
     }
   }
-  
+
   var method: Moya.Method {
     switch self {
     case .addCategory:
@@ -35,7 +35,7 @@ extension CategoryRouter : TargetType {
       return .get
     }
   }
-  
+
   var task: Moya.Task {
     switch self {
     case let .addCategory(categoryRequest):
@@ -44,10 +44,9 @@ extension CategoryRouter : TargetType {
       return .requestPlain
     }
   }
-  
-  var headers: [String : String]? {
+
+  var headers: [String: String]? {
     return ["Content-type": "application/json"]
   }
-  
-  
+
 }

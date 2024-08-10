@@ -64,15 +64,16 @@ class InformationCell: UITableViewCell {
     // 캘린더 메인 페이지에서 받을 정보
     var recommend: TInfoDtoList? {
         didSet {
-            print(#function)
             guard let recommend = recommend else { return }
             self.infoTitleLabel.text = recommend.title
             self.dateLabel.text = recommend.dateRangeString
             self.urlString = recommend.siteURL
             
             if let discountRate = recommend.discountRate {
-                self.percentLabel.text = String(discountRate)
+                self.percentLabel.text = "~" + String(discountRate) + "%"
             }
+            
+            self.likesLabel.text = String(recommend.likeCount)
             
         }
     }

@@ -30,7 +30,7 @@ let project = Project(
         "BASEURL": "http://$(Base_Domain)",
         "NSAppTransportSecurity": [
           "NSAllowsArbitraryLoads": true
-        ]
+        ],
       ]),
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],

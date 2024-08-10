@@ -141,16 +141,20 @@ final class MonthReportViewController: UIViewController {
 
   let spendGoals: [SpendGoalModel] = [
     SpendGoalModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비", amount: "123,180", progress: 0.66,
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비",
+      amount: "123,180", progress: 0.66,
       consumption: "132,800", remaining: "200,000"),
     SpendGoalModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, title: "쇼핑", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, title: "쇼핑",
+      amount: "123,180",
       progress: 0.66, consumption: "132,800", remaining: "200,000"),
     SpendGoalModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, title: "패션", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, title: "패션",
+      amount: "123,180",
       progress: 0.66, consumption: "132,800", remaining: "200,000"),
     SpendGoalModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비", amount: "123,180", progress: 0.66,
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비",
+      amount: "123,180", progress: 0.66,
       consumption: "132,800", remaining: "200,000"),
   ]
 
@@ -163,8 +167,12 @@ final class MonthReportViewController: UIViewController {
   }()
 
   let accountBooks: [AccountBookModel] = [
-    AccountBookModel(icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원", description: "과자"),
-    AccountBookModel(icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원", description: "과자"),
+    AccountBookModel(
+      icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원",
+      description: "과자"),
+    AccountBookModel(
+      icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원",
+      description: "과자"),
   ]
 
   override func viewDidLoad() {

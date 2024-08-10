@@ -1,5 +1,5 @@
 //
-//  Consume.swift
+//  ConsumeView.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 7/22/24.
@@ -14,7 +14,7 @@ import UIKit
  2. chevron의 크기를 재조정. 텍스트의 높이와 동일하게 수정해볼 것.
  */
 
-class Consume: UIView {
+class ConsumeView: UIView {
   // MARK: - Properties
 
   private let stringWidth = 100
@@ -123,6 +123,8 @@ class Consume: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+
+    backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     setupLayout()
   }
 

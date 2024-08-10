@@ -5,9 +5,9 @@
 //  Created by Jiwoong CHOI on 7/23/24.
 //
 
+import Moya
 import SnapKit
 import UIKit
-import Moya
 
 class CategoryPlusViewController: UIViewController {
   // MARK: - Properties
@@ -55,7 +55,7 @@ class CategoryPlusViewController: UIViewController {
         debugPrint(err.localizedDescription)
       }
     }
-    
+
     dismiss(animated: true)
   }
 }

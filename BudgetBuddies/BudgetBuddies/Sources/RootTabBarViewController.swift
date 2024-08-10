@@ -8,9 +8,10 @@
 import UIKit
 
 class RootTabBarViewController: UITabBarController {
+
   // MARK: - Properties
 
-  private let mainViewController = UINavigationController(rootViewController: MainViewController())
+  private let mainViewController = MainViewController()
   private let consumeViewController = UINavigationController(
     rootViewController: ConsumeViewController())
   private let calendarViewController = UINavigationController(
@@ -22,14 +23,14 @@ class RootTabBarViewController: UITabBarController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    view.backgroundColor = .white
     setTabBar()
   }
 
   // MARK: - Methods
 
   private func setTabBar() {
+    tabBar.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+
     mainViewController.tabBarItem = UITabBarItem(
       title: "홈", image: UIImage(systemName: "house"), tag: 0)
     consumeViewController.tabBarItem = UITabBarItem(

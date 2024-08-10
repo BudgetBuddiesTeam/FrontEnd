@@ -11,27 +11,22 @@ import UIKit
 class ConsumeViewController: UIViewController {
   // MARK: - Properties
 
-  private var consume = Consume()
+  private var consumeView = ConsumeView()
 
   // MARK: - View Life Cycle
+
+  override func loadView() {
+    view = consumeView
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    setConsumeView()
     setNavigation()
     setButtonAction()
   }
 
   // MARK: - Methods
-
-  private func setConsumeView() {
-    view.addSubview(consume)
-
-    consume.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
-    }
-  }
 
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
@@ -46,9 +41,9 @@ class ConsumeViewController: UIViewController {
   }
 
   private func setButtonAction() {
-    consume.categorySettingButton.addTarget(
+    consumeView.categorySettingButton.addTarget(
       self, action: #selector(categorySettingButtonTapped), for: .touchUpInside)
-    consume.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+    consumeView.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
   }
 
   @objc

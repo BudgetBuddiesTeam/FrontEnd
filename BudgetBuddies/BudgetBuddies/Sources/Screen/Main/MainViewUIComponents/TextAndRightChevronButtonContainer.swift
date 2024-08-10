@@ -42,17 +42,21 @@ class TextAndRightChevronButtonContainer: UIView {
 
   private func setLayout() {
     self.backgroundColor = .clear
-    
+
+    // Add Subviews
     self.addSubviews(
-      self.textLabel,
-      self.rightChevronImageView
+      textLabel,
+      rightChevronImageView
     )
 
+    // Make UI Components Contraint
+    // 텍스트 레이블
     textLabel.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
       make.leading.equalToSuperview().inset(5)
     }
 
+    // 오른쪽 쉐브론 이미지뷰
     rightChevronImageView.snp.makeConstraints { make in
       make.width.equalTo(10)
       make.height.equalTo(13)

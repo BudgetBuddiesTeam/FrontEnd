@@ -23,19 +23,24 @@ final class GoalReportViewController: UIViewController {
 
   let reports: [ReportModel] = [
     ReportModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, rank: "1", title: "식비", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, rank: "1",
+      title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, rank: "2", title: "식비", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, rank: "2",
+      title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, rank: "3", title: "식비", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, rank: "3",
+      title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, rank: "4", title: "식비", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, rank: "4",
+      title: "식비", amount: "123,180",
       description: "50,000"),
     ReportModel(
-        categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, rank: "5", title: "식비", amount: "123,180",
+      categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, rank: "5",
+      title: "식비", amount: "123,180",
       description: "50,000"),
   ]
 

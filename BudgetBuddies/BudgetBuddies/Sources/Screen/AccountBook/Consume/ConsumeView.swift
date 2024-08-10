@@ -123,7 +123,7 @@ class ConsumeView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     setupLayout()
   }

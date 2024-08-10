@@ -12,14 +12,19 @@ class HomeTextLabel: UILabel {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
+    setLayout()
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Methods
+
+  private func setLayout() {
     self.text = "홈"
     self.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     self.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
   }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
 }

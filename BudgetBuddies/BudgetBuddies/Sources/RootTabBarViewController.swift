@@ -8,7 +8,7 @@
 import UIKit
 
 class RootTabBarViewController: UITabBarController {
-  
+
   // MARK: - Properties
 
   private let mainViewController = MainViewController()
@@ -30,7 +30,7 @@ class RootTabBarViewController: UITabBarController {
 
   private func setTabBar() {
     tabBar.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
-    
+
     mainViewController.tabBarItem = UITabBarItem(
       title: "홈", image: UIImage(systemName: "house"), tag: 0)
     consumeViewController.tabBarItem = UITabBarItem(

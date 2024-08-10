@@ -8,7 +8,12 @@
 import SnapKit
 import UIKit
 
-class SummaryInfoContainerView: UIView {
+/*
+ 해야 할 일
+ 1. 반응형 차트 연결
+ */
+
+final class SummaryInfoContainerView: UIView {
 
   // MARK: - Properties
 
@@ -45,8 +50,21 @@ class SummaryInfoContainerView: UIView {
     return label
   }()
 
+  // 반응형 차트
+  /*
+
+
+
+
+   반응형 차트 UI 컴포넌트 선언 필요!!
+
+
+
+
+   */
+
   // 코멘트 박스 이미지
-  private let commentBoxImageView : UIImageView = {
+  private let commentBoxImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.image = BudgetBuddiesAsset.AppImage.MainViewImage.commentBox.image
     return imageView
@@ -71,19 +89,27 @@ class SummaryInfoContainerView: UIView {
   }()
 
   // 카테고리 1 잔여금액 표시 컨테이너
-  private let firstCategoryContainer = LeftMoneyContainer(categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, categoryText: "식비", leftPrice: 132800)
-  
+  private let firstCategoryLeftMoneyContainer = LeftMoneyContainer(
+    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, categoryText: "식비",
+    leftPrice: 132800)
+
   // 카테고리 2 잔여금액 표시 컨테이너
-  private let secondCategoryContainer = LeftMoneyContainer(categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, categoryText: "쇼핑", leftPrice: 132800)
+  private let secondCategoryLeftMoneyContainer = LeftMoneyContainer(
+    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image,
+    categoryText: "쇼핑", leftPrice: 132800)
 
   // 카테고리 3 잔여금액 표시 컨테이너
-  private let thirdCategoryContainer = LeftMoneyContainer(categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, categoryText: "문화생활", leftPrice: 132800)
+  private let thirdCategoryLeftMoneyContainer = LeftMoneyContainer(
+    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image,
+    categoryText: "문화생활", leftPrice: 132800)
 
   // 카테고리 4 잔여금액 표시 컨테이너
-  private let fourthCategoryContainer = LeftMoneyContainer(categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, categoryText: "패션", leftPrice: 1328000)
+  private let fourthCategoryLeftMoneyContainer = LeftMoneyContainer(
+    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image,
+    categoryText: "패션", leftPrice: 1_328_000)
 
   // 구분선
-  private let divider : UIView = {
+  private let divider: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.strokeGray1.color
     view.snp.makeConstraints { make in
@@ -94,7 +120,7 @@ class SummaryInfoContainerView: UIView {
   }()
 
   // "목표 수정하기" 버튼 컨테이너
-  private let editGoalButtonContaier : TextAndRightChevronButtonContainer = {
+  private let editGoalButtonContaier: TextAndRightChevronButtonContainer = {
     let lookEntireButtonContainer = TextAndRightChevronButtonContainer()
     lookEntireButtonContainer.textLabel.text = "목표 수정하기"
     lookEntireButtonContainer.snp.makeConstraints { make in
@@ -119,85 +145,119 @@ class SummaryInfoContainerView: UIView {
   private func setLayout() {
     self.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     self.layer.cornerRadius = 20
-    
+
     // Add Subviews
     self.addSubviews(
       monthRoundedRectangle,
       mainTextLabel,
+      /*
+
+
+
+       반응형 차트 View 추가 코드 필요!!
+
+
+
+       */
       commentBoxImageView,
       leftMoneyTextLabel,
-      firstCategoryContainer,
-      secondCategoryContainer,
-      thirdCategoryContainer,
-      fourthCategoryContainer,
+      firstCategoryLeftMoneyContainer,
+      secondCategoryLeftMoneyContainer,
+      thirdCategoryLeftMoneyContainer,
+      fourthCategoryLeftMoneyContainer,
       divider,
       editGoalButtonContaier
     )
-    
+
     monthRoundedRectangle.addSubview(monthText)
-    
+
     commentBoxImageView.addSubview(commentTextLabel)
-    
+
     // Make UI Componenets Contraints
-    
+    // 월별 표시 아이콘 배경 도형
     monthRoundedRectangle.snp.makeConstraints { make in
       make.leading.top.equalToSuperview().inset(20)
     }
-    
+
+    // 월별 표시 아이콘 배경 도형 위 텍스트
     monthText.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
-    
+
+    // 메인 텍스트 레이블
     mainTextLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(20)
       make.top.equalToSuperview().inset(62)
     }
-    
+
+    /*
+
+
+
+
+
+     반응형 차트 레이아웃 코드 필요!!
+
+
+
+
+
+     */
+
+    // 코멘트 박스 이미지
     commentBoxImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalToSuperview().inset(172)
     }
-    
+
+    // 코멘트 텍스트 레이블
     commentTextLabel.snp.makeConstraints { make in
       make.height.equalTo(24)
       make.bottom.equalToSuperview().inset(11)
       make.leading.equalToSuperview().inset(20)
     }
-    
+
+    // "잔여금액" 텍스트 레이블
     leftMoneyTextLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(23)
       make.top.equalToSuperview().inset(240)
     }
-    
-    firstCategoryContainer.snp.makeConstraints { make in
+
+    // 카테고리 1 잔여금액 표시 컨테이너
+    firstCategoryLeftMoneyContainer.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(20)
       make.trailing.equalToSuperview().inset(184)
       make.top.equalToSuperview().inset(263)
     }
-    
-    secondCategoryContainer.snp.makeConstraints { make in
+
+    // 카테고리 2 잔여금액 표시 컨테이너
+    secondCategoryLeftMoneyContainer.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(20)
       make.leading.equalToSuperview().inset(184)
-      make.centerY.equalTo(firstCategoryContainer)
+      make.centerY.equalTo(firstCategoryLeftMoneyContainer)
     }
-    
-    thirdCategoryContainer.snp.makeConstraints { make in
-      make.leading.equalTo(firstCategoryContainer.snp.leading)
-      make.trailing.equalTo(firstCategoryContainer.snp.trailing)
-      make.top.equalTo(firstCategoryContainer.snp.bottom).offset(12)
+
+    // 카테고리 3 잔여금액 표시 컨테이너
+    thirdCategoryLeftMoneyContainer.snp.makeConstraints { make in
+      make.leading.equalTo(firstCategoryLeftMoneyContainer.snp.leading)
+      make.trailing.equalTo(firstCategoryLeftMoneyContainer.snp.trailing)
+      make.top.equalTo(firstCategoryLeftMoneyContainer.snp.bottom).offset(12)
     }
-    
-    fourthCategoryContainer.snp.makeConstraints { make in
-      make.trailing.equalTo(secondCategoryContainer.snp.trailing)
-      make.leading.equalTo(secondCategoryContainer.snp.leading)
-      make.centerY.equalTo(thirdCategoryContainer)
+
+    // 카테고리 4 잔여금액 표시 컨테이너
+    fourthCategoryLeftMoneyContainer.snp.makeConstraints { make in
+      make.trailing.equalTo(secondCategoryLeftMoneyContainer.snp.trailing)
+      make.leading.equalTo(secondCategoryLeftMoneyContainer.snp.leading)
+      make.centerY.equalTo(thirdCategoryLeftMoneyContainer)
     }
-    
+
+    // 구분선
     divider.snp.makeConstraints { make in
       make.bottom.equalToSuperview().inset(57)
       make.centerX.equalToSuperview()
     }
-    
+
+    // "목표 수정하기" 버튼 컨테이너
     editGoalButtonContaier.snp.makeConstraints { make in
       make.bottom.equalToSuperview().inset(18)
       make.centerX.equalToSuperview()

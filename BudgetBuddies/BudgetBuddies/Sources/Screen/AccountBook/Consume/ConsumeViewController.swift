@@ -14,7 +14,7 @@ class ConsumeViewController: UIViewController {
   private var consumeView = ConsumeView()
 
   // MARK: - View Life Cycle
-  
+
   override func loadView() {
     view = consumeView
   }

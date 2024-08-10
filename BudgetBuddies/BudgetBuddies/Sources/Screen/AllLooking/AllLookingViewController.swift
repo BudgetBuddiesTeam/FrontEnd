@@ -15,7 +15,7 @@ class AllLookingViewController: UIViewController {
   private let allLookingView = AllLookingView()
 
   // MARK: - View Life Cycle
-  
+
   override func loadView() {
     view = allLookingView
   }

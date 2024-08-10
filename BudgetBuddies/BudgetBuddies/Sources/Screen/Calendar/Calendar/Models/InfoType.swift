@@ -8,6 +8,6 @@
 import Foundation
 
 enum InfoType {
-    case discount
-    case support
+  case discount
+  case support
 }

@@ -5,9 +5,9 @@
 //  Created by 김승원 on 7/26/24.
 //
 
+import Kingfisher
 import SnapKit
 import UIKit
-import Kingfisher
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
@@ -19,64 +19,64 @@ class InformationCell: UITableViewCell {
 
   weak var delegate: InformationCellDelegate?
 
-  var urlString: String = "" // customDelegate로 넘겨줘야하기 때문에 따로 보관
+  var urlString: String = ""  // customDelegate로 넘겨줘야하기 때문에 따로 보관
 
   var infoType: InfoType?
-    
-    // 전체보기 - 지원
-    var support: SupportContent? {
-        didSet {
-            guard let support = support else { return }
-            
-            self.infoTitleLabel.text = support.title
-            self.dateLabel.text = support.dateRangeString
-            self.urlString = support.siteURL
-            
-            if let url = URL(string: support.thumbnailURL) {
-                self.logoImageView.kf.setImage(with: url)
-            }
-            
-            self.likesLabel.text = String(support.likeCount)
-        }
+
+  // 전체보기 - 지원
+  var support: SupportContent? {
+    didSet {
+      guard let support = support else { return }
+
+      self.infoTitleLabel.text = support.title
+      self.dateLabel.text = support.dateRangeString
+      self.urlString = support.siteURL
+
+      if let url = URL(string: support.thumbnailURL) {
+        self.logoImageView.kf.setImage(with: url)
+      }
+
+      self.likesLabel.text = String(support.likeCount)
     }
-    
-    // 전체보기 - 할인
-    var discount: DiscountContent? {
-        didSet {
-            guard let discount = discount else { return }
-            
-            self.infoTitleLabel.text = discount.title
-            self.dateLabel.text = discount.dateRangeString
-            self.urlString = discount.siteURL
-            
-            if let discountRate = discount.discountRate {
-                self.percentLabel.text = "~" + String(discountRate) + "%"
-            }
-            
-            if let url = URL(string: discount.thumbnailURL) {
-                self.logoImageView.kf.setImage(with: url)
-            }
-            
-            self.likesLabel.text = String(discount.likeCount)
-        }
+  }
+
+  // 전체보기 - 할인
+  var discount: DiscountContent? {
+    didSet {
+      guard let discount = discount else { return }
+
+      self.infoTitleLabel.text = discount.title
+      self.dateLabel.text = discount.dateRangeString
+      self.urlString = discount.siteURL
+
+      if let discountRate = discount.discountRate {
+        self.percentLabel.text = "~" + String(discountRate) + "%"
+      }
+
+      if let url = URL(string: discount.thumbnailURL) {
+        self.logoImageView.kf.setImage(with: url)
+      }
+
+      self.likesLabel.text = String(discount.likeCount)
     }
-    
-    // 캘린더 메인 페이지에서 받을 정보
-    var recommend: TInfoDtoList? {
-        didSet {
-            guard let recommend = recommend else { return }
-            self.infoTitleLabel.text = recommend.title
-            self.dateLabel.text = recommend.dateRangeString
-            self.urlString = recommend.siteURL
-            
-            if let discountRate = recommend.discountRate {
-                self.percentLabel.text = "~" + String(discountRate) + "%"
-            }
-            
-            self.likesLabel.text = String(recommend.likeCount)
-            
-        }
+  }
+
+  // 캘린더 메인 페이지에서 받을 정보
+  var recommend: TInfoDtoList? {
+    didSet {
+      guard let recommend = recommend else { return }
+      self.infoTitleLabel.text = recommend.title
+      self.dateLabel.text = recommend.dateRangeString
+      self.urlString = recommend.siteURL
+
+      if let discountRate = recommend.discountRate {
+        self.percentLabel.text = "~" + String(discountRate) + "%"
+      }
+
+      self.likesLabel.text = String(recommend.likeCount)
+
     }
+  }
 
   var likesToggle: Bool = false
   var likes: Int = 0
@@ -112,7 +112,7 @@ class InformationCell: UITableViewCell {
     lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     lb.setCharacterSpacing(-0.4)
     lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-      lb.numberOfLines = 0
+    lb.numberOfLines = 0
     return lb
   }()
 
@@ -298,7 +298,7 @@ class InformationCell: UITableViewCell {
     }
 
     infoTitleLabel.snp.makeConstraints { make in
-//      make.height.equalTo(24)
+      //      make.height.equalTo(24)
     }
 
     dateIconImageView.snp.makeConstraints { make in
@@ -319,7 +319,7 @@ class InformationCell: UITableViewCell {
 
     verticalStackView.snp.makeConstraints { make in
       make.leading.equalTo(logoImageView.snp.trailing).offset(12)
-        make.trailing.equalTo(commentsIconImageView.snp.leading).offset(-8)
+      make.trailing.equalTo(commentsIconImageView.snp.leading).offset(-8)
       make.centerY.equalTo(logoImageView.snp.centerY)
     }
 

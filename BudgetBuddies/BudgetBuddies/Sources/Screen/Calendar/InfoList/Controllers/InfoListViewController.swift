@@ -15,25 +15,24 @@ final class InfoListViewController: UIViewController {
 
   var previousScrollOffset: CGFloat = 0.0
   var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
-    
-    // networking
-    var supportInfoManager = SupportInfoManager.shared
-    var discountInfoManager = DiscountInfoManager.shared
-    var supports: [SupportContent] = []
-    var discounts: [DiscountContent] = []
-    var infoRequest: InfoRequest?
-    
-    // 전달받을 년월
-    var yearMonth: YearMonth? { // didSet 지워도 ok
-        didSet {
-            guard let yearMonth = yearMonth else { return }
-            print("InfoListViewController: \(yearMonth)")
-        }
+
+  // networking
+  var supportInfoManager = SupportInfoManager.shared
+  var discountInfoManager = DiscountInfoManager.shared
+  var supports: [SupportContent] = []
+  var discounts: [DiscountContent] = []
+  var infoRequest: InfoRequest?
+
+  // 전달받을 년월
+  var yearMonth: YearMonth? {  // didSet 지워도 ok
+    didSet {
+      guard let yearMonth = yearMonth else { return }
+      print("InfoListViewController: \(yearMonth)")
     }
+  }
 
   // MARK: - UI Components
   lazy var tableView = UITableView()
-    
 
   // MARK: - Life Cycle ⭐️
   init(infoType: InfoType) {
@@ -51,65 +50,65 @@ final class InfoListViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-      print("InfoListViewController: \(#function)")
-      
-      setupData()
+    print("InfoListViewController: \(#function)")
+
+    setupData()
     setupNavigationBar()
     setupTableView()
   }
-    // MARK: - Set up Data
-    private func setupData() {
-        // 할인정보, 지원정보 request는 동일
-        print("InfoListViewController: \(#function)")
-        guard let yearMonth = self.yearMonth else { return }
-        guard let year = yearMonth.year else { return }
-        guard let month = yearMonth.month else { return }
-        print("InfoListViewController: \(year)년 \(month)월")
-        
-        self.infoRequest = InfoRequest(year: year, month: month, page: 0, size: 10)
-        guard let infoRequest = self.infoRequest else { return }
-        
-        switch infoType {
-        case .discount:
-            print("--------------할인정보 불러오기--------------")
-            discountInfoManager.fetchDiscounts(request: infoRequest) { result in
-                switch result {
-                case .success(let response):
-                    print("데이터 디코딩 성공")
-                    self.discounts = response.content
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    
-                case .failure(let error):
-                    print("데이터 디코딩 실패")
-                    print(error.localizedDescription)
-                }
-            }
-            
-        case .support:
-            print("--------------지원정보 불러오기--------------")
-            
-            supportInfoManager.fetchSupports(request: infoRequest) { result in
-                switch result {
-                case .success(let response):
-                    print("데이터 디코딩 성공")
-                    self.supports = response.content
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    
-                case .failure(let error):
-                    print("데이터 디코딩 실패")
-                    print(error.localizedDescription)
-                    
-                }
-            }
+  // MARK: - Set up Data
+  private func setupData() {
+    // 할인정보, 지원정보 request는 동일
+    print("InfoListViewController: \(#function)")
+    guard let yearMonth = self.yearMonth else { return }
+    guard let year = yearMonth.year else { return }
+    guard let month = yearMonth.month else { return }
+    print("InfoListViewController: \(year)년 \(month)월")
+
+    self.infoRequest = InfoRequest(year: year, month: month, page: 0, size: 10)
+    guard let infoRequest = self.infoRequest else { return }
+
+    switch infoType {
+    case .discount:
+      print("--------------할인정보 불러오기--------------")
+      discountInfoManager.fetchDiscounts(request: infoRequest) { result in
+        switch result {
+        case .success(let response):
+          print("데이터 디코딩 성공")
+          self.discounts = response.content
+
+          DispatchQueue.main.async {
+            self.tableView.reloadData()
+          }
+
+        case .failure(let error):
+          print("데이터 디코딩 실패")
+          print(error.localizedDescription)
         }
-        
+      }
+
+    case .support:
+      print("--------------지원정보 불러오기--------------")
+
+      supportInfoManager.fetchSupports(request: infoRequest) { result in
+        switch result {
+        case .success(let response):
+          print("데이터 디코딩 성공")
+          self.supports = response.content
+
+          DispatchQueue.main.async {
+            self.tableView.reloadData()
+          }
+
+        case .failure(let error):
+          print("데이터 디코딩 실패")
+          print(error.localizedDescription)
+
+        }
+      }
     }
+
+  }
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
@@ -177,18 +176,18 @@ final class InfoListViewController: UIViewController {
 
 // MARK: - UITableView DataSource
 extension InfoListViewController: UITableViewDataSource {
-    
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      switch infoType {
-          
-      case .discount:
-          let discountsCount = self.discounts.count
-          return discountsCount + 1 // 제일 위에 빈 셀 포함
-          
-      case .support:
-          let supportsCount = self.supports.count
-          return supportsCount + 1 // 제일 위에 빈 셀 포함
-       }
+    switch infoType {
+
+    case .discount:
+      let discountsCount = self.discounts.count
+      return discountsCount + 1  // 제일 위에 빈 셀 포함
+
+    case .support:
+      let supportsCount = self.supports.count
+      return supportsCount + 1  // 제일 위에 빈 셀 포함
+    }
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -199,7 +198,7 @@ extension InfoListViewController: UITableViewDataSource {
 
     } else {
       switch infoType {
-      case .discount: // 할인정보
+      case .discount:  // 할인정보
         let informationCell =
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
@@ -208,10 +207,10 @@ extension InfoListViewController: UITableViewDataSource {
         // 대리자 설정
         informationCell.delegate = self
 
-          // 데이터 전달
-          let discount = discounts[indexPath.row - 1]
-          informationCell.discount = discount
-          
+        // 데이터 전달
+        let discount = discounts[indexPath.row - 1]
+        informationCell.discount = discount
+
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
         informationCell.dateLabel.setCharacterSpacing(-0.3)
@@ -219,8 +218,8 @@ extension InfoListViewController: UITableViewDataSource {
 
         informationCell.selectionStyle = .none
         return informationCell
-          
-      case .support: // 지원정보
+
+      case .support:  // 지원정보
         let informationCell =
           tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
           as! InformationCell
@@ -228,10 +227,10 @@ extension InfoListViewController: UITableViewDataSource {
 
         // 대리자 설정
         informationCell.delegate = self
-          
-          // 데이터 전달
-          let support = supports[indexPath.row - 1]
-          informationCell.support = support
+
+        // 데이터 전달
+        let support = supports[indexPath.row - 1]
+        informationCell.support = support
 
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)

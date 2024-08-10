@@ -25,7 +25,7 @@ final class CalendarViewController: UIViewController {
     
     var yearMonth: YearMonth? {
       didSet {
-        self.tableView.reloadData()
+        setupData()
       }
     }
     
@@ -44,6 +44,7 @@ final class CalendarViewController: UIViewController {
     super.viewDidLoad()
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
+      setupNowYearMonth()
     setupData()
     setupNavigationBar()
     setupTableView()
@@ -54,17 +55,21 @@ final class CalendarViewController: UIViewController {
 
     setupNavigationBar()
   }
+    // MARK: - Set up Now YearMonth
+    private func setupNowYearMonth() {
+        let currentDate = Date()
+        let calendar = Calendar.current
+
+        let currentYear = calendar.component(.year, from: currentDate)
+        let currentMonth = calendar.component(.month, from: currentDate)
+
+        // 현재 시간
+        self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
+        
+    }
 
   // MARK: - Set up Data
   private func setupData() {
-      let currentDate = Date()
-      let calendar = Calendar.current
-
-      let currentYear = calendar.component(.year, from: currentDate)
-      let currentMonth = calendar.component(.month, from: currentDate)
-
-      // 현재 시간
-      self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
       
       // networking
       guard let yearMonth = self.yearMonth else { return }
@@ -143,6 +148,8 @@ extension CalendarViewController: UITableViewDataSource {
         
         let cellType = cellTypes[indexPath.row]
         
+        
+        
         switch cellType {
             // MARK: - 상단 배너
         case .banner:
@@ -192,14 +199,17 @@ extension CalendarViewController: UITableViewDataSource {
             as! InformationCell
             informationCell.configure(infoType: .discount)
             
+            
             // 대리자 설정
             informationCell.delegate = self
             
             // 데이터 전달
             if discountRecommends.indices.contains(0) {
                 informationCell.recommend = discountRecommends[0]
+                
             } else {
-                print("CalendarViewController: Index 0 is out of range.")
+                print("할인정보 1: Index 0 is out of range.")
+
             }
             
             informationCell.selectionStyle = .none
@@ -219,7 +229,7 @@ extension CalendarViewController: UITableViewDataSource {
             if discountRecommends.indices.contains(1) {
                 informationCell.recommend = discountRecommends[1]
             } else {
-                print("CalendarViewController: Index 1 is out of range.")
+                print("할인정보 2: Index 1 is out of range.")
             }
             
             informationCell.selectionStyle = .none
@@ -253,7 +263,7 @@ extension CalendarViewController: UITableViewDataSource {
             if discountRecommends.indices.contains(0) {
                 informationCell.recommend = supportRecommends[0]
             } else {
-                print("CalendarViewController: Index 0 is out of range.")
+                print("지원정보 1: Index 0 is out of range.")
             }
             
             informationCell.selectionStyle = .none
@@ -273,7 +283,7 @@ extension CalendarViewController: UITableViewDataSource {
             if discountRecommends.indices.contains(1) {
                 informationCell.recommend = supportRecommends[1]
             } else {
-                print("CalendarViewController: Index 1 is out of range.")
+                print("지원정보 2: Index 1 is out of range.")
             }
             
             informationCell.selectionStyle = .none
@@ -354,17 +364,19 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
     in cell: InfoTitleWithButtonCell, infoType: InfoType
   ) {
 
-//    let vc: UIViewController
+      guard let yearMonth = self.yearMonth else { return }
+      guard let month = yearMonth.month else { return }
+      
       let vc: InfoListViewController
 
     switch infoType {
     case .discount:
       vc = InfoListViewController(infoType: .discount)
-      vc.title = "8월 할인정보"  // 추후에 데이터 받기
+      vc.title = "\(month)월 할인정보"  // 추후에 데이터 받기
         
     case .support:
       vc = InfoListViewController(infoType: .support)
-      vc.title = "8월 지원정보"  // 추후에 데이터 받기
+      vc.title = "\(month)월 지원정보"  // 추후에 데이터 받기
     }
 
       vc.yearMonth = self.yearMonth

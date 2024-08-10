@@ -10,9 +10,9 @@ import UIKit
 
 class MonthPicker: UIView {
   // MARK: - Properties
-  var calendarModel: YearMonth? {
+  var yearMonth: YearMonth? {
     didSet {
-      guard let calendarModel = calendarModel else { return }
+      guard let calendarModel = yearMonth else { return }
       guard let year = calendarModel.year else { return }
 
       self.year = year

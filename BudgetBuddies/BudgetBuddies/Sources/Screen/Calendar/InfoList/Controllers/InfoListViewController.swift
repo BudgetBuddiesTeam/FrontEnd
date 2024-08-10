@@ -211,7 +211,7 @@ extension InfoListViewController: UITableViewDataSource {
           // 데이터 전달
           let discount = discounts[indexPath.row - 1]
           informationCell.discount = discount
-
+          
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
         informationCell.dateLabel.setCharacterSpacing(-0.3)

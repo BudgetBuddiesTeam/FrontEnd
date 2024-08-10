@@ -9,14 +9,29 @@ import SnapKit
 import UIKit
 
 final class CalendarViewController: UIViewController {
+    // MARK: - Properties
+    enum CalendarCellType {
+        case banner
+        case calendar
+        case infoTitleWithButton
+        case information
+    }
+    
+    var yearMonth: YearMonth? {
+      didSet {
+        self.tableView.reloadData()
+      }
+    }
+    
+    // networking
+    var calendarManager = CalendarManager.shared
+    
+    // 추천 정보들 (2개씩 나오는 거)
+    var discountRecommends: [TInfoDtoList] = []
+    var supportRecommends: [TInfoDtoList] = []
+
   // MARK: - UI Components
   lazy var tableView = UITableView()
-
-  var yearMonth: YearMonth? {
-    didSet {
-      self.tableView.reloadData()
-    }
-  }
 
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
@@ -42,8 +57,30 @@ final class CalendarViewController: UIViewController {
       let currentYear = calendar.component(.year, from: currentDate)
       let currentMonth = calendar.component(.month, from: currentDate)
 
+      // 현재 시간
       self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
-//    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
+      
+      // networking
+      guard let yearMonth = self.yearMonth else { return }
+      calendarManager.fetchCalendar(request: yearMonth) { result in
+          print("------------캘린더정보 불러오기-------------")
+          switch result {
+          case .success(let response):
+              print("데이터 디코딩 성공")
+//              self.recommends = response.recommendMonthInfoDto
+              self.discountRecommends = response.recommendMonthInfoDto.discountInfoDtoList
+              self.supportRecommends = response.recommendMonthInfoDto.supportInfoDtoList
+              
+              
+              DispatchQueue.main.async {
+                  self.tableView.reloadData()
+              }
+              
+          case .failure(let error):
+              print("데이터 디코딩 실패")
+              print(error.localizedDescription)
+          }
+      }
   }
 
   // MARK: - Set up NavigationBar
@@ -131,24 +168,24 @@ extension CalendarViewController: UITableViewDataSource {
       infoTitleWithButtonCell.selectionStyle = .none
       return infoTitleWithButtonCell
 
-    } else if indexPath.row == 3 || indexPath.row == 4 {  // 할인정보 셀
-      let informationCell =
+    } else if indexPath.row == 3 {  // 할인정보 셀
+        let informationCell =
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
-      informationCell.configure(infoType: .discount)
-
-      // 대리자 설정
-      informationCell.delegate = self
-
-      // 데이터 전달
-      informationCell.infoTitleLabel.text = "지그재그 썸머세일"
-      informationCell.dateLabel.text = "08.17 ~ 08.20"
-      informationCell.percentLabel.text = "~80%"
-      informationCell.urlString = "https://www.naver.com"
-
-      informationCell.selectionStyle = .none
-      return informationCell
-
+        informationCell.configure(infoType: .discount)
+        
+        // 대리자 설정
+        informationCell.delegate = self
+        
+//        dump(self.discountRecommends)
+        print("indexPath.row: \(indexPath.row)")
+        dump(discountRecommends)
+        
+        informationCell.recommend = TInfoDtoList(id: 1, title: "얌얌얌", startDate: "2024-08-10", endDate: "2024-08-12", likeCount: 0, discountRate: nil, siteURL: "https://www.naver.com")
+        
+        informationCell.selectionStyle = .none
+        return informationCell
+        
     } else if indexPath.row == 5 {  // 지원정보 타이틀, 전체보기 버튼
       let infoTitleWithButtonCell =
         tableView.dequeueReusableCell(

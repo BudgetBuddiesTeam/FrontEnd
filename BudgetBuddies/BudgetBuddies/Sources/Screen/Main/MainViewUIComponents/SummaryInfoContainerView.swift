@@ -120,14 +120,14 @@ final class SummaryInfoContainerView: UIView {
   }()
 
   // "목표 수정하기" 버튼 컨테이너
-  private let editGoalButtonContaier: TextAndRightChevronButtonContainer = {
-    let lookEntireButtonContainer = TextAndRightChevronButtonContainer()
-    lookEntireButtonContainer.textLabel.text = "목표 수정하기"
-    lookEntireButtonContainer.snp.makeConstraints { make in
+  public let editGoalButtonContaier: TextAndRightChevronButton = {
+    let buttonContainer = TextAndRightChevronButton()
+    buttonContainer.textLabel.text = "목표 수정하기"
+    buttonContainer.snp.makeConstraints { make in
       make.width.equalTo(100)
       make.height.equalTo(21)
     }
-    return lookEntireButtonContainer
+    return buttonContainer
   }()
 
   // MARK: - Initializer

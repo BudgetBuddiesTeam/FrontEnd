@@ -11,7 +11,7 @@ class RootTabBarViewController: UITabBarController {
 
   // MARK: - Properties
 
-  private let mainViewController = MainViewController()
+  private let mainViewController = UINavigationController(rootViewController: MainViewController())
   private let consumeViewController = UINavigationController(
     rootViewController: ConsumeViewController())
   private let calendarViewController = UINavigationController(

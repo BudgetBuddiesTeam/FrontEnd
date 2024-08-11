@@ -32,16 +32,16 @@ final class MainView: UIView {
   private let homeTextLabel = HomeTextLabel()
 
   // 요약 정보 컨테이너
-  private let summaryInfoContainerView = SummaryInfoContainerView()
+  public let summaryInfoContainerView = SummaryInfoContainerView()
 
   // "N월 주머니 정보" 텍스트 레이블
   private let monthlyBudgetInfoTextLabel = MonthlyBudgetInfoTextLabel()
 
-  // "N월 주머니 정보" 전체보기 버튼 컨테이너
-  private let monthlyBudgetInfoLookEntireButtonContainer: TextAndRightChevronButtonContainer = {
-    let buttonContainer = TextAndRightChevronButtonContainer()
-    buttonContainer.textLabel.text = "전체보기"
-    return buttonContainer
+  // "N월 주머니 정보" 옆 "전체보기 버튼"
+  public let monthlyBudgetInfoLookEntireButton: TextAndRightChevronButton = {
+    let button = TextAndRightChevronButton()
+    button.textLabel.text = "전체보기"
+    return button
   }()
 
   // "N월 주머니 정보" 항목들
@@ -53,12 +53,12 @@ final class MainView: UIView {
   // "N월 소비 분석" 텍스트 레이블
   private let monthlyConsumedAnalysisTextLabel = MonthlyConsumedAnalysisTextLabel()
 
-  // "N월 소비 분석" 전체보기 버튼 컨테이너
-  private let monthlyConsumedAnalysisLookEntireButtonContainer: TextAndRightChevronButtonContainer =
+  // "N월 소비 분석" 옆 "전체보기 버튼"
+  public let monthlyConsumedAnalysisLookEntireButton: TextAndRightChevronButton =
     {
-      let buttonContainer = TextAndRightChevronButtonContainer()
-      buttonContainer.textLabel.text = "전체보기"
-      return buttonContainer
+      let button = TextAndRightChevronButton()
+      button.textLabel.text = "전체보기"
+      return button
     }()
 
   /*
@@ -66,10 +66,10 @@ final class MainView: UIView {
    */
 
   // "N월 소비 분석" 항목 1
-  private let monthlyConsumedAnalysisFirstItem = MonthlyConsumedAnalysisFirstItem()
+  public let comsumedAnalysisFirstItem = MonthlyConsumedAnalysisFirstItem()
 
   // "N월 소비 분석" 항목 2
-  private let monthlyConsumedAnalysisSecondItem = MonthlyConsumedAnalysisSecondItem()
+  public let comsumedAnalysisSecondItem = MonthlyConsumedAnalysisSecondItem()
 
   // MARK: - Initializer
 
@@ -96,12 +96,12 @@ final class MainView: UIView {
       homeTextLabel,
       summaryInfoContainerView,
       monthlyBudgetInfoTextLabel,
-      monthlyBudgetInfoLookEntireButtonContainer,
+      monthlyBudgetInfoLookEntireButton,
       monthlyBudgetInfoCollectionView,
       monthlyConsumedAnalysisTextLabel,
-      monthlyConsumedAnalysisLookEntireButtonContainer,
-      monthlyConsumedAnalysisFirstItem,
-      monthlyConsumedAnalysisSecondItem
+      monthlyConsumedAnalysisLookEntireButton,
+      comsumedAnalysisFirstItem,
+      comsumedAnalysisSecondItem
     )
 
     coreYellowColorBackgroundView.snp.makeConstraints { make in
@@ -129,7 +129,7 @@ final class MainView: UIView {
       make.top.equalTo(summaryInfoContainerView.snp.bottom).offset(37)
     }
 
-    monthlyBudgetInfoLookEntireButtonContainer.snp.makeConstraints { make in
+    monthlyBudgetInfoLookEntireButton.snp.makeConstraints { make in
       make.width.equalTo(72)
       make.height.equalTo(31)
       make.trailing.equalTo(summaryInfoContainerView.snp.trailing)
@@ -148,23 +148,23 @@ final class MainView: UIView {
       make.top.equalTo(monthlyBudgetInfoCollectionView.snp.bottom).offset(32)
     }
 
-    monthlyConsumedAnalysisLookEntireButtonContainer.snp.makeConstraints { make in
+    monthlyConsumedAnalysisLookEntireButton.snp.makeConstraints { make in
       make.width.equalTo(72)
       make.height.equalTo(31)
-      make.trailing.equalTo(monthlyBudgetInfoLookEntireButtonContainer.snp.trailing)
+      make.trailing.equalTo(monthlyBudgetInfoLookEntireButton.snp.trailing)
       make.centerY.equalTo(monthlyConsumedAnalysisTextLabel)
     }
 
-    monthlyConsumedAnalysisFirstItem.snp.makeConstraints { make in
+    comsumedAnalysisFirstItem.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(16)
       make.trailing.equalToSuperview().inset(16)
       make.top.equalTo(monthlyConsumedAnalysisTextLabel.snp.bottom).offset(7)
     }
 
-    monthlyConsumedAnalysisSecondItem.snp.makeConstraints { make in
+    comsumedAnalysisSecondItem.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(16)
       make.trailing.equalToSuperview().inset(16)
-      make.top.equalTo(monthlyConsumedAnalysisFirstItem.snp.bottom).offset(12)
+      make.top.equalTo(comsumedAnalysisFirstItem.snp.bottom).offset(12)
     }
   }
 }

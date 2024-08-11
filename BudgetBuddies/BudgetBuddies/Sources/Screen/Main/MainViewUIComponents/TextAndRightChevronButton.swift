@@ -1,5 +1,5 @@
 //
-//  TextAndRightChevronButtonContainer.swift
+//  TextAndRightChevronButton.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 8/6/24.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class TextAndRightChevronButtonContainer: UIView {
+class TextAndRightChevronButton: UIButton {
   // MARK: - UI Components
 
   // 텍스트 레이블
@@ -64,5 +64,4 @@ class TextAndRightChevronButtonContainer: UIView {
       make.trailing.equalToSuperview().inset(5)
     }
   }
-
 }

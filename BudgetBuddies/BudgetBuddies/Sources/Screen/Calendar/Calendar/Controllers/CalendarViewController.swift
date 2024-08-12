@@ -9,21 +9,42 @@ import SnapKit
 import UIKit
 
 final class CalendarViewController: UIViewController {
-  // MARK: - UI Components
-  lazy var tableView = UITableView()
+  // MARK: - Properties
+  enum CalendarCellType {
+    case banner
+    case calendar
+    case discountInfoTitleWithButton
+    case firstDiscount
+    case secondDiscount
+    case supportInfoTitleWithButton
+    case firstSupport
+    case secondSupport
+  }
 
-  // 일단 임시로 2024.07
-  var calendarModel: YearMonth? {
+  var cellTypes: [CalendarCellType] = []
+
+  var yearMonth: YearMonth? {
     didSet {
-      self.tableView.reloadData()
+      setupData()
     }
   }
+
+  // networking
+  var calendarManager = CalendarManager.shared
+
+  // 추천 정보들 (2개씩 나오는 거)
+  var discountRecommends: [TInfoDtoList] = []
+  var supportRecommends: [TInfoDtoList] = []
+
+  // MARK: - UI Components
+  lazy var tableView = UITableView()
 
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
+    setupNowYearMonth()
     setupData()
     setupNavigationBar()
     setupTableView()
@@ -34,10 +55,42 @@ final class CalendarViewController: UIViewController {
 
     setupNavigationBar()
   }
+  // MARK: - Set up Now YearMonth
+  private func setupNowYearMonth() {
+    let currentDate = Date()
+    let calendar = Calendar.current
+
+    let currentYear = calendar.component(.year, from: currentDate)
+    let currentMonth = calendar.component(.month, from: currentDate)
+
+    // 현재 시간
+    self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
+
+  }
 
   // MARK: - Set up Data
   private func setupData() {
-    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
+
+    // networking
+    guard let yearMonth = self.yearMonth else { return }
+    calendarManager.fetchCalendar(request: yearMonth) { result in
+      print("------------캘린더정보 불러오기-------------")
+      switch result {
+      case .success(let response):
+        print("데이터 디코딩 성공")
+        //              self.recommends = response.recommendMonthInfoDto
+        self.discountRecommends = response.recommendMonthInfoDto.discountInfoDtoList
+        self.supportRecommends = response.recommendMonthInfoDto.supportInfoDtoList
+
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+        }
+
+      case .failure(let error):
+        print("데이터 디코딩 실패")
+        print(error.localizedDescription)
+      }
+    }
   }
 
   // MARK: - Set up NavigationBar
@@ -47,6 +100,16 @@ final class CalendarViewController: UIViewController {
 
   // MARK: - Set up TableView
   private func setupTableView() {
+    self.cellTypes = [
+      .banner,
+      .calendar,
+      .discountInfoTitleWithButton,
+      .firstDiscount,
+      .secondDiscount,
+      .supportInfoTitleWithButton,
+      .firstSupport,
+      .secondSupport,
+    ]
 
     registerTableViewCell()
 
@@ -80,14 +143,16 @@ final class CalendarViewController: UIViewController {
 // MARK: - UITableView DataSource
 extension CalendarViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 8
+    return cellTypes.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let tempCell = UITableViewCell()
-    tempCell.backgroundColor = .gray
 
-    if indexPath.row == 0 {  // 상단 배너
+    let cellType = cellTypes[indexPath.row]
+
+    switch cellType {
+    // MARK: - 상단 배너
+    case .banner:
       let bannerCell =
         tableView.dequeueReusableCell(withIdentifier: BannerCell.identifier, for: indexPath)
         as! BannerCell
@@ -95,14 +160,15 @@ extension CalendarViewController: UITableViewDataSource {
       bannerCell.selectionStyle = .none
       return bannerCell
 
-    } else if indexPath.row == 1 {  // 메인 캘린더
+    // MARK: - 메인 캘린더
+    case .calendar:
       let mainCalendarCell =
         tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath)
         as! MainCalendarCell
 
       // 임시로 날짜 전달
-      if let calendarModel = calendarModel {
-        mainCalendarCell.ymModel = calendarModel
+      if let calendarModel = yearMonth {
+        mainCalendarCell.yearMonth = calendarModel
         mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
         // 여기서 나중에 특정월에있는 할인지원정보들 fetch해서 보내기
       }
@@ -112,7 +178,8 @@ extension CalendarViewController: UITableViewDataSource {
       mainCalendarCell.selectionStyle = .none
       return mainCalendarCell
 
-    } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
+    // MARK: - 할인정보 타이틀
+    case .discountInfoTitleWithButton:
       let infoTitleWithButtonCell =
         tableView.dequeueReusableCell(
           withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
@@ -125,7 +192,8 @@ extension CalendarViewController: UITableViewDataSource {
       infoTitleWithButtonCell.selectionStyle = .none
       return infoTitleWithButtonCell
 
-    } else if indexPath.row == 3 || indexPath.row == 4 {  // 할인정보 셀
+    // MARK: - 할인정보 1
+    case .firstDiscount:
       let informationCell =
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
@@ -135,15 +203,39 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.delegate = self
 
       // 데이터 전달
-      informationCell.infoTitleLabel.text = "지그재그 썸머세일"
-      informationCell.dateLabel.text = "08.17 ~ 08.20"
-      informationCell.percentLabel.text = "~80%"
-      informationCell.urlString = "https://www.naver.com"
+      if discountRecommends.indices.contains(0) {
+        informationCell.recommend = discountRecommends[0]
+
+      } else {
+        print("할인정보 1: Index 0 is out of range.")
+
+      }
 
       informationCell.selectionStyle = .none
       return informationCell
 
-    } else if indexPath.row == 5 {  // 지원정보 타이틀, 전체보기 버튼
+    // MARK: - 할인정보 2
+    case .secondDiscount:
+      let informationCell =
+        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+        as! InformationCell
+      informationCell.configure(infoType: .discount)
+
+      // 대리자 설정
+      informationCell.delegate = self
+
+      // 데이터 전달
+      if discountRecommends.indices.contains(1) {
+        informationCell.recommend = discountRecommends[1]
+      } else {
+        print("할인정보 2: Index 1 is out of range.")
+      }
+
+      informationCell.selectionStyle = .none
+      return informationCell
+
+    // MARK: - 지원정보 타이틀
+    case .supportInfoTitleWithButton:
       let infoTitleWithButtonCell =
         tableView.dequeueReusableCell(
           withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
@@ -156,7 +248,8 @@ extension CalendarViewController: UITableViewDataSource {
       infoTitleWithButtonCell.selectionStyle = .none
       return infoTitleWithButtonCell
 
-    } else if indexPath.row == 6 || indexPath.row == 7 {  // 지원정보 셀
+    // MARK: - 지원정보 1
+    case .firstSupport:
       let informationCell =
         tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
         as! InformationCell
@@ -166,16 +259,35 @@ extension CalendarViewController: UITableViewDataSource {
       informationCell.delegate = self
 
       // 데이터 전달
-      informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
-      informationCell.dateLabel.text = "08.17 ~ 08.20"
-      informationCell.urlString = "https://www.google.com"
+      if discountRecommends.indices.contains(0) {
+        informationCell.recommend = supportRecommends[0]
+      } else {
+        print("지원정보 1: Index 0 is out of range.")
+      }
+
+      informationCell.selectionStyle = .none
+      return informationCell
+
+    // MARK: - 지원정보 2
+    case .secondSupport:
+      let informationCell =
+        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+        as! InformationCell
+      informationCell.configure(infoType: .support)
+
+      // 대리자 설정
+      informationCell.delegate = self
+
+      // 데이터 전달
+      if discountRecommends.indices.contains(1) {
+        informationCell.recommend = supportRecommends[1]
+      } else {
+        print("지원정보 2: Index 1 is out of range.")
+      }
 
       informationCell.selectionStyle = .none
       return informationCell
     }
-
-    return tempCell
-
   }
 }
 
@@ -227,7 +339,7 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
   // 년도, 달 바꾸기 완료 버튼을 누르는 시점
   func didTapSelectButton(year: Int, month: Int) {
     print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
-    self.calendarModel = YearMonth(year: year, month: month)
+    self.yearMonth = YearMonth(year: year, month: month)
   }
 }
 
@@ -236,7 +348,7 @@ extension CalendarViewController: MainCalendarCellDelegate {
   // 년도, 달 바꾸기 버튼 누르는 시점
   func didTapSelectYearMonth(in cell: MainCalendarCell) {
     let vc = MonthPickerViewController()
-    vc.calendarModel = calendarModel
+    vc.yearMonth = yearMonth
 
     vc.delegate = self
 
@@ -251,18 +363,22 @@ extension CalendarViewController: InfoTitleWithButtonCellDelegate {
     in cell: InfoTitleWithButtonCell, infoType: InfoType
   ) {
 
-    let vc: UIViewController
+    guard let yearMonth = self.yearMonth else { return }
+    guard let month = yearMonth.month else { return }
+
+    let vc: InfoListViewController
 
     switch infoType {
     case .discount:
-
       vc = InfoListViewController(infoType: .discount)
-      vc.title = "8월 할인정보"  // 추후에 데이터 받기
+      vc.title = "\(month)월 할인정보"  // 추후에 데이터 받기
+
     case .support:
       vc = InfoListViewController(infoType: .support)
-      vc.title = "8월 지원정보"  // 추후에 데이터 받기
+      vc.title = "\(month)월 지원정보"  // 추후에 데이터 받기
     }
 
+    vc.yearMonth = self.yearMonth
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

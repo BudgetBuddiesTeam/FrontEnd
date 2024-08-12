@@ -27,7 +27,10 @@ let project = Project(
             ]
           ],
         ],
-        "BASEURL": "http://$(Base_Domain)"
+        "BASEURL": "http://$(Base_Domain)",
+        "NSAppTransportSecurity": [
+          "NSAllowsArbitraryLoads": true
+        ],
       ]),
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],
@@ -36,6 +39,7 @@ let project = Project(
         .external(name: "SnapKit"),
         .external(name: "DGCharts"),
         .external(name: "Moya"),
+        .external(name: "Kingfisher"),
         .external(name: "RxSwift")
       ],
       settings: settings

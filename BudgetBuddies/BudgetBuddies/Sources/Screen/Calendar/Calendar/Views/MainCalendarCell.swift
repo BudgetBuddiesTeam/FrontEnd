@@ -131,7 +131,7 @@ class MainCalendarCell: UITableViewCell {
   var backViewMargin: UIView = {
     let view = UIView()
     //      view.layer.borderColor = UIColor.red.cgColor
-    //      view.layer.borderWidth = 1.0
+          view.layer.borderWidth = 1.0
     return view
   }()
 

@@ -1,5 +1,5 @@
 //
-//  CoreYellowBackGround.swift
+//  CoreYellowBackground.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 8/9/24.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class CoreYellowBackGround: UIView {
+class CoreYellowBackground: UIView {
   // MARK: - Initializer
 
   override init(frame: CGRect) {

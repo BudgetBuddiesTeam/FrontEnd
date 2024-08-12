@@ -17,6 +17,7 @@ class MainCalendarView: UIView {
         didSet {
             guard let yearMonth = yearMonth else { return }
             print("MainCalendarView: \(yearMonth.year!)년 \(yearMonth.month!)월")
+            layoutSubviews()
         }
     }
     
@@ -167,8 +168,10 @@ extension MainCalendarView {
     private func setupDateOfCalendar(year: Int, month: Int) {
         backViewMargin.subviews.forEach { $0.removeFromSuperview() }
         
+        // 달력 년월 텍스트 바꾸기
         self.yearMonthLabel.text = "\(year).\(String(format: "%02d", month))"
         
+        // 달력 day 그리기
         // 그리드 생성
         let daysInWeek = 7
         let totalCells = 42  // 7일 * 6주(최대)

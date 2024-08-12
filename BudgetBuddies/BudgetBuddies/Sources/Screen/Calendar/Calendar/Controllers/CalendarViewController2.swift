@@ -84,7 +84,7 @@ class CalendarViewController2: UIViewController {
         let vc = MonthPickerViewController()
         vc.yearMonth = yearMonth
         
-//        vc.delegate = self
+        vc.delegate = self
         self.present(vc, animated: true, completion: nil)
     }
 }
@@ -120,5 +120,12 @@ extension CalendarViewController2: UITableViewDataSource {
 extension CalendarViewController2: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 168
+    }
+}
+
+extension CalendarViewController2: MonthPickerViewControllerDelegate {
+    // MonthPickerViewController에서 년월 선택버튼 누르는 시점
+    func didTapSelectButton(year: Int, month: Int) {
+        self.yearMonth = YearMonth(year: year, month: month)
     }
 }

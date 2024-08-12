@@ -18,7 +18,9 @@ class CalendarView: UIView {
         let sv = UIStackView(arrangedSubviews:
                                 [bannerView,
                                  mainCalendarView,
-                                 infoColorView])
+                                 infoColorView,
+                                 discountInfoTitleWithButtonView,
+                                 discountInfoTableView])
         sv.axis = .vertical
         sv.distribution = .fill
         sv.alignment = .center
@@ -30,6 +32,13 @@ class CalendarView: UIView {
     var bannerView = BannerView()
     var mainCalendarView = MainCalendarView()
     var infoColorView = InfoColorView()
+    var discountInfoTitleWithButtonView = InfoTitleWithButtonView(infoType: .discount)
+    
+    var discountInfoTableView: UITableView = {
+        let tv = UITableView()
+        tv.separatorStyle = .none
+        return tv
+    }()
     
     // MARK: - Init ⭐️
     override init(frame: CGRect) {
@@ -77,9 +86,20 @@ class CalendarView: UIView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(510)
         }
+        
         infoColorView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(29)
+        }
+        
+        discountInfoTitleWithButtonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(64)
+        }
+        
+        discountInfoTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(168 + 168) // 일단 셀 두 개 높이로 설정
         }
     }
 }

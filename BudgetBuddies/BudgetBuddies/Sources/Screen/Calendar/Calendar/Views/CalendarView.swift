@@ -12,6 +12,9 @@ class CalendarView: UIView {
     // MARK: - Properties
     
     // MARK: - UI Components
+    var scrollView = UIScrollView()
+    var contentView = UIView()
+    
     var bannerView = BannerView()
     
     // MARK: - Init ⭐️
@@ -27,17 +30,31 @@ class CalendarView: UIView {
     
     // MARK: - Set up UI
     private func setupUI() {
-        self.backgroundColor = .red
+        self.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
         
-        self.addSubviews(bannerView)
+        self.addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+        
+        contentView.addSubviews(bannerView)
+        
         setupConstraints()
     }
     
     // MARK: - Set up Constraints
     private func setupConstraints() {
-        bannerView.snp.makeConstraints { make in
+        scrollView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        bannerView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(127)
         }
     }

@@ -20,8 +20,8 @@ class MainCalendarView: UIView {
         }
     }
     
-    // MARK: - UI Components
-    // 캘린더 뒷 배경
+    // UI Components
+    // MARK: - 캘린더 뒷 배경
     var backView: UIView = {
         let view = UIView()
         view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
@@ -35,7 +35,7 @@ class MainCalendarView: UIView {
         return view
     }()
     
-    // 년도, 월, 선택 버튼
+    // MARK: - 년도, 월, 선택 버튼
     var yearMonthLabel: UILabel = {
       let lb = UILabel()
       lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 20)
@@ -60,16 +60,11 @@ class MainCalendarView: UIView {
         sv.distribution = .fill
         sv.alignment = .center
         sv.spacing = 13
-        
-//        let tapGesture = UITapGestureRecognizer(
-//            target: self, action: #selector(didtapYearMonthStackView))
-//        sv.addGestureRecognizer(tapGesture)
-//        sv.isUserInteractionEnabled = true
-        
+        sv.isUserInteractionEnabled = true
         return sv
     }()
     
-    // 주 스택뷰
+    // MARK: - 주 스택뷰
     lazy var weekStackView: UIStackView = {
         let labels = week.map { day -> CustomDayLabel in
             let label = CustomDayLabel(dayOfWeek: day)
@@ -84,7 +79,7 @@ class MainCalendarView: UIView {
         return sv
     }()
     
-    // headerView
+    // MARK: - headerView
     private lazy var headerStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [yearMonthStackView, weekStackView])
         sv.axis = .vertical
@@ -94,18 +89,27 @@ class MainCalendarView: UIView {
         return sv
     }()
     
-    // 뒷 배경 margin뷰 (좀 더 쉽게 캘린더를 그리기 위함)
+    // MARK: - 뒷 배경 margin뷰
+    // 캘린더 그리기 보조
     var backViewMargin: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 1.0
         return view
     }()
     
-    // MARK: - Init
+    // MARK: - Init ⭐️
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+    }
+    
+    override func layoutSubviews() {
+        if let yearMonth = yearMonth {
+            guard let year = yearMonth.year,
+                  let month = yearMonth.month else { return }
+            
+            setupDateOfCalendar(year: year, month: month)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -155,6 +159,69 @@ class MainCalendarView: UIView {
             make.leading.trailing.equalToSuperview().inset(30)
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+// MARK: - Set up Date Of Calendar
+extension MainCalendarView {
+    private func setupDateOfCalendar(year: Int, month: Int) {
+        backViewMargin.subviews.forEach { $0.removeFromSuperview() }
         
+        self.yearMonthLabel.text = "\(year).\(String(format: "%02d", month))"
+        
+        // 그리드 생성
+        let daysInWeek = 7
+        let totalCells = 42  // 7일 * 6주(최대)
+        let cellWidth = (self.backViewMargin.frame.width) / CGFloat(daysInWeek)  // 뷰 너비 / 7(일)
+        let cellHeight = CGFloat(80)  // 임시로 너비와 같은 길이로 설정
+        
+        // 날짜 계산
+        let components = DateComponents(year: year, month: month)  // 구조체 생성
+        let calendar = Calendar.current  // 현재 사용 중인 캘린더 객체 반환 (ex 그리고리 달력)
+        let firstOfMonth = calendar.date(from: components)!  // DateComponents -> Date객체로 변환 (07/01)
+        let startDay = calendar.component(.weekday, from: firstOfMonth) - 1  // 시작 요일, 0: 일요일, 1: 월요일 ... 6: 토요일
+        let numberOfDays = calendar.range(of: .day, in: .month, for: firstOfMonth)!.count  // 달에 몇일까지 있는지 (28, 30, 31...)
+        
+        var weeks: [[Int]] = Array(repeating: Array(repeating: 0, count: daysInWeek), count: 6)
+        //            var dayCounter = 1
+        //    var numberOfWeeks = 0
+        
+        // 날짜 레이블 추가
+        for i in 0..<totalCells {  // 42개 셀
+            let dayBackView: UIView = {
+                let view = UIView()
+                return view
+            }()
+            
+            let dayLabel: UILabel = {
+                let lb = UILabel()
+                lb.font = UIFont.systemFont(ofSize: 16)
+                lb.textAlignment = .center
+                return lb
+            }()
+            
+            let day = i - startDay + 1
+            if day > 0 && day <= numberOfDays {
+                dayLabel.text = "\(day)"
+                weeks[i / daysInWeek][i % daysInWeek] = day
+            } else {
+                dayLabel.text = ""
+            }
+            
+            backViewMargin.addSubview(dayBackView)
+            dayBackView.addSubview(dayLabel)
+            
+            dayBackView.snp.makeConstraints { make in
+                make.width.equalTo(cellWidth)
+                make.height.equalTo(cellHeight)
+                make.leading.equalTo(backViewMargin.snp.leading).offset(CGFloat(i % daysInWeek) * cellWidth)
+                make.top.equalTo(backViewMargin.snp.top).offset(CGFloat(i / daysInWeek) * cellHeight)
+            }
+            
+            dayLabel.snp.makeConstraints { make in
+                make.top.leading.trailing.equalToSuperview()
+                make.height.equalTo(40)
+            }
+        }
     }
 }

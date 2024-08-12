@@ -9,6 +9,12 @@ import UIKit
 
 class CalendarViewController2: UIViewController {
     // MARK: - Properties
+    var yearMonth: YearMonth? {
+        didSet {
+            setupData()
+            calendarView.mainCalendarView.yearMonth = self.yearMonth
+        }
+    }
     
     // MARK: - UI Components
     var calendarView = CalendarView()
@@ -22,8 +28,13 @@ class CalendarViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupData()
         setupTableViews()
         setupButtonActions()
+    }
+    // MARK: - Set up Data
+    private func setupData() {
+        print(#function)
     }
     
     // MARK: - Set up TableViews
@@ -46,12 +57,17 @@ class CalendarViewController2: UIViewController {
     // MARK: - Set up Button Actions
     // 뷰컨에서 버튼 액션 관리
     private func setupButtonActions() {
-        // 할인정보, 지원정보 전체보기 제스처
-        let DTTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
-        calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(DTTapGesture)
+        // 할인정보 전체보기 제스처
+        let discountDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(discountDetailTapGesture)
     
-        let STTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
-        calendarView.supportInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(STTapGesture)
+        // 지원정보 전체보기 제스처
+        let supportDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        calendarView.supportInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(supportDetailTapGesture)
+        
+        // 캘린더 선택 제스처
+        let selectCalendarTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSelectCalendar))
+        calendarView.mainCalendarView.yearMonthStackView.addGestureRecognizer(selectCalendarTapGesture)
         
         // 버튼 액션
     }
@@ -59,6 +75,11 @@ class CalendarViewController2: UIViewController {
     // MARK: - Selectors
     @objc
     private func didTapShowDetail() {
+        print(#function)
+    }
+    
+    @objc
+    private func didTapSelectCalendar() {
         print(#function)
     }
 }

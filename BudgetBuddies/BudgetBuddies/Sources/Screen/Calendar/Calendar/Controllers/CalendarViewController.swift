@@ -329,7 +329,9 @@ extension CalendarViewController: UITableViewDelegate {
       if indexPath.row == 0 {
           print("CalendarViewController2 연결")
           let vc = CalendarViewController2()
+          
           vc.modalPresentationStyle = .fullScreen
+          vc.yearMonth = self.yearMonth
           self.present(vc, animated: false, completion: nil)
       }
       

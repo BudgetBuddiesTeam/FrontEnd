@@ -19,7 +19,7 @@ class CalendarViewController2: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     // MARK: - Set up UI

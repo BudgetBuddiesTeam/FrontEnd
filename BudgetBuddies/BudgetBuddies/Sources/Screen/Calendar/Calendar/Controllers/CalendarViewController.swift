@@ -330,7 +330,7 @@ extension CalendarViewController: UITableViewDelegate {
           print("CalendarViewController2 연결")
           let vc = CalendarViewController2()
           vc.modalPresentationStyle = .fullScreen
-          self.present(vc, animated: true, completion: nil)
+          self.present(vc, animated: false, completion: nil)
       }
       
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {

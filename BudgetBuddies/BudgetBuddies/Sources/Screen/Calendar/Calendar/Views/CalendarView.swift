@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import SnapKit
 
 class CalendarView: UIView {
     // MARK: - Properties
     
     // MARK: - UI Components
+    var bannerView = BannerView()
     
     // MARK: - Init ⭐️
     override init(frame: CGRect) {
@@ -27,11 +29,16 @@ class CalendarView: UIView {
     private func setupUI() {
         self.backgroundColor = .red
         
+        self.addSubviews(bannerView)
         setupConstraints()
     }
     
     // MARK: - Set up Constraints
     private func setupConstraints() {
-        
+        bannerView.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(127)
+        }
     }
 }

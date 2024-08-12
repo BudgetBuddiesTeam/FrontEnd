@@ -28,10 +28,32 @@ class CalendarViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNowYearMonth()
         setupData()
         setupTableViews()
         setupButtonActions()
+        setupNavigationBar()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setupNavigationBar()
+    }
+    
+    // MARK: - Set up Now YearMonth
+    private func setupNowYearMonth() {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let currentYear = calendar.component(.year, from: currentDate)
+        let currentMonth = calendar.component(.month, from: currentDate)
+        
+        // 현재 시간
+        self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
+        
+    }
+    
     // MARK: - Set up Data
     private func setupData() {
         print(#function)
@@ -58,11 +80,11 @@ class CalendarViewController2: UIViewController {
     // 뷰컨에서 버튼 액션 관리
     private func setupButtonActions() {
         // 할인정보 전체보기 제스처
-        let discountDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        let discountDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDiscountDetail))
         calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(discountDetailTapGesture)
     
         // 지원정보 전체보기 제스처
-        let supportDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        let supportDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowSupportDetail))
         calendarView.supportInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(supportDetailTapGesture)
         
         // 캘린더 선택 제스처
@@ -72,10 +94,32 @@ class CalendarViewController2: UIViewController {
         // 버튼 액션
     }
     
+    // MARK: - Set up Navigation Bar
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     // MARK: - Selectors
     @objc
-    private func didTapShowDetail() {
-        print(#function)
+    private func didTapShowDiscountDetail() {
+        guard let yearMonth = self.yearMonth else { return }
+        guard let month = yearMonth.month else { return }
+        
+        let vc = InfoListViewController(infoType: .discount)
+        vc.title = "\(month)월 할인정보"
+        vc.yearMonth = self.yearMonth
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    private func didTapShowSupportDetail() {
+        guard let yearMonth = self.yearMonth else { return }
+        guard let month = yearMonth.month else { return }
+        
+        let vc = InfoListViewController(infoType: .support)
+        vc.title = "\(month)월 지원정보"
+        vc.yearMonth = self.yearMonth
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc

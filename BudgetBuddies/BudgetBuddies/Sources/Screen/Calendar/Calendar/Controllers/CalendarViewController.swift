@@ -39,6 +39,7 @@ final class CalendarViewController: UIViewController {
   // MARK: - UI Components
   lazy var tableView = UITableView()
 
+    
   // MARK: - Life Cycle ⭐️
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -329,10 +330,7 @@ extension CalendarViewController: UITableViewDelegate {
       if indexPath.row == 0 {
           print("CalendarViewController2 연결")
           let vc = CalendarViewController2()
-          
-          vc.modalPresentationStyle = .fullScreen
-          vc.yearMonth = self.yearMonth
-          self.present(vc, animated: false, completion: nil)
+          self.navigationController?.pushViewController(vc, animated: true)
       }
       
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {

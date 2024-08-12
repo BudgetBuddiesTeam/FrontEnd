@@ -56,10 +56,6 @@ class CalendarViewController2: UIViewController {
         // 버튼 액션
     }
     
-    // MARK: - Set up UI
-    
-    // MARK: - Set up Constraints
-    
     // MARK: - Selectors
     @objc
     private func didTapShowDetail() {

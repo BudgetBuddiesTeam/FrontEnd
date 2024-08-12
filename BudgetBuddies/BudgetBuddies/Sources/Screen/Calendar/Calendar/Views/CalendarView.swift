@@ -20,7 +20,9 @@ class CalendarView: UIView {
                                  mainCalendarView,
                                  infoColorView,
                                  discountInfoTitleWithButtonView,
-                                 discountInfoTableView])
+                                 discountInfoTableView,
+                                 supportInfoTitleWithButtonView,
+                                 supportInfoTableView])
         sv.axis = .vertical
         sv.distribution = .fill
         sv.alignment = .center
@@ -29,12 +31,20 @@ class CalendarView: UIView {
     }()
     
     // 콘텐트 뷰에 들어갈 컴포넌트들
-    var bannerView = BannerView()
-    var mainCalendarView = MainCalendarView()
-    var infoColorView = InfoColorView()
-    var discountInfoTitleWithButtonView = InfoTitleWithButtonView(infoType: .discount)
+    var bannerView = BannerView() // 상단 배너
+    var mainCalendarView = MainCalendarView() // 메인 캘린더
+    var infoColorView = InfoColorView() // 할인정보, 지원정보 색 표시
+    var discountInfoTitleWithButtonView = InfoTitleWithButtonView(infoType: .discount) // 할인정보 타이틀 + 전체보기 버튼
     
-    var discountInfoTableView: UITableView = {
+    var discountInfoTableView: UITableView = { // 할인정보 테이블 뷰
+        let tv = UITableView()
+        tv.separatorStyle = .none
+        return tv
+    }()
+    
+    var supportInfoTitleWithButtonView = InfoTitleWithButtonView(infoType: .support) // 지원정보 타이틀 + 전체보기 버튼
+    
+    var supportInfoTableView: UITableView = { // 지원정보 테이블 뷰
         let tv = UITableView()
         tv.separatorStyle = .none
         return tv
@@ -97,6 +107,16 @@ class CalendarView: UIView {
         }
         
         discountInfoTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(168 + 168) // 일단 셀 두 개 높이로 설정
+        }
+        
+        supportInfoTitleWithButtonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(64)
+        }
+        
+        supportInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(168 + 168) // 일단 셀 두 개 높이로 설정
         }

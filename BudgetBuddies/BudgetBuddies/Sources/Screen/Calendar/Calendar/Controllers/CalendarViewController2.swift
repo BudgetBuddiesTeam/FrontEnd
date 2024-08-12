@@ -34,16 +34,26 @@ class CalendarViewController2: UIViewController {
         discountTV.dataSource = self
         
         discountTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+        
+        // 지원정보 테이블 뷰
+        let supportTV = calendarView.supportInfoTableView
+        supportTV.delegate = self
+        supportTV.dataSource = self
+        
+        supportTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
     }
     
     // MARK: - Set up Button Actions
     // 뷰컨에서 버튼 액션 관리
     private func setupButtonActions() {
         // 할인정보, 지원정보 전체보기 제스처
-        let DTtapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
-        calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(DTtapGesture)
-        // 버튼 액션
+        let DTTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(DTTapGesture)
+    
+        let STTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDetail))
+        calendarView.supportInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(STTapGesture)
         
+        // 버튼 액션
     }
     
     // MARK: - Set up UI
@@ -64,11 +74,23 @@ extension CalendarViewController2: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
-        cell.configure(infoType: .discount)
+        if tableView == calendarView.discountInfoTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
+            cell.configure(infoType: .discount)
+            
+            cell.selectionStyle = .none
+            return cell
+        }
         
-        cell.selectionStyle = .none
-        return cell
+        if tableView == calendarView.supportInfoTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
+            cell.configure(infoType: .support)
+            
+            cell.selectionStyle = .none
+            return cell
+        }
+        
+        return UITableViewCell()
     }
 }
 

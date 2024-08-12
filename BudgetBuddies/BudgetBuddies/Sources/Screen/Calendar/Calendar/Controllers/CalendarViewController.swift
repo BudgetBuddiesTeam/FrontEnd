@@ -326,6 +326,13 @@ extension CalendarViewController: UITableViewDelegate {
   //    }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      if indexPath.row == 0 {
+          print("CalendarViewController2 연결")
+          let vc = CalendarViewController2()
+          vc.modalPresentationStyle = .fullScreen
+          self.present(vc, animated: true, completion: nil)
+      }
+      
     if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
       let vc = BottomSheetViewController()
       vc.modalPresentationStyle = .overFullScreen

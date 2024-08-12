@@ -14,11 +14,22 @@ class CalendarView: UIView {
     // MARK: - UI Components
     // 스크롤뷰
     var scrollView = UIScrollView()
-    var contentView = UIView()
+    lazy var stackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews:
+                                [bannerView,
+                                 mainCalendarView,
+                                 infoColorView])
+        sv.axis = .vertical
+        sv.distribution = .fill
+        sv.alignment = .center
+        sv.spacing = 0
+        return sv
+    }()
     
     // 콘텐트 뷰에 들어갈 컴포넌트들
     var bannerView = BannerView()
     var mainCalendarView = MainCalendarView()
+    var infoColorView = InfoColorView()
     
     // MARK: - Init ⭐️
     override init(frame: CGRect) {
@@ -37,11 +48,7 @@ class CalendarView: UIView {
         
         // 스크롤 뷰
         self.addSubviews(scrollView)
-        scrollView.addSubviews(contentView)
-        
-        // 콘텐트 뷰에 들어갈 컴포넌트
-        contentView.addSubviews(bannerView,
-                                mainCalendarView)
+        scrollView.addSubviews(stackView)
         
         setupConstraints()
     }
@@ -55,9 +62,9 @@ class CalendarView: UIView {
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
-        contentView.snp.makeConstraints { make in
+        stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalToSuperview()
+            make.width.equalTo(scrollView)
         }
         
         // 콘텐트 뷰에 들어갈 컴포넌트
@@ -67,9 +74,12 @@ class CalendarView: UIView {
         }
         
         mainCalendarView.snp.makeConstraints { make in
-            make.top.equalTo(bannerView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(538)
+            make.height.equalTo(510)
+        }
+        infoColorView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(29)
         }
     }
 }

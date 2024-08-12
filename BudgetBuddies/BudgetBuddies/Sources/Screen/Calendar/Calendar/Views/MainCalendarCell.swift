@@ -145,13 +145,13 @@ class MainCalendarCell: UITableViewCell {
     sv.spacing = 11
     sv.alignment = .center
     sv.distribution = .fill
+      sv.layer.borderWidth = 1
     return sv
   }()
 
   // MARK: - init ⭐️⭐️⭐️
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
-
     setupUI()
   }
 
@@ -166,6 +166,8 @@ class MainCalendarCell: UITableViewCell {
       guard let month = ymModel.month else { return }
       setupDateOfCalendar(year: year, month: month)
     }
+      
+      self.layer.borderWidth = 1.0
   }
 
   required init?(coder: NSCoder) {

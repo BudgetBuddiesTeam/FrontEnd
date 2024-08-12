@@ -7,6 +7,7 @@
 
 import SnapKit
 import UIKit
+import Foundation
 
 /*
  해야 할 일
@@ -20,10 +21,6 @@ final class SummaryInfoContainerView: UIView {
   // 월별 표시 아이콘 배경 도형
   private let monthRoundedRectangle: UIView = {
     let view = UIView()
-    view.snp.makeConstraints { make in
-      make.width.equalTo(52)
-      make.height.equalTo(20)
-    }
     view.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
     view.layer.borderWidth = 1.5
     view.layer.borderColor = BudgetBuddiesAsset.AppColor.lemon.color.cgColor
@@ -34,21 +31,17 @@ final class SummaryInfoContainerView: UIView {
   // 월별 표시 아이콘 배경 도형 위 텍스트
   private let monthText: UILabel = {
     let label = UILabel()
-    label.text = "March"
+    let currentDate = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMMM"
+    label.text = dateFormatter.string(from: currentDate)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 12)
     label.textColor = BudgetBuddiesAsset.AppColor.orange2.color
     return label
   }()
 
-  // 메인 텍스트 레이블
-  private let mainTextLabel: UILabel = {
-    let label = UILabel()
-    label.numberOfLines = 3
-    label.text = "혜인님!\n이번달에\n234,470원 썼어요"
-    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
-    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-    return label
-  }()
+  // "혜인님! 이번달에 234,470원 썼어요" 메인 텍스트 레이블
+  public let mainTextLabel = MainTextLabel()
 
   // 반응형 차트
   /*
@@ -71,13 +64,7 @@ final class SummaryInfoContainerView: UIView {
   }()
 
   // 코멘트 텍스트 레이블
-  private let commentTextLabel: UILabel = {
-    let label = UILabel()
-    label.text = "총 130,200원을 더 쓸 수 있어요"
-    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
-    label.textColor = BudgetBuddiesAsset.AppColor.white.color
-    return label
-  }()
+  public let commentTextLabel = CommentTextLabel()
 
   // "잔여금액" 텍스트 레이블
   private let leftMoneyTextLabel: UILabel = {
@@ -89,24 +76,24 @@ final class SummaryInfoContainerView: UIView {
   }()
 
   // 카테고리 1 잔여금액 표시 컨테이너
-  private let firstCategoryLeftMoneyContainer = LeftMoneyContainer(
+  public let firstCategoryLeftMoneyContainer = LeftMoneyContainer(
     categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, categoryText: "식비",
-    leftPrice: 132800)
+    leftMoney: 132800)
 
   // 카테고리 2 잔여금액 표시 컨테이너
-  private let secondCategoryLeftMoneyContainer = LeftMoneyContainer(
+  public let secondCategoryLeftMoneyContainer = LeftMoneyContainer(
     categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image,
-    categoryText: "쇼핑", leftPrice: 132800)
+    categoryText: "쇼핑", leftMoney: 132800)
 
   // 카테고리 3 잔여금액 표시 컨테이너
-  private let thirdCategoryLeftMoneyContainer = LeftMoneyContainer(
+  public let thirdCategoryLeftMoneyContainer = LeftMoneyContainer(
     categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image,
-    categoryText: "문화생활", leftPrice: 132800)
+    categoryText: "문화생활", leftMoney: 132800)
 
   // 카테고리 4 잔여금액 표시 컨테이너
-  private let fourthCategoryLeftMoneyContainer = LeftMoneyContainer(
+  public let fourthCategoryLeftMoneyContainer = LeftMoneyContainer(
     categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image,
-    categoryText: "패션", leftPrice: 1_328_000)
+    categoryText: "패션", leftMoney: 132800)
 
   // 구분선
   private let divider: UIView = {
@@ -175,8 +162,11 @@ final class SummaryInfoContainerView: UIView {
 
     // Make UI Componenets Contraints
     // 월별 표시 아이콘 배경 도형
+
     monthRoundedRectangle.snp.makeConstraints { make in
       make.leading.top.equalToSuperview().inset(20)
+      make.width.equalTo(monthText.snp.width).offset(18)
+      make.height.equalTo(monthText.snp.height).offset(4)
     }
 
     // 월별 표시 아이콘 배경 도형 위 텍스트

@@ -12,6 +12,7 @@ class LeftMoneyContainer: UIView {
 
   // MARK: - UI Componenets
 
+  // 동적 UI 컴포넌트
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.snp.makeConstraints { make in
@@ -21,6 +22,7 @@ class LeftMoneyContainer: UIView {
     return imageView
   }()
 
+  // 동적 UI 컴포넌트
   private let categoryTextLabel: UILabel = {
     let label = UILabel()
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
@@ -28,9 +30,11 @@ class LeftMoneyContainer: UIView {
     return label
   }()
 
+  // 동적 UI 컴포넌트
   private let leftPriceLabel = LeftPriceUILabel()
 
   // MARK: - Initializer
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -41,14 +45,26 @@ class LeftMoneyContainer: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  convenience init(categoryIconImage: UIImage, categoryText: String, leftPrice: Int) {
+  convenience init(categoryIconImage: UIImage, categoryText: String, leftMoney: Int) {
     self.init()
     iconImageView.image = categoryIconImage
     categoryTextLabel.text = categoryText
-    leftPriceLabel.leftPrice = leftPrice
+    leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
   }
 
   // MARK: - Methods
+  
+  public func updateInfo(
+    categoryIconImage: UIImage,
+    categoryText: String,
+    leftMoney: Int
+  ) {
+    iconImageView.image = categoryIconImage
+    categoryTextLabel.text = categoryText
+    leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
+
+  }
+  
   private func setLayout() {
     self.backgroundColor = BudgetBuddiesAsset.AppColor.mainBox.color
     self.layer.borderColor = BudgetBuddiesAsset.AppColor.mainBoxStroke.color.cgColor

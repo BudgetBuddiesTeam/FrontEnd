@@ -5,8 +5,14 @@
 //  Created by Jiwoong CHOI on 8/6/24.
 //
 
+import Kingfisher
 import SnapKit
 import UIKit
+
+enum InfoCategoryType {
+  case discount
+  case support
+}
 
 class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
@@ -41,12 +47,12 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   }()
 
   // "~정보" 텍스트 레이블
-  public let infoCategoryTextLabel: UILabel = {
+  public var infoCategoryTextLabel: UILabel = {
     let label = UILabel()
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 12)
 
     // Dummy Text Data
-    label.text = "할인정보"
+    label.text = "더미정보"
 
     // Dummy Text Color Data
     label.textColor = BudgetBuddiesAsset.AppColor.orange2.color
@@ -54,20 +60,25 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   }()
 
   // 정보 텍스트 레이블
-  public let titleTextLabel: UILabel = {
+  public var titleTextLabel: UILabel = {
     let label = UILabel()
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.snp.makeConstraints { make in
+      make.width.equalTo(60)
+    }
     label.numberOfLines = 2
-
+    label.lineBreakMode = .byTruncatingTail
+    
     // Dummy Text Data
-    label.text = "지그재그\n썸머세일"
+    label.text = "더미타이틀"
     return label
   }()
 
   // 정보 아이콘 이미지뷰
-  public let iconImageView: UIImageView = {
+  public lazy var iconImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.layer.cornerRadius = 12
+    imageView.clipsToBounds = true
     imageView.snp.makeConstraints { make in
       make.width.height.equalTo(36)
     }
@@ -78,11 +89,11 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   }()
 
   // 정보 날짜 텍스트 레이블
-  public let dateTextLabel: UILabel = {
-    let label = UILabel()
+  public lazy var dateTextLabel: DateTextLabel = {
+    let label = DateTextLabel()
     label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
-    label.text = "08.07 - 08.12"
+    label.text = "XX.XX - XX.XX"
     return label
   }()
 
@@ -99,6 +110,32 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   }
 
   // MARK: - Methods
+
+  public func configure(
+    infoCategoryType: InfoCategoryType,
+    titleText: String,
+    iconImageURL: String,
+    startDate: String,
+    enddDate: String
+  ) {
+
+    switch infoCategoryType {
+    case .discount:
+      self.infoCategoryTextLabel.text = "할인정보"
+      self.infoCategoryTextLabel.textColor = BudgetBuddiesAsset.AppColor.orange2.color
+      self.colorBackground.backgroundColor = BudgetBuddiesAsset.AppColor.lemon3.color
+      self.infoCategoryBackground.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
+    case .support:
+      self.infoCategoryTextLabel.text = "지원정보"
+      self.infoCategoryTextLabel.textColor = BudgetBuddiesAsset.AppColor.coreBlue.color
+      self.colorBackground.backgroundColor = BudgetBuddiesAsset.AppColor.sky3.color
+      self.infoCategoryBackground.backgroundColor = BudgetBuddiesAsset.AppColor.sky4.color
+    }
+
+    self.titleTextLabel.text = titleText
+    self.iconImageView.kf.setImage(with: URL(string: iconImageURL))
+    self.dateTextLabel.updateText(startDate: startDate, endDate: enddDate)
+  }
 
   private func setLayout() {
     self.snp.makeConstraints { make in

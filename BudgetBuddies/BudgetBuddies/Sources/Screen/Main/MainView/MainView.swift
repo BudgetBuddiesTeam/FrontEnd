@@ -26,7 +26,7 @@ final class MainView: UIView {
   // MARK: - UI Components
 
   // Core Yellow 색 배경
-  private let coreYellowColorBackgroundView = CoreYellowBackGround()
+  private let coreYellowColorBackgroundView = CoreYellowBackground()
 
   // "홈" 텍스트 레이블
   private let homeTextLabel = HomeTextLabel()

@@ -66,9 +66,8 @@ class CalendarView: UIView {
     private func setupConstraints() {
         // 스크롤 뷰
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.edges.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
         stackView.snp.makeConstraints { make in

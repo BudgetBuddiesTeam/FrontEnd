@@ -92,9 +92,9 @@ class CalendarView: UIView {
         }
         
         // 애니메이션이 좀 이상해서 고쳐야 함
-        UIView.animate(withDuration: 0.3) {
-            self.layer.layoutIfNeeded()
-        }
+//        UIView.animate(withDuration: 0.3) {
+//            self.layer.layoutIfNeeded()
+//        }
     }
     
     // MARK: - Set up Constraints

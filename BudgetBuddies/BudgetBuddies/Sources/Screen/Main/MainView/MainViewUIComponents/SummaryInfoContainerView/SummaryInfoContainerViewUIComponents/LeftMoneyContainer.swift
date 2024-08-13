@@ -34,7 +34,7 @@ class LeftMoneyContainer: UIView {
   private let leftPriceLabel = LeftPriceUILabel()
 
   // MARK: - Initializer
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -53,7 +53,7 @@ class LeftMoneyContainer: UIView {
   }
 
   // MARK: - Methods
-  
+
   public func updateInfo(
     categoryIconImage: UIImage,
     categoryText: String,
@@ -64,7 +64,7 @@ class LeftMoneyContainer: UIView {
     leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
 
   }
-  
+
   private func setLayout() {
     self.backgroundColor = BudgetBuddiesAsset.AppColor.mainBox.color
     self.layer.borderColor = BudgetBuddiesAsset.AppColor.mainBoxStroke.color.cgColor

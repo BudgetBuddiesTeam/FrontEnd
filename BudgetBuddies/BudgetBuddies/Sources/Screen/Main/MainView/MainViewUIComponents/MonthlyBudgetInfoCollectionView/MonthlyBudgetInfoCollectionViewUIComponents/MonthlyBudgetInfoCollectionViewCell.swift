@@ -68,7 +68,7 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     }
     label.numberOfLines = 2
     label.lineBreakMode = .byTruncatingTail
-    
+
     // Dummy Text Data
     label.text = "더미타이틀"
     return label

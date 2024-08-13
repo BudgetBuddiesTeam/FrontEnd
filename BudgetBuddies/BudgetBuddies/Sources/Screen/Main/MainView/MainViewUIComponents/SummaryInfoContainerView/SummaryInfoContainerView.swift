@@ -5,9 +5,9 @@
 //  Created by Jiwoong CHOI on 8/6/24.
 //
 
+import Foundation
 import SnapKit
 import UIKit
-import Foundation
 
 /*
  해야 할 일

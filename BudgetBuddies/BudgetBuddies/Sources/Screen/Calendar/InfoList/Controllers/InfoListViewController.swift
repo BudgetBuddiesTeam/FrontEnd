@@ -194,7 +194,7 @@ extension InfoListViewController: UITableViewDataSource {
     if indexPath.row == 0 {
       let cell = UITableViewCell()
       cell.backgroundColor = .clear
-        cell.selectionStyle = .none
+      cell.selectionStyle = .none
       return cell
 
     } else {

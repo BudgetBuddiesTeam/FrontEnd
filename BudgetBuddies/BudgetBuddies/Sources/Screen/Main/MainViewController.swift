@@ -64,7 +64,7 @@ final class MainViewController: UIViewController {
     mainScrollView.showsVerticalScrollIndicator = false
     mainScrollView.showsHorizontalScrollIndicator = false
   }
-  
+
   private func setLayout() {
     view.addSubview(mainScrollView)
     mainScrollView.snp.makeConstraints { make in
@@ -155,7 +155,7 @@ extension MainViewController {
 // MARK: - Network Methods
 
 extension MainViewController {
-  
+
   /// MainPageAPI에서 데이터를 불러와, UICollectionViewDataSource에서 사용하는 함수입니다.
   ///
   /// # 설명
@@ -171,7 +171,7 @@ extension MainViewController {
             MainPageResponseDTO.self, from: moyaResponse.data)
 
           debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
-          
+
           /*
            해야 할 일
            1. "혜인님! 이번달에 234,470원 썼어요"의 금액 정보 업데이트 코드
@@ -188,7 +188,7 @@ extension MainViewController {
       }
     }
   }
-  
+
   /*
    fetchDataFromMainPageAPI(completion:) 메소드에서 알 수 있는 사실
    1. 콜백함수가 중첩적으로 사용되고 있다. Call-Back Hell이 나타나는 포인트 인지.
@@ -261,7 +261,7 @@ extension MainViewController: UICollectionViewDataSource {
       case 1:
         // 할인정보 중 상위 2번째
         discountResponse = mainPageResponseData.discountResponseDtoList[1]
-        
+
         cell.configure(
           infoCategoryType: .discount, titleText: discountResponse.title,
           iconImageURL: discountResponse.thumbnailUrl,
@@ -280,7 +280,7 @@ extension MainViewController: UICollectionViewDataSource {
       case 3:
         // 지원정보 중 상위 2번째
         supportResponse = mainPageResponseData.supportResponseDtoList[1]
-        
+
         cell.configure(
           infoCategoryType: .support, titleText: supportResponse.title,
           iconImageURL: supportResponse.thumbnailUrl,

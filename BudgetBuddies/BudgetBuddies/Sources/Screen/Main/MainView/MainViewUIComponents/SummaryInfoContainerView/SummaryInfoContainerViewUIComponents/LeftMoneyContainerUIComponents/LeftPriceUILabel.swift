@@ -5,8 +5,8 @@
 //  Created by Jiwoong CHOI on 8/10/24.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
 /*
  해야 할 일
@@ -14,7 +14,7 @@ import Foundation
  */
 class LeftPriceUILabel: UILabel {
   // MARK: - Properties
-  
+
   private var leftMoney: Int = 132800
 
   // MARK: - Initializer
@@ -34,7 +34,7 @@ class LeftPriceUILabel: UILabel {
   private func setProperties() {
     self.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     self.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
-    
+
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
@@ -45,7 +45,7 @@ class LeftPriceUILabel: UILabel {
       self.text = "0원"
     }
   }
-  
+
   public func updateLeftMoney(leftMoney: Int) {
     self.leftMoney = leftMoney
   }

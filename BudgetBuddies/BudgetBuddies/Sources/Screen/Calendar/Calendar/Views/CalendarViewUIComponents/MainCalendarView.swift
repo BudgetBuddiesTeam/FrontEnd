@@ -25,6 +25,18 @@ class MainCalendarView: UIView {
         }
     }
     
+    var raisedInfoModels: [RaisedInfoModel] = [
+        RaisedInfoModel(
+          title: "캘린더 너무 어려워요", startDate: "2024-07-02", endDate: "2024-07-05", infoType: .support),
+        RaisedInfoModel(
+          title: "하지만 해야지", startDate: "2024-07-07", endDate: "2024-07-10", infoType: .discount),
+        RaisedInfoModel(
+          title: "국가장학금 나줘요", startDate: "2024-07-14", endDate: "2024-07-18", infoType: .support),
+        RaisedInfoModel(title: "어쩔거야", startDate: "2024-07-17", endDate: "2024-07-24", infoType: .discount),
+        RaisedInfoModel(title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-31", infoType: .support),
+    ]
+    
+    
     // UI Components
     // MARK: - 캘린더 뒷 배경
     var backView: UIView = {
@@ -240,5 +252,105 @@ extension MainCalendarView {
                 make.height.equalTo(40)
             }
         }
+        
+        // raisedViews 올리기 작업
+        for idx in 0..<raisedInfoModels.count {
+          let currentModel = raisedInfoModels[idx]
+          let currentStartDate = dateFromString(currentModel.startDate)
+          let currentEndDate = dateFromString(currentModel.endDate)
+          var isOverlapped = false
+
+          for otherIdx in 0..<raisedInfoModels.count {
+            if idx == otherIdx { continue }
+
+            let otherModel = raisedInfoModels[otherIdx]
+            let otherStartDate = dateFromString(otherModel.startDate)
+            let otherEndDate = dateFromString(otherModel.endDate)
+
+            if let currentStart = currentStartDate, let currentEnd = currentEndDate,
+              let otherStart = otherStartDate, let otherEnd = otherEndDate
+            {
+              if currentStart <= otherEnd && currentEnd >= otherStart {
+                if currentStart > otherStart {
+                  isOverlapped = true
+                  break
+                }
+              }
+            }
+          }
+
+          setupRaisedViews(currentModel, isOverlapped: isOverlapped)
+        }
+    }
+}
+
+// MARK: - Set up Raised Views
+extension MainCalendarView {
+    // raisedInfoModel과 겹쳐있는지 여부에 따라 위치를 정함
+    private func setupRaisedViews(_ raisedInfoModel: RaisedInfoModel, isOverlapped: Bool) {
+        
+        let infoType = raisedInfoModel.infoType
+        guard let title = raisedInfoModel.title else { return }
+        guard let startDatePosition = raisedInfoModel.startDatePosition() else { return }
+        guard let endDatePosition = raisedInfoModel.endDatePosition() else { return }
+        guard let numberOfRows = raisedInfoModel.numberOfRows() else { return }
+        
+        let widthInt = Int(backViewMargin.frame.width / 7)
+        //        let topInsetBase = isOverlapped ? -61 : -40
+        
+        func createRaisedView(topInsetBase: Int, row: Int, leadingInset: Int, trailingInset: Int)
+        -> RaisedInfoView
+        {
+            let raisedView = RaisedInfoView(title: title, infoType: infoType)
+            backViewMargin.addSubview(raisedView)
+            raisedView.snp.makeConstraints { make in
+                make.top.equalTo(headerStackView.snp.bottom).inset(topInsetBase - (80 * row))
+                make.leading.equalToSuperview().inset(leadingInset)
+                make.trailing.equalToSuperview().inset(trailingInset)
+                make.height.equalTo(17)
+            }
+            return raisedView
+        }
+        
+        if numberOfRows == 1 {
+            _ = createRaisedView(
+                topInsetBase: isOverlapped ? -61 : -40,
+                row: startDatePosition.row,
+                leadingInset: widthInt * startDatePosition.column,
+                trailingInset: widthInt * (7 - endDatePosition.column - 1)
+            )
+        } else {
+            _ = createRaisedView(
+                topInsetBase: isOverlapped ? -61 : -40,
+                row: startDatePosition.row,
+                leadingInset: widthInt * startDatePosition.column,
+                trailingInset: 0
+            )
+            if numberOfRows >= 3 {
+                for i in 1..<numberOfRows - 1 {
+                    _ = createRaisedView(
+                        topInsetBase: -40,
+                        row: startDatePosition.row + i,
+                        leadingInset: 0,
+                        trailingInset: 0
+                    )
+                }
+            }
+            _ = createRaisedView(
+                topInsetBase: -40,
+                row: startDatePosition.row + numberOfRows - 1,
+                leadingInset: 0,
+                trailingInset: widthInt * (7 - endDatePosition.column - 1)
+            )
+        }
+    }
+}
+
+extension MainCalendarView {
+    func dateFromString(_ dateString: String?) -> Date? {
+        guard let dateString = dateString else { return nil }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: dateString)
     }
 }

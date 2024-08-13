@@ -76,6 +76,7 @@ class InfoTitleWithButtonView: UIView {
     }
     // MARK: - set up UI
     private func setupUI() {
+        self.backgroundColor = .clear
         self.addSubviews(infoTitleLabel, showDetailStackView)
         
         setupConstraints()

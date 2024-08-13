@@ -49,6 +49,7 @@ class CalendarView: UIView {
     var discountInfoTableView: UITableView = { // 할인정보 테이블 뷰
         let tv = UITableView()
         tv.separatorStyle = .none
+        tv.backgroundColor = .clear
         return tv
     }()
     
@@ -57,6 +58,7 @@ class CalendarView: UIView {
     var supportInfoTableView: UITableView = { // 지원정보 테이블 뷰
         let tv = UITableView()
         tv.separatorStyle = .none
+        tv.backgroundColor = .clear
         return tv
     }()
     

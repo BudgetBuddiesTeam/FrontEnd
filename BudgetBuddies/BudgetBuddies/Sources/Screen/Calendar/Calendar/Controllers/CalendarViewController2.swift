@@ -145,6 +145,9 @@ extension CalendarViewController2: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
             cell.configure(infoType: .discount)
             
+            // 대리자
+            cell.delegate = self
+            
             cell.selectionStyle = .none
             return cell
         }
@@ -153,6 +156,9 @@ extension CalendarViewController2: UITableViewDataSource {
         if tableView == calendarView.supportInfoTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
             cell.configure(infoType: .support)
+            
+            // 대리자
+            cell.delegate = self
             
             cell.selectionStyle = .none
             return cell
@@ -167,6 +173,12 @@ extension CalendarViewController2: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 168
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = BottomSheetViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
 }
 
 extension CalendarViewController2: MonthPickerViewControllerDelegate {
@@ -174,4 +186,17 @@ extension CalendarViewController2: MonthPickerViewControllerDelegate {
     func didTapSelectButton(year: Int, month: Int) {
         self.yearMonth = YearMonth(year: year, month: month)
     }
+}
+
+extension CalendarViewController2: InformationCellDelegate {
+    func didTapWebButton(in cell: InformationCell, urlString: String) {
+        guard let url = URL(string: urlString) else {
+            print("Error: 유효하지 않은 url \(urlString)")
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
+    
 }

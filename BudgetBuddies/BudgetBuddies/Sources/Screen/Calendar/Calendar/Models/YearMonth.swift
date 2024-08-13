@@ -12,6 +12,7 @@ struct YearMonth {
   let month: Int?
 }
 
+// MARK: - 6줄인지 판단하는 함수
 extension YearMonth {
   func isSixWeeksLong() -> Bool {
     let calendar = Calendar.current

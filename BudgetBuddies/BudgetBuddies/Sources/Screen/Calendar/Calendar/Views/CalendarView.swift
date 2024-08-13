@@ -10,6 +10,16 @@ import SnapKit
 
 class CalendarView: UIView {
     // MARK: - Properties
+    var calendarHeight: Int = 510
+    
+    var yearMonth: YearMonth? {
+        didSet {
+            mainCalendarView.yearMonth = self.yearMonth
+            guard let yearMonth = self.yearMonth else { return }
+            calendarHeight = yearMonth.isSixWeeksLong() ? 590 : 510
+            reSetupConstraints()
+        }
+    }
     
     // MARK: - UI Components
     // 스크롤뷰
@@ -71,6 +81,19 @@ class CalendarView: UIView {
         
         setupConstraints()
     }
+    // MARK: - re Set up CalendarViewHeight
+    private func reSetupConstraints() {
+        mainCalendarView.snp.removeConstraints()
+        mainCalendarView.snp.remakeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(calendarHeight)
+        }
+        
+        // 애니메이션이 좀 이상해서 고쳐야 함
+        UIView.animate(withDuration: 0.3) {
+            self.layer.layoutIfNeeded()
+        }
+    }
     
     // MARK: - Set up Constraints
     private func setupConstraints() {
@@ -93,7 +116,7 @@ class CalendarView: UIView {
         
         mainCalendarView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(510)
+            make.height.equalTo(calendarHeight)
         }
         
         infoColorView.snp.makeConstraints { make in

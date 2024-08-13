@@ -12,13 +12,13 @@ class CalendarViewController2: UIViewController {
     var yearMonth: YearMonth? {
         didSet {
             setupData()
-            calendarView.mainCalendarView.yearMonth = self.yearMonth
+            calendarView.yearMonth = self.yearMonth
         }
     }
     
     // MARK: - UI Components
+    // 뷰
     var calendarView = CalendarView()
-    
 
     // MARK: - Life Cycle ⭐️
     override func loadView() {
@@ -77,7 +77,7 @@ class CalendarViewController2: UIViewController {
     }
     
     // MARK: - Set up Button Actions
-    // 뷰컨에서 버튼 액션 관리
+    // 뷰컨에서 버튼 액션 관리 (MVC 패턴)
     private func setupButtonActions() {
         // 할인정보 전체보기 제스처
         let discountDetailTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowDiscountDetail))
@@ -140,6 +140,7 @@ extension CalendarViewController2: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // 지원정보 테이블 뷰
         if tableView == calendarView.discountInfoTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
             cell.configure(infoType: .discount)
@@ -148,6 +149,7 @@ extension CalendarViewController2: UITableViewDataSource {
             return cell
         }
         
+        // 할인정보 테이블 뷰
         if tableView == calendarView.supportInfoTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath) as! InformationCell
             cell.configure(infoType: .support)

@@ -10,13 +10,17 @@ import SnapKit
 
 class MainCalendarView: UIView {
     // MARK: - Properties
+    // 주 배열
     let week = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    var calendarHeight: Int = 510
     
     // 전달받을 년월
     var yearMonth: YearMonth? {
         didSet {
-            guard let yearMonth = yearMonth else { return }
-            print("MainCalendarView: \(yearMonth.year!)년 \(yearMonth.month!)월")
+            guard let yearMonth = self.yearMonth else { return }
+            calendarHeight = yearMonth.isSixWeeksLong() ? 590 : 510
+            reSetupCalendarHeight()
             layoutSubviews()
         }
     }
@@ -125,13 +129,23 @@ class MainCalendarView: UIView {
         setupConstraints()
     }
     
+    // MARK: - Re Set up CalendarHeightConstraint
+    private func reSetupCalendarHeight() {
+        backView.snp.removeConstraints()
+        backView.snp.remakeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(calendarHeight)
+        }
+    }
+    
     // MARK: - set up Constraints
     private func setupConstraints() {
         // backView
         backView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(510)
+            make.height.equalTo(calendarHeight)
         }
         
         // headerView

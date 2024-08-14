@@ -1,18 +1,15 @@
 //
-//  BannerCell.swift
+//  BannerView.swift
 //  BudgetBuddies
 //
-//  Created by 김승원 on 7/24/24.
+//  Created by 김승원 on 8/12/24.
 //
 
 import SnapKit
 import UIKit
 
-class BannerCell: UITableViewCell {
-  // MARK: - Properties
-  static let identifier = "BannerCell"
-
-  // MARK: - UI Components
+class BannerView: UIView {
+  // MARK: - UI Componenets
   // 뒷 배경
   var backView: UIView = {
     let view = UIView()
@@ -24,6 +21,7 @@ class BannerCell: UITableViewCell {
     view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
     view.layer.shadowOpacity = 1
     view.layer.shadowRadius = 10  //반경
+    view.layer.shadowOffset = CGSize(width: 0, height: 0)
     view.layer.masksToBounds = false
 
     return view
@@ -67,11 +65,11 @@ class BannerCell: UITableViewCell {
     return iv
   }()
 
-  // MARK: - init
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: .default, reuseIdentifier: reuseIdentifier)
+  // MARK: - Init ⭐️
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
-    setupUI()
+    SetupUI()
   }
 
   required init?(coder: NSCoder) {
@@ -79,13 +77,14 @@ class BannerCell: UITableViewCell {
   }
 
   // MARK: - Set up UI
-  private func setupUI() {
+  private func SetupUI() {
     self.backgroundColor = .clear
 
     self.addSubviews(backView, calendarImageView)
     backView.addSubviews(labelStackView)
 
     setupConstraints()
+
   }
 
   // MARK: - Set up Constraints
@@ -119,5 +118,4 @@ class BannerCell: UITableViewCell {
       make.width.equalTo(98 + 10)
     }
   }
-
 }

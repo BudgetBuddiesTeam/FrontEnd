@@ -5,8 +5,8 @@
 //  Created by Jiwoong CHOI on 8/12/24.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
 class CommentTextLabel: UILabel {
   // MARK: - Properties
@@ -16,24 +16,24 @@ class CommentTextLabel: UILabel {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     setProperties()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   // MARK: - Methods
-  
+
   public func updateInfo(leftMoney: Int) {
     self.leftMoney = leftMoney
   }
-  
+
   private func setProperties() {
     self.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     self.textColor = BudgetBuddiesAsset.AppColor.white.color
-    
+
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal

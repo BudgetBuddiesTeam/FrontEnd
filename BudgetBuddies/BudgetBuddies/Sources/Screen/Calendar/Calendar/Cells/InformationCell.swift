@@ -90,7 +90,8 @@ class InformationCell: UITableViewCell {
 
     view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
     view.layer.shadowOpacity = 1
-    view.layer.shadowRadius = 10  //반경
+    view.layer.shadowRadius = 4  //반경
+    view.layer.shadowOffset = CGSize(width: 0, height: 0)
     view.layer.masksToBounds = false
     return view
   }()
@@ -108,7 +109,7 @@ class InformationCell: UITableViewCell {
   // 타이틀 라벨
   var infoTitleLabel: UILabel = {
     let lb = UILabel()
-    lb.text = " "
+    lb.text = "Loading..."
     lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     lb.setCharacterSpacing(-0.4)
     lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
@@ -127,7 +128,7 @@ class InformationCell: UITableViewCell {
   // (기간) 라벨
   var dateLabel: UILabel = {
     let lb = UILabel()
-    lb.text = " "
+    lb.text = "00.00 ~ 00.00"
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     lb.setCharacterSpacing(-0.3)
     lb.textColor = BudgetBuddiesAsset.AppColor.subGray.color
@@ -155,7 +156,7 @@ class InformationCell: UITableViewCell {
 
   var percentLabel: UILabel = {
     let lb = UILabel()
-    lb.text = " "
+    lb.text = "~0%"
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     lb.setCharacterSpacing(-0.3)
     lb.textColor = BudgetBuddiesAsset.AppColor.subGray.color

@@ -15,6 +15,11 @@ class CalendarViewController: UIViewController {
       calendarView.yearMonth = self.yearMonth
     }
   }
+    
+    // networking
+    var calendarManager = CalendarManager.shared
+    var discountRecommends: [InfoDtoList] = []
+    var supportRecommends: [InfoDtoList] = []
 
   // MARK: - UI Components
   // 뷰
@@ -29,7 +34,7 @@ class CalendarViewController: UIViewController {
     super.viewDidLoad()
 
     setupNowYearMonth()
-    setupData()
+//    setupData()
     setupTableViews()
     setupButtonActions()
     setupNavigationBar()
@@ -55,9 +60,28 @@ class CalendarViewController: UIViewController {
   }
 
   // MARK: - Set up Data
-  private func setupData() {
-    print(#function)
-  }
+    private func setupData() {
+        print("-----------캘린더 메인 fetch-----------")
+        guard let yearMonth = self.yearMonth else { return }
+        
+        calendarManager.fetchCalendar(request: yearMonth) { result in
+            switch result {
+            case .success(let response):
+                print("데이터 디코딩 성공")
+                self.discountRecommends = response.recommendMonthInfoDto.discountInfoDtoList
+                self.supportRecommends = response.recommendMonthInfoDto.supportInfoDtoList
+                
+                DispatchQueue.main.async {
+                    self.calendarView.discountInfoTableView.reloadData()
+                    self.calendarView.supportInfoTableView.reloadData()
+                }
+                
+            case .failure(let error):
+                print("데이터 디코딩 실패")
+                print(error.localizedDescription)
+            }
+        }
+    }
 
   // MARK: - Set up TableViews
   private func setupTableViews() {
@@ -144,37 +168,44 @@ extension CalendarViewController: UITableViewDataSource {
     return 2
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    // 지원정보 테이블 뷰
-    if tableView == calendarView.discountInfoTableView {
-      let cell =
-        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-        as! InformationCell
-      cell.configure(infoType: .discount)
-
-      // 대리자
-      cell.delegate = self
-
-      cell.selectionStyle = .none
-      return cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // 지원정보 테이블 뷰
+        if tableView == calendarView.discountInfoTableView {
+            if indexPath.row < discountRecommends.count {
+                let cell =
+                tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+                as! InformationCell
+                cell.configure(infoType: .discount)
+                
+                // 대리자
+                cell.delegate = self
+                
+                cell.recommend = self.discountRecommends[indexPath.row]
+                
+                cell.selectionStyle = .none
+                return cell
+                
+            } else {
+                return UITableViewCell()
+            }
+        }
+        
+        // 할인정보 테이블 뷰
+        if tableView == calendarView.supportInfoTableView {
+            let cell =
+            tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+            as! InformationCell
+            cell.configure(infoType: .support)
+            
+            // 대리자
+            cell.delegate = self
+            
+            cell.selectionStyle = .none
+            return cell
+        }
+        
+        return UITableViewCell()
     }
-
-    // 할인정보 테이블 뷰
-    if tableView == calendarView.supportInfoTableView {
-      let cell =
-        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-        as! InformationCell
-      cell.configure(infoType: .support)
-
-      // 대리자
-      cell.delegate = self
-
-      cell.selectionStyle = .none
-      return cell
-    }
-
-    return UITableViewCell()
-  }
 }
 
 // MARK: - UITableView Delegate

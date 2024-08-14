@@ -40,7 +40,7 @@ let project = Project(
         .external(name: "DGCharts"),
         .external(name: "Moya"),
         .external(name: "Kingfisher"),
-        .external(name: "RxSwift")
+        .external(name: "RxSwift"),
       ],
       settings: settings
     )

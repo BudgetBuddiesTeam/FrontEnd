@@ -24,7 +24,7 @@ extension ExpenseRouter: TargetType {
   var baseURL: URL {
     URL(string: ServerInfo.baseURL)!
   }
-  
+
   var path: String {
     switch self {
     case .getMonthlyExpenses(let userId):
@@ -33,11 +33,11 @@ extension ExpenseRouter: TargetType {
       return "/expenses/\(userId)/\(expenseId)"
     case .postAddedExpense:
       return "/expenses/add"
-    case .postUpdatedExpenses(userId: let userId):
+    case .postUpdatedExpenses(let userId):
       return "/expenses/\(userId)"
     }
   }
-  
+
   var method: Moya.Method {
     switch self {
     case .getMonthlyExpenses, .getSingleExpense:
@@ -46,7 +46,7 @@ extension ExpenseRouter: TargetType {
       return .post
     }
   }
-  
+
   var task: Moya.Task {
     switch self {
     case .getMonthlyExpenses, .getSingleExpense:
@@ -57,8 +57,8 @@ extension ExpenseRouter: TargetType {
       return .requestJSONEncodable(addedExpenseRequestDTO)
     }
   }
-  
-  var headers: [String : String]? {
+
+  var headers: [String: String]? {
     return ["Content-type": "application/json"]
   }
 }

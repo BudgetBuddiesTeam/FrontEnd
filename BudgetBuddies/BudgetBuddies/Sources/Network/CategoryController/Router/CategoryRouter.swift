@@ -16,7 +16,7 @@ import Moya
 
 enum CategoryRouter {
   case addCategory(categoryRequest: CategoryRequestDTO)
-  case getCategoryWithPathVariable(userId:Int)
+  case getCategoryWithPathVariable(userId: Int)
   case getCategoryWithRequestParameter(userId: Int)
 }
 

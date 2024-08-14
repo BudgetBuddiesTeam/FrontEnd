@@ -5,9 +5,9 @@
 //  Created by Jiwoong CHOI on 7/23/24.
 //
 
+import Combine
 import SnapKit
 import UIKit
-import Combine
 
 class CategoryPlusView: UIView {
   // MARK: - UI Componenets
@@ -60,8 +60,9 @@ class CategoryPlusView: UIView {
 
   private func setLayout() {
     self.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
-    
-    addSubviews(personalCategoryIconImageView, userCategoryTextField, textFieldBottomLine, addButton)
+
+    addSubviews(
+      personalCategoryIconImageView, userCategoryTextField, textFieldBottomLine, addButton)
 
     personalCategoryIconImageView.snp.makeConstraints { make in
       make.top.equalTo(safeAreaLayoutGuide).inset(79)

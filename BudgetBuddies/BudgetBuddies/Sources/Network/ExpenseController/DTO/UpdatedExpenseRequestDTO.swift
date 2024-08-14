@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UpdatedExpenseRequestDTO : Codable {
-  
+struct UpdatedExpenseRequestDTO: Codable {
+
 }

@@ -34,7 +34,7 @@ class ProfileEditView: UIView {
   }()
 
   // "이름"을 입력 받는 텍스트 필드
-  let nameTextField: UITextField = {
+  public let nameTextField: UITextField = {
     let textField = UITextField()
     textField.snp.makeConstraints { make in
       make.width.equalTo(ProfileEditView.textFieldWidth)
@@ -56,7 +56,7 @@ class ProfileEditView: UIView {
   }()
 
   // "이메일"을 입력 받는 텍스트 필드
-  let emailTextField: UITextField = {
+  public let emailTextField: UITextField = {
     let textField = UITextField()
     textField.snp.makeConstraints { make in
       make.width.equalTo(ProfileEditView.textFieldWidth)
@@ -71,7 +71,7 @@ class ProfileEditView: UIView {
   }()
 
   // "저장하기" 버튼
-  let saveButton: UIButton = {
+  public let saveButton: UIButton = {
     let button = UIButton()
     button.snp.makeConstraints { make in
       make.width.equalTo(ProfileEditView.textFieldWidth)

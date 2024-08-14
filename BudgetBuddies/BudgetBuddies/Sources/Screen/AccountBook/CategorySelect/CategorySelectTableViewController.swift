@@ -7,44 +7,39 @@
 
 import SnapKit
 import UIKit
+import Moya
+import Combine
+
+/*
+ 해야 할 일
+ 1. 기본 카테고리는 서버에서 isDefault 값으로 결정할 수 있음
+ 2. 카테고리 id에 따라서 카테고리 아이콘을 선정할 수 있는 enum을 설계
+ */
 
 class CategorySelectTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let heightBetweenCells: CGFloat = 12
   private let heightOfCell: CGFloat = 72
+  
+  private let provider = MoyaProvider<CategoryRouter>()
 
-  // 기본 카테고리는 수정이 되면 안됨
-  private var defaultCategory = [
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, titleText: "식비"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image, titleText: "쇼핑"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image, titleText: "패션"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image, titleText: "문화생활"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image, titleText: "교통"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image, titleText: "카페"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image, titleText: "유흥"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image, titleText: "경조사"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image,
-      titleText: "정기결제"),
-    DefaultCategory(
-      iconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image, titleText: "기타"),
-  ]
+  // 서버에서 가져온 카테고리 항목들을 저장하는 모델 배열
+  private var categories: [CategoryResponseDTO] = []
 
   // 기본 카테고리를 제거할 수 없도록 설정한 코드
   private var defaultCategoryIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  
+  @Published var selectedCategoryName = "카테고리를 선택하세요"
 
-  // 사용자 추가 카테고리는 서버에 반영되거나 앱 저장공간에 반영되어야 함
   // MARK: - View Life Cycle
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.fetchDataFromCategoryControllerAPI()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -110,6 +105,33 @@ class CategorySelectTableViewController: UITableViewController {
   private func plusButtonTapped() {
     self.present(CategoryPlusViewController(), animated: true)
   }
+  
+  // MARK: - Network
+  
+  /// 카테고리 컨트롤러 서버에서 데이터를 가져오는 함수입니다.
+  private func fetchDataFromCategoryControllerAPI() {
+    provider.request(.getCategoryWithPathVariable(userId: 1)) { [weak self] result in
+      switch result {
+      case .success(let response):
+        debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 성공")
+        debugPrint(response.statusCode)
+        do {
+          let decodedData = try JSONDecoder().decode([CategoryResponseDTO].self, from: response.data)
+          debugPrint("카테고리 컨트롤러 API로부터 추출한 데이터 디코딩 성공")
+          self?.categories = decodedData
+          self?.tableView.reloadData()
+        } catch (let error) {
+          debugPrint("카테고리 컨트롤러 API로부터 추출한 데이터 디코딩 실패")
+          debugPrint(error.localizedDescription)
+        }
+      case .failure(let error):
+        debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 실패")
+        debugPrint(error.localizedDescription)
+      }
+    }
+  }
+  
+
 
   // MARK: - Table view data source & delegate
 
@@ -118,7 +140,7 @@ class CategorySelectTableViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return defaultCategory.count
+    return categories.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -128,10 +150,11 @@ class CategorySelectTableViewController: UITableViewController {
       tableView.dequeueReusableCell(
         withIdentifier: CategorySelectTableViewCell.identifier, for: indexPath)
       as! CategorySelectTableViewCell
+    
+    let selectedCategory = self.categories[indexPath.row]
 
-    cell.categoryIcon.image = defaultCategory[indexPath.row].iconImage
-    cell.categoryText.text = defaultCategory[indexPath.row].titleText
-
+    cell.configure(categoryID: selectedCategory.id, categoryName: selectedCategory.name)
+    
     return cell
   }
 
@@ -167,21 +190,32 @@ class CategorySelectTableViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    debugPrint("선택한 셀 탭")
-
+    self.selectedCategoryName = self.categories[indexPath.row].name
+    
     navigationController?.popViewController(animated: true)
   }
-
+  
+  // 편집모드에서 제거버튼을 눌렀을 때, "삭제"라는 확인 버튼
+  override func tableView(
+    _ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath
+  ) -> String? {
+    return "삭제"
+  }
+  
+  // 편집모드에서 제거버튼을 눌렀을 때, 해당 카테고리 항목이 제거되는 로직 함수
   override func tableView(
     _ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
     forRowAt indexPath: IndexPath
   ) {
     if editingStyle == .delete {
-      defaultCategory.remove(at: indexPath.row)
+      categories.remove(at: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
+      
+      // 제거된 카테고리를 서버에도 반영해야 합니다.
     }
   }
 
+  // 기본 카테고리는 제거되지 않도록 설정하는 함수
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return !defaultCategoryIndex.contains(indexPath.row)
   }
@@ -190,11 +224,5 @@ class CategorySelectTableViewController: UITableViewController {
     -> UITableViewCell.EditingStyle
   {
     return defaultCategoryIndex.contains(indexPath.row) ? .none : .delete
-  }
-
-  override func tableView(
-    _ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath
-  ) -> String? {
-    return "삭제"
   }
 }

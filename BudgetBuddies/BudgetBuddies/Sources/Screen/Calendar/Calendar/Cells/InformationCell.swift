@@ -72,6 +72,10 @@ class InformationCell: UITableViewCell {
       if let discountRate = recommend.discountRate {
         self.percentLabel.text = "~" + String(discountRate) + "%"
       }
+        
+        if let url = URL(string: recommend.thumbnailURL) {
+            self.logoImageView.kf.setImage(with: url)
+        }
 
       self.likesLabel.text = String(recommend.likeCount)
 
@@ -100,7 +104,7 @@ class InformationCell: UITableViewCell {
   var logoImageView: UIImageView = {
     let iv = UIImageView()
     iv.image = UIImage(named: "logoTempImage")
-    iv.contentMode = .scaleAspectFit
+    iv.contentMode = .scaleAspectFill
     iv.layer.masksToBounds = true
     iv.layer.cornerRadius = 15
     return iv

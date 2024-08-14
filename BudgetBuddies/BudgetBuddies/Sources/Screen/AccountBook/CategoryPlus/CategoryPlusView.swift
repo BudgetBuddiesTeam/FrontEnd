@@ -1,5 +1,5 @@
 //
-//  CategoryPlus.swift
+//  CategoryPlusView.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 7/23/24.
@@ -7,11 +7,12 @@
 
 import SnapKit
 import UIKit
+import Combine
 
-class CategoryPlus: UIView {
+class CategoryPlusView: UIView {
   // MARK: - UI Componenets
 
-  let coinImage: UIImageView = {
+  private let personalCategoryIconImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.image = BudgetBuddiesAsset.personalCategoryImage.image
     imageView.snp.makeConstraints { make in
@@ -20,20 +21,20 @@ class CategoryPlus: UIView {
     return imageView
   }()
 
-  var userCategoryTextField: UITextField = {
+  public var userCategoryTextField: UITextField = {
     let textField = UITextField()
     textField.placeholder = "카테고리를 입력하세요."
     return textField
   }()
 
-  let textFieldBottomLine: UIView = {
+  private let textFieldBottomLine: UIView = {
     let view = UIView()
     view.backgroundColor = UIColor(red: 0.716, green: 0.716, blue: 0.716, alpha: 1)
     view.backgroundColor = BudgetBuddiesAsset.AppColor.textExample.color
     return view
   }()
 
-  let addButton: UIButton = {
+  public let addButton: UIButton = {
     let button = UIButton()
     button.layer.backgroundColor = CGColor(red: 1, green: 0.816, blue: 0.114, alpha: 1)
     button.layer.cornerRadius = 15
@@ -48,7 +49,6 @@ class CategoryPlus: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .white
     setLayout()
   }
 
@@ -59,9 +59,11 @@ class CategoryPlus: UIView {
   // MARK: - Methods
 
   private func setLayout() {
-    addSubviews(coinImage, userCategoryTextField, textFieldBottomLine, addButton)
+    self.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+    
+    addSubviews(personalCategoryIconImageView, userCategoryTextField, textFieldBottomLine, addButton)
 
-    coinImage.snp.makeConstraints { make in
+    personalCategoryIconImageView.snp.makeConstraints { make in
       make.top.equalTo(safeAreaLayoutGuide).inset(79)
       make.centerX.equalToSuperview()
     }
@@ -70,7 +72,7 @@ class CategoryPlus: UIView {
       make.width.equalTo(279)
       make.height.equalTo(22)
       make.centerX.equalToSuperview()
-      make.top.equalTo(coinImage.snp.bottom).offset(79)
+      make.top.equalTo(personalCategoryIconImageView.snp.bottom).offset(79)
     }
 
     textFieldBottomLine.snp.makeConstraints { make in

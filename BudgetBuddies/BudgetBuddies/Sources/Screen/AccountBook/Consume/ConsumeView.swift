@@ -25,7 +25,7 @@ class ConsumeView: UIView {
   // MARK: - UI Components
 
   // 소비금액 텍스트
-  var consumedPriceText: UILabel = {
+  private let consumedPriceText: UILabel = {
     let label = UILabel()
     label.text = "소비금액"
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
@@ -34,7 +34,7 @@ class ConsumeView: UIView {
   }()
 
   // 소비금액 텍스트필드
-  var consumedPriceTextField: UITextField = {
+  public var consumedPriceTextField: UITextField = {
     let textField = UITextField()
     textField.layer.cornerRadius = 15
     textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
@@ -43,7 +43,7 @@ class ConsumeView: UIView {
   }()
 
   // 소비내용 텍스트
-  var consumedContentText: UILabel = {
+  private let consumedContentText: UILabel = {
     let label = UILabel()
     label.text = "소비내용"
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
@@ -52,7 +52,7 @@ class ConsumeView: UIView {
   }()
 
   // 소비내용 텍스트필드
-  var consumedContentTextField: UITextField = {
+  public var consumedContentTextField: UITextField = {
     let textField = UITextField()
     textField.layer.cornerRadius = 15
     textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
@@ -60,7 +60,7 @@ class ConsumeView: UIView {
   }()
 
   // 지출일시 텍스트
-  let consumedDateText: UILabel = {
+  private let consumedDateText: UILabel = {
     let label = UILabel()
     label.text = "지출일시"
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
@@ -69,15 +69,23 @@ class ConsumeView: UIView {
   }()
 
   // 지출일시 날짜피커
-
-  var consumedDatePicker: UIDatePicker = {
+  public var consumedDatePicker: UIDatePicker = {
     let datePicker = UIDatePicker()
     datePicker.datePickerMode = .date
     return datePicker
   }()
+  
+  // 카테고리 텍스트
+  private let categorySetText: UILabel = {
+    let label = UILabel()
+    label.text = "카테고리 설정"
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
+    return label
+  }()
 
   // 카테고리 설정 버튼
-  var categorySettingButton: UIButton = {
+  public var categorySettingButton: UIButton = {
     let button = UIButton()
 
     // 버튼 타이틀 설정 코드
@@ -99,19 +107,10 @@ class ConsumeView: UIView {
     return button
   }()
 
-  // 카테고리 텍스트
-  let categorySetText: UILabel = {
-    let label = UILabel()
-    label.text = "카테고리 설정"
-    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
-    return label
-  }()
-
   // 추가하기 버튼
-  var addButton: UIButton = {
+  public var addButton: UIButton = {
     let button = UIButton()
-    button.layer.backgroundColor = UIColor(red: 1, green: 0.816, blue: 0.114, alpha: 1).cgColor
+    button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
@@ -132,7 +131,7 @@ class ConsumeView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Setup Layout Method
+  // MARK: - Methods
 
   private func setupLayout() {
     addSubviews(

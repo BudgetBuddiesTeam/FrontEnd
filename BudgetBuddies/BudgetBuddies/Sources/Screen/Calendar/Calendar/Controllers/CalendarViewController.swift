@@ -164,9 +164,15 @@ class CalendarViewController: UIViewController {
 
 // MARK: - UITableView DataSource
 extension CalendarViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 2
-  }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == calendarView.discountInfoTableView {
+            return discountRecommends.count
+        }
+        if tableView == calendarView.supportInfoTableView {
+            return supportRecommends.count
+        }
+        return 0
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 지원정보 테이블 뷰
@@ -180,7 +186,9 @@ extension CalendarViewController: UITableViewDataSource {
                 // 대리자
                 cell.delegate = self
                 
-                cell.recommend = self.discountRecommends[indexPath.row]
+                // 데이터 전달
+                let discountRecommend = self.discountRecommends[indexPath.row]
+                cell.recommend = discountRecommend
                 
                 cell.selectionStyle = .none
                 return cell
@@ -192,16 +200,25 @@ extension CalendarViewController: UITableViewDataSource {
         
         // 할인정보 테이블 뷰
         if tableView == calendarView.supportInfoTableView {
-            let cell =
-            tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-            as! InformationCell
-            cell.configure(infoType: .support)
-            
-            // 대리자
-            cell.delegate = self
-            
-            cell.selectionStyle = .none
-            return cell
+            if indexPath.row < supportRecommends.count {
+                let cell =
+                tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+                as! InformationCell
+                cell.configure(infoType: .support)
+                
+                // 대리자
+                cell.delegate = self
+                
+                // 데이터 전달
+                let supportRecommend = self.supportRecommends[indexPath.row]
+                cell.recommend = supportRecommend
+                
+                cell.selectionStyle = .none
+                return cell
+                
+            } else {
+                return UITableViewCell()
+            }
         }
         
         return UITableViewCell()

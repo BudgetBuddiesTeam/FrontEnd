@@ -74,9 +74,10 @@ class CalendarViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                     // 데이터 개수에 따라 테이블 뷰 높이 설정
-                    self.calendarView.discountTableViewHeight = self.discountRecommends.count * 168
-                    
-                    self.calendarView.supportTableViewHeight = self.supportRecommends.count * 168
+                    let discountCount = self.discountRecommends.count
+                    let supportCount = self.supportRecommends.count
+                    self.calendarView.discountTableViewHeight = discountCount == 0 ? 168 : discountCount * 168
+                    self.calendarView.supportTableViewHeight = supportCount == 0 ? 168 : supportCount * 168
                     
                     self.calendarView.discountInfoTableView.reloadData()
                     self.calendarView.supportInfoTableView.reloadData()
@@ -96,15 +97,27 @@ class CalendarViewController: UIViewController {
     discountTV.delegate = self
     discountTV.dataSource = self
 
-    discountTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
-
-    // 지원정보 테이블 뷰
+      // 지원정보 테이블 뷰
     let supportTV = calendarView.supportInfoTableView
     supportTV.delegate = self
     supportTV.dataSource = self
+      
+      // 셀 등록
+      registerCells()
 
-    supportTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
   }
+    
+    // MARK: - Register Cells
+    private func registerCells() {
+        let discountTV = calendarView.discountInfoTableView
+        discountTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+        discountTV.register(ReadyInfoCell.self, forCellReuseIdentifier: ReadyInfoCell.identifier)
+        
+        let supportTV = calendarView.supportInfoTableView
+        supportTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+        supportTV.register(ReadyInfoCell.self, forCellReuseIdentifier: ReadyInfoCell.identifier)
+        
+    }
 
   // MARK: - Set up Button Actions
   // 뷰컨에서 버튼 액션 관리 (MVC 패턴)
@@ -172,12 +185,16 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == calendarView.discountInfoTableView {
-            return discountRecommends.count
+            let discountCount = discountRecommends.count == 0 ? 1 : discountRecommends.count
+            return discountCount
         }
+        
         if tableView == calendarView.supportInfoTableView {
-            return supportRecommends.count
+            let supportCount = supportRecommends.count == 0 ? 1 : supportRecommends.count
+            return supportCount
         }
-        return 0
+        
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -200,7 +217,8 @@ extension CalendarViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-                return UITableViewCell()
+                let cell = tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath) as! ReadyInfoCell
+                return cell
             }
         }
         
@@ -223,7 +241,8 @@ extension CalendarViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-                return UITableViewCell()
+                let cell = tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath) as! ReadyInfoCell
+                return cell
             }
         }
         

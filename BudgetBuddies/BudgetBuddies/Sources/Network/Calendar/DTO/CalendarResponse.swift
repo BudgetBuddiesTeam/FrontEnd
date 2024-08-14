@@ -15,12 +15,12 @@ struct CalendarResponse: Codable {
 
 // MARK: - MonthInfoDto
 struct MonthInfoDto: Codable {
-  let discountInfoDtoList: [TInfoDtoList]
-  let supportInfoDtoList: [TInfoDtoList]
+  let discountInfoDtoList: [InfoDtoList]
+  let supportInfoDtoList: [InfoDtoList]
 }
 
 // MARK: - TInfoDtoList
-struct TInfoDtoList: Codable {
+struct InfoDtoList: Codable {
   let id: Int
   let title, startDate, endDate: String
   let likeCount: Int

@@ -62,7 +62,7 @@ class InformationCell: UITableViewCell {
   }
 
   // 캘린더 메인 페이지에서 받을 정보
-  var recommend: TInfoDtoList? {
+  var recommend: InfoDtoList? {
     didSet {
       guard let recommend = recommend else { return }
       self.infoTitleLabel.text = recommend.title

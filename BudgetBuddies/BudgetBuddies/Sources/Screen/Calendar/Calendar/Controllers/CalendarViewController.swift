@@ -72,6 +72,12 @@ class CalendarViewController: UIViewController {
                 self.supportRecommends = response.recommendMonthInfoDto.supportInfoDtoList
                 
                 DispatchQueue.main.async {
+                    
+                    // 데이터 개수에 따라 테이블 뷰 높이 설정
+                    self.calendarView.discountTableViewHeight = self.discountRecommends.count * 168
+                    
+                    self.calendarView.supportTableViewHeight = self.supportRecommends.count * 168
+                    
                     self.calendarView.discountInfoTableView.reloadData()
                     self.calendarView.supportInfoTableView.reloadData()
                 }
@@ -175,7 +181,7 @@ extension CalendarViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // 지원정보 테이블 뷰
+        // 할인정보 테이블 뷰
         if tableView == calendarView.discountInfoTableView {
             if indexPath.row < discountRecommends.count {
                 let cell =
@@ -198,7 +204,7 @@ extension CalendarViewController: UITableViewDataSource {
             }
         }
         
-        // 할인정보 테이블 뷰
+        // 지원정보 테이블 뷰
         if tableView == calendarView.supportInfoTableView {
             if indexPath.row < supportRecommends.count {
                 let cell =

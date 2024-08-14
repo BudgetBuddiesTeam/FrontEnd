@@ -66,7 +66,7 @@ class InformationCell: UITableViewCell {
     didSet {
       guard let recommend = recommend else { return }
       self.infoTitleLabel.text = recommend.title
-      self.dateLabel.text = recommend.dateRangeString
+        self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
 
       if let discountRate = recommend.discountRate {

@@ -68,8 +68,8 @@ class CalendarViewController: UIViewController {
             switch result {
             case .success(let response):
                 print("데이터 디코딩 성공")
-                self.discountRecommends = response.recommendMonthInfoDto.discountInfoDtoList
-                self.supportRecommends = response.recommendMonthInfoDto.supportInfoDtoList
+                self.discountRecommends = response.result.recommendMonthInfoDto.discountInfoDtoList
+                self.supportRecommends = response.result.recommendMonthInfoDto.supportInfoDtoList
                 
                 DispatchQueue.main.async {
                     

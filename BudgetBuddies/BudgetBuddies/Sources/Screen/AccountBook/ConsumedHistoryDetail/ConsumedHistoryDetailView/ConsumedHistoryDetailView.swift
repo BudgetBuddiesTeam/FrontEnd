@@ -80,7 +80,7 @@ class ConsumedHistoryDetailView: UIView {
     datePicker.datePickerMode = .date
     return datePicker
   }()
-  
+
   // "저장하기" 버튼
   public var saveButton: UIButton = {
     let button = UIButton()
@@ -152,7 +152,7 @@ class ConsumedHistoryDetailView: UIView {
       make.trailing.equalTo(safeAreaLayoutGuide).inset(16)
       make.centerY.equalTo(consumedDateStringLabel.snp.centerY)
     }
-    
+
     // "저장하기" 버튼
     saveButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(16)

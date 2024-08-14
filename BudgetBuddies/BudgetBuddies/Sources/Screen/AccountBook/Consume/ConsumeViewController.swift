@@ -5,64 +5,64 @@
 //  Created by Jiwoong CHOI on 7/22/24.
 //
 
-import SnapKit
-import UIKit
-import SwiftUI
-import Moya
 import Combine
+import Moya
+import SnapKit
+import SwiftUI
+import UIKit
 
 class ConsumeViewController: UIViewController {
   // MARK: - Properties
-  
+
   // View
   private var consumeView = ConsumeView()
-  
+
   // ViewController
   private lazy var categorySelectTableViewController = CategorySelectTableViewController()
   private lazy var consumedHistoryTableViewController = ConsumedHistoryTableViewController()
-  
+
   // Network
   private let provider = MoyaProvider<CategoryRouter>()
-  
+
   // Combine
   private var cancellables = Set<AnyCancellable>()
-  
+
   // Variable
   private var writtenConsumedPriceText = ""
   private var writtenConsumedContentText = ""
   private var selectedDate = Date()
   private var selectedCategory = ""
-  
+
   // MARK: - View Life Cycle
-  
+
   override func loadView() {
     view = consumeView
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     setNavigation()
     setUITextFieldDelegate()
     setButtonAction()
     setDatePickerAction()
     observeSelectedCategory()
   }
-  
+
   // MARK: - Methods
-  
+
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: "소비기록", image: UIImage(systemName: "list.clipboard"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))
-    
+
     navigationItem.backBarButtonItem = UIBarButtonItem()
-    
+
     /*
      해야 할 일
      1. rightBarButtonItem의 색상을 Asset에 등록하고 사용하도록 설계
@@ -70,22 +70,23 @@ class ConsumeViewController: UIViewController {
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
   }
-  
+
   private func setUITextFieldDelegate() {
     self.consumeView.consumedPriceTextField.delegate = self
     self.consumeView.consumedContentTextField.delegate = self
   }
-  
+
   private func setButtonAction() {
     consumeView.categorySettingButton.addTarget(
       self, action: #selector(categorySettingButtonTapped), for: .touchUpInside)
     consumeView.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
   }
-  
+
   private func setDatePickerAction() {
-    consumeView.consumedDatePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+    consumeView.consumedDatePicker.addTarget(
+      self, action: #selector(dateChanged(_:)), for: .valueChanged)
   }
-  
+
   /*
    observeSelectedCategory 함수의 설명
    - 하위 ViewController로 연결된 categorySelectTableViewController의 $selectedCategoryName값을
@@ -108,13 +109,13 @@ extension ConsumeViewController {
   @objc
   private func dateChanged(_ sender: UIDatePicker) {
     self.selectedDate = sender.date
-    
+
     /*
      해야 할 일
      - 서버로 보낼 날짜 데이터 형식으로 전환해야 함
      */
   }
-  
+
   @objc
   private func rightBarButtonItemButtonTapped() {
     debugPrint("소비기록 버튼 탭")
@@ -145,7 +146,7 @@ extension ConsumeViewController {
 
 // MARK: - UITextField Delegate
 
-extension ConsumeViewController : UITextFieldDelegate {
+extension ConsumeViewController: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     switch textField {
     case self.consumeView.consumedPriceTextField:
@@ -160,7 +161,7 @@ extension ConsumeViewController : UITextFieldDelegate {
       debugPrint("알 수 없는 텍스트 필드에 접근했습니다")
     }
   }
-  
+
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
@@ -173,14 +174,14 @@ struct ConsumeViewController_Preview: UIViewControllerRepresentable {
   func updateUIViewController(_ uiViewController: ConsumeViewController, context: Context) {
     //
   }
-  
-    func makeUIViewController(context: Context) -> ConsumeViewController {
-        return ConsumeViewController()
-    }
+
+  func makeUIViewController(context: Context) -> ConsumeViewController {
+    return ConsumeViewController()
+  }
 }
 
 struct ContentView_Preview: PreviewProvider {
-    static var previews: some View {
-        ConsumeViewController_Preview()
-    }
+  static var previews: some View {
+    ConsumeViewController_Preview()
+  }
 }

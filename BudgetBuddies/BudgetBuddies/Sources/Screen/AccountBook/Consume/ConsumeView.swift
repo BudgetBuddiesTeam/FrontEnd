@@ -74,7 +74,7 @@ class ConsumeView: UIView {
     datePicker.datePickerMode = .date
     return datePicker
   }()
-  
+
   // 카테고리 텍스트
   private let categorySetText: UILabel = {
     let label = UILabel()

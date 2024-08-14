@@ -5,14 +5,32 @@
 //  Created by Jiwoong CHOI on 7/26/24.
 //
 
+import Combine
 import SnapKit
 import UIKit
+
+/*
+ 해야 할 일
+ - 아무것도 화면에 나타나지 않는 "할인정보" & "지원정보" ViewController를 연결하기
+ */
 
 class AllLookingViewController: UIViewController {
 
   // MARK: - Properties
 
+  // View
   private let allLookingView = AllLookingView()
+
+  // ViewController
+  private let profileEditViewController = ProfileEditViewController()
+  private let monthReportViewController = MonthReportViewController()
+  private let analysisReportViewController = AnalysisReportViewController()
+  private let calendarViewController = CalendarViewController()
+  private let discountInfoListViewController = InfoListViewController(infoType: .discount)
+  private let supportInfoListViewController = InfoListViewController(infoType: .support)
+
+  // Combine
+  private var cancellable = Set<AnyCancellable>()
 
   // MARK: - View Life Cycle
 
@@ -20,18 +38,47 @@ class AllLookingViewController: UIViewController {
     view = allLookingView
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    hideNavigationBar()
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    setNavigation()
+    setNavigationSetting()
+    observeUserNameProperty()
     setTapGesture()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    showNavigationBar()
   }
 
   // MARK: - Methods
 
-  private func setNavigation() {
+  private func setNavigationSetting() {
     navigationItem.backBarButtonItem = UIBarButtonItem()
+  }
+
+  private func hideNavigationBar() {
+    navigationController?.navigationBar.isHidden = true
+  }
+
+  private func showNavigationBar() {
+    navigationController?.navigationBar.isHidden = false
+  }
+
+  private func observeUserNameProperty() {
+    profileEditViewController.$writtenName
+      .sink { [weak self] newValue in
+        self?.allLookingView.profileContainerView.userNameText.text = newValue
+      }
+      .store(in: &cancellable)
   }
 
   private func setTapGesture() {
@@ -77,27 +124,35 @@ class AllLookingViewController: UIViewController {
 
   @objc private func profileContainerViewTapped() {
     debugPrint("프로필 세부사항 탭")
-    let profileEditViewController = ProfileEditViewController()
     navigationController?.pushViewController(profileEditViewController, animated: true)
   }
 
   @objc private func thisMonthReportContainerTapped() {
     debugPrint("이번 달 레포트")
+    navigationController?.pushViewController(monthReportViewController, animated: true)
   }
 
   @objc private func peerConsumedAnalysisReportContainerTapped() {
     debugPrint("또래 소비분석 리포트")
+    navigationController?.pushViewController(analysisReportViewController, animated: true)
   }
 
   @objc private func pocketCalendarContainerTapped() {
     debugPrint("주머니 캘린더")
+    navigationController?.pushViewController(calendarViewController, animated: true)
   }
 
+  /*
+   해야 할 일
+   - 아무것도 화면에 나타나지 않는 "할인정보" & "지원정보" ViewController를 연결하기
+   */
   @objc private func priceEventInfoContainerTapped() {
     debugPrint("이번 달 할인정보 확인하기")
+    navigationController?.pushViewController(discountInfoListViewController, animated: true)
   }
 
   @objc private func supportInfoConfirmContainerTapped() {
     debugPrint("이번 달 지원정보 확인하기")
+    navigationController?.pushViewController(supportInfoListViewController, animated: true)
   }
 }

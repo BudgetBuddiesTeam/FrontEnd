@@ -27,13 +27,13 @@ class AllLookingView: UIView {
   }()
 
   // 프로필 컨테이너
-  let profileContainerView = ProfileContainerView()
+  public let profileContainerView = ProfileContainerView()
 
   // 분석 컨테이너
-  let analysisContainverView = AnalysisContainerView()
+  public let analysisContainverView = AnalysisContainerView()
 
   // 전체 서비스 컨테이너
-  let allServiceContainerView = AllServiceContainerView()
+  public let allServiceContainerView = AllServiceContainerView()
 
   // MARK: - Initializer
 

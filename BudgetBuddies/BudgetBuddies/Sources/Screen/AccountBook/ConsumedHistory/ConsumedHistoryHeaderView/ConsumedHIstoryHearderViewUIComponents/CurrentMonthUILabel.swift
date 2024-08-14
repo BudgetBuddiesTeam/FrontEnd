@@ -17,18 +17,18 @@ class CurrentMonthUILabel: UILabel {
 
   // MARK: - Properties
   private var monthData = 8
-  
+
   // MARK: - Initializer
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setProperties()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   // MARK: - Methods
 
   private func setProperties() {
@@ -36,7 +36,7 @@ class CurrentMonthUILabel: UILabel {
     self.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     self.text = "\(self.monthData)월"
   }
-  
+
   public func updateMonthData(monthData: Int) {
     self.monthData = monthData
   }

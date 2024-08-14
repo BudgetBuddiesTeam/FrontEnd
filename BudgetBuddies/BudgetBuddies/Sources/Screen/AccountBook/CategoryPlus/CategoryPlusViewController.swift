@@ -12,9 +12,9 @@ import UIKit
 class CategoryPlusViewController: UIViewController {
   // MARK: - Properties
   private let categoryPlusView = CategoryPlusView()
-  
+
   private let provider = MoyaProvider<CategoryRouter>()
-  
+
   private let userId = 1
   /*
    주의
@@ -35,7 +35,7 @@ class CategoryPlusViewController: UIViewController {
   }
 
   // MARK: - Methods
-  
+
   private func setUITextFieldDelegate() {
     self.categoryPlusView.userCategoryTextField.delegate = self
   }
@@ -48,12 +48,14 @@ class CategoryPlusViewController: UIViewController {
   }
 
   private func setButtonAction() {
-    categoryPlusView.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+    categoryPlusView.addButton.addTarget(
+      self, action: #selector(addButtonTapped), for: .touchUpInside)
   }
 
   @objc
   private func addButtonTapped() {
-    let categoryRequestDTO = CategoryRequestDTO(userID: self.userId, name: self.name, isDefault: self.isDefault)
+    let categoryRequestDTO = CategoryRequestDTO(
+      userID: self.userId, name: self.name, isDefault: self.isDefault)
     debugPrint(categoryRequestDTO.name)
     provider.request(.addCategory(categoryRequest: categoryRequestDTO)) { result in
       switch result {
@@ -81,7 +83,7 @@ extension CategoryPlusViewController: UITextFieldDelegate {
       self.name = text
     }
   }
-  
+
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true

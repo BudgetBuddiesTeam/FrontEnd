@@ -10,6 +10,7 @@ import SnapKit
 import UIKit
 
 final class MonthReportViewController: UIViewController {
+  // MARK: - UI Componenets
 
   lazy var scrollView = {
     let view = UIScrollView()
@@ -92,7 +93,7 @@ final class MonthReportViewController: UIViewController {
   //    var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
 
   override func viewWillAppear(_ animated: Bool) {
-    setNavi()
+    setNavigationSetting()
   }
 
   // 총 목표액과 총 소비액 변수
@@ -174,12 +175,17 @@ final class MonthReportViewController: UIViewController {
       icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원",
       description: "과자"),
   ]
+  // MARK: - View Life Cycle
+
+  override func viewWillDisappear(_ animated: Bool) {
+    unSetNavigationSetting()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
-    setNavi()
+    setNavigationSetting()
     setup()
     setConst()
     setChart()
@@ -187,7 +193,7 @@ final class MonthReportViewController: UIViewController {
     updateLabels()
   }
 
-  private func setNavi() {
+  private func setNavigationSetting() {
     navigationItem.title = "이번달 리포트"
     let appearance = UINavigationBarAppearance()
     appearance.configureWithOpaqueBackground()
@@ -201,6 +207,17 @@ final class MonthReportViewController: UIViewController {
     let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
     backBarButtonItem.tintColor = .black
     self.navigationItem.backBarButtonItem = backBarButtonItem
+  }
+
+  private func unSetNavigationSetting() {
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .clear
+    appearance.shadowColor = nil
+
+    navigationController?.navigationBar.standardAppearance = appearance
+    navigationController?.navigationBar.compactAppearance = appearance
+    navigationController?.navigationBar.scrollEdgeAppearance = appearance
   }
 
   private func setup() {

@@ -13,7 +13,8 @@ class ConsumedHistoryHeaderView: UIView {
 
   public let previousMonthButton: UIButton = {
     let button = UIButton()
-    button.setImage(BudgetBuddiesAsset.AppImage.ConsumedHistoryViewImage.leftPolygon.image, for: .normal)
+    button.setImage(
+      BudgetBuddiesAsset.AppImage.ConsumedHistoryViewImage.leftPolygon.image, for: .normal)
     return button
   }()
 
@@ -21,7 +22,8 @@ class ConsumedHistoryHeaderView: UIView {
 
   public let nextMonthButton: UIButton = {
     let button = UIButton()
-    button.setImage(BudgetBuddiesAsset.AppImage.ConsumedHistoryViewImage.rightPolygon.image, for: .normal)
+    button.setImage(
+      BudgetBuddiesAsset.AppImage.ConsumedHistoryViewImage.rightPolygon.image, for: .normal)
     return button
   }()
 

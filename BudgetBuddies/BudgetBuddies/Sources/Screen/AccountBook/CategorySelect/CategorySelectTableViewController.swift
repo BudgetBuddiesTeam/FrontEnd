@@ -5,10 +5,10 @@
 //  Created by Jiwoong CHOI on 7/22/24.
 //
 
+import Combine
+import Moya
 import SnapKit
 import UIKit
-import Moya
-import Combine
 
 /*
  해야 할 일
@@ -21,7 +21,7 @@ class CategorySelectTableViewController: UITableViewController {
 
   private let heightBetweenCells: CGFloat = 12
   private let heightOfCell: CGFloat = 72
-  
+
   private let provider = MoyaProvider<CategoryRouter>()
 
   // 서버에서 가져온 카테고리 항목들을 저장하는 모델 배열
@@ -29,17 +29,17 @@ class CategorySelectTableViewController: UITableViewController {
 
   // 기본 카테고리를 제거할 수 없도록 설정한 코드
   private var defaultCategoryIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-  
+
   @Published var selectedCategoryName = "카테고리를 선택하세요"
 
   // MARK: - View Life Cycle
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+
     self.fetchDataFromCategoryControllerAPI()
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -105,9 +105,9 @@ class CategorySelectTableViewController: UITableViewController {
   private func plusButtonTapped() {
     self.present(CategoryPlusViewController(), animated: true)
   }
-  
+
   // MARK: - Network
-  
+
   /// 카테고리 컨트롤러 서버에서 데이터를 가져오는 함수입니다.
   private func fetchDataFromCategoryControllerAPI() {
     provider.request(.getCategoryWithPathVariable(userId: 1)) { [weak self] result in
@@ -116,7 +116,8 @@ class CategorySelectTableViewController: UITableViewController {
         debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 성공")
         debugPrint(response.statusCode)
         do {
-          let decodedData = try JSONDecoder().decode([CategoryResponseDTO].self, from: response.data)
+          let decodedData = try JSONDecoder().decode(
+            [CategoryResponseDTO].self, from: response.data)
           debugPrint("카테고리 컨트롤러 API로부터 추출한 데이터 디코딩 성공")
           self?.categories = decodedData
           self?.tableView.reloadData()
@@ -130,8 +131,6 @@ class CategorySelectTableViewController: UITableViewController {
       }
     }
   }
-  
-
 
   // MARK: - Table view data source & delegate
 
@@ -150,11 +149,11 @@ class CategorySelectTableViewController: UITableViewController {
       tableView.dequeueReusableCell(
         withIdentifier: CategorySelectTableViewCell.identifier, for: indexPath)
       as! CategorySelectTableViewCell
-    
+
     let selectedCategory = self.categories[indexPath.row]
 
     cell.configure(categoryID: selectedCategory.id, categoryName: selectedCategory.name)
-    
+
     return cell
   }
 
@@ -191,17 +190,17 @@ class CategorySelectTableViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     self.selectedCategoryName = self.categories[indexPath.row].name
-    
+
     navigationController?.popViewController(animated: true)
   }
-  
+
   // 편집모드에서 제거버튼을 눌렀을 때, "삭제"라는 확인 버튼
   override func tableView(
     _ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath
   ) -> String? {
     return "삭제"
   }
-  
+
   // 편집모드에서 제거버튼을 눌렀을 때, 해당 카테고리 항목이 제거되는 로직 함수
   override func tableView(
     _ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
@@ -210,7 +209,7 @@ class CategorySelectTableViewController: UITableViewController {
     if editingStyle == .delete {
       categories.remove(at: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
-      
+
       // 제거된 카테고리를 서버에도 반영해야 합니다.
     }
   }

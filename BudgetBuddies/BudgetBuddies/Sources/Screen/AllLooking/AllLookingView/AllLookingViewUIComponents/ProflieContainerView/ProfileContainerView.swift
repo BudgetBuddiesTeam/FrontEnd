@@ -13,9 +13,9 @@ class ProfileContainerView: UIView {
   // MARK: - UI Components
 
   // 사용자 이름 텍스트
-  private var userNameText: UILabel = {
+  public var userNameText: UILabel = {
     let label = UILabel()
-    label.text = "김혜인"
+    label.text = "빈주머니즈"
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label

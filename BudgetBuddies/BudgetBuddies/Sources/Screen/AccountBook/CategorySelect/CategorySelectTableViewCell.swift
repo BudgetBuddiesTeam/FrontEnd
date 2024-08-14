@@ -65,10 +65,10 @@ class CategorySelectTableViewCell: UITableViewCell {
   }
 
   // MARK: - Methods
-  
+
   public func configure(categoryID: Int, categoryName: String) {
     let categoryIconImage: UIImage
-    
+
     switch categoryID {
     case 1:
       categoryIconImage = BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
@@ -93,7 +93,7 @@ class CategorySelectTableViewCell: UITableViewCell {
     default:
       categoryIconImage = BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
-    
+
     self.categoryIcon.image = categoryIconImage
     self.categoryText.text = categoryName
   }

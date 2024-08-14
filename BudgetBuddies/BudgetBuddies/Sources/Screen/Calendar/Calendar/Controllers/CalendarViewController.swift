@@ -218,6 +218,9 @@ extension CalendarViewController: UITableViewDataSource {
                 
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath) as! ReadyInfoCell
+                cell.configure(infoType: .discount)
+                
+                cell.selectionStyle = .none
                 return cell
             }
         }
@@ -242,6 +245,9 @@ extension CalendarViewController: UITableViewDataSource {
                 
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath) as! ReadyInfoCell
+                cell.configure(infoType: .support)
+                
+                cell.selectionStyle = .none
                 return cell
             }
         }

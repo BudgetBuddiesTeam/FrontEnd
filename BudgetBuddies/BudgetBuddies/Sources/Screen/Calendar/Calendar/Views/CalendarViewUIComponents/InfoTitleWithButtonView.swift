@@ -101,7 +101,7 @@ class InfoTitleWithButtonView: UIView {
 
     showDetailStackView.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(16 + 5)
-      make.bottom.equalToSuperview().inset(6)
+      make.bottom.equalToSuperview().inset(3)
     }
   }
 }

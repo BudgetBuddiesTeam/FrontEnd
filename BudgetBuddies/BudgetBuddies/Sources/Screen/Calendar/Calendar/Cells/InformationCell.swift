@@ -11,6 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
+    func didTabInformationCell(in cell: InformationCell)
 }
 
 class InformationCell: UITableViewCell {
@@ -87,7 +88,7 @@ class InformationCell: UITableViewCell {
 
   // MARK: - UI Components
   // 뒷 배경
-  var backView: UIView = {
+  lazy var backView: UIView = {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.layer.cornerRadius = 15
@@ -97,6 +98,11 @@ class InformationCell: UITableViewCell {
     view.layer.shadowRadius = 4  //반경
     view.layer.shadowOffset = CGSize(width: 0, height: 0)
     view.layer.masksToBounds = false
+      
+      // 제스처 추가
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapBackView))
+      view.addGestureRecognizer(tapGesture)
+      view.isUserInteractionEnabled = true
     return view
   }()
 
@@ -365,6 +371,11 @@ class InformationCell: UITableViewCell {
   private func didTapWebButton() {
     delegate?.didTapWebButton(in: self, urlString: urlString)
   }
+    
+    @objc
+    private func didTapBackView() {
+        delegate?.didTabInformationCell(in: self)
+    }
 
   @objc
   private func didTapLikesButton() {

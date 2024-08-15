@@ -12,9 +12,10 @@ class InfoTitleWithButtonView: UIView {
   // MARK: - Properties
   var infoType: InfoType?
     
+    // 이 값이 변경될 때마다 "전체보기 >" 버튼의 색을 바꿈 (비활성화일 때는 배경색과 동일하게)
     var isEnabled: Bool = true {
         didSet {
-            print("\(self.infoType!)전체보기 활성화: \(self.isEnabled)")
+            updateColor()
         }
     }
 
@@ -80,6 +81,15 @@ class InfoTitleWithButtonView: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    // MARK: - Update Color
+    private func updateColor() {
+        let color: UIColor = isEnabled ? BudgetBuddiesAsset.AppColor.subGray.color : BudgetBuddiesAsset.AppColor.background.color
+        showDetailLabel.textColor = color
+        chevronImageView.tintColor = color
+
+    }
+    
   // MARK: - set up UI
   private func setupUI() {
     self.backgroundColor = .clear

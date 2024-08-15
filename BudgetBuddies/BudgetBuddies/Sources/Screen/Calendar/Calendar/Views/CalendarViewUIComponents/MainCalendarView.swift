@@ -21,21 +21,31 @@ class MainCalendarView: UIView {
       guard let yearMonth = self.yearMonth else { return }
       calendarHeight = yearMonth.isSixWeeksLong() ? 590 : 510
       reSetupCalendarHeight()
+      //      layoutSubviews()
+    }
+  }
+
+  // networking
+  var calendarInfos: MonthInfoDto? {
+    didSet {
+      guard let calendarInfos = calendarInfos else { return }
+      setupRaisedInfoModels(calendarInfos: calendarInfos)
       layoutSubviews()
     }
   }
 
+  // 캘린더에 올릴 정보 모델 (필요한 정보만 수집)
   var raisedInfoModels: [RaisedInfoModel] = [
-    RaisedInfoModel(
-      title: "캘린더 너무 어려워요", startDate: "2024-07-02", endDate: "2024-07-05", infoType: .support),
-    RaisedInfoModel(
-      title: "하지만 해야지", startDate: "2024-07-07", endDate: "2024-07-10", infoType: .discount),
-    RaisedInfoModel(
-      title: "국가장학금 나줘요", startDate: "2024-07-14", endDate: "2024-07-18", infoType: .support),
-    RaisedInfoModel(
-      title: "어쩔거야", startDate: "2024-07-17", endDate: "2024-07-24", infoType: .discount),
-    RaisedInfoModel(
-      title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-31", infoType: .support),
+    //    RaisedInfoModel(
+    //      title: "캘린더 너무 어려워요", startDate: "2024-07-02", endDate: "2024-07-05", infoType: .support),
+    //    RaisedInfoModel(
+    //      title: "하지만 해야지", startDate: "2024-07-07", endDate: "2024-07-10", infoType: .discount),
+    //    RaisedInfoModel(
+    //      title: "국가장학금 나줘요", startDate: "2024-07-14", endDate: "2024-07-18", infoType: .support),
+    //    RaisedInfoModel(
+    //      title: "어쩔거야", startDate: "2024-07-17", endDate: "2024-07-24", infoType: .discount),
+    //    RaisedInfoModel(
+    //      title: "안녕하세요", startDate: "2024-07-23", endDate: "2024-07-31", infoType: .support),
   ]
 
   // UI Components
@@ -133,6 +143,37 @@ class MainCalendarView: UIView {
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Set up InfoModels
+  private func setupRaisedInfoModels(calendarInfos: MonthInfoDto) {
+    self.raisedInfoModels.removeAll()
+
+    // 캘린더 할인정보, 지원정보 분리
+    let discountCalendar = calendarInfos.discountInfoDtoList
+    let supportCalendar = calendarInfos.supportInfoDtoList
+
+    // 할인정보 생성
+    for i in 0..<discountCalendar.count {
+      let discounRaisedInfoModel = RaisedInfoModel(
+        title: discountCalendar[i].title,
+        startDate: discountCalendar[i].startDate,
+        endDate: discountCalendar[i].endDate,
+        infoType: .discount)
+
+      self.raisedInfoModels.append(discounRaisedInfoModel)
+    }
+
+    // 지원정보 생성
+    for i in 0..<supportCalendar.count {
+      let supportRaisedInfoModel = RaisedInfoModel(
+        title: supportCalendar[i].title,
+        startDate: supportCalendar[i].startDate,
+        endDate: supportCalendar[i].endDate,
+        infoType: .support)
+
+      self.raisedInfoModels.append(supportRaisedInfoModel)
+    }
   }
 
   // MARK: - set up UI
@@ -280,6 +321,7 @@ extension MainCalendarView {
           }
         }
       }
+      // 여기
 
       setupRaisedViews(currentModel, isOverlapped: isOverlapped)
     }

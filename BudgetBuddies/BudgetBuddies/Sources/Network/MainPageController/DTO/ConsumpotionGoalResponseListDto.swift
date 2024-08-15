@@ -13,12 +13,12 @@ struct ConsumptionGoalResponseListDto: Codable {
   let goalMonth: String
   let totalGoalAmount: Int
   let totalConsumptionAmount: Int
-  let consumptionGoalList: [ConsumptionGoal]
+  let consumptionGoalList: [ConsumptionGoalResponseDto]
 }
 
-// MARK: - ConsumptionGoal
+// MARK: - ConsumptionGoalResponseDto
 
-struct ConsumptionGoal: Codable {
+struct ConsumptionGoalResponseDto: Codable {
   let categoryName: String
   let categoryId: Int
   let goalAmount: Int

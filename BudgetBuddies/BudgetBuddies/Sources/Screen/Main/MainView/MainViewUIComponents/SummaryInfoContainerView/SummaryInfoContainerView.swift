@@ -76,24 +76,16 @@ final class SummaryInfoContainerView: UIView {
   }()
 
   // 카테고리 1 잔여금액 표시 컨테이너
-  public let firstCategoryLeftMoneyContainer = LeftMoneyContainer(
-    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, categoryText: "식비",
-    leftMoney: 132800)
+  public let firstCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
 
   // 카테고리 2 잔여금액 표시 컨테이너
-  public let secondCategoryLeftMoneyContainer = LeftMoneyContainer(
-    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image,
-    categoryText: "쇼핑", leftMoney: 132800)
-
+  public let secondCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
+  
   // 카테고리 3 잔여금액 표시 컨테이너
-  public let thirdCategoryLeftMoneyContainer = LeftMoneyContainer(
-    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image,
-    categoryText: "문화생활", leftMoney: 132800)
+  public let thirdCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
 
   // 카테고리 4 잔여금액 표시 컨테이너
-  public let fourthCategoryLeftMoneyContainer = LeftMoneyContainer(
-    categoryIconImage: BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image,
-    categoryText: "패션", leftMoney: 132800)
+  public let fourthCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
 
   // 구분선
   private let divider: UIView = {

@@ -1,5 +1,5 @@
 //
-//  LeftMoneyContainer.swift
+//  CategoryLeftMoneyContainer.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 8/10/24.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class LeftMoneyContainer: UIView {
+class CategoryLeftMoneyContainer: UIView {
 
   // MARK: - UI Componenets
 
@@ -45,9 +45,9 @@ class LeftMoneyContainer: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  convenience init(categoryIconImage: UIImage, categoryText: String, leftMoney: Int) {
+  convenience init(categoryId: Int, categoryText: String, leftMoney: Int) {
     self.init()
-    iconImageView.image = categoryIconImage
+    self.setCategoryIconImage(categoryId: categoryId)
     categoryTextLabel.text = categoryText
     leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
   }
@@ -55,14 +55,40 @@ class LeftMoneyContainer: UIView {
   // MARK: - Methods
 
   public func updateInfo(
-    categoryIconImage: UIImage,
+    categoryId: Int,
     categoryText: String,
     leftMoney: Int
   ) {
-    iconImageView.image = categoryIconImage
+    self.setCategoryIconImage(categoryId: categoryId)
     categoryTextLabel.text = categoryText
     leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
-
+  }
+  
+  private func setCategoryIconImage(categoryId: Int) {
+    switch categoryId {
+    case 1:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
+    case 2:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
+    case 3:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
+    case 4:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
+    case 5:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
+    case 6:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
+    case 7:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case 8:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case 9:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case 10:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    default:
+      iconImageView.image = BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
+    }
   }
 
   private func setLayout() {

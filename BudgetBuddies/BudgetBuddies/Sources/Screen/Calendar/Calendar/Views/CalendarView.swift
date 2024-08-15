@@ -11,13 +11,27 @@ import UIKit
 class CalendarView: UIView {
   // MARK: - Properties
   var calendarHeight: Int = 510
+    
+    // 할인정보 테이블 뷰 height
+    var discountTableViewHeight: Int = 168 + 168 {
+        didSet {
+            reSetupDiscountTableViewHeight()
+        }
+    }
+    
+    // 지원정보 테이블 뷰 height
+    var supportTableViewHeight: Int = 168 + 168 {
+        didSet {
+            reSetupSupportTableViewHeight()
+        }
+    }
 
   var yearMonth: YearMonth? {
     didSet {
       mainCalendarView.yearMonth = self.yearMonth
       guard let yearMonth = self.yearMonth else { return }
       calendarHeight = yearMonth.isSixWeeksLong() ? 590 : 510
-      reSetupConstraints()
+      reSetupMainCalendarHeightConstraints()
     }
   }
 
@@ -84,8 +98,8 @@ class CalendarView: UIView {
 
     setupConstraints()
   }
-  // MARK: - re Set up CalendarViewHeight
-  private func reSetupConstraints() {
+  // MARK: - Re set up CalendarViewHeight
+  private func reSetupMainCalendarHeightConstraints() {
     mainCalendarView.snp.removeConstraints()
     mainCalendarView.snp.remakeConstraints { make in
       make.leading.trailing.equalToSuperview()
@@ -97,6 +111,24 @@ class CalendarView: UIView {
     //            self.layer.layoutIfNeeded()
     //        }
   }
+    
+    // MARK: - Re set up discountTableViewHeight
+    private func reSetupDiscountTableViewHeight() {
+        discountInfoTableView.snp.removeConstraints()
+        discountInfoTableView.snp.remakeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(discountTableViewHeight)
+        }
+    }
+    
+    // MARK: - Re set up supportTableViewHeight
+    private func reSetupSupportTableViewHeight() {
+        supportInfoTableView.snp.removeConstraints()
+        supportInfoTableView.snp.remakeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(supportTableViewHeight)
+        }
+    }
 
   // MARK: - Set up Constraints
   private func setupConstraints() {
@@ -134,7 +166,7 @@ class CalendarView: UIView {
 
     discountInfoTableView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(168 + 168)  // 일단 셀 두 개 높이로 설정
+      make.height.equalTo(discountTableViewHeight)
     }
 
     supportInfoTitleWithButtonView.snp.makeConstraints { make in
@@ -144,7 +176,7 @@ class CalendarView: UIView {
 
     supportInfoTableView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(168 + 168)  // 일단 셀 두 개 높이로 설정
+      make.height.equalTo(supportTableViewHeight)
     }
   }
 }

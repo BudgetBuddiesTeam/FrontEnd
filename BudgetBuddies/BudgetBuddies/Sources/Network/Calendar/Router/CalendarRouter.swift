@@ -20,7 +20,7 @@ extension CalendarRouter: TargetType {
   var path: String {
     switch self {
     case .getCalendar:
-      return "/calendar/"
+      return "/calendar"
     }
   }
 

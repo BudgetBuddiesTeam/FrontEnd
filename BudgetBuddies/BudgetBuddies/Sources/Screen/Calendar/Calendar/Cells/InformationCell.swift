@@ -62,16 +62,20 @@ class InformationCell: UITableViewCell {
   }
 
   // 캘린더 메인 페이지에서 받을 정보
-  var recommend: TInfoDtoList? {
+  var recommend: InfoDtoList? {
     didSet {
       guard let recommend = recommend else { return }
       self.infoTitleLabel.text = recommend.title
-      self.dateLabel.text = recommend.dateRangeString
+        self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
 
       if let discountRate = recommend.discountRate {
         self.percentLabel.text = "~" + String(discountRate) + "%"
       }
+        
+        if let url = URL(string: recommend.thumbnailURL) {
+            self.logoImageView.kf.setImage(with: url)
+        }
 
       self.likesLabel.text = String(recommend.likeCount)
 
@@ -100,7 +104,7 @@ class InformationCell: UITableViewCell {
   var logoImageView: UIImageView = {
     let iv = UIImageView()
     iv.image = UIImage(named: "logoTempImage")
-    iv.contentMode = .scaleAspectFit
+    iv.contentMode = .scaleAspectFill
     iv.layer.masksToBounds = true
     iv.layer.cornerRadius = 15
     return iv

@@ -75,7 +75,7 @@ final class InfoListViewController: UIViewController {
         switch result {
         case .success(let response):
           print("데이터 디코딩 성공")
-          self.discounts = response.content
+            self.discounts = response.result.content
 
           DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -94,7 +94,7 @@ final class InfoListViewController: UIViewController {
         switch result {
         case .success(let response):
           print("데이터 디코딩 성공")
-          self.supports = response.content
+            self.supports = response.result.content
 
           DispatchQueue.main.async {
             self.tableView.reloadData()

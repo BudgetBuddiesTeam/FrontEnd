@@ -9,6 +9,14 @@ import Foundation
 
 // MARK: - DiscountResponse
 struct DiscountsResponse: Codable {
+    let isSuccess: Bool
+    let code, message: String
+    let result: DiscountsResult
+}
+
+
+// MARK: - DiscountsResult
+struct DiscountsResult: Codable {
   let totalPages, totalElements, size: Int
   let content: [DiscountContent]
   let number: Int

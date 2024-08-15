@@ -79,11 +79,13 @@ class CalendarViewController: UIViewController {
                     self.calendarView.discountTableViewHeight = discountCount == 0 ? 168 : discountCount * 168
                     self.calendarView.supportTableViewHeight = supportCount == 0 ? 168 : supportCount * 168
                     
+                    // 데이터 유무에 따라 전체보기 활성화 여부 전달
                     let discountInfoListEnabled = self.discountRecommends.count == 0 ? false : true
                     let supportInfoListEnabled = self.supportRecommends.count == 0 ? false : true
                     self.calendarView.discountInfoTitleWithButtonView.isEnabled = discountInfoListEnabled
                     self.calendarView.supportInfoTitleWithButtonView.isEnabled = supportInfoListEnabled
                     
+                    // 테이블 뷰 리로드
                     self.calendarView.discountInfoTableView.reloadData()
                     self.calendarView.supportInfoTableView.reloadData()
                 }

@@ -79,6 +79,11 @@ class CalendarViewController: UIViewController {
                     self.calendarView.discountTableViewHeight = discountCount == 0 ? 168 : discountCount * 168
                     self.calendarView.supportTableViewHeight = supportCount == 0 ? 168 : supportCount * 168
                     
+                    let discountInfoListEnabled = self.discountRecommends.count == 0 ? false : true
+                    let supportInfoListEnabled = self.supportRecommends.count == 0 ? false : true
+                    self.calendarView.discountInfoTitleWithButtonView.isEnabled = discountInfoListEnabled
+                    self.calendarView.supportInfoTitleWithButtonView.isEnabled = supportInfoListEnabled
+                    
                     self.calendarView.discountInfoTableView.reloadData()
                     self.calendarView.supportInfoTableView.reloadData()
                 }

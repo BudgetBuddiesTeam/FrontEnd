@@ -11,6 +11,12 @@ import UIKit
 class InfoTitleWithButtonView: UIView {
   // MARK: - Properties
   var infoType: InfoType?
+    
+    var isEnabled: Bool = true {
+        didSet {
+            print("\(self.infoType!)전체보기 활성화: \(self.isEnabled)")
+        }
+    }
 
   // MARK: - UI Components
   // 세미볼드체 타이틀

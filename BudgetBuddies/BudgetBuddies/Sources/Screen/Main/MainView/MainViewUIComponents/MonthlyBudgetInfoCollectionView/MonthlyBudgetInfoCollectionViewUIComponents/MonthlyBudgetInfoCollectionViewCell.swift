@@ -82,7 +82,7 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     imageView.snp.makeConstraints { make in
       make.width.height.equalTo(36)
     }
-   return imageView
+    return imageView
   }()
 
   // 정보 날짜 텍스트 레이블

@@ -63,7 +63,7 @@ class CategoryLeftMoneyContainer: UIView {
     categoryTextLabel.text = categoryText
     leftPriceLabel.updateLeftMoney(leftMoney: leftMoney)
   }
-  
+
   private func setCategoryIconImage(categoryId: Int) {
     switch categoryId {
     case 1:

@@ -48,7 +48,7 @@ class LeftPriceUILabel: UILabel {
 
   public func updateLeftMoney(leftMoney: Int) {
     self.leftMoney = leftMoney
-    
+
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal

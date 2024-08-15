@@ -177,40 +177,55 @@ extension MainViewController {
            2. "총 130,200원을 더 쓸 수 있어요"의 금액 정보 업데이트 코드
            3. "잔여금액" 예하 4가지 카테고리에 대한 카테고리 아이콘, 카테코리 이름, 금액 정보 업데이트
            */
-          
+
           let mainPageResponseData = decodedData.result
           let consumptionGoalResponseListData = mainPageResponseData.consumptionGoalResponseListDto
-          
+
           // 전체 소비 금액
           let totalConsumptionAmount = consumptionGoalResponseListData.totalConsumptionAmount
-          self.mainView.summaryInfoContainerView.mainTextLabel.updateUsedMoney(usedMoney: totalConsumptionAmount)
-          
+          self.mainView.summaryInfoContainerView.mainTextLabel.updateUsedMoney(
+            usedMoney: totalConsumptionAmount)
+
           // 전체 잔여 금액
-          let totalLeftMoneyAmount = consumptionGoalResponseListData.totalGoalAmount - consumptionGoalResponseListData.totalConsumptionAmount
-          self.mainView.summaryInfoContainerView.commentTextLabel.updateLeftMoney(leftMoney: totalLeftMoneyAmount)
-          
-          
+          let totalLeftMoneyAmount =
+            consumptionGoalResponseListData.totalGoalAmount
+            - consumptionGoalResponseListData.totalConsumptionAmount
+          self.mainView.summaryInfoContainerView.commentTextLabel.updateLeftMoney(
+            leftMoney: totalLeftMoneyAmount)
+
           let consumptionGoalList = consumptionGoalResponseListData.consumptionGoalList
           let firstCategoryData = consumptionGoalList[0]
           let secondCategoryData = consumptionGoalList[1]
           let thirdCategoryData = consumptionGoalList[2]
           let fourthCategoryData = consumptionGoalList[3]
-          
+
           // 첫 번째 카테고리 잔여금액
-          let firstCategoryLeftMoneyAmount = firstCategoryData.goalAmount - firstCategoryData.consumeAmount
-          self.mainView.summaryInfoContainerView.firstCategoryLeftMoneyContainer.updateInfo(categoryId: firstCategoryData.categoryId, categoryText: firstCategoryData.categoryName, leftMoney: firstCategoryLeftMoneyAmount)
-          
+          let firstCategoryLeftMoneyAmount =
+            firstCategoryData.goalAmount - firstCategoryData.consumeAmount
+          self.mainView.summaryInfoContainerView.firstCategoryLeftMoneyContainer.updateInfo(
+            categoryId: firstCategoryData.categoryId, categoryText: firstCategoryData.categoryName,
+            leftMoney: firstCategoryLeftMoneyAmount)
+
           // 두 번째 카테고리 잔여금액
-          let secondCategoryLeftMoneyAmount = secondCategoryData.goalAmount - secondCategoryData.consumeAmount
-          self.mainView.summaryInfoContainerView.secondCategoryLeftMoneyContainer.updateInfo(categoryId: secondCategoryData.categoryId, categoryText: secondCategoryData.categoryName, leftMoney: secondCategoryLeftMoneyAmount)
-          
+          let secondCategoryLeftMoneyAmount =
+            secondCategoryData.goalAmount - secondCategoryData.consumeAmount
+          self.mainView.summaryInfoContainerView.secondCategoryLeftMoneyContainer.updateInfo(
+            categoryId: secondCategoryData.categoryId,
+            categoryText: secondCategoryData.categoryName, leftMoney: secondCategoryLeftMoneyAmount)
+
           // 세 번째 카테고리 잔여금액
-          let thirdCategoryLeftMoneyAmount = thirdCategoryData.goalAmount - thirdCategoryData.consumeAmount
-          self.mainView.summaryInfoContainerView.thirdCategoryLeftMoneyContainer.updateInfo(categoryId: thirdCategoryData.categoryId, categoryText: thirdCategoryData.categoryName, leftMoney: thirdCategoryLeftMoneyAmount)
-          
+          let thirdCategoryLeftMoneyAmount =
+            thirdCategoryData.goalAmount - thirdCategoryData.consumeAmount
+          self.mainView.summaryInfoContainerView.thirdCategoryLeftMoneyContainer.updateInfo(
+            categoryId: thirdCategoryData.categoryId, categoryText: thirdCategoryData.categoryName,
+            leftMoney: thirdCategoryLeftMoneyAmount)
+
           // 네 번째 카테고리 잔여금액
-          let fourthCategoryLeftMoneyAmount = fourthCategoryData.goalAmount - fourthCategoryData.consumeAmount
-          self.mainView.summaryInfoContainerView.fourthCategoryLeftMoneyContainer.updateInfo(categoryId: fourthCategoryData.categoryId, categoryText: fourthCategoryData.categoryName, leftMoney: fourthCategoryLeftMoneyAmount)
+          let fourthCategoryLeftMoneyAmount =
+            fourthCategoryData.goalAmount - fourthCategoryData.consumeAmount
+          self.mainView.summaryInfoContainerView.fourthCategoryLeftMoneyContainer.updateInfo(
+            categoryId: fourthCategoryData.categoryId,
+            categoryText: fourthCategoryData.categoryName, leftMoney: fourthCategoryLeftMoneyAmount)
         } catch (let error) {
           debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 실패")
           debugPrint(error.localizedDescription)
@@ -243,7 +258,7 @@ extension MainViewController {
           let decodedData = try JSONDecoder().decode(
             APIResponseMainPageResponseDto.self, from: moyaResponse.data)
           debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
-          
+
           let mainPageResponseData = decodedData.result
           completion(mainPageResponseData)
         } catch (let error) {

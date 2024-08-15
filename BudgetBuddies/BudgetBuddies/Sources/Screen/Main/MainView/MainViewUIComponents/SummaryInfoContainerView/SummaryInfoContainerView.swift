@@ -80,7 +80,7 @@ final class SummaryInfoContainerView: UIView {
 
   // 카테고리 2 잔여금액 표시 컨테이너
   public let secondCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
-  
+
   // 카테고리 3 잔여금액 표시 컨테이너
   public let thirdCategoryLeftMoneyContainer = CategoryLeftMoneyContainer()
 

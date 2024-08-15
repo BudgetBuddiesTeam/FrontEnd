@@ -294,34 +294,35 @@ extension MainCalendarView {
       }
     }
 
-    // raisedViews 올리기 작업
-    for idx in 0..<raisedInfoModels.count {
-      let currentModel = raisedInfoModels[idx]
-      let currentStartDate = dateFromString(currentModel.startDate)
-      let currentEndDate = dateFromString(currentModel.endDate)
-      var isOverlapped = false
-
-      for otherIdx in 0..<raisedInfoModels.count {
-        if idx == otherIdx { continue }
-
-        let otherModel = raisedInfoModels[otherIdx]
-        let otherStartDate = dateFromString(otherModel.startDate)
-        let otherEndDate = dateFromString(otherModel.endDate)
-
-        if let currentStart = currentStartDate, let currentEnd = currentEndDate,
-          let otherStart = otherStartDate, let otherEnd = otherEndDate
-        {
-          if currentStart <= otherEnd && currentEnd >= otherStart {
-            if currentStart > otherStart {
-              isOverlapped = true
-              break
-            }
+      // raisedViews 올리기 작업
+      for idx in 0..<raisedInfoModels.count {
+          let currentModel = raisedInfoModels[idx]
+          let currentStartDate = dateFromString(currentModel.startDate)
+          let currentEndDate = dateFromString(currentModel.endDate)
+          var isOverlapped = false
+          
+          for otherIdx in 0..<raisedInfoModels.count {
+              if idx == otherIdx { continue }
+              
+              let otherModel = raisedInfoModels[otherIdx]
+              let otherStartDate = dateFromString(otherModel.startDate)
+              let otherEndDate = dateFromString(otherModel.endDate)
+              
+              if let currentStart = currentStartDate, let currentEnd = currentEndDate,
+                 let otherStart = otherStartDate, let otherEnd = otherEndDate
+              {
+                  if currentStart <= otherEnd && currentEnd >= otherStart {
+                      if currentStart > otherStart {
+                          isOverlapped = true
+                          break
+                      }
+                  }
+              }
           }
-        }
+          // 여기
+          
+          setupRaisedViews(currentModel, isOverlapped: isOverlapped)
       }
-
-      setupRaisedViews(currentModel, isOverlapped: isOverlapped)
-    }
   }
 }
 

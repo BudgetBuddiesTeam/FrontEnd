@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - SupportInfoResponse
 struct SupportsResponse: Codable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: SupportsResult
+  let isSuccess: Bool
+  let code, message: String
+  let result: SupportsResult
 }
 
 // MARK: - SupportsResult

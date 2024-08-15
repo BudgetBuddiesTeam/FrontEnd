@@ -11,20 +11,20 @@ import UIKit
 class CalendarView: UIView {
   // MARK: - Properties
   var calendarHeight: Int = 510
-    
-    // 할인정보 테이블 뷰 height
-    var discountTableViewHeight: Int = 168 + 168 {
-        didSet {
-            reSetupDiscountTableViewHeight()
-        }
+
+  // 할인정보 테이블 뷰 height
+  var discountTableViewHeight: Int = 168 + 168 {
+    didSet {
+      reSetupDiscountTableViewHeight()
     }
-    
-    // 지원정보 테이블 뷰 height
-    var supportTableViewHeight: Int = 168 + 168 {
-        didSet {
-            reSetupSupportTableViewHeight()
-        }
+  }
+
+  // 지원정보 테이블 뷰 height
+  var supportTableViewHeight: Int = 168 + 168 {
+    didSet {
+      reSetupSupportTableViewHeight()
     }
+  }
 
   var yearMonth: YearMonth? {
     didSet {
@@ -111,24 +111,24 @@ class CalendarView: UIView {
     //            self.layer.layoutIfNeeded()
     //        }
   }
-    
-    // MARK: - Re set up discountTableViewHeight
-    private func reSetupDiscountTableViewHeight() {
-        discountInfoTableView.snp.removeConstraints()
-        discountInfoTableView.snp.remakeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(discountTableViewHeight)
-        }
+
+  // MARK: - Re set up discountTableViewHeight
+  private func reSetupDiscountTableViewHeight() {
+    discountInfoTableView.snp.removeConstraints()
+    discountInfoTableView.snp.remakeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(discountTableViewHeight)
     }
-    
-    // MARK: - Re set up supportTableViewHeight
-    private func reSetupSupportTableViewHeight() {
-        supportInfoTableView.snp.removeConstraints()
-        supportInfoTableView.snp.remakeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(supportTableViewHeight)
-        }
+  }
+
+  // MARK: - Re set up supportTableViewHeight
+  private func reSetupSupportTableViewHeight() {
+    supportInfoTableView.snp.removeConstraints()
+    supportInfoTableView.snp.remakeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(supportTableViewHeight)
     }
+  }
 
   // MARK: - Set up Constraints
   private func setupConstraints() {

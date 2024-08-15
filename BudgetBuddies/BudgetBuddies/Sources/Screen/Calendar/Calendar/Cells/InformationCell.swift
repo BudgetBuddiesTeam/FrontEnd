@@ -11,7 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-    func didTabInformationCell(in cell: InformationCell)
+  func didTabInformationCell(in cell: InformationCell)
 }
 
 class InformationCell: UITableViewCell {
@@ -67,16 +67,16 @@ class InformationCell: UITableViewCell {
     didSet {
       guard let recommend = recommend else { return }
       self.infoTitleLabel.text = recommend.title
-        self.dateLabel.text = recommend.dateRangeString
+      self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
 
       if let discountRate = recommend.discountRate {
         self.percentLabel.text = "~" + String(discountRate) + "%"
       }
-        
-        if let url = URL(string: recommend.thumbnailURL) {
-            self.logoImageView.kf.setImage(with: url)
-        }
+
+      if let url = URL(string: recommend.thumbnailURL) {
+        self.logoImageView.kf.setImage(with: url)
+      }
 
       self.likesLabel.text = String(recommend.likeCount)
 
@@ -98,11 +98,11 @@ class InformationCell: UITableViewCell {
     view.layer.shadowRadius = 4  //반경
     view.layer.shadowOffset = CGSize(width: 0, height: 0)
     view.layer.masksToBounds = false
-      
-      // 제스처 추가
-      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapBackView))
-      view.addGestureRecognizer(tapGesture)
-      view.isUserInteractionEnabled = true
+
+    // 제스처 추가
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapBackView))
+    view.addGestureRecognizer(tapGesture)
+    view.isUserInteractionEnabled = true
     return view
   }()
 
@@ -371,11 +371,11 @@ class InformationCell: UITableViewCell {
   private func didTapWebButton() {
     delegate?.didTapWebButton(in: self, urlString: urlString)
   }
-    
-    @objc
-    private func didTapBackView() {
-        delegate?.didTabInformationCell(in: self)
-    }
+
+  @objc
+  private func didTapBackView() {
+    delegate?.didTabInformationCell(in: self)
+  }
 
   @objc
   private func didTapLikesButton() {

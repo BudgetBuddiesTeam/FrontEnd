@@ -9,11 +9,10 @@ import Foundation
 
 // MARK: - DiscountResponse
 struct DiscountsResponse: Codable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: DiscountsResult
+  let isSuccess: Bool
+  let code, message: String
+  let result: DiscountsResult
 }
-
 
 // MARK: - DiscountsResult
 struct DiscountsResult: Codable {

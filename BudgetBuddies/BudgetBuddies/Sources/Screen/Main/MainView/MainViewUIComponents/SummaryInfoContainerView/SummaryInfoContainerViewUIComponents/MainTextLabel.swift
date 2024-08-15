@@ -12,6 +12,7 @@ class MainTextLabel: UILabel {
   // MARK: - Properties
 
   private var usedMoney = 234470
+  private let highlightedColor = BudgetBuddiesAsset.AppColor.coreYellow.color
 
   // MARK: - Initializer
 
@@ -27,8 +28,26 @@ class MainTextLabel: UILabel {
 
   // MARK: - Methods
 
-  public func updateInfo(usedMoney: Int) {
+  public func updateUsedMoney(usedMoney: Int) {
     self.usedMoney = usedMoney
+    
+    let numberFormatter = NumberFormatter()
+    numberFormatter.locale = Locale(identifier: "ko_KR")
+    numberFormatter.numberStyle = .decimal
+    
+    if let formattedString = numberFormatter.string(from: NSNumber(value: usedMoney)) {
+      let mainText = "혜인님!\n이번달에\n\(formattedString)원 썼어요"
+      let attributedString = NSMutableAttributedString(string: mainText)
+      if let range = mainText.range(of: formattedString) {
+        let nsRange = NSRange(range, in: mainText)
+        attributedString.addAttribute(.foregroundColor, value: self.highlightedColor, range: nsRange)
+        self.attributedText = attributedString
+      } else {
+        self.text = mainText
+      }
+    } else {
+      self.text = "혜인님!\n이번달에\n많이 썼어요"
+    }
   }
 
   private func setProperties() {
@@ -41,7 +60,15 @@ class MainTextLabel: UILabel {
     numberFormatter.numberStyle = .decimal
 
     if let formattedString = numberFormatter.string(from: NSNumber(value: usedMoney)) {
-      self.text = "혜인님!\n이번달에\n\(formattedString)원 썼어요"
+      let mainText = "혜인님!\n이번달에\n\(formattedString)원 썼어요"
+      let attributedString = NSMutableAttributedString(string: mainText)
+      if let range = mainText.range(of: formattedString) {
+        let nsRange = NSRange(range, in: mainText)
+        attributedString.addAttribute(.foregroundColor, value: self.highlightedColor, range: nsRange)
+        self.attributedText = attributedString
+      } else {
+        self.text = mainText
+      }
     } else {
       self.text = "혜인님!\n이번달에\n많이 썼어요"
     }

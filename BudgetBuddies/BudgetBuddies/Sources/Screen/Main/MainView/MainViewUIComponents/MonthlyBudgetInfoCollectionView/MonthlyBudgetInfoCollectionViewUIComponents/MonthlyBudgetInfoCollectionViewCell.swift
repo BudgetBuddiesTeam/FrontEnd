@@ -42,7 +42,7 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     }
 
     // Dummy Color Data
-    view.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
+    view.backgroundColor = .clear
     return view
   }()
 
@@ -55,7 +55,7 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     label.text = "더미정보"
 
     // Dummy Text Color Data
-    label.textColor = BudgetBuddiesAsset.AppColor.orange2.color
+    label.textColor = .clear
     return label
   }()
 
@@ -70,22 +70,19 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     label.lineBreakMode = .byTruncatingTail
 
     // Dummy Text Data
-    label.text = "더미타이틀"
+    label.text = "더미제목"
     return label
   }()
 
   // 정보 아이콘 이미지뷰
-  public lazy var iconImageView: UIImageView = {
+  public var iconImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.layer.cornerRadius = 12
     imageView.clipsToBounds = true
     imageView.snp.makeConstraints { make in
       make.width.height.equalTo(36)
     }
-
-    // Dummy Image Data
-    imageView.image = BudgetBuddiesAsset.AppImage.MainViewImage.zigZagSampleIcon.image
-    return imageView
+   return imageView
   }()
 
   // 정보 날짜 텍스트 레이블
@@ -93,7 +90,7 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     let label = DateTextLabel()
     label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
-    label.text = "XX.XX - XX.XX"
+    label.text = "00.00 - 00.00"
     return label
   }()
 

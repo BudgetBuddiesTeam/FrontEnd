@@ -1,5 +1,5 @@
 //
-//  MainPageResponseDTO.swift
+//  MainPageResponseDto.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 8/11/24.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-// MARK: - MainPageResponseDTO
+// MARK: - MainPageResponseDto
 
-struct MainPageResponseDTO: Codable {
-  let topGoalCategoryResponseDTO: TopGoalCategoryResponseDTO
+struct MainPageResponseDto: Codable {
+  let consumptionAnalysisResponseDto: ConsumptionAnalysisResponseDto
   let consumptionGoalResponseListDto: ConsumptionGoalResponseListDto
   let discountResponseDtoList: [DiscountResponseDto]
   let supportResponseDtoList: [SupportResponseDto]

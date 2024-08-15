@@ -15,7 +15,7 @@ import UIKit
 class LeftPriceUILabel: UILabel {
   // MARK: - Properties
 
-  private var leftMoney: Int = 132800
+  private var leftMoney: Int = 0
 
   // MARK: - Initializer
 
@@ -48,5 +48,15 @@ class LeftPriceUILabel: UILabel {
 
   public func updateLeftMoney(leftMoney: Int) {
     self.leftMoney = leftMoney
+    
+    let numberFormatter = NumberFormatter()
+    numberFormatter.locale = Locale(identifier: "ko_KR")
+    numberFormatter.numberStyle = .decimal
+
+    if let formattedString = numberFormatter.string(from: NSNumber(value: leftMoney)) {
+      self.text = "\(formattedString)원"
+    } else {
+      self.text = "0원"
+    }
   }
 }

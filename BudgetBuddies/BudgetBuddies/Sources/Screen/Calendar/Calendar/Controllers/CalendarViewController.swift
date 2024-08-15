@@ -148,28 +148,37 @@ class CalendarViewController: UIViewController {
   }
 
   // MARK: - Selectors
+    // 할인정보 전체보기
   @objc
   private func didTapShowDiscountDetail() {
     guard let yearMonth = self.yearMonth else { return }
     guard let month = yearMonth.month else { return }
-
-    let vc = InfoListViewController(infoType: .discount)
-    vc.title = "\(month)월 할인정보"
-    vc.yearMonth = self.yearMonth
-    self.navigationController?.pushViewController(vc, animated: true)
+      
+      // 할인정보가 하나라도 있으면 전체보기
+      if discountRecommends.count >= 1 {
+          let vc = InfoListViewController(infoType: .discount)
+          vc.title = "\(month)월 할인정보"
+          vc.yearMonth = self.yearMonth
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
   }
 
+    // 지원정보 전체보기
   @objc
   private func didTapShowSupportDetail() {
     guard let yearMonth = self.yearMonth else { return }
     guard let month = yearMonth.month else { return }
 
-    let vc = InfoListViewController(infoType: .support)
-    vc.title = "\(month)월 지원정보"
-    vc.yearMonth = self.yearMonth
-    self.navigationController?.pushViewController(vc, animated: true)
+      // 지원정보가 하나라도 있으면 전체보기
+      if supportRecommends.count >= 1 {
+          let vc = InfoListViewController(infoType: .support)
+          vc.title = "\(month)월 지원정보"
+          vc.yearMonth = self.yearMonth
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
   }
 
+    // 날짜 선택
   @objc
   private func didTapSelectCalendar() {
     print(#function)

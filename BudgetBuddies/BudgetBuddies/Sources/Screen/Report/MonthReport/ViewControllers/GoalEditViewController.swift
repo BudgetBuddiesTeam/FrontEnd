@@ -82,6 +82,7 @@ final class GoalEditViewController: UIViewController {
   }
 
   private func setup() {
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     [
       textFieldStackView, addTextFieldButton, removeTextFieldButton, totalGoalTitleLabel,
       totalGoalLabel, finishButton,

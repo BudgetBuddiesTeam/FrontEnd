@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController {
   var calendarManager = CalendarManager.shared
   var discountRecommends: [InfoDtoList] = []
   var supportRecommends: [InfoDtoList] = []
+    var calendarInfos: MonthInfoDto?
 
   // MARK: - UI Components
   // 뷰
@@ -70,9 +71,13 @@ class CalendarViewController: UIViewController {
         print("데이터 디코딩 성공")
         self.discountRecommends = response.result.recommendMonthInfoDto.discountInfoDtoList
         self.supportRecommends = response.result.recommendMonthInfoDto.supportInfoDtoList
+          self.calendarInfos = response.result.calendarMonthInfoDto
 
         DispatchQueue.main.async {
+            // 캘린더 api
+            self.calendarView.mainCalendarView.calendarInfos = self.calendarInfos
 
+            // 추천 api
           // 데이터 개수에 따라 테이블 뷰 높이 설정
           let discountCount = self.discountRecommends.count
           let supportCount = self.supportRecommends.count
@@ -84,7 +89,7 @@ class CalendarViewController: UIViewController {
           let supportInfoListEnabled = self.supportRecommends.count == 0 ? false : true
           self.calendarView.discountInfoTitleWithButtonView.isEnabled = discountInfoListEnabled
           self.calendarView.supportInfoTitleWithButtonView.isEnabled = supportInfoListEnabled
-
+            
           // 테이블 뷰 리로드
           self.calendarView.discountInfoTableView.reloadData()
           self.calendarView.supportInfoTableView.reloadData()

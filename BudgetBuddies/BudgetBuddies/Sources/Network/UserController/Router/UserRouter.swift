@@ -56,7 +56,7 @@ extension UserRouter: TargetType {
 
   var task: Moya.Task {
     switch self {
-    case .modify(_,let userInfoRequestDTO):
+    case .modify(_, let userInfoRequestDTO):
       return .requestJSONEncodable(userInfoRequestDTO)
     case .addConsumptionGoal:
       return .requestPlain

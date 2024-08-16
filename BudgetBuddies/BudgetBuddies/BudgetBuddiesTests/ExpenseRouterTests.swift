@@ -169,7 +169,8 @@ final class ExpenseRouterTests: XCTestCase {
           debugPrint("/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          XCTFail("/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
+          XCTFail(
+            "/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
         XCTFail("/expenses/{userId}/{expenseId} API 연결 실패 : \(error.localizedDescription)")

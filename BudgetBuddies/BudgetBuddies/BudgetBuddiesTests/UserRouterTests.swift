@@ -25,9 +25,8 @@ final class UserRouterTests: XCTestCase {
     expectation = self.expectation(description: "Testing asynchronous methods")
     userId = 1
   }
-  
-  // MARK: - 사용자 데이터 변경
 
+  // MARK: - 사용자 데이터 변경
 
   /// /users/modify/{userId} 엔드포인트 테스트 메소드
   func testModify() {
@@ -35,11 +34,12 @@ final class UserRouterTests: XCTestCase {
     // Request Variable
     let email = "budgetbuddies@gmail.com"
     let name = "빈주머니즈"
-    
+
     let userInfoRequestDTO = UserInfoRequestDTO(email: email, name: name)
 
     // Network Transmitting Code
-    provider.request(.modify(userId: self.userId, userInfoRequestDTO: userInfoRequestDTO)) { result in
+    provider.request(.modify(userId: self.userId, userInfoRequestDTO: userInfoRequestDTO)) {
+      result in
       defer { self.expectation.fulfill() }
 
       switch result {

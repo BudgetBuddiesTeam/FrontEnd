@@ -355,7 +355,7 @@ extension MainViewController: UICollectionViewDelegate {
      해야 할 일
      CollectionViewCell에 따른 InfoViewController로 navigationController로 연결되게 설계부탁드립니다.
      */
-    let infoListViewController = InfoListViewController(infoType: .discount)
-    navigationController?.pushViewController(infoListViewController, animated: true)
+//    let infoListViewController = InfoListViewController(infoType: .discount)
+//    navigationController?.pushViewController(infoListViewController, animated: true)
   }
 }

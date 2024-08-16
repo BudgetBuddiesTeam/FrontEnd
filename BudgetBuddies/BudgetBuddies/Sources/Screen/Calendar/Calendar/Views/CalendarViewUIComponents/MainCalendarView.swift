@@ -328,7 +328,6 @@ extension MainCalendarView {
                 }
             }
             
-            print("지금 그리는 뷰: \(currentModel.title ?? "Untitled")은 겹쳐있다: \(isOverlappedFlags[idx])")
             setupRaisedViews(currentModel, isOverlapped: isOverlappedFlags[idx])
         }
     }

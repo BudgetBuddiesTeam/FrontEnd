@@ -352,8 +352,8 @@ extension MainCalendarView {
             backViewMargin.addSubview(raisedView)
             raisedView.snp.makeConstraints { make in
                 make.top.equalTo(headerStackView.snp.bottom).inset(topInsetBase - (80 * row))
-                make.leading.equalToSuperview().inset(leadingInset)
-                make.trailing.equalToSuperview().inset(trailingInset)
+                make.leading.equalToSuperview().inset(leadingInset + 1)
+                make.trailing.equalToSuperview().inset(trailingInset + 1)
                 make.height.equalTo(17)
             }
             return raisedView

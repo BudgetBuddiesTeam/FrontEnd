@@ -11,7 +11,7 @@ struct RaisedInfoModel {
   let title: String?
   let startDate: String?
   let endDate: String?
-  let infoType: InfoType
+  let infoType: InfoType // 할인, 지원정보 여부는 직접 값을 넣어서 사용
 }
 
 extension RaisedInfoModel {
@@ -93,4 +93,61 @@ extension RaisedInfoModel {
     let numberOfRows = endPosition.row - startPosition.row + 1
     return numberOfRows
   }
+    // 일정이 여러 줄에 걸쳐 있으면, 각 줄에 맞게 잘라서 같은 title의 다른 RaisedInfoModel을 반환하는 함수
+    func splitIntoRows() -> [RaisedInfoModel] {
+        var sortedModels: [RaisedInfoModel] = []
+        
+        guard let startDateString = startDate,
+              let endDateString = endDate,
+              let startDate = date(from: startDateString),
+              let endDate = date(from: endDateString),
+              let startPosition = positionOfDate(for: startDate),
+              let endPosition = positionOfDate(for: endDate)
+        else {
+            return sortedModels
+        }
+        
+        let calendar = Calendar.current
+        let numberOfRows = endPosition.row - startPosition.row + 1
+        
+        for row in 0..<numberOfRows {
+            let startDateForRow: Date
+            let endDateForRow: Date
+            
+            if row == 0 {
+                // 첫 번째 행의 경우, 시작 날짜는 그대로, 끝 날짜는 그 주의 마지막 날짜로 설정
+                startDateForRow = startDate
+                let daysUntilEndOfWeek = 6 - startPosition.column
+                endDateForRow = calendar.date(byAdding: .day, value: daysUntilEndOfWeek, to: startDateForRow)!
+            } else {
+                // 이후 행의 경우, 시작 날짜는 그 주의 첫 번째 날, 끝 날짜는 그 주의 마지막 날 또는 실제 종료 날짜로 설정
+                let daysToAdd = row * 7 - startPosition.column
+                startDateForRow = calendar.date(byAdding: .day, value: daysToAdd, to: startDate)!
+                if row == numberOfRows - 1 {
+                    endDateForRow = endDate
+                } else {
+                    endDateForRow = calendar.date(byAdding: .day, value: 6, to: startDateForRow)!
+                }
+            }
+            
+            // 새로운 RaisedInfoModel 생성
+            let newModel = RaisedInfoModel(
+                title: self.title,
+                startDate: formattedDate(date: startDateForRow),
+                endDate: formattedDate(date: endDateForRow),
+                infoType: self.infoType
+            )
+            sortedModels.append(newModel)
+        }
+        
+        return sortedModels
+    }
+    
+    // Date를 "yyyy-MM-dd" 포맷의 문자열로 변환하는 함수
+    private func formattedDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
+    }
+    
 }

@@ -216,7 +216,6 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     @objc
     private func didTapInfoCell() {
         guard let infoType = self.infoType else { return }
-        print("\(infoType)셀 터치")
         
         // 셀이 터치 되었을 때 대리자에게 처리할 일 넘기기
         delegate?.didTapInfoCell(in: self, infoType: infoType)

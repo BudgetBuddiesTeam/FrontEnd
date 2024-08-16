@@ -142,10 +142,6 @@ class AllLookingViewController: UIViewController {
     navigationController?.pushViewController(calendarViewController, animated: true)
   }
 
-  /*
-   해야 할 일
-   - 아무것도 화면에 나타나지 않는 "할인정보" & "지원정보" ViewController를 연결하기
-   */
   @objc private func priceEventInfoContainerTapped() {
     debugPrint("이번 달 할인정보 확인하기")
     navigationController?.pushViewController(discountInfoListViewController, animated: true)

@@ -110,7 +110,7 @@ class CategorySelectTableViewController: UITableViewController {
 
   /// 카테고리 컨트롤러 서버에서 데이터를 가져오는 함수입니다.
   private func fetchDataFromCategoryControllerAPI() {
-    provider.request(.getCategoryWithPathVariable(userId: 1)) { [weak self] result in
+    provider.request(.getCategory(userId: 1)) { [weak self] result in
       switch result {
       case .success(let response):
         debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 성공")

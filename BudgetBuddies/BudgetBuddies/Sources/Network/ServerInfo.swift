@@ -8,5 +8,5 @@
 import Foundation
 
 enum ServerInfo {
-  static let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASEURL") as! String
+  static let baseURLString = Bundle.main.object(forInfoDictionaryKey: "BASEURL") as! String
 }

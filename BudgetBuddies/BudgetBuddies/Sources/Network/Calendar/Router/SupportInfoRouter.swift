@@ -18,7 +18,7 @@ extension SupportInfoRouter: TargetType {
 
   // 기본 도메인 작성
   var baseURL: URL {
-    return URL(string: ServerInfo.baseURL)!
+    return URL(string: ServerInfo.baseURLString)!
   }
 
   // path 작성

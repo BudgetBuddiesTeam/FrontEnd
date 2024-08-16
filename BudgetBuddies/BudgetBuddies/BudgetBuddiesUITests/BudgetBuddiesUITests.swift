@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import BudgetBuddies
 
 class BudgetBuddiesUITests: XCTestCase {

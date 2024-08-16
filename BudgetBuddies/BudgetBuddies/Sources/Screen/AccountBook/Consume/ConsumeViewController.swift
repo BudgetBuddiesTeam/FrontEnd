@@ -8,7 +8,6 @@
 import Combine
 import Moya
 import SnapKit
-import SwiftUI
 import UIKit
 
 class ConsumeViewController: UIViewController {
@@ -144,6 +143,12 @@ extension ConsumeViewController {
   }
 }
 
+// MARK: - Network
+
+extension ConsumeViewController {
+
+}
+
 // MARK: - UITextField Delegate
 
 extension ConsumeViewController: UITextFieldDelegate {
@@ -165,23 +170,5 @@ extension ConsumeViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
-  }
-}
-
-// MARK: - Live Preview
-
-struct ConsumeViewController_Preview: UIViewControllerRepresentable {
-  func updateUIViewController(_ uiViewController: ConsumeViewController, context: Context) {
-    //
-  }
-
-  func makeUIViewController(context: Context) -> ConsumeViewController {
-    return ConsumeViewController()
-  }
-}
-
-struct ContentView_Preview: PreviewProvider {
-  static var previews: some View {
-    ConsumeViewController_Preview()
   }
 }

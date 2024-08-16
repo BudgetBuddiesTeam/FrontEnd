@@ -53,8 +53,8 @@ let project = Project(
       bundleId: "com.budgetBuddies.app.tests",
       infoPlist: budgetBuddiesInfoPlist,
       sources: [
-        "BudgetBuddies/BudgetBuddiesTests/**",
-        ],
+        "BudgetBuddies/BudgetBuddiesTests/**"
+      ],
       dependencies: [
         .target(name: "BudgetBuddies", condition: .none)
       ]
@@ -66,11 +66,11 @@ let project = Project(
       bundleId: "com.budgetBuddies.app.UITests",
       infoPlist: budgetBuddiesInfoPlist,
       sources: [
-        "BudgetBuddies/BudgetBuddiesUITests/**",
+        "BudgetBuddies/BudgetBuddiesUITests/**"
       ],
       dependencies: [
         .target(name: "BudgetBuddies", condition: .none)
       ]
-    )
+    ),
   ]
 )

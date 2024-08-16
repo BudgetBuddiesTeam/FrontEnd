@@ -34,7 +34,6 @@ class ConsumedHistoryTableViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    fetchExpenseDataFromExpenseControllerAPI()
   }
 
   override func viewDidLoad() {
@@ -104,31 +103,7 @@ extension ConsumedHistoryTableViewController {
 // MARK: - Network
 
 extension ConsumedHistoryTableViewController {
-  /*
-   해야 할 일
-   - Status Code : 400
-   - getMonthlyExpenses에서는 Query Parameter도 있기 때문에 400이 나타나는 것이다.
-   */
-  private func fetchExpenseDataFromExpenseControllerAPI() {
-    provider.request(.getMonthlyExpenses(userId: self.userId)) { result in
-      switch result {
-      case .success(let response):
-        debugPrint("소비 조회 API에서 데이터 가져오기 성공")
-        debugPrint(response.statusCode)
-        do {
-          let decodedData = try JSONDecoder().decode(
-            MonthlyExpenseResponseDTO.self, from: response.data)
-          debugPrint("소비 조회 API에서 가져온 데이터 디코딩 성공")
-        } catch (let error) {
-          debugPrint("소비 조회 API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
-        }
-      case .failure(let error):
-        debugPrint("소비 조회 API에서 데이터 가져오기 실패")
-        debugPrint(error.localizedDescription)
-      }
-    }
-  }
+
 }
 
 // MARK: - UITableView Delegate & DataSource
@@ -167,23 +142,3 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate, UITableViewDa
     tableView.deselectRow(at: indexPath, animated: true)
   }
 }
-
-#if DEBUG
-  import SwiftUI
-
-  struct ConsumedHistoryTableViewControllerRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> ConsumedHistoryTableViewController {
-      return ConsumedHistoryTableViewController()
-    }
-
-    func updateUIViewController(
-      _ uiViewController: ConsumedHistoryTableViewController, context: Context
-    ) {}
-  }
-
-  struct ConsumedHistoryTableViewController_Previews: PreviewProvider {
-    static var previews: some View {
-      ConsumedHistoryTableViewControllerRepresentable()
-    }
-  }
-#endif

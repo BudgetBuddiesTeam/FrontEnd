@@ -164,19 +164,12 @@ extension MainViewController {
     provider.request(.get(userId: self.userId)) { result in
       switch result {
       case let .success(moyaResponse):
-        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
-        debugPrint(moyaResponse.statusCode)
+        //        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
+        //        debugPrint(moyaResponse.statusCode)
         do {
           let decodedData = try JSONDecoder().decode(
             APIResponseMainPageResponseDto.self, from: moyaResponse.data)
-          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
-
-          /*
-           해야 할 일
-           1. "혜인님! 이번달에 234,470원 썼어요"의 금액 정보 업데이트 코드
-           2. "총 130,200원을 더 쓸 수 있어요"의 금액 정보 업데이트 코드
-           3. "잔여금액" 예하 4가지 카테고리에 대한 카테고리 아이콘, 카테코리 이름, 금액 정보 업데이트
-           */
+          //          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
 
           let mainPageResponseData = decodedData.result
           let consumptionGoalResponseListData = mainPageResponseData.consumptionGoalResponseListDto
@@ -227,11 +220,11 @@ extension MainViewController {
             categoryId: fourthCategoryData.categoryId,
             categoryText: fourthCategoryData.categoryName, leftMoney: fourthCategoryLeftMoneyAmount)
         } catch (let error) {
-          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 실패")
+          debugPrint("main-page-controller API로부터 가져온 데이터 디코딩 실패")
           debugPrint(error.localizedDescription)
         }
       case let .failure(error):
-        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 실패")
+        debugPrint("main-page-controller API로부터 데이터 가져오기 실패")
         debugPrint(error.localizedDescription)
       }
     }
@@ -252,21 +245,20 @@ extension MainViewController {
     provider.request(.get(userId: self.userId)) { result in
       switch result {
       case let .success(moyaResponse):
-        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
-        debugPrint(moyaResponse.statusCode)
+        //        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
+        //        debugPrint(moyaResponse.statusCode)
         do {
           let decodedData = try JSONDecoder().decode(
             APIResponseMainPageResponseDto.self, from: moyaResponse.data)
-          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
-
+          //          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 성공")
           let mainPageResponseData = decodedData.result
           completion(mainPageResponseData)
         } catch (let error) {
-          debugPrint("MainPageResponseAPI로부터 가져온 데이터 디코딩 실패")
+          debugPrint("main-page-controller API로부터 가져온 데이터 디코딩 실패")
           debugPrint(error.localizedDescription)
         }
       case let .failure(error):
-        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 실패")
+        debugPrint("main-page-controller API로부터 데이터 가져오기 실패")
         debugPrint(error.localizedDescription)
       }
     }

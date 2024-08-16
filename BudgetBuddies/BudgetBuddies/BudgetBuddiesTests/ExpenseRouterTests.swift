@@ -43,6 +43,7 @@ final class ExpenseRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/expenses/{userId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -50,19 +51,16 @@ final class ExpenseRouterTests: XCTestCase {
             MonthlyExpenseResponseDTO.self, from: response.data)
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/expenses/{userId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/expenses/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/expenses/{userId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/expenses/{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("월별 소비 조회 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("월별 소비 조회 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }
@@ -86,23 +84,21 @@ final class ExpenseRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/expenses/{userId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
         do {
           let decodedData = try JSONDecoder().decode(ExpenseResponseDTO.self, from: response.data)
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/expenses/{userId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/expenses/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/expenses/{userId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/expenses/{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("단일 소비 업데이트 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("단일 소비 업데이트 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }
@@ -126,6 +122,7 @@ final class ExpenseRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/expenses/add API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
         do {
           let decodedData = try JSONDecoder().decode(
@@ -133,12 +130,10 @@ final class ExpenseRouterTests: XCTestCase {
           debugPrint("/expenses/add API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/expenses/add API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/expenses/add API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/expenses/add API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/expenses/add API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
@@ -156,7 +151,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testGetSingleExpenseEndpoint() {
 
     // Request Variable
-    let expenseId = 91
+    let expenseId = 43
 
     // Network Transmitting Code
     provider.request(.getSingleExpense(userId: self.userId, expenseId: expenseId)) { result in
@@ -166,6 +161,7 @@ final class ExpenseRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/expenses/{userId}/{expenseId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -173,12 +169,10 @@ final class ExpenseRouterTests: XCTestCase {
           debugPrint("/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/expenses/{userId}/{expenseId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/expenses/{userId}/{expenseId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/expenses/{userId}/{expenseId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
@@ -196,7 +190,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testDeleteSingleExpenseEndpoint() {
 
     // Request Variale
-    let expenseId = 88
+    let expenseId = 93
 
     // Network Transmitting Code
     provider.request(.deleteSingleExpense(expenseId: expenseId)) { result in
@@ -206,6 +200,7 @@ final class ExpenseRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/expenses/delete/{expenseId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         if let decodedString = String(data: response.data, encoding: .utf8) {
@@ -214,8 +209,7 @@ final class ExpenseRouterTests: XCTestCase {
           debugPrint("해당 소비 내역은 정상적으로 제거되었습니다")
         }
       case .failure(let error):
-        debugPrint("/expenses/delete/{expenseId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/expenses/delete/{expenseId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 

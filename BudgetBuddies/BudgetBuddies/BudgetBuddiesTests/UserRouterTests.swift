@@ -46,6 +46,7 @@ final class UserRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/users/modify/{userId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -54,19 +55,16 @@ final class UserRouterTests: XCTestCase {
           debugPrint("/users/modify/{userId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/users/modify/{userId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/users/modify/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/users/modify/{userId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/users/modify/{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("사용자 정보 수정 API 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("사용자 정보 수정 API 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }
@@ -82,6 +80,7 @@ final class UserRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/users/{userId}/find API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
         do {
           let decodedData = try JSONDecoder().decode(
@@ -89,19 +88,16 @@ final class UserRouterTests: XCTestCase {
           debugPrint("/users/{userId}/find API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/users/{userId}/find API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/users/{userId}/find API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/users/{userId}/find API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/users/{userId}/find API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("사용자 정보 찾기 API 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("사용자 정보 찾기 API 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }

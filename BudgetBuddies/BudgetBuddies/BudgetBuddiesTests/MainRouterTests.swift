@@ -22,6 +22,7 @@ final class MainRouterTests: XCTestCase {
     userId = 1
     timeoutValue = 10.0
   }
+  // MARK: - 메인페이지 요청 테스트
 
   func testGetMainPageData() {
     let expectation = self.expectation(description: "Server responds successfully")
@@ -32,6 +33,7 @@ final class MainRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/main API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -40,18 +42,16 @@ final class MainRouterTests: XCTestCase {
           debugPrint("/main API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/main API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/main API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/main API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/main API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint(error.localizedDescription)
+        XCTFail("메인페이지 요청 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }

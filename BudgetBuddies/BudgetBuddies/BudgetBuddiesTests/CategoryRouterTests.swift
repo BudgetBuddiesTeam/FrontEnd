@@ -32,7 +32,7 @@ final class CategoryRouterTests: XCTestCase {
   func testAddCategory() {
     // Request Variable
     let categoryRequestDTO = CategoryRequestDTO(
-      userID: self.userId, name: "사용자 추가 카테고리", isDefault: false)
+      userID: self.userId, name: "프론트엔드 화이팅", isDefault: false)
 
     // Network Transmitting Code
     provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
@@ -43,6 +43,7 @@ final class CategoryRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/categories/add/{userId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -50,19 +51,16 @@ final class CategoryRouterTests: XCTestCase {
           debugPrint("/categories/add/{userId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/categories/add/{userId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/categories/add/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("/categories/add{userId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("/categories/add{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("카테고리 추가 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("카테고리 추가 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }
@@ -83,6 +81,7 @@ final class CategoryRouterTests: XCTestCase {
       case .success(let response):
         debugPrint("/categories/get/{userId} API 연결 성공")
         debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
 
         do {
@@ -91,19 +90,16 @@ final class CategoryRouterTests: XCTestCase {
           debugPrint("/categoreis/get/{userId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
-          debugPrint("/categories/get/{userId} API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
+          XCTFail("/categories/get/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        debugPrint("categories/get/{userId} API 연결 실패")
-        debugPrint(error.localizedDescription)
+        XCTFail("categories/get/{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
     waitForExpectations(timeout: self.timeoutValue) { error in
       if let error = error {
-        debugPrint("카테고리 조회 테스팅 간 에러 발생")
-        debugPrint(error.localizedDescription)
+        XCTFail("카테고리 조회 테스팅 간 에러 발생 : \(error.localizedDescription)")
       }
     }
   }

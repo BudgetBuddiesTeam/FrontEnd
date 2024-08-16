@@ -378,7 +378,9 @@ extension MainViewController: UICollectionViewDelegate {
 extension MainViewController: MonthlyBudgetInfoCollectionViewCellDelegate {
     func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {
         print("MainViewController: \(infoType)타입 셀 터치 전달받음")
+        
+        let vc = InfoListViewController(infoType: infoType)
+        vc.yearMonth = YearMonth(year: 2024, month: 08)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
 }

@@ -169,7 +169,6 @@ class CalendarViewController: UIViewController {
     // 할인정보가 하나라도 있으면 전체보기
     if discountRecommends.count >= 1 {
       let vc = InfoListViewController(infoType: .discount)
-      vc.title = "\(month)월 할인정보"
       vc.yearMonth = self.yearMonth
       self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -184,7 +183,6 @@ class CalendarViewController: UIViewController {
     // 지원정보가 하나라도 있으면 전체보기
     if supportRecommends.count >= 1 {
       let vc = InfoListViewController(infoType: .support)
-      vc.title = "\(month)월 지원정보"
       vc.yearMonth = self.yearMonth
       self.navigationController?.pushViewController(vc, animated: true)
     }

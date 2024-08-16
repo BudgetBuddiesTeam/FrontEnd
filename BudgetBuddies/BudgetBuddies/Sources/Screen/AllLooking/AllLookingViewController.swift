@@ -149,10 +149,12 @@ class AllLookingViewController: UIViewController {
   @objc private func priceEventInfoContainerTapped() {
     debugPrint("이번 달 할인정보 확인하기")
     navigationController?.pushViewController(discountInfoListViewController, animated: true)
+      discountInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
 
   @objc private func supportInfoConfirmContainerTapped() {
     debugPrint("이번 달 지원정보 확인하기")
     navigationController?.pushViewController(supportInfoListViewController, animated: true)
+      supportInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
 }

@@ -79,7 +79,6 @@ final class MainViewController: UIViewController {
   }
 
   private func setUICollectionViewDelegate() {
-    mainView.monthlyBudgetInfoCollectionView.delegate = self
     mainView.monthlyBudgetInfoCollectionView.dataSource = self
   }
 
@@ -364,10 +363,12 @@ extension MainViewController: UICollectionViewDataSource {
 // MARK: - MonthlyBudgetInfoCollectionViewCell Delegate
 extension MainViewController: MonthlyBudgetInfoCollectionViewCellDelegate {
     func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {
-        print("MainViewController: \(infoType)타입 셀 터치 전달받음")
+        print("MainViewController: \(infoType)타입 셀 터치 시점 전달받음")
         
         let vc = InfoListViewController(infoType: infoType)
-        vc.yearMonth = YearMonth(year: 2024, month: 08)
+        
+        // 메인 페이지는 현재 달만 확인할 수 있음
+        vc.yearMonth = YearMonth.setNowYearMonth()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

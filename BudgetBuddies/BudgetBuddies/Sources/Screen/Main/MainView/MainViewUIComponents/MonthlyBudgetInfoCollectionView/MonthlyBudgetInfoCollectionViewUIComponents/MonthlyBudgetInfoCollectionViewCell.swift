@@ -14,8 +14,13 @@ enum InfoCategoryType {
   case support
 }
 
-// 커스텀 델리게이트를 통한 전체보
+// 커스텀 델리게이트를 통한 전체보기
 protocol MonthlyBudgetInfoCollectionViewCellDelegate: AnyObject {
+    /// 주머니 정보 셀이 터치 되었을 때 시점을 전달하는 함수입니다.
+    /// 시점과 함께 정보의 타입(할인 또는 지원)도 전달합니다.
+    /// - Parameters:
+    ///   - cell: 터치 시점을 전달하는 셀입니다.
+    ///   - infoType: 터치된 셀의 정보 타입입니다.
     func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType)
 }
 

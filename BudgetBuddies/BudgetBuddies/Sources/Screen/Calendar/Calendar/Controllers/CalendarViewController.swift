@@ -49,15 +49,8 @@ class CalendarViewController: UIViewController {
 
   // MARK: - Set up Now YearMonth
   private func setupNowYearMonth() {
-    let currentDate = Date()
-    let calendar = Calendar.current
-
-    let currentYear = calendar.component(.year, from: currentDate)
-    let currentMonth = calendar.component(.month, from: currentDate)
-
-    // 현재 시간
-    self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
-
+      self.yearMonth = YearMonth.setNowYearMonth()
+      
   }
 
   // MARK: - Set up Data

@@ -49,14 +49,7 @@ class CalendarViewController: UIViewController {
 
   // MARK: - Set up Now YearMonth
   private func setupNowYearMonth() {
-    let currentDate = Date()
-    let calendar = Calendar.current
-
-    let currentYear = calendar.component(.year, from: currentDate)
-    let currentMonth = calendar.component(.month, from: currentDate)
-
-    // 현재 시간
-    self.yearMonth = YearMonth(year: currentYear, month: currentMonth)
+    self.yearMonth = YearMonth.setNowYearMonth()
 
   }
 
@@ -163,13 +156,10 @@ class CalendarViewController: UIViewController {
   // 할인정보 전체보기
   @objc
   private func didTapShowDiscountDetail() {
-    guard let yearMonth = self.yearMonth else { return }
-    guard let month = yearMonth.month else { return }
 
     // 할인정보가 하나라도 있으면 전체보기
     if discountRecommends.count >= 1 {
       let vc = InfoListViewController(infoType: .discount)
-      vc.title = "\(month)월 할인정보"
       vc.yearMonth = self.yearMonth
       self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -178,13 +168,10 @@ class CalendarViewController: UIViewController {
   // 지원정보 전체보기
   @objc
   private func didTapShowSupportDetail() {
-    guard let yearMonth = self.yearMonth else { return }
-    guard let month = yearMonth.month else { return }
 
     // 지원정보가 하나라도 있으면 전체보기
     if supportRecommends.count >= 1 {
       let vc = InfoListViewController(infoType: .support)
-      vc.title = "\(month)월 지원정보"
       vc.yearMonth = self.yearMonth
       self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -32,12 +32,14 @@ final class InfoListViewController: UIViewController {
   }
 
   // MARK: - UI Components
+  // 테이블 뷰
   lazy var tableView = UITableView()
 
   // MARK: - Life Cycle ⭐️
   init(infoType: InfoType) {
     self.infoType = infoType
     super.init(nibName: nil, bundle: nil)
+
   }
 
   required init?(coder: NSCoder) {
@@ -53,9 +55,24 @@ final class InfoListViewController: UIViewController {
     print("InfoListViewController: \(#function)")
 
     setupData()
+    setupTitle()
     setupNavigationBar()
     setupTableView()
   }
+
+  // MARK: - Set up Title
+  private func setupTitle() {
+    guard let yearMonth = self.yearMonth else { return }
+    guard let month = yearMonth.month else { return }
+
+    switch infoType {
+    case .discount:
+      self.title = "\(month)월 할인정보"
+    case .support:
+      self.title = "\(month)월 지원정보"
+    }
+  }
+
   // MARK: - Set up Data
   private func setupData() {
     // 할인정보, 지원정보 request는 동일

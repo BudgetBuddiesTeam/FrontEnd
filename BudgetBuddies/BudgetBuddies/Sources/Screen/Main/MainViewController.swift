@@ -128,8 +128,14 @@ extension MainViewController {
 
   // "N월 주머니 정보" 옆에 있는 "전체보기 >" 버튼
   @objc private func budgetInfoLookEntireButtonContainerTapped() {
-    let calendarViewController = CalendarViewController()
-    navigationController?.pushViewController(calendarViewController, animated: true)
+//    let calendarViewController = CalendarViewController()
+//    navigationController?.pushViewController(calendarViewController, animated: true)
+      if let tabBarController = self.tabBarController as? RootTabBarViewController {
+          tabBarController.selectedIndex = 2
+          
+          // 노티로 시점 전달 (CalendarViewController에게)
+          NotificationCenter.default.post(name: NSNotification.Name("MainToCalendar"), object: nil)
+      }
   }
 
   // "N월 소비 분석" 옆에 있는 "전체보기 >" 버튼

@@ -139,7 +139,13 @@ class AllLookingViewController: UIViewController {
 
   @objc private func pocketCalendarContainerTapped() {
     debugPrint("주머니 캘린더")
-    navigationController?.pushViewController(calendarViewController, animated: true)
+//    navigationController?.pushViewController(calendarViewController, animated: true)
+      if let tabBarController = self.tabBarController as? RootTabBarViewController {
+          tabBarController.selectedIndex = 2
+          
+          // 노티로 시점 전달 (CalendarViewController에게)
+          NotificationCenter.default.post(name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+      }
   }
 
   @objc private func priceEventInfoContainerTapped() {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CalendarViewController: UIViewController {
+final class CalendarViewController: UIViewController {
   // MARK: - Properties
   var yearMonth: YearMonth? {
     didSet {
@@ -39,6 +39,7 @@ class CalendarViewController: UIViewController {
     setupTableViews()
     setupButtonActions()
     setupNavigationBar()
+      setupNotificationCenterObservers()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +47,24 @@ class CalendarViewController: UIViewController {
 
     setupNavigationBar()
   }
+    
+    deinit {
+        // 노티 remove (메모리 누수 방지)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MainToCalendar"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+    }
+    
+    // MARK: - Set up NotificationCenterObservers
+    // 노티 등록
+    private func setupNotificationCenterObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(switchToCalendarHandler), name: NSNotification.Name("MainToCalendar"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(switchToCalendarHandler), name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+    }
 
   // MARK: - Set up Now YearMonth
-  private func setupNowYearMonth() {
+  func setupNowYearMonth() {
     self.yearMonth = YearMonth.setNowYearMonth()
-
   }
 
   // MARK: - Set up Data
@@ -187,6 +201,11 @@ class CalendarViewController: UIViewController {
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }
+    
+    @objc
+    private func switchToCalendarHandler() {
+        setupNowYearMonth()
+    }
 }
 
 // MARK: - UITableView DataSource

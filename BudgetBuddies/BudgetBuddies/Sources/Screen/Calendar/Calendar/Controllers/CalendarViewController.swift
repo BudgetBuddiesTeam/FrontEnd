@@ -163,8 +163,6 @@ class CalendarViewController: UIViewController {
   // 할인정보 전체보기
   @objc
   private func didTapShowDiscountDetail() {
-    guard let yearMonth = self.yearMonth else { return }
-    guard let month = yearMonth.month else { return }
 
     // 할인정보가 하나라도 있으면 전체보기
     if discountRecommends.count >= 1 {
@@ -177,8 +175,6 @@ class CalendarViewController: UIViewController {
   // 지원정보 전체보기
   @objc
   private func didTapShowSupportDetail() {
-    guard let yearMonth = self.yearMonth else { return }
-    guard let month = yearMonth.month else { return }
 
     // 지원정보가 하나라도 있으면 전체보기
     if supportRecommends.count >= 1 {

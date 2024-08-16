@@ -361,19 +361,6 @@ extension MainViewController: UICollectionViewDataSource {
   }
 }
 
-// MARK: - MonthlyBudgetInfoCollectionView Delegate
-
-extension MainViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    /*
-     해야 할 일
-     CollectionViewCell에 따른 InfoViewController로 navigationController로 연결되게 설계부탁드립니다.
-     */
-//    let infoListViewController = InfoListViewController(infoType: .discount)
-//    navigationController?.pushViewController(infoListViewController, animated: true)
-  }
-}
-
 // MARK: - MonthlyBudgetInfoCollectionViewCell Delegate
 extension MainViewController: MonthlyBudgetInfoCollectionViewCellDelegate {
     func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {

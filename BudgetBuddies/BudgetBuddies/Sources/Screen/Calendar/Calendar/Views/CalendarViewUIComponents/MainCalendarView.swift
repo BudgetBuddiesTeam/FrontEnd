@@ -163,8 +163,9 @@ class MainCalendarView: UIView {
 
       self.raisedInfoModels.append(supportRaisedInfoModel)
     }
-      // MARK: - Sort 호출하는 곳 ⭐️
-      sortRaisedInfoModels(self.raisedInfoModels)
+      
+      // MARK: - Split & Sort 호출 ⭐️
+      splitRaisedInfoModels(self.raisedInfoModels)
   }
 
   // MARK: - set up UI
@@ -287,36 +288,50 @@ extension MainCalendarView {
       }
     }
 
-      // MARK: - RaisedView 호출 부분
-    // raisedViews 올리기 작업
-      for idx in 0..<raisedInfoModels.count {
-          let currentModel = raisedInfoModels[idx] // 현재 모델
-          let currentStartDate = dateFromString(currentModel.startDate)
-          let currentEndDate = dateFromString(currentModel.endDate)
-          var isOverlapped = false
-          
-          for otherIdx in 0..<raisedInfoModels.count {
-              if idx == otherIdx { continue }
-              
-              let otherModel = raisedInfoModels[otherIdx]
-              let otherStartDate = dateFromString(otherModel.startDate)
-              let otherEndDate = dateFromString(otherModel.endDate)
-              
-              if let currentStart = currentStartDate, let currentEnd = currentEndDate,
-                 let otherStart = otherStartDate, let otherEnd = otherEndDate
-              {
-                  if currentStart <= otherEnd && currentEnd >= otherStart {
-                      if currentStart > otherStart {
-                          isOverlapped = true
-                          break
-                      }
-                  }
-              }
-          }
-          
-          setupRaisedViews(currentModel, isOverlapped: isOverlapped)
-      }
+      // MARK: - RaisedView 호출 부분 ⭐️
+      updateOverlappedViews()
   }
+}
+
+extension MainCalendarView {
+    // 겹침 여부에 따라 RaisedView 올리기
+    func updateOverlappedViews() {
+        // RaisedInfoModel의 겹침 여부를 저장하는 배열
+        var isOverlappedFlags: [Bool] = Array(repeating: false, count: self.raisedInfoModels.count)
+        
+        for idx in 0..<self.raisedInfoModels.count {
+            let currentModel = self.raisedInfoModels[idx]
+            let currentStartDate = dateFromString(currentModel.startDate)
+            let currentEndDate = dateFromString(currentModel.endDate)
+            
+            // 현재 일정의 겹침 여부를 초기화
+            isOverlappedFlags[idx] = false
+            
+            // 이전 인덱스의 일정과 비교
+            if idx > 0 {
+                let previousModel = self.raisedInfoModels[idx - 1]
+                let previousStartDate = dateFromString(previousModel.startDate)
+                let previousEndDate = dateFromString(previousModel.endDate)
+                
+                if let currentStart = currentStartDate, let currentEnd = currentEndDate,
+                   let previousStart = previousStartDate, let previousEnd = previousEndDate
+                {
+                    // 현재 일정이 이전 일정과 겹치는지 확인
+                    if currentStart <= previousEnd && currentEnd >= previousStart {
+                        // 이전 일정이 겹쳐있다면, 현재 일정의 겹침 여부를 false로 설정
+                        if isOverlappedFlags[idx - 1] {
+                            isOverlappedFlags[idx] = false
+                        } else {
+                            isOverlappedFlags[idx] = true
+                        }
+                    }
+                }
+            }
+            
+            print("지금 그리는 뷰: \(currentModel.title ?? "Untitled")은 겹쳐있다: \(isOverlappedFlags[idx])")
+            setupRaisedViews(currentModel, isOverlapped: isOverlappedFlags[idx])
+        }
+    }
 }
 
 // MARK: - Set up Raised Views
@@ -356,25 +371,36 @@ extension MainCalendarView {
 
 // MARK: - Sort RaisedInfoModels
 extension MainCalendarView {
-    func sortRaisedInfoModels(_ raisedInfoModels: [RaisedInfoModel]) {
-        // 정렬 후 담을 곳
-        var sortedRaisedInfoModels: [RaisedInfoModel] = []
+    private func splitRaisedInfoModels(_ raisedInfoModels: [RaisedInfoModel]) {
+        // 분할 후 담을 곳
+        var splitedRaisedInfoModels: [RaisedInfoModel] = []
         
         for i in 0..<raisedInfoModels.count {
             guard let numberOfRows = raisedInfoModels[i].numberOfRows() else { return }
             
             if numberOfRows == 1 {
-                sortedRaisedInfoModels.append(raisedInfoModels[i])
+                splitedRaisedInfoModels.append(raisedInfoModels[i])
             } else if numberOfRows >= 2 {
                 for j in 0..<numberOfRows {
-                    sortedRaisedInfoModels.append(raisedInfoModels[i].splitIntoRows()[j])
+                    splitedRaisedInfoModels.append(raisedInfoModels[i].splitIntoRows()[j])
                 }
             }
         }
-        dump(sortedRaisedInfoModels)
         
         self.raisedInfoModels.removeAll()
-        self.raisedInfoModels = sortedRaisedInfoModels
+        self.raisedInfoModels = sortRaisedInfoModels(splitedRaisedInfoModels)
+    }
+    
+    private func sortRaisedInfoModels(_ splitedRaisedInfoModels: [RaisedInfoModel]) -> [RaisedInfoModel] {
+        return splitedRaisedInfoModels.sorted { first, second in
+            guard let firstDateString = first.startDate,
+                  let secondDateString = second.startDate,
+                  let firstDate = dateFromString(firstDateString),
+                  let secondDate = dateFromString(secondDateString) else {
+                return false
+            }
+            return firstDate < secondDate
+        }
     }
 }
 

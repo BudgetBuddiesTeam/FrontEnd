@@ -143,6 +143,18 @@ extension RaisedInfoModel {
         return sortedModels
     }
     
+    func sortRaisedInfoModelsByDate(_ models: [RaisedInfoModel]) -> [RaisedInfoModel] {
+        return models.sorted { first, second in
+            guard let firstDateString = first.startDate,
+                  let secondDateString = second.startDate,
+                  let firstDate = date(from: firstDateString),
+                  let secondDate = date(from: secondDateString) else {
+                return false
+            }
+            return firstDate < secondDate
+        }
+    }
+    
     // Date를 "yyyy-MM-dd" 포맷의 문자열로 변환하는 함수
     private func formattedDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -151,3 +163,4 @@ extension RaisedInfoModel {
     }
     
 }
+

@@ -307,10 +307,10 @@ extension MainViewController: UICollectionViewDataSource {
           iconImageURL: discountResponse.thumbnailUrl,
           startDate: discountResponse.startDate.toMMddFormat()!,
           enddDate: discountResponse.endDate.toMMddFormat()!)
-          
-          // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
-          cell.delegate = self
-          
+
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       case 1:
         // 할인정보 중 상위 2번째
         discountResponse = mainPageResponseData.discountResponseDtoList[1]
@@ -320,10 +320,10 @@ extension MainViewController: UICollectionViewDataSource {
           iconImageURL: discountResponse.thumbnailUrl,
           startDate: discountResponse.startDate.toMMddFormat()!,
           enddDate: discountResponse.endDate.toMMddFormat()!)
-          
-          // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
-          cell.delegate = self
-          
+
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       case 2:
         // 지원정보 중 상위 1번째
         supportResponse = mainPageResponseData.supportResponseDtoList[0]
@@ -334,9 +334,9 @@ extension MainViewController: UICollectionViewDataSource {
           startDate: supportResponse.startDate.toMMddFormat()!,
           enddDate: supportResponse.endDate.toMMddFormat()!)
 
-          // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
-          cell.delegate = self
-          
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       case 3:
         // 지원정보 중 상위 2번째
         supportResponse = mainPageResponseData.supportResponseDtoList[1]
@@ -347,9 +347,9 @@ extension MainViewController: UICollectionViewDataSource {
           startDate: supportResponse.startDate.toMMddFormat()!,
           enddDate: supportResponse.endDate.toMMddFormat()!)
 
-          // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
-          cell.delegate = self
-          
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       default:
         cell.infoCategoryTextLabel.text = "더미정보"
         cell.titleTextLabel.text = "더미타이틀"
@@ -362,13 +362,13 @@ extension MainViewController: UICollectionViewDataSource {
 
 // MARK: - MonthlyBudgetInfoCollectionViewCell Delegate
 extension MainViewController: MonthlyBudgetInfoCollectionViewCellDelegate {
-    func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {
-        print("MainViewController: \(infoType)타입 셀 터치 시점 전달받음")
-        
-        let vc = InfoListViewController(infoType: infoType)
-        
-        // 메인 페이지는 현재 달만 확인할 수 있음
-        vc.yearMonth = YearMonth.setNowYearMonth()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
+  func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {
+    print("MainViewController: \(infoType)타입 셀 터치 시점 전달받음")
+
+    let vc = InfoListViewController(infoType: infoType)
+
+    // 메인 페이지는 현재 달만 확인할 수 있음
+    vc.yearMonth = YearMonth.setNowYearMonth()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
 }

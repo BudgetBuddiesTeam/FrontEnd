@@ -49,8 +49,8 @@ class CalendarViewController: UIViewController {
 
   // MARK: - Set up Now YearMonth
   private func setupNowYearMonth() {
-      self.yearMonth = YearMonth.setNowYearMonth()
-      
+    self.yearMonth = YearMonth.setNowYearMonth()
+
   }
 
   // MARK: - Set up Data

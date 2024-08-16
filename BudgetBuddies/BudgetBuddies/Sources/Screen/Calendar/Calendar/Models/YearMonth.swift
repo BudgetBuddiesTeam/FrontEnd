@@ -14,9 +14,9 @@ struct YearMonth {
 
 // MARK: - 6줄인지 판단하는 함수
 extension YearMonth {
-    
-    /// YearMonth()를 바탕으로 해당 달력이 6줄인지 판단하는 함수입니다.
-    /// - Returns: 6줄이면 true를 5줄 이하면 false를 반환합니다.
+
+  /// YearMonth()를 바탕으로 해당 달력이 6줄인지 판단하는 함수입니다.
+  /// - Returns: 6줄이면 true를 5줄 이하면 false를 반환합니다.
   func isSixWeeksLong() -> Bool {
     let calendar = Calendar.current
 
@@ -56,17 +56,16 @@ extension YearMonth {
   }
 }
 
-
 extension YearMonth {
-    /// 현재 시간을 YearMonth() 형태로 반환하는 함수입니다.
-    /// - Returns: YearMonth(year: 현재 년도, month: 현재 달)을 반환합니다.
-    static func setNowYearMonth() -> YearMonth {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        
-        let currentYear = calendar.component(.year, from: currentDate)
-        let currentMonth = calendar.component(.month, from: currentDate)
-        
-        return YearMonth(year: currentYear, month: currentMonth)
-    }
+  /// 현재 시간을 YearMonth() 형태로 반환하는 함수입니다.
+  /// - Returns: YearMonth(year: 현재 년도, month: 현재 달)을 반환합니다.
+  static func setNowYearMonth() -> YearMonth {
+    let currentDate = Date()
+    let calendar = Calendar.current
+
+    let currentYear = calendar.component(.year, from: currentDate)
+    let currentMonth = calendar.component(.month, from: currentDate)
+
+    return YearMonth(year: currentYear, month: currentMonth)
+  }
 }

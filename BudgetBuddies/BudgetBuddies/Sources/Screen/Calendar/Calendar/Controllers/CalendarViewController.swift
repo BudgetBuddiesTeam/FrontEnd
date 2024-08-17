@@ -300,14 +300,14 @@ extension CalendarViewController: UITableViewDelegate {
   }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == calendarView.discountInfoTableView {
+        if tableView == calendarView.discountInfoTableView, self.discountRecommends.count != 0 {
             let infoId = self.discountRecommends[indexPath.row].id
             let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
             vc.modalPresentationStyle = .overFullScreen
             self.present(vc, animated: true, completion: nil)
         }
         
-        if tableView == calendarView.supportInfoTableView {
+        if tableView == calendarView.supportInfoTableView, self.supportRecommends.count != 0 {
             let infoId = self.supportRecommends[indexPath.row].id
             let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
             vc.modalPresentationStyle = .overFullScreen

@@ -143,13 +143,12 @@ class CommentCell: UITableViewCell {
       make.top.equalToSuperview().inset(23)
       make.bottom.equalToSuperview().inset(17)
         make.leading.trailing.equalToSuperview().inset(22)
-//        stackView.layer.borderWidth = 1
     }
 
     buttonBackView.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(22)
       make.centerY.equalTo(userName)
-      make.height.equalTo(17)
+      make.height.equalTo(18)
       make.width.equalTo(62)
     }
 

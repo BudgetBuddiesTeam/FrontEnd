@@ -146,7 +146,7 @@ class BottomSheet: UIView {
 
     topSeparator.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalToSuperview().inset(89)
+      make.top.equalToSuperview().inset(104)
       make.height.equalTo(2)
     }
 

@@ -13,6 +13,12 @@ class NoCommentsCell: UITableViewCell {
     static let identifier = "NoCommentCell"
     
     // MARK: - UIComponents
+    var backView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     var noCommentsLabel: UILabel = {
         let lb = UILabel()
         lb.text = "아직 댓글이 없어요"
@@ -37,14 +43,15 @@ class NoCommentsCell: UITableViewCell {
     // MARK: - Set up UI
     private func setupUI() {
         self.backgroundColor = .clear
-        self.contentView.addSubviews(noCommentsLabel)
+        self.addSubviews(backView)
+        backView.addSubviews(noCommentsLabel)
         
         setupConstraints()
     }
     
     // MARK: - Set up Constraints
     private func setupConstraints() {
-        self.contentView.snp.makeConstraints { make in
+        self.backView.snp.makeConstraints { make in
             make.height.equalTo(128)
             make.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview()

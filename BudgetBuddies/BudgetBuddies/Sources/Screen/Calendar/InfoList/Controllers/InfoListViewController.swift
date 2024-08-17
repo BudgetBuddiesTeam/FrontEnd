@@ -274,9 +274,11 @@ extension InfoListViewController: UITableViewDelegate {
   }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = BottomSheetViewController(infoType: self.infoType, infoId: indexPath.row) // 0번 셀이 이미 있어서 + 1 안 해도 된다.
-        vc.modalPresentationStyle = .overFullScreen
-        self.present(vc, animated: true, completion: nil)
+        if indexPath.row >= 1 {
+            let vc = BottomSheetViewController(infoType: self.infoType, infoId: indexPath.row) // 0번 셀이 이미 있어서 + 1 안 해도 된다.
+            vc.modalPresentationStyle = .overFullScreen
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

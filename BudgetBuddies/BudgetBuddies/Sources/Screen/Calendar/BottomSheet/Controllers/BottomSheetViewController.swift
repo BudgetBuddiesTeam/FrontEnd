@@ -161,9 +161,9 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up TableView
   private func setupTableView() {
     // 셀 등록
+      registerCells()
+      
     bottomSheet.commentsTableView.backgroundColor = .clear
-    bottomSheet.commentsTableView.register(
-      CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
 
     bottomSheet.commentsTableView.delegate = self
     bottomSheet.commentsTableView.dataSource = self
@@ -172,6 +172,14 @@ final class BottomSheetViewController: DimmedViewController {
     bottomSheet.commentsTableView.showsVerticalScrollIndicator = false
     bottomSheet.commentsTableView.separatorStyle = .none
   }
+    
+    // MARK: - Register Cells
+    private func registerCells() {
+        bottomSheet.commentsTableView.register(
+          CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+        
+        bottomSheet.commentsTableView.register(NoCommentsCell.self, forCellReuseIdentifier: NoCommentsCell.identifier)
+    }
 
   // MARK: - Set up TextView
   private func setupTextView() {
@@ -298,9 +306,9 @@ extension BottomSheetViewController: UITableViewDataSource {
       
       switch self.infoType {
       case .discount:
-          commentsCount = self.discountsComments.count == 0 ? 2 : self.discountsComments.count
+          commentsCount = self.discountsComments.count == 0 ? 1 : self.discountsComments.count
       case .support:
-          commentsCount = self.supportsComments.count == 0 ? 2 : self.supportsComments.count
+          commentsCount = self.supportsComments.count == 0 ? 1 : self.supportsComments.count
       }
       
       return commentsCount
@@ -323,9 +331,10 @@ extension BottomSheetViewController: UITableViewDataSource {
                 return commentCell
                 
             } else {
-                let cell = UITableViewCell()
-                cell.backgroundColor = .red
-                return cell
+                let noCommentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
+                
+                noCommentCell.selectionStyle = .none
+                return noCommentCell
             }
             
         case .support:
@@ -342,9 +351,10 @@ extension BottomSheetViewController: UITableViewDataSource {
                 return commentCell
                 
             } else {
-                let cell = UITableViewCell()
-                cell.backgroundColor = .red
-                return cell
+                let noCommentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
+                
+                noCommentCell.selectionStyle = .none
+                return noCommentCell
             }
         }
     }

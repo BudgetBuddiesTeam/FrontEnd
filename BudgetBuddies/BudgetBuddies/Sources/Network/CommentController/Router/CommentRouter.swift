@@ -19,10 +19,7 @@ extension CommentRouter: TargetType {
     var baseURL: URL {
         return URL(string: ServerInfo.baseURL)!
     }
-    // http://54.180.148.40:8080/discounts?year=2024&month=08&page=0&size=10
-    // http://54.180.148.40:8080/discounts/1/comments?page=0&size=20
-    // http://54.180.148.40:8080/supports/1/comments?page=0&size=20
-    // http://54.180.148.40:8080/discounts/comments?userId=1
+
     var path: String {
         switch self {
         case .getDiscountsComments(let discountInfoId, _):

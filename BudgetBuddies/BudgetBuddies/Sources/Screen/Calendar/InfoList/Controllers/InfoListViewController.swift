@@ -272,6 +272,12 @@ extension InfoListViewController: UITableViewDelegate {
 
     }
   }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = BottomSheetViewController(infoType: self.infoType, infoId: indexPath.row) // 0번 셀이 이미 있어서 + 1 안 해도 된다.
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y
@@ -294,14 +300,6 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
-    func didTabInformationCell(in cell: InformationCell, infoType: InfoType) {
-        let vc = BottomSheetViewController(infoType: infoType)
-      vc.modalPresentationStyle = .overFullScreen
-      self.present(vc, animated: true, completion: nil)
-    }
-    
-  func didTabInformationCell(in cell: InformationCell) {
-  }
 
   // informationCell: 사이트 바로가기 버튼이 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {

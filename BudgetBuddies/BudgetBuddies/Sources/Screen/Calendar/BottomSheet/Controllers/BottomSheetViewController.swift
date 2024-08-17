@@ -11,6 +11,7 @@ import UIKit
 final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
     var infoType: InfoType
+    var infoId: Int
     
   private let bottomSheet = BottomSheet()
 
@@ -29,8 +30,9 @@ final class BottomSheetViewController: DimmedViewController {
     var commentRequest: CommentRequest?
 
   // MARK: - Life Cycle
-    init(infoType: InfoType) {
+    init(infoType: InfoType, infoId: Int) {
         self.infoType = infoType
+        self.infoId = infoId
         super.init()
     }
     
@@ -69,7 +71,7 @@ final class BottomSheetViewController: DimmedViewController {
         case .discount:
             print("----------- 할인정보 댓글 불러오기 ------------")
             // 임시로 댓글 아이디 1
-            commentManager.fetchDiscountsComments(discountInfoId: 1, request: commentRequest) { result in
+            commentManager.fetchDiscountsComments(discountInfoId: self.infoId, request: commentRequest) { result in
                 switch result {
                 case .success(let response):
                     print("데이터 디코딩 성공")

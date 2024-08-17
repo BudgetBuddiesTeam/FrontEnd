@@ -11,7 +11,6 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-    func didTabInformationCell(in cell: InformationCell, infoType: InfoType)
 }
 
 class InformationCell: UITableViewCell {
@@ -99,10 +98,6 @@ class InformationCell: UITableViewCell {
     view.layer.shadowOffset = CGSize(width: 0, height: 0)
     view.layer.masksToBounds = false
 
-    // 제스처 추가
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapBackView))
-    view.addGestureRecognizer(tapGesture)
-    view.isUserInteractionEnabled = true
     return view
   }()
 
@@ -370,12 +365,6 @@ class InformationCell: UITableViewCell {
   @objc
   private func didTapWebButton() {
     delegate?.didTapWebButton(in: self, urlString: urlString)
-  }
-
-  @objc
-  private func didTapBackView() {
-      guard let infoType = self.infoType else { return }
-      delegate?.didTabInformationCell(in: self, infoType: infoType)
   }
 
   @objc

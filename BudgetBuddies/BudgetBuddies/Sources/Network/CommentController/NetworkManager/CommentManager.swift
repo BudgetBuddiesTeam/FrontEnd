@@ -13,4 +13,32 @@ final class CommentManager {
     private init() {}
     
     let CommentProvider = MoyaProvider<CommentRouter>()
+    
+    // Result타입 선언
+    typealias DiscountsCommentsNetworkCompletion = (Result<DiscountsCommentsResponse, Error>) -> Void
+    
+    typealias SupportsCommentsNetworkCompletion = (Result<SupportsCommentsResponse, Error>) -> Void
+    
+    // MARK: - 할인정보 전체 댓글 불러오기
+    func fetchDiscountsComments(userId: Int, request: CommentRequest, completion: @escaping(DiscountsCommentsNetworkCompletion)) {
+        CommentProvider.request(.getDiscountsComments(userId: userId, request: request)) { result in
+            
+            switch result {
+            case .success(let response):
+                print("통신 성공.... 데이터 디코딩 시작")
+                do {
+                    let decoder = JSONDecoder()
+                    let comments = try decoder.decode(DiscountsCommentsResponse.self, from: response.data)
+                    completion(.success(comments))
+                } catch {
+                    print("데이터 디코딩 실패")
+                    completion(.failure(error))
+                }
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+    }
 }

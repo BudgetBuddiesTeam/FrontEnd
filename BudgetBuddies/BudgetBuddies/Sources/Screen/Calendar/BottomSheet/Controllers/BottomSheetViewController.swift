@@ -88,7 +88,7 @@ final class BottomSheetViewController: DimmedViewController {
             }
         case .support:
             print("----------- 지원정보 댓글 불러오기 ------------")
-            commentManager.fetchSupportsComments(supportsInfoId: 1, request: commentRequest) { result in
+            commentManager.fetchSupportsComments(supportsInfoId: self.infoId, request: commentRequest) { result in
                 switch result {
                 case .success(let response):
                     print("데이터 디코딩 성공")
@@ -301,7 +301,6 @@ extension BottomSheetViewController: UITableViewDataSource {
       case .support:
           commentsCount = self.supportsComments.count
       }
-      print("BottomSheetViewController: \(self.infoType) 댓글 개수 = \(commentsCount)")
       return commentsCount
   }
 

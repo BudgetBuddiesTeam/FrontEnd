@@ -9,8 +9,8 @@ import Foundation
 import Moya
 
 enum CommentRouter {
-    case getDiscountsComments(userId: Int, request: CommentRequest)
-    case getSupportsComments(userId: Int, request: CommentRequest)
+    case getDiscountsComments(discountInfoId: Int, request: CommentRequest)
+    case getSupportsComments(supportInfoId: Int, request: CommentRequest)
 }
 
 extension CommentRouter: TargetType {
@@ -22,20 +22,20 @@ extension CommentRouter: TargetType {
     // http://54.180.148.40:8080/supports/1/comments?page=0&size=20
     var path: String {
         switch self {
-        case .getDiscountsComments(let userId, _):
-            return "/discounts/\(userId)/comments"
+        case .getDiscountsComments(let discountInfoId, _):
+            return "/discounts/\(discountInfoId)/comments"
             
-        case .getSupportsComments(let userId, _):
-            return "/supports/\(userId)/comments"
+        case .getSupportsComments(let supportInfoId, _):
+            return "/supports/\(supportInfoId)/comments"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getDiscountsComments(let userId, let request):
+        case .getDiscountsComments:
             return .get
             
-        case .getSupportsComments(let userId, let request):
+        case .getSupportsComments:
             return .get
         }
     }

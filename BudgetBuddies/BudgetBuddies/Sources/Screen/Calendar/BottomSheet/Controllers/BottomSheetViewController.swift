@@ -18,12 +18,19 @@ final class BottomSheetViewController: DimmedViewController {
   private var bottomSheetValue: CGFloat {
     return self.view.bounds.height * 0.225  // bottomSheet이 올라오는 비율
   }
+    
+    // networking
+    var commentManager = CommentManager.shared
+    var discountsComments: [DiscountsCommentsContent] = []
+    var userId: Int = 1
+    var commentRequest: CommentRequest?
 
   // MARK: - Life Cycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+      setupData()
     setupUI()
     setupButtons()
     setupTapGestures()
@@ -40,6 +47,25 @@ final class BottomSheetViewController: DimmedViewController {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    
+    // MARK: - Set up Data
+    private func setupData() {
+        print("BottomSheetViewController: \(#function)")
+        self.commentRequest = CommentRequest(page: 0, size: 20)
+        guard let commentRequest = self.commentRequest else { return }
+        print("----------- 댓글 불러오기 ------------")
+            // 임시로 댓글 id: 1
+        commentManager.fetchDiscountsComments(discountInfoId: 1, request: commentRequest) { result in
+            switch result {
+            case .success(let response):
+                print("데이터 디코딩 성공")
+                dump(response)
+            case .failure(let error):
+                print("데이터 디코딩 실패")
+                print(error.localizedDescription)
+            }
+        }
+    }
 
   // MARK: - Set up UI
   private func setupUI() {

@@ -20,8 +20,8 @@ final class CommentManager {
     typealias SupportsCommentsNetworkCompletion = (Result<SupportsCommentsResponse, Error>) -> Void
     
     // MARK: - 할인정보 전체 댓글 불러오기
-    func fetchDiscountsComments(userId: Int, request: CommentRequest, completion: @escaping(DiscountsCommentsNetworkCompletion)) {
-        CommentProvider.request(.getDiscountsComments(userId: userId, request: request)) { result in
+    func fetchDiscountsComments(discountInfoId: Int, request: CommentRequest, completion: @escaping(DiscountsCommentsNetworkCompletion)) {
+        CommentProvider.request(.getDiscountsComments(discountInfoId: discountInfoId, request: request)) { result in
             
             switch result {
             case .success(let response):

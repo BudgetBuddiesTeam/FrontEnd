@@ -19,8 +19,8 @@ struct DiscountsResult: Codable {
   let totalPages, totalElements, size: Int
   let content: [DiscountContent]
   let number: Int
-  let sort: DiscountSort
-  let pageable: DiscountPageable
+  let sort: Sort
+  let pageable: Pageable
   let numberOfElements: Int
   let first, last, empty: Bool
 }
@@ -59,17 +59,4 @@ struct DiscountContent: Codable {
     // 변환된 날짜를 'MM.dd' 형식으로 변환하고 문자열로 반환
     return "\(dateFormatter.string(from: startDate)) ~ \(dateFormatter.string(from: endDate))"
   }
-}
-
-// MARK: - Pageable
-struct DiscountPageable: Codable {
-  let offset: Int
-  let sort: DiscountSort
-  let unpaged, paged: Bool
-  let pageNumber, pageSize: Int
-}
-
-// MARK: - Sort
-struct DiscountSort: Codable {
-  let empty, unsorted, sorted: Bool
 }

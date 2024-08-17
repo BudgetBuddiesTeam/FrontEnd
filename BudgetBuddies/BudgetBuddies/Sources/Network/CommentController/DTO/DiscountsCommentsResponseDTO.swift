@@ -1,5 +1,5 @@
 //
-//  DiscountsCommentsResponse.swift
+//  DiscountsCommentsResponseDTO.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/17/24.
@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - DiscountsCommentsResponse
-struct DiscountsCommentsResponse: Codable {
+struct DiscountsCommentsResponseDTO: Codable {
     let isSuccess: Bool
     let code, message: String
     let result: DiscountsCommentsResult

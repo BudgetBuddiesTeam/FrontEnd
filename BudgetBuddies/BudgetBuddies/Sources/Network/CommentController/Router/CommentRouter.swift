@@ -11,6 +11,8 @@ import Moya
 enum CommentRouter {
     case getDiscountsComments(discountInfoId: Int, request: CommentRequest)
     case getSupportsComments(supportInfoId: Int, request: CommentRequest)
+    case addDiscountsComments(userId: Int, request: DiscountsCommentsRequestDTO)
+    case addSupportsComments(userId: Int, request: SupportsCommentsRequestDTO)
 }
 
 extension CommentRouter: TargetType {
@@ -20,6 +22,7 @@ extension CommentRouter: TargetType {
     // http://54.180.148.40:8080/discounts?year=2024&month=08&page=0&size=10
     // http://54.180.148.40:8080/discounts/1/comments?page=0&size=20
     // http://54.180.148.40:8080/supports/1/comments?page=0&size=20
+    // http://54.180.148.40:8080/discounts/comments?userId=1
     var path: String {
         switch self {
         case .getDiscountsComments(let discountInfoId, _):
@@ -27,6 +30,12 @@ extension CommentRouter: TargetType {
             
         case .getSupportsComments(let supportInfoId, _):
             return "/supports/\(supportInfoId)/comments"
+            
+        case .addDiscountsComments:
+            return "discounts/comments"
+            
+        case .addSupportsComments:
+            return "supports/comments"
         }
     }
     
@@ -37,6 +46,12 @@ extension CommentRouter: TargetType {
             
         case .getSupportsComments:
             return .get
+            
+        case .addDiscountsComments:
+            return .post
+            
+        case .addSupportsComments:
+            return .post
         }
     }
     
@@ -55,6 +70,21 @@ extension CommentRouter: TargetType {
                 "size": request.size
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+            
+            
+        case .addDiscountsComments(userId: let userId, request: let request):
+            return .requestCompositeParameters(
+                bodyParameters: try! request.asDictionary(),
+                bodyEncoding: JSONEncoding.default,
+                urlParameters: ["userId": userId]
+            )
+            
+        case .addSupportsComments(userId: let userId, request: let request):
+            return .requestCompositeParameters(
+                bodyParameters: try! request.asDictionary(),
+                bodyEncoding: JSONEncoding.default,
+                urlParameters: ["userId": userId]
+            )
         }
     }
     

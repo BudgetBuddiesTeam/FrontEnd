@@ -93,7 +93,7 @@ final class BottomSheetViewController: DimmedViewController {
                 case .success(let response):
                     print("데이터 디코딩 성공")
                     self.supportsComments = response.result.content
-                    dump(self.supportsComments)
+                    
                     DispatchQueue.main.async {
                         self.bottomSheet.commentsTableView.reloadData()
                     }
@@ -291,11 +291,15 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
+      
+      // 댓글 post
+      print(bottomSheet.commentTextView.text!)
+      print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+      
     // 플레이스홀더 재배치
     bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
     bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
     bottomSheet.updateTextViewHeight()
-    // 여기서 댓글 post?아마
   }
 }
 // MARK: - UITableView DataSource

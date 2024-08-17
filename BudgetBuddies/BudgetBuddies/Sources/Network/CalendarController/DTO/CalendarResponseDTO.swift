@@ -1,41 +1,41 @@
 //
-//  SupportsResponse.swift
+//  CalendarResponseDTO.swift
 //  BudgetBuddies
 //
-//  Created by 김승원 on 8/8/24.
+//  Created by 김승원 on 8/10/24.
 //
 
 import Foundation
 
-// MARK: - SupportInfoResponse
-struct SupportsResponse: Codable {
+// MARK: - CalendarResponse
+struct CalendarResponseDTO: Codable {
   let isSuccess: Bool
   let code, message: String
-  let result: SupportsResult
+  let result: CalendarResult
 }
 
-// MARK: - SupportsResult
-struct SupportsResult: Codable {
-  let totalPages, totalElements, size: Int
-  let content: [SupportContent]
-  let number: Int
-  let sort: Sort
-  let pageable: Pageable
-  let numberOfElements: Int
-  let first, last, empty: Bool
+// MARK: - Result
+struct CalendarResult: Codable {
+  let calendarMonthInfoDto, recommendMonthInfoDto: MonthInfoDto
 }
 
-// MARK: - Content
-struct SupportContent: Codable {
+// MARK: - MonthInfoDto
+struct MonthInfoDto: Codable {
+  let discountInfoDtoList, supportInfoDtoList: [InfoDtoList]
+}
+
+// MARK: - TInfoDtoList
+struct InfoDtoList: Codable {
   let id: Int
   let title, startDate, endDate: String
-  let anonymousNumber, likeCount: Int
+  let likeCount: Int
+  let discountRate: Int?
   let siteURL, thumbnailURL: String
 
   enum CodingKeys: String, CodingKey {
-    case id, title, startDate, endDate, anonymousNumber, likeCount
+    case id, title, startDate, endDate, likeCount, discountRate
     case siteURL = "siteUrl"
-    case thumbnailURL = "thumbnailUrl"
+    case thumbnailURL
   }
 
   // 셀에 보여줄 날짜로 가공
@@ -58,4 +58,5 @@ struct SupportContent: Codable {
     // 변환된 날짜를 'MM.dd' 형식으로 변환하고 문자열로 반환
     return "\(dateFormatter.string(from: startDate)) ~ \(dateFormatter.string(from: endDate))"
   }
+
 }

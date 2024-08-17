@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - DiscountResponse
-struct DiscountsResponse: Codable {
+struct DiscountsResponseDTO: Codable {
   let isSuccess: Bool
   let code, message: String
   let result: DiscountsResult

@@ -12,6 +12,7 @@ class BottomSheet: UIView {
   // MARK: - Properties
   private let maxLines: Int = 4
 
+    
   // MARK: - UI Components
   // 뒷 배경
   lazy var backView: UIView = {

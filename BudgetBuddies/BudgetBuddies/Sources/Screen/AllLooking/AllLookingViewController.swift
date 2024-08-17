@@ -139,20 +139,25 @@ class AllLookingViewController: UIViewController {
 
   @objc private func pocketCalendarContainerTapped() {
     debugPrint("주머니 캘린더")
-    navigationController?.pushViewController(calendarViewController, animated: true)
+    //    navigationController?.pushViewController(calendarViewController, animated: true)
+    if let tabBarController = self.tabBarController as? RootTabBarViewController {
+      tabBarController.selectedIndex = 2
+
+      // 노티로 시점 전달 (CalendarViewController에게)
+      NotificationCenter.default.post(
+        name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+    }
   }
 
-  /*
-   해야 할 일
-   - 아무것도 화면에 나타나지 않는 "할인정보" & "지원정보" ViewController를 연결하기
-   */
   @objc private func priceEventInfoContainerTapped() {
     debugPrint("이번 달 할인정보 확인하기")
     navigationController?.pushViewController(discountInfoListViewController, animated: true)
+    discountInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
 
   @objc private func supportInfoConfirmContainerTapped() {
     debugPrint("이번 달 지원정보 확인하기")
     navigationController?.pushViewController(supportInfoListViewController, animated: true)
+    supportInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
 }

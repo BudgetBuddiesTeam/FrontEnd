@@ -79,7 +79,6 @@ final class MainViewController: UIViewController {
   }
 
   private func setUICollectionViewDelegate() {
-    mainView.monthlyBudgetInfoCollectionView.delegate = self
     mainView.monthlyBudgetInfoCollectionView.dataSource = self
   }
 
@@ -129,8 +128,14 @@ extension MainViewController {
 
   // "N월 주머니 정보" 옆에 있는 "전체보기 >" 버튼
   @objc private func budgetInfoLookEntireButtonContainerTapped() {
-    let calendarViewController = CalendarViewController()
-    navigationController?.pushViewController(calendarViewController, animated: true)
+    //    let calendarViewController = CalendarViewController()
+    //    navigationController?.pushViewController(calendarViewController, animated: true)
+    if let tabBarController = self.tabBarController as? RootTabBarViewController {
+      tabBarController.selectedIndex = 2
+
+      // 노티로 시점 전달 (CalendarViewController에게)
+      NotificationCenter.default.post(name: NSNotification.Name("MainToCalendar"), object: nil)
+    }
   }
 
   // "N월 소비 분석" 옆에 있는 "전체보기 >" 버튼
@@ -300,6 +305,10 @@ extension MainViewController: UICollectionViewDataSource {
           iconImageURL: discountResponse.thumbnailUrl,
           startDate: discountResponse.startDate.toMMddFormat()!,
           enddDate: discountResponse.endDate.toMMddFormat()!)
+
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       case 1:
         // 할인정보 중 상위 2번째
         discountResponse = mainPageResponseData.discountResponseDtoList[1]
@@ -309,6 +318,10 @@ extension MainViewController: UICollectionViewDataSource {
           iconImageURL: discountResponse.thumbnailUrl,
           startDate: discountResponse.startDate.toMMddFormat()!,
           enddDate: discountResponse.endDate.toMMddFormat()!)
+
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       case 2:
         // 지원정보 중 상위 1번째
         supportResponse = mainPageResponseData.supportResponseDtoList[0]
@@ -318,6 +331,9 @@ extension MainViewController: UICollectionViewDataSource {
           iconImageURL: supportResponse.thumbnailUrl,
           startDate: supportResponse.startDate.toMMddFormat()!,
           enddDate: supportResponse.endDate.toMMddFormat()!)
+
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
 
       case 3:
         // 지원정보 중 상위 2번째
@@ -329,6 +345,9 @@ extension MainViewController: UICollectionViewDataSource {
           startDate: supportResponse.startDate.toMMddFormat()!,
           enddDate: supportResponse.endDate.toMMddFormat()!)
 
+        // (MonthlyBudgetInfoCollectionView)Cell의 대리자를 MainViewController로 설정
+        cell.delegate = self
+
       default:
         cell.infoCategoryTextLabel.text = "더미정보"
         cell.titleTextLabel.text = "더미타이틀"
@@ -339,15 +358,15 @@ extension MainViewController: UICollectionViewDataSource {
   }
 }
 
-// MARK: - MonthlyBudgetInfoCollectionView Delegate
+// MARK: - MonthlyBudgetInfoCollectionViewCell Delegate
+extension MainViewController: MonthlyBudgetInfoCollectionViewCellDelegate {
+  func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType) {
+    print("MainViewController: \(infoType)타입 셀 터치 시점 전달받음")
 
-extension MainViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    /*
-     해야 할 일
-     CollectionViewCell에 따른 InfoViewController로 navigationController로 연결되게 설계부탁드립니다.
-     */
-    let infoListViewController = InfoListViewController(infoType: .discount)
-    navigationController?.pushViewController(infoListViewController, animated: true)
+    let vc = InfoListViewController(infoType: infoType)
+
+    // 메인 페이지는 현재 달만 확인할 수 있음
+    vc.yearMonth = YearMonth.setNowYearMonth()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }

@@ -14,10 +14,23 @@ enum InfoCategoryType {
   case support
 }
 
+// 커스텀 델리게이트를 통한 전체보기
+protocol MonthlyBudgetInfoCollectionViewCellDelegate: AnyObject {
+  /// 주머니 정보 셀이 터치 되었을 때 시점을 전달하는 함수입니다.
+  /// 시점과 함께 정보의 타입(할인 또는 지원)도 전달합니다.
+  /// - Parameters:
+  ///   - cell: 터치 시점을 전달하는 셀입니다.
+  ///   - infoType: 터치된 셀의 정보 타입입니다.
+  func didTapInfoCell(in cell: MonthlyBudgetInfoCollectionViewCell, infoType: InfoType)
+}
+
 class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
 
   static let reuseIdentifier = "MonthlyBudgetInfo"
+
+  var infoType: InfoType?
+  weak var delegate: MonthlyBudgetInfoCollectionViewCellDelegate?
 
   // MARK: - UI Components
 
@@ -118,11 +131,13 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
 
     switch infoCategoryType {
     case .discount:
+      self.infoType = .discount
       self.infoCategoryTextLabel.text = "할인정보"
       self.infoCategoryTextLabel.textColor = BudgetBuddiesAsset.AppColor.orange2.color
       self.colorBackground.backgroundColor = BudgetBuddiesAsset.AppColor.lemon3.color
       self.infoCategoryBackground.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
     case .support:
+      self.infoType = .support
       self.infoCategoryTextLabel.text = "지원정보"
       self.infoCategoryTextLabel.textColor = BudgetBuddiesAsset.AppColor.coreBlue.color
       self.colorBackground.backgroundColor = BudgetBuddiesAsset.AppColor.sky3.color
@@ -132,6 +147,9 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     self.titleTextLabel.text = titleText
     self.iconImageView.kf.setImage(with: URL(string: iconImageURL))
     self.dateTextLabel.updateText(startDate: startDate, endDate: enddDate)
+
+    // cell의 configure함수 이후에 self.infoType이 정해지기 때문에 이 부분에서 gesture 등록
+    setupGesture()
   }
 
   private func setLayout() {
@@ -185,5 +203,21 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
       make.leading.equalToSuperview().inset(12)
       make.top.equalToSuperview().inset(129)
     }
+  }
+
+  // MARK: - Set up Gesture
+  private func setupGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoCell))
+    self.contentView.addGestureRecognizer(tapGesture)
+    self.contentView.isUserInteractionEnabled = true
+  }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapInfoCell() {
+    guard let infoType = self.infoType else { return }
+
+    // 셀이 터치 되었을 때 대리자에게 처리할 일 넘기기
+    delegate?.didTapInfoCell(in: self, infoType: infoType)
   }
 }

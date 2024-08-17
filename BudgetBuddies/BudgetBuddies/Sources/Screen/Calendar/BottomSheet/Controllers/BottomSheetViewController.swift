@@ -298,28 +298,55 @@ extension BottomSheetViewController: UITableViewDataSource {
       
       switch self.infoType {
       case .discount:
-          commentsCount = self.discountsComments.count
+          commentsCount = self.discountsComments.count == 0 ? 2 : self.discountsComments.count
       case .support:
-          commentsCount = self.supportsComments.count
+          commentsCount = self.supportsComments.count == 0 ? 2 : self.supportsComments.count
       }
       
       return commentsCount
   }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
-        
-        commentCell.delegate = self
         
         switch self.infoType {
         case .discount:
-            commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
+            if indexPath.row < self.discountsComments.count {
+                let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+                
+                // 대리자
+                commentCell.delegate = self
+                
+                // 데이터 전달
+                commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
+                 
+                commentCell.selectionStyle = .none
+                return commentCell
+                
+            } else {
+                let cell = UITableViewCell()
+                cell.backgroundColor = .red
+                return cell
+            }
+            
         case .support:
-            commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
+            if indexPath.row < self.supportsComments.count {
+                let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+                
+                // 대리자
+                commentCell.delegate = self
+                
+                // 데이터 전달
+                commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
+                
+                commentCell.selectionStyle = .none
+                return commentCell
+                
+            } else {
+                let cell = UITableViewCell()
+                cell.backgroundColor = .red
+                return cell
+            }
         }
-        
-        commentCell.selectionStyle = .none
-        return commentCell
     }
 }
 

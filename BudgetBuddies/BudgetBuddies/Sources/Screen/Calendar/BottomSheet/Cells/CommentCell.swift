@@ -26,6 +26,7 @@ class CommentCell: UITableViewCell {
             self.commentLabel.text = discountsCommentsContent.content
         }
     }
+    
     var supportsCommentsContent: SupportsCommentsContent? {
         didSet {
             guard let supportsCommentsContent = self.supportsCommentsContent else { return }
@@ -141,7 +142,8 @@ class CommentCell: UITableViewCell {
     stackView.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(23)
       make.bottom.equalToSuperview().inset(17)
-      make.leading.trailing.equalToSuperview().inset(40)
+      make.leading.equalToSuperview().inset(40)
+        make.trailing.equalToSuperview().inset(90)
     }
 
     buttonBackView.snp.makeConstraints { make in

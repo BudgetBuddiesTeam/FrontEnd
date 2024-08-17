@@ -308,11 +308,11 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 }
 
 extension CalendarViewController: InformationCellDelegate {
-  func didTabInformationCell(in cell: InformationCell) {
-    let vc = BottomSheetViewController()
-    vc.modalPresentationStyle = .overFullScreen
-    self.present(vc, animated: true, completion: nil)
-  }
+    func didTabInformationCell(in cell: InformationCell, infoType: InfoType) {
+        let vc = BottomSheetViewController(infoType: infoType)
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
 
   func didTapWebButton(in cell: InformationCell, urlString: String) {
     guard let url = URL(string: urlString) else {

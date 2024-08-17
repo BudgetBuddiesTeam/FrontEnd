@@ -294,10 +294,13 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
+    func didTabInformationCell(in cell: InformationCell, infoType: InfoType) {
+        let vc = BottomSheetViewController(infoType: infoType)
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
+    }
+    
   func didTabInformationCell(in cell: InformationCell) {
-    let vc = BottomSheetViewController()
-    vc.modalPresentationStyle = .overFullScreen
-    self.present(vc, animated: true, completion: nil)
   }
 
   // informationCell: 사이트 바로가기 버튼이 눌리는 시점

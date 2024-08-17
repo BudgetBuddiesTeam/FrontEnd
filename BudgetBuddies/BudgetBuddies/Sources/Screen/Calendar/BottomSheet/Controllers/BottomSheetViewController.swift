@@ -10,6 +10,8 @@ import UIKit
 
 final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
+    var infoType: InfoType
+    
   private let bottomSheet = BottomSheet()
 
   private var bottomSheetTopConstraint: Constraint?
@@ -26,10 +28,19 @@ final class BottomSheetViewController: DimmedViewController {
     var commentRequest: CommentRequest?
 
   // MARK: - Life Cycle
-
+    init(infoType: InfoType) {
+        self.infoType = infoType
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
 
+      print("BottomSheetViewController: \(self.infoType)셀의 댓글입니다.")
       setupData()
     setupUI()
     setupButtons()
@@ -59,7 +70,6 @@ final class BottomSheetViewController: DimmedViewController {
             switch result {
             case .success(let response):
                 print("데이터 디코딩 성공")
-                dump(response)
             case .failure(let error):
                 print("데이터 디코딩 실패")
                 print(error.localizedDescription)
@@ -252,7 +262,7 @@ final class BottomSheetViewController: DimmedViewController {
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 2  // 일단 10개
+    return 10  // 일단 10개
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

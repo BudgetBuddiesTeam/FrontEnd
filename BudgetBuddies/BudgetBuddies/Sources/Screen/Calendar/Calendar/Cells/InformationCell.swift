@@ -11,7 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-  func didTabInformationCell(in cell: InformationCell)
+    func didTabInformationCell(in cell: InformationCell, infoType: InfoType)
 }
 
 class InformationCell: UITableViewCell {
@@ -374,7 +374,8 @@ class InformationCell: UITableViewCell {
 
   @objc
   private func didTapBackView() {
-    delegate?.didTabInformationCell(in: self)
+      guard let infoType = self.infoType else { return }
+      delegate?.didTabInformationCell(in: self, infoType: infoType)
   }
 
   @objc

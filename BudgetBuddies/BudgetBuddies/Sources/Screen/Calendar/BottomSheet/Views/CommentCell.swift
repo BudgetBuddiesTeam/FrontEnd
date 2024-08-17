@@ -18,11 +18,27 @@ class CommentCell: UITableViewCell {
   static let identifier = "CommentCell"
 
   weak var delegate: CommentCellDelegate?
+    
+    var discountsCommentsContent: DiscountsCommentsContent? {
+        didSet {
+            guard let discountsCommentsContent = self.discountsCommentsContent else { return }
+            self.userName.text = "익명" + String(discountsCommentsContent.anonymousNumber)
+            self.commentLabel.text = discountsCommentsContent.content
+        }
+    }
+    var supportsCommentsContent: SupportsCommentsContent? {
+        didSet {
+            guard let supportsCommentsContent = self.supportsCommentsContent else { return }
+            self.userName.text = "익명" + String(supportsCommentsContent.anonymousNumber)
+            self.commentLabel.text = supportsCommentsContent.content
+        }
+    }
 
+    // MARK: - UI Components
   // 익명1, 2, 3...
   var userName: UILabel = {
     let lb = UILabel()
-    lb.text = "익명1"
+    lb.text = "익명0"
     lb.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
     lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     lb.setCharacterSpacing(-0.35)
@@ -33,7 +49,7 @@ class CommentCell: UITableViewCell {
   // 댓글 라벨
   var commentLabel: UILabel = {
     let lb = UILabel()
-    lb.text = "이거 한 번 받으면 다시 못 받는 건가요?\n만약이러면?"
+    lb.text = "댓글을 불러오는 중입니다..."
     lb.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
     lb.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     lb.setCharacterSpacing(-0.35)

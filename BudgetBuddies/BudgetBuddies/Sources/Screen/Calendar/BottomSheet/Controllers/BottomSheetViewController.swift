@@ -76,7 +76,7 @@ final class BottomSheetViewController: DimmedViewController {
                 case .success(let response):
                     print("데이터 디코딩 성공")
                     self.discountsComments = response.result.content
-                    dump(self.discountsComments)
+                    
                     DispatchQueue.main.async {
                         self.bottomSheet.commentsTableView.reloadData()
                     }
@@ -295,25 +295,32 @@ extension BottomSheetViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       
       let commentsCount: Int
+      
       switch self.infoType {
       case .discount:
           commentsCount = self.discountsComments.count
       case .support:
           commentsCount = self.supportsComments.count
       }
+      
       return commentsCount
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let commentCell =
-      bottomSheet.commentsTableView.dequeueReusableCell(
-        withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
-
-    commentCell.delegate = self
-
-    commentCell.selectionStyle = .none
-    return commentCell
-  }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+        
+        commentCell.delegate = self
+        
+        switch self.infoType {
+        case .discount:
+            commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
+        case .support:
+            commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
+        }
+        
+        commentCell.selectionStyle = .none
+        return commentCell
+    }
 }
 
 // MARK: - UITableView Delegate

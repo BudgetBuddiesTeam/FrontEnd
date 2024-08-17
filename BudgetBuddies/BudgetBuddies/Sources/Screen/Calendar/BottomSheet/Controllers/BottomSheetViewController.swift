@@ -13,6 +13,8 @@ final class BottomSheetViewController: DimmedViewController {
     var infoType: InfoType
     var infoId: Int
     
+    let textViewPrompt = "댓글을 입력해 주세요"
+    
   private let bottomSheet = BottomSheet()
 
   private var bottomSheetTopConstraint: Constraint?
@@ -184,7 +186,7 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up TextView
   private func setupTextView() {
     bottomSheet.commentTextView.delegate = self
-    bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
+    bottomSheet.commentTextView.text = textViewPrompt
   }
 
   // MARK: - register Keyboard Notification
@@ -288,19 +290,70 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
+    // MARK: - 댓글 POST부분 ⭐️
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
       
       // 댓글 post
-      print(bottomSheet.commentTextView.text!)
-      print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+      switch self.infoType {
+      case .discount:
+          postDiscountsComments()
+          
+      case .support:
+          postSupportsComments()
+      }
       
     // 플레이스홀더 재배치
-    bottomSheet.commentTextView.text = "댓글을 입력해 주세요"
+    bottomSheet.commentTextView.text = textViewPrompt
     bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
     bottomSheet.updateTextViewHeight()
   }
+    
+    // MARK: - Discount, Support Comments Post
+    private func postDiscountsComments() {
+        guard let textContent = bottomSheet.commentTextView.text, bottomSheet.commentTextView.text != textViewPrompt else {
+            print("댓글 생성 실패: 빈 텍스트 뷰")
+            return
+        }
+        
+        print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+        let discountsCommentsRequestDTO = DiscountsCommentsRequestDTO(content: textContent, discountInfoID: self.infoId)
+        
+        commentManager.postDiscountsComments(userId: self.userId, request: discountsCommentsRequestDTO) { result in
+            switch result {
+            case .success(let response):
+                print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
+                
+                self.setupData()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func postSupportsComments() {
+        guard let textContent = bottomSheet.commentTextView.text, bottomSheet.commentTextView.text != textViewPrompt else {
+            print("댓글 생성 실패: 빈 텍스트 뷰")
+            return
+        }
+        
+        print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+        let supportsCommentsRequestDTO = SupportsCommentsRequestDTO(content: textContent, supportInfoID: self.infoId)
+        
+        commentManager.postSupportsComments(userId: self.userId, request: supportsCommentsRequestDTO) { result in
+            switch result {
+            case .success(let response):
+                print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
+                
+                self.setupData()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {

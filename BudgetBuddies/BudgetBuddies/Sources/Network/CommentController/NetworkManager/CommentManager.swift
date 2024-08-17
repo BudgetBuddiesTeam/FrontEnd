@@ -73,6 +73,7 @@ final class CommentManager {
             case .success(let response):
                 print("통신 성공")
                 completion(.success(response))
+                
             case .failure(let error):
                 print("통신 에러 발생")
                 completion(.failure(error))
@@ -87,6 +88,7 @@ final class CommentManager {
             case .success(let response):
                 print("통신 성공")
                 completion(.success(response))
+                
             case .failure(let error):
                 print("통신 에러 발생")
                 completion(.failure(error))

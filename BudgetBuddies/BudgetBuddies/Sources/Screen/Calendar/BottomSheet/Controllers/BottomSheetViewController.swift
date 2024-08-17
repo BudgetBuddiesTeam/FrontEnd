@@ -24,6 +24,7 @@ final class BottomSheetViewController: DimmedViewController {
     // networking
     var commentManager = CommentManager.shared
     var discountsComments: [DiscountsCommentsContent] = []
+    var supportsComments: [SupportsCommentsContent] = []
     var userId: Int = 1
     var commentRequest: CommentRequest?
 
@@ -40,7 +41,6 @@ final class BottomSheetViewController: DimmedViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-      print("BottomSheetViewController: \(self.infoType)셀의 댓글입니다.")
       setupData()
     setupUI()
     setupButtons()
@@ -62,19 +62,48 @@ final class BottomSheetViewController: DimmedViewController {
     // MARK: - Set up Data
     private func setupData() {
         print("BottomSheetViewController: \(#function)")
-        self.commentRequest = CommentRequest(page: 0, size: 20)
+        self.commentRequest = CommentRequest(page: 0, size: 20) // 일단 20개만 불러오기
         guard let commentRequest = self.commentRequest else { return }
-        print("----------- 댓글 불러오기 ------------")
-            // 임시로 댓글 id: 1
-        commentManager.fetchDiscountsComments(discountInfoId: 1, request: commentRequest) { result in
-            switch result {
-            case .success(let response):
-                print("데이터 디코딩 성공")
-            case .failure(let error):
-                print("데이터 디코딩 실패")
-                print(error.localizedDescription)
+        
+        switch self.infoType {
+        case .discount:
+            print("----------- 할인정보 댓글 불러오기 ------------")
+            // 임시로 댓글 아이디 1
+            commentManager.fetchDiscountsComments(discountInfoId: 1, request: commentRequest) { result in
+                switch result {
+                case .success(let response):
+                    print("데이터 디코딩 성공")
+                    self.discountsComments = response.result.content
+                    dump(self.discountsComments)
+                    DispatchQueue.main.async {
+                        self.bottomSheet.commentsTableView.reloadData()
+                    }
+                    
+                case .failure(let error):
+                    print("데이터 디코딩 실패")
+                    print(error.localizedDescription)
+                }
+            }
+        case .support:
+            print("----------- 지원정보 댓글 불러오기 ------------")
+            commentManager.fetchSupportsComments(supportsInfoId: 1, request: commentRequest) { result in
+                switch result {
+                case .success(let response):
+                    print("데이터 디코딩 성공")
+                    self.supportsComments = response.result.content
+                    dump(self.supportsComments)
+                    DispatchQueue.main.async {
+                        self.bottomSheet.commentsTableView.reloadData()
+                    }
+                    
+                case .failure(let error):
+                    print("데이터 디코딩 실패")
+                    print(error.localizedDescription)
+                }
             }
         }
+        
+        
     }
 
   // MARK: - Set up UI
@@ -262,7 +291,16 @@ final class BottomSheetViewController: DimmedViewController {
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10  // 일단 10개
+      
+      let commentsCount: Int
+      switch self.infoType {
+      case .discount:
+          commentsCount = self.discountsComments.count
+      case .support:
+          commentsCount = self.supportsComments.count
+      }
+      print("BottomSheetViewController: \(self.infoType) 댓글 개수 = \(commentsCount)")
+      return commentsCount
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

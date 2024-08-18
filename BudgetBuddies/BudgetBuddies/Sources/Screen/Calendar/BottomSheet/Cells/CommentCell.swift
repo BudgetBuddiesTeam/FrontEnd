@@ -9,8 +9,8 @@ import SnapKit
 import UIKit
 
 protocol CommentCellDelegate: AnyObject {
-    func didTapEditButton(in cell: CommentCell, commentId: Int)
-    func didTapDeleteButton(in cell: CommentCell, commentId: Int)
+  func didTapEditButton(in cell: CommentCell, commentId: Int)
+  func didTapDeleteButton(in cell: CommentCell, commentId: Int)
 }
 
 class CommentCell: UITableViewCell {
@@ -18,31 +18,31 @@ class CommentCell: UITableViewCell {
   static let identifier = "CommentCell"
 
   weak var delegate: CommentCellDelegate?
-    
-    var commentId: Int?
-    var userId: Int?
-    
-    var discountsCommentsContent: DiscountsCommentsContent? {
-        didSet {
-            guard let discountsCommentsContent = self.discountsCommentsContent else { return }
-            self.userName.text = "익명" + String(discountsCommentsContent.anonymousNumber)
-            self.commentLabel.text = discountsCommentsContent.content
-            self.commentId = discountsCommentsContent.commentID
-            self.userId = discountsCommentsContent.userID
-        }
-    }
-    
-    var supportsCommentsContent: SupportsCommentsContent? {
-        didSet {
-            guard let supportsCommentsContent = self.supportsCommentsContent else { return }
-            self.userName.text = "익명" + String(supportsCommentsContent.anonymousNumber)
-            self.commentLabel.text = supportsCommentsContent.content
-            self.commentId = supportsCommentsContent.commentID
-            self.userId = supportsCommentsContent.userID
-        }
-    }
 
-    // MARK: - UI Components
+  var commentId: Int?
+  var userId: Int?
+
+  var discountsCommentsContent: DiscountsCommentsContent? {
+    didSet {
+      guard let discountsCommentsContent = self.discountsCommentsContent else { return }
+      self.userName.text = "익명" + String(discountsCommentsContent.anonymousNumber)
+      self.commentLabel.text = discountsCommentsContent.content
+      self.commentId = discountsCommentsContent.commentID
+      self.userId = discountsCommentsContent.userID
+    }
+  }
+
+  var supportsCommentsContent: SupportsCommentsContent? {
+    didSet {
+      guard let supportsCommentsContent = self.supportsCommentsContent else { return }
+      self.userName.text = "익명" + String(supportsCommentsContent.anonymousNumber)
+      self.commentLabel.text = supportsCommentsContent.content
+      self.commentId = supportsCommentsContent.commentID
+      self.userId = supportsCommentsContent.userID
+    }
+  }
+
+  // MARK: - UI Components
   // 익명1, 2, 3...
   var userName: UILabel = {
     let lb = UILabel()
@@ -125,21 +125,21 @@ class CommentCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
 
-      setupUI()
+    setupUI()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-    
-    // MARK: - Configure
-    func configure(userId: Int) {
-        guard let commentsUserId = self.userId else { return }
-        if userId == commentsUserId {
-            // 유저번호가 같은 댓글만 수정,삭제 버튼 보이게
-            setupModifyDeleteButtons()
-        }
+
+  // MARK: - Configure
+  func configure(userId: Int) {
+    guard let commentsUserId = self.userId else { return }
+    if userId == commentsUserId {
+      // 유저번호가 같은 댓글만 수정,삭제 버튼 보이게
+      setupModifyDeleteButtons()
     }
+  }
 
   // MARK: - Set up UI
   private func setupUI() {
@@ -157,53 +157,53 @@ class CommentCell: UITableViewCell {
     stackView.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(23)
       make.bottom.equalToSuperview().inset(17)
-        make.leading.trailing.equalToSuperview().inset(22)
+      make.leading.trailing.equalToSuperview().inset(22)
     }
   }
-    
-    // MARK: - Set up Modify, Delete Buttons
-    private func setupModifyDeleteButtons(){
-        
-        // addSubviews
-        self.contentView.addSubviews(buttonBackView)
-        buttonBackView.addSubviews(verticalSeparator, editButtonImageView, deleteButtonImageView)
-        
-        // Constraints
-        buttonBackView.snp.makeConstraints { make in
-          make.trailing.equalToSuperview().inset(22)
-          make.centerY.equalTo(userName)
-          make.height.equalTo(18)
-          make.width.equalTo(62)
-        }
 
-        verticalSeparator.snp.makeConstraints { make in
-          make.top.bottom.equalToSuperview().inset(5)
-          make.centerX.equalToSuperview()
-          make.width.equalTo(1)
-        }
+  // MARK: - Set up Modify, Delete Buttons
+  private func setupModifyDeleteButtons() {
 
-        editButtonImageView.snp.makeConstraints { make in
-          make.centerY.equalToSuperview()
-          make.trailing.equalTo(verticalSeparator.snp.leading).offset(-10)
-          make.height.width.equalTo(13)
-        }
+    // addSubviews
+    self.contentView.addSubviews(buttonBackView)
+    buttonBackView.addSubviews(verticalSeparator, editButtonImageView, deleteButtonImageView)
 
-        deleteButtonImageView.snp.makeConstraints { make in
-          make.centerY.equalToSuperview()
-          make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
-          make.height.width.equalTo(13)
-        }
+    // Constraints
+    buttonBackView.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().inset(22)
+      make.centerY.equalTo(userName)
+      make.height.equalTo(18)
+      make.width.equalTo(62)
     }
-    
+
+    verticalSeparator.snp.makeConstraints { make in
+      make.top.bottom.equalToSuperview().inset(5)
+      make.centerX.equalToSuperview()
+      make.width.equalTo(1)
+    }
+
+    editButtonImageView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalTo(verticalSeparator.snp.leading).offset(-10)
+      make.height.width.equalTo(13)
+    }
+
+    deleteButtonImageView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
+      make.height.width.equalTo(13)
+    }
+  }
+
   // MARK: - Selectors
   @objc
   private func didTapEditButton() {
-      guard let commentId = self.commentId else { return }
-      delegate?.didTapEditButton(in: self, commentId: commentId)
+    guard let commentId = self.commentId else { return }
+    delegate?.didTapEditButton(in: self, commentId: commentId)
   }
 
   @objc func didTapDeleteButton() {
-      guard let commentId = self.commentId else { return }
-      delegate?.didTapDeleteButton(in: self, commentId: commentId)
+    guard let commentId = self.commentId else { return }
+    delegate?.didTapDeleteButton(in: self, commentId: commentId)
   }
 }

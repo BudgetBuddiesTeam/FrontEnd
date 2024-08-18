@@ -10,11 +10,11 @@ import UIKit
 
 final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
-    var infoType: InfoType
-    var infoId: Int
-    
-    let textViewPrompt = "댓글을 입력해 주세요"
-    
+  var infoType: InfoType
+  var infoId: Int
+
+  let textViewPrompt = "댓글을 입력해 주세요"
+
   private let bottomSheet = BottomSheet()
 
   private var bottomSheetTopConstraint: Constraint?
@@ -23,29 +23,29 @@ final class BottomSheetViewController: DimmedViewController {
   private var bottomSheetValue: CGFloat {
     return self.view.bounds.height * 0.225  // bottomSheet이 올라오는 비율
   }
-    
-    // networking
-    var commentManager = CommentManager.shared
-    var discountsComments: [DiscountsCommentsContent] = []
-    var supportsComments: [SupportsCommentsContent] = []
-    var userId: Int = 1 // 일단 하드 코딩
-    var commentRequest: CommentRequest?
+
+  // networking
+  var commentManager = CommentManager.shared
+  var discountsComments: [DiscountsCommentsContent] = []
+  var supportsComments: [SupportsCommentsContent] = []
+  var userId: Int = 1  // 일단 하드 코딩
+  var commentRequest: CommentRequest?
 
   // MARK: - Life Cycle
-    init(infoType: InfoType, infoId: Int) {
-        self.infoType = infoType
-        self.infoId = infoId
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+  init(infoType: InfoType, infoId: Int) {
+    self.infoType = infoType
+    self.infoId = infoId
+    super.init()
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
-      setupData()
+    setupData()
     setupUI()
     setupButtons()
     setupTapGestures()
@@ -62,53 +62,54 @@ final class BottomSheetViewController: DimmedViewController {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
-    
-    // MARK: - Set up Data
-    private func setupData() {
-        print("BottomSheetViewController: \(#function)")
-        self.commentRequest = CommentRequest(page: 0, size: 20) // 일단 20개만 불러오기
-        guard let commentRequest = self.commentRequest else { return }
-        
-        switch self.infoType {
-        case .discount:
-            print("----------- 할인정보 댓글 불러오기 ------------")
-            // 임시로 댓글 아이디 1
-            commentManager.fetchDiscountsComments(discountInfoId: self.infoId, request: commentRequest) { result in
-                switch result {
-                case .success(let response):
-                    print("데이터 디코딩 성공")
-                    self.discountsComments = response.result.content
-                    
-                    DispatchQueue.main.async {
-                        self.bottomSheet.commentsTableView.reloadData()
-                    }
-                    
-                case .failure(let error):
-                    print("데이터 디코딩 실패")
-                    print(error.localizedDescription)
-                }
-            }
-        case .support:
-            print("----------- 지원정보 댓글 불러오기 ------------")
-            commentManager.fetchSupportsComments(supportsInfoId: self.infoId, request: commentRequest) { result in
-                switch result {
-                case .success(let response):
-                    print("데이터 디코딩 성공")
-                    self.supportsComments = response.result.content
-                    
-                    DispatchQueue.main.async {
-                        self.bottomSheet.commentsTableView.reloadData()
-                    }
-                    
-                case .failure(let error):
-                    print("데이터 디코딩 실패")
-                    print(error.localizedDescription)
-                }
-            }
+
+  // MARK: - Set up Data
+  private func setupData() {
+    print("BottomSheetViewController: \(#function)")
+    self.commentRequest = CommentRequest(page: 0, size: 20)  // 일단 20개만 불러오기
+    guard let commentRequest = self.commentRequest else { return }
+
+    switch self.infoType {
+    case .discount:
+      print("----------- 할인정보 댓글 불러오기 ------------")
+      // 임시로 댓글 아이디 1
+      commentManager.fetchDiscountsComments(discountInfoId: self.infoId, request: commentRequest) {
+        result in
+        switch result {
+        case .success(let response):
+          print("데이터 디코딩 성공")
+          self.discountsComments = response.result.content
+
+          DispatchQueue.main.async {
+            self.bottomSheet.commentsTableView.reloadData()
+          }
+
+        case .failure(let error):
+          print("데이터 디코딩 실패")
+          print(error.localizedDescription)
         }
-        
-        
+      }
+    case .support:
+      print("----------- 지원정보 댓글 불러오기 ------------")
+      commentManager.fetchSupportsComments(supportsInfoId: self.infoId, request: commentRequest) {
+        result in
+        switch result {
+        case .success(let response):
+          print("데이터 디코딩 성공")
+          self.supportsComments = response.result.content
+
+          DispatchQueue.main.async {
+            self.bottomSheet.commentsTableView.reloadData()
+          }
+
+        case .failure(let error):
+          print("데이터 디코딩 실패")
+          print(error.localizedDescription)
+        }
+      }
     }
+
+  }
 
   // MARK: - Set up UI
   private func setupUI() {
@@ -163,8 +164,8 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up TableView
   private func setupTableView() {
     // 셀 등록
-      registerCells()
-      
+    registerCells()
+
     bottomSheet.commentsTableView.backgroundColor = .clear
 
     bottomSheet.commentsTableView.delegate = self
@@ -174,14 +175,15 @@ final class BottomSheetViewController: DimmedViewController {
     bottomSheet.commentsTableView.showsVerticalScrollIndicator = false
     bottomSheet.commentsTableView.separatorStyle = .none
   }
-    
-    // MARK: - Register Cells
-    private func registerCells() {
-        bottomSheet.commentsTableView.register(
-          CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
-        
-        bottomSheet.commentsTableView.register(NoCommentsCell.self, forCellReuseIdentifier: NoCommentsCell.identifier)
-    }
+
+  // MARK: - Register Cells
+  private func registerCells() {
+    bottomSheet.commentsTableView.register(
+      CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+
+    bottomSheet.commentsTableView.register(
+      NoCommentsCell.self, forCellReuseIdentifier: NoCommentsCell.identifier)
+  }
 
   // MARK: - Set up TextView
   private func setupTextView() {
@@ -290,143 +292,159 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
-    // MARK: - 댓글 POST부분 ⭐️
+  // MARK: - 댓글 POST부분 ⭐️
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
-      
-      // 댓글 post
-      switch self.infoType {
-      case .discount:
-          postDiscountsComments()
-          
-      case .support:
-          postSupportsComments()
-      }
-      
+
+    // 댓글 post
+    switch self.infoType {
+    case .discount:
+      postDiscountsComments()
+
+    case .support:
+      postSupportsComments()
+    }
+
     // 플레이스홀더 재배치
     bottomSheet.commentTextView.text = textViewPrompt
     bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
     bottomSheet.updateTextViewHeight()
   }
-    
-    // MARK: - Discount, Support Comments Post
-    private func postDiscountsComments() {
-        guard let textContent = bottomSheet.commentTextView.text, bottomSheet.commentTextView.text != textViewPrompt else {
-            print("댓글 생성 실패: 빈 텍스트 뷰")
-            return
-        }
-        
-        print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
-        let discountsCommentsRequestDTO = DiscountsCommentsRequestDTO(content: textContent, discountInfoID: self.infoId)
-        
-        commentManager.postDiscountsComments(userId: self.userId, request: discountsCommentsRequestDTO) { result in
-            switch result {
-            case .success(let response):
-                print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
-                
-                self.setupData()
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+
+  // MARK: - Discount, Support Comments Post
+  private func postDiscountsComments() {
+    guard let textContent = bottomSheet.commentTextView.text,
+      bottomSheet.commentTextView.text != textViewPrompt
+    else {
+      print("댓글 생성 실패: 빈 텍스트 뷰")
+      return
     }
-    
-    private func postSupportsComments() {
-        guard let textContent = bottomSheet.commentTextView.text, bottomSheet.commentTextView.text != textViewPrompt else {
-            print("댓글 생성 실패: 빈 텍스트 뷰")
-            return
-        }
-        
-        print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
-        let supportsCommentsRequestDTO = SupportsCommentsRequestDTO(content: textContent, supportInfoID: self.infoId)
-        
-        commentManager.postSupportsComments(userId: self.userId, request: supportsCommentsRequestDTO) { result in
-            switch result {
-            case .success(let response):
-                print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
-                
-                self.setupData()
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+
+    print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+    let discountsCommentsRequestDTO = DiscountsCommentsRequestDTO(
+      content: textContent, discountInfoID: self.infoId)
+
+    commentManager.postDiscountsComments(userId: self.userId, request: discountsCommentsRequestDTO)
+    { result in
+      switch result {
+      case .success(let response):
+        print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
+
+        self.setupData()
+
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
     }
+  }
+
+  private func postSupportsComments() {
+    guard let textContent = bottomSheet.commentTextView.text,
+      bottomSheet.commentTextView.text != textViewPrompt
+    else {
+      print("댓글 생성 실패: 빈 텍스트 뷰")
+      return
+    }
+
+    print("\(self.infoType)셀의 \(infoId)번 게시물 댓글: \(bottomSheet.commentTextView.text!)")
+    let supportsCommentsRequestDTO = SupportsCommentsRequestDTO(
+      content: textContent, supportInfoID: self.infoId)
+
+    commentManager.postSupportsComments(userId: self.userId, request: supportsCommentsRequestDTO) {
+      result in
+      switch result {
+      case .success(let response):
+        print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
+
+        self.setupData()
+
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
+  }
 }
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      
-      let commentsCount: Int
-      
-      switch self.infoType {
-      case .discount:
-          commentsCount = self.discountsComments.count == 0 ? 1 : self.discountsComments.count
-      case .support:
-          commentsCount = self.supportsComments.count == 0 ? 1 : self.supportsComments.count
-      }
-      
-      return commentsCount
+
+    let commentsCount: Int
+
+    switch self.infoType {
+    case .discount:
+      commentsCount = self.discountsComments.count == 0 ? 1 : self.discountsComments.count
+    case .support:
+      commentsCount = self.supportsComments.count == 0 ? 1 : self.supportsComments.count
+    }
+
+    return commentsCount
   }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        switch self.infoType {
-        case .discount:
-            if indexPath.row < self.discountsComments.count {
-                let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
-                
-                // 대리자
-                commentCell.delegate = self
-                
-                // 데이터 전달
-                commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
-                
-                // configure
-                commentCell.configure(userId: self.userId)
-                 
-                commentCell.selectionStyle = .none
-                return commentCell
-                
-            } else {
-                let noCommentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
-                
-                noCommentCell.selectionStyle = .none
-                return noCommentCell
-            }
-            
-        case .support:
-            if indexPath.row < self.supportsComments.count {
-                let commentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
-                
-                // 대리자
-                commentCell.delegate = self
-                
-                // 데이터 전달
-                commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
-                
-                // configure
-                commentCell.configure(userId: self.userId)
-                
-                commentCell.selectionStyle = .none
-                return commentCell
-                
-            } else {
-                let noCommentCell = bottomSheet.commentsTableView.dequeueReusableCell(withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
-                
-                noCommentCell.selectionStyle = .none
-                return noCommentCell
-            }
-        }
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    switch self.infoType {
+    case .discount:
+      if indexPath.row < self.discountsComments.count {
+        let commentCell =
+          bottomSheet.commentsTableView.dequeueReusableCell(
+            withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+
+        // 대리자
+        commentCell.delegate = self
+
+        // 데이터 전달
+        commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
+
+        // configure
+        commentCell.configure(userId: self.userId)
+
+        commentCell.selectionStyle = .none
+        return commentCell
+
+      } else {
+        let noCommentCell =
+          bottomSheet.commentsTableView.dequeueReusableCell(
+            withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
+
+        noCommentCell.selectionStyle = .none
+        return noCommentCell
+      }
+
+    case .support:
+      if indexPath.row < self.supportsComments.count {
+        let commentCell =
+          bottomSheet.commentsTableView.dequeueReusableCell(
+            withIdentifier: CommentCell.identifier, for: indexPath) as! CommentCell
+
+        // 대리자
+        commentCell.delegate = self
+
+        // 데이터 전달
+        commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
+
+        // configure
+        commentCell.configure(userId: self.userId)
+
+        commentCell.selectionStyle = .none
+        return commentCell
+
+      } else {
+        let noCommentCell =
+          bottomSheet.commentsTableView.dequeueReusableCell(
+            withIdentifier: NoCommentsCell.identifier, for: indexPath) as! NoCommentsCell
+
+        noCommentCell.selectionStyle = .none
+        return noCommentCell
+      }
     }
+  }
 }
 
 // MARK: - UITableView Delegate
 extension BottomSheetViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      
+
   }
 }
 
@@ -453,41 +471,42 @@ extension BottomSheetViewController: UITextViewDelegate {
 
 // MARK: - CommentCell Delegate 댓글 수정, 삭제 버튼
 extension BottomSheetViewController: CommentCellDelegate {
-    func didTapEditButton(in cell: CommentCell, commentId: Int) {
-        AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true) { _ in
-            print("\(self.infoType) 댓글 commentId: \(commentId)")
-            switch self.infoType {
-            case .discount:
-                self.commentManager.getOneDiscountsComments(commentId: commentId) { result in
-                    switch result {
-                    case .success(let response):
-                        print(response.result)
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            case .support:
-                print("여기 구현 해야합니다....")
-            }
+  func didTapEditButton(in cell: CommentCell, commentId: Int) {
+    AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
+    { _ in
+      print("\(self.infoType) 댓글 commentId: \(commentId)")
+      switch self.infoType {
+      case .discount:
+        self.commentManager.getOneDiscountsComments(commentId: commentId) { result in
+          switch result {
+          case .success(let response):
+            print(response.result)
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
         }
+      case .support:
+        print("여기 구현 해야합니다....")
+      }
     }
-    
-    
-    func didTapDeleteButton(in cell: CommentCell, commentId: Int) {
-        AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true) { _ in
-            
-            // 댓글 delete ⭐️
-            self.commentManager.deleteComments(commentId: commentId) { result in
-                switch result {
-                case .success(let response):
-                    print("commentId: \(commentId)번 댓글 삭제 완료 statusCode: \(response.statusCode)")
-                    
-                    self.setupData()
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+  }
+
+  func didTapDeleteButton(in cell: CommentCell, commentId: Int) {
+    AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
+    { _ in
+
+      // 댓글 delete ⭐️
+      self.commentManager.deleteComments(commentId: commentId) { result in
+        switch result {
+        case .success(let response):
+          print("commentId: \(commentId)번 댓글 삭제 완료 statusCode: \(response.statusCode)")
+
+          self.setupData()
+
+        case .failure(let error):
+          print(error.localizedDescription)
         }
+      }
     }
+  }
 }

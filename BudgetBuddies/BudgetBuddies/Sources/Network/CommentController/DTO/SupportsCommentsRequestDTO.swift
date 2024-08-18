@@ -9,12 +9,11 @@ import Foundation
 
 // MARK: - SupportsCommentsRequest
 struct SupportsCommentsRequestDTO: Codable {
-    let content: String
-    let supportInfoID: Int
+  let content: String
+  let supportInfoID: Int
 
-    enum CodingKeys: String, CodingKey {
-        case content
-        case supportInfoID = "supportInfoId"
-    }
+  enum CodingKeys: String, CodingKey {
+    case content
+    case supportInfoID = "supportInfoId"
+  }
 }
-

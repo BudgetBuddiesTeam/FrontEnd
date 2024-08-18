@@ -272,24 +272,24 @@ extension InfoListViewController: UITableViewDelegate {
 
     }
   }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row >= 1 {
-            switch self.infoType {
-            case .discount:
-                let infoId = self.discounts[indexPath.row - 1].id
-                let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
-                vc.modalPresentationStyle = .overFullScreen
-                self.present(vc, animated: true, completion: nil)
-                
-            case .support:
-                let infoId = self.supports[indexPath.row - 1].id
-                let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
-                vc.modalPresentationStyle = .overFullScreen
-                self.present(vc, animated: true, completion: nil)
-            }
-        }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row >= 1 {
+      switch self.infoType {
+      case .discount:
+        let infoId = self.discounts[indexPath.row - 1].id
+        let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+
+      case .support:
+        let infoId = self.supports[indexPath.row - 1].id
+        let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+      }
     }
+  }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y

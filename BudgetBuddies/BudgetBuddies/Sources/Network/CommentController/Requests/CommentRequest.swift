@@ -8,6 +8,6 @@
 import Foundation
 
 struct CommentRequest {
-    let page: Int
-    let size: Int
+  let page: Int
+  let size: Int
 }

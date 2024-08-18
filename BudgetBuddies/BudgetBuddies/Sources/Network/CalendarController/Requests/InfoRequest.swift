@@ -8,8 +8,8 @@
 import Foundation
 
 struct InfoRequest {
-    let year: Int
-    let month: Int
-    let page: Int
-    let size: Int
+  let year: Int
+  let month: Int
+  let page: Int
+  let size: Int
 }

@@ -420,7 +420,7 @@ extension BottomSheetViewController: UITableViewDataSource {
 // MARK: - UITableView Delegate
 extension BottomSheetViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //    self.view.endEditing(true)
+      
   }
 }
 
@@ -447,12 +447,13 @@ extension BottomSheetViewController: UITextViewDelegate {
 
 // MARK: - CommentCell Delegate
 extension BottomSheetViewController: CommentCellDelegate {
-  func didTapEditButton(in cell: CommentCell) {
-    AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
-  }
-
-  func didTapDeleteButton(in cell: CommentCell) {
-    AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
-  }
-
+    func didTapEditButton(in cell: CommentCell, commentId: Int) {
+        AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
+        print("해당 댓글 commentId: \(commentId)")
+    }
+    
+    func didTapDeleteButton(in cell: CommentCell, commentId: Int) {
+        AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
+        print("해당 댓글 commentId: \(commentId)")
+    }
 }

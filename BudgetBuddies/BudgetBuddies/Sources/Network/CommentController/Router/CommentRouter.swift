@@ -13,6 +13,7 @@ enum CommentRouter {
     case getSupportsComments(supportInfoId: Int, request: CommentRequest)
     case addDiscountsComments(userId: Int, request: DiscountsCommentsRequestDTO)
     case addSupportsComments(userId: Int, request: SupportsCommentsRequestDTO)
+    case deleteComments(commentId: Int)
 }
 
 extension CommentRouter: TargetType {
@@ -33,6 +34,9 @@ extension CommentRouter: TargetType {
             
         case .addSupportsComments:
             return "supports/comments"
+            
+        case .deleteComments(commentId: let commentId):
+            return "comments/delete/\(commentId)"
         }
     }
     
@@ -49,6 +53,9 @@ extension CommentRouter: TargetType {
             
         case .addSupportsComments:
             return .post
+            
+        case .deleteComments(commentId: let commentId):
+            return .delete
         }
     }
     
@@ -82,6 +89,9 @@ extension CommentRouter: TargetType {
                 bodyEncoding: JSONEncoding.default,
                 urlParameters: ["userId": userId]
             )
+            
+        case .deleteComments:
+            return .requestPlain
         }
     }
     

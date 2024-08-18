@@ -9,8 +9,8 @@ import SnapKit
 import UIKit
 
 protocol CommentCellDelegate: AnyObject {
-  func didTapEditButton(in cell: CommentCell)
-  func didTapDeleteButton(in cell: CommentCell)
+    func didTapEditButton(in cell: CommentCell, commentId: Int)
+    func didTapDeleteButton(in cell: CommentCell, commentId: Int)
 }
 
 class CommentCell: UITableViewCell {
@@ -19,11 +19,14 @@ class CommentCell: UITableViewCell {
 
   weak var delegate: CommentCellDelegate?
     
+    var commentId: Int?
+    
     var discountsCommentsContent: DiscountsCommentsContent? {
         didSet {
             guard let discountsCommentsContent = self.discountsCommentsContent else { return }
             self.userName.text = "익명" + String(discountsCommentsContent.anonymousNumber)
             self.commentLabel.text = discountsCommentsContent.content
+            self.commentId = discountsCommentsContent.commentID
         }
     }
     
@@ -32,6 +35,7 @@ class CommentCell: UITableViewCell {
             guard let supportsCommentsContent = self.supportsCommentsContent else { return }
             self.userName.text = "익명" + String(supportsCommentsContent.anonymousNumber)
             self.commentLabel.text = supportsCommentsContent.content
+            self.commentId = supportsCommentsContent.commentID
         }
     }
 
@@ -173,10 +177,12 @@ class CommentCell: UITableViewCell {
   // MARK: - Selectors
   @objc
   private func didTapEditButton() {
-    delegate?.didTapEditButton(in: self)
+      guard let commentId = self.commentId else { return }
+      delegate?.didTapEditButton(in: self, commentId: commentId)
   }
 
   @objc func didTapDeleteButton() {
-    delegate?.didTapDeleteButton(in: self)
+      guard let commentId = self.commentId else { return }
+      delegate?.didTapDeleteButton(in: self, commentId: commentId)
   }
 }

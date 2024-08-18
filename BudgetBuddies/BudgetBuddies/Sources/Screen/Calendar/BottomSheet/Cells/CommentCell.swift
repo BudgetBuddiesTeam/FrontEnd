@@ -20,6 +20,7 @@ class CommentCell: UITableViewCell {
   weak var delegate: CommentCellDelegate?
     
     var commentId: Int?
+    var userId: Int?
     
     var discountsCommentsContent: DiscountsCommentsContent? {
         didSet {
@@ -27,6 +28,7 @@ class CommentCell: UITableViewCell {
             self.userName.text = "익명" + String(discountsCommentsContent.anonymousNumber)
             self.commentLabel.text = discountsCommentsContent.content
             self.commentId = discountsCommentsContent.commentID
+            self.userId = discountsCommentsContent.userID
         }
     }
     
@@ -36,6 +38,7 @@ class CommentCell: UITableViewCell {
             self.userName.text = "익명" + String(supportsCommentsContent.anonymousNumber)
             self.commentLabel.text = supportsCommentsContent.content
             self.commentId = supportsCommentsContent.commentID
+            self.userId = supportsCommentsContent.userID
         }
     }
 
@@ -122,17 +125,25 @@ class CommentCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
 
-    setupUI()
+      setupUI()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    // MARK: - Configure
+    func configure(userId: Int) {
+        guard let commentsUserId = self.userId else { return }
+        if userId == commentsUserId {
+            // 유저번호가 같은 댓글만 수정,삭제 버튼 보이게
+            setupModifyDeleteButtons()
+        }
+    }
 
   // MARK: - Set up UI
   private func setupUI() {
-    self.contentView.addSubviews(stackView, buttonBackView)
-    buttonBackView.addSubviews(verticalSeparator, editButtonImageView, deleteButtonImageView)
+    self.contentView.addSubviews(stackView)
 
     setupConstraints()
   }
@@ -148,32 +159,42 @@ class CommentCell: UITableViewCell {
       make.bottom.equalToSuperview().inset(17)
         make.leading.trailing.equalToSuperview().inset(22)
     }
-
-    buttonBackView.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(22)
-      make.centerY.equalTo(userName)
-      make.height.equalTo(18)
-      make.width.equalTo(62)
-    }
-
-    verticalSeparator.snp.makeConstraints { make in
-      make.top.bottom.equalToSuperview().inset(5)
-      make.centerX.equalToSuperview()
-      make.width.equalTo(1)
-    }
-
-    editButtonImageView.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
-      make.trailing.equalTo(verticalSeparator.snp.leading).offset(-10)
-      make.height.width.equalTo(13)
-    }
-
-    deleteButtonImageView.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
-      make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
-      make.height.width.equalTo(13)
-    }
   }
+    
+    // MARK: - Set up Modify, Delete Buttons
+    private func setupModifyDeleteButtons(){
+        
+        // addSubviews
+        self.contentView.addSubviews(buttonBackView)
+        buttonBackView.addSubviews(verticalSeparator, editButtonImageView, deleteButtonImageView)
+        
+        // Constraints
+        buttonBackView.snp.makeConstraints { make in
+          make.trailing.equalToSuperview().inset(22)
+          make.centerY.equalTo(userName)
+          make.height.equalTo(18)
+          make.width.equalTo(62)
+        }
+
+        verticalSeparator.snp.makeConstraints { make in
+          make.top.bottom.equalToSuperview().inset(5)
+          make.centerX.equalToSuperview()
+          make.width.equalTo(1)
+        }
+
+        editButtonImageView.snp.makeConstraints { make in
+          make.centerY.equalToSuperview()
+          make.trailing.equalTo(verticalSeparator.snp.leading).offset(-10)
+          make.height.width.equalTo(13)
+        }
+
+        deleteButtonImageView.snp.makeConstraints { make in
+          make.centerY.equalToSuperview()
+          make.leading.equalTo(verticalSeparator.snp.trailing).offset(10)
+          make.height.width.equalTo(13)
+        }
+    }
+    
   // MARK: - Selectors
   @objc
   private func didTapEditButton() {

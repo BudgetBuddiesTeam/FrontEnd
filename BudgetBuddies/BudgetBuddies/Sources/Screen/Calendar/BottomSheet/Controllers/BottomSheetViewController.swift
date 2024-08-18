@@ -28,7 +28,7 @@ final class BottomSheetViewController: DimmedViewController {
     var commentManager = CommentManager.shared
     var discountsComments: [DiscountsCommentsContent] = []
     var supportsComments: [SupportsCommentsContent] = []
-    var userId: Int = 1
+    var userId: Int = 1 // 일단 하드 코딩
     var commentRequest: CommentRequest?
 
   // MARK: - Life Cycle
@@ -383,6 +383,9 @@ extension BottomSheetViewController: UITableViewDataSource {
                 
                 // 데이터 전달
                 commentCell.discountsCommentsContent = self.discountsComments[indexPath.row]
+                
+                // configure
+                commentCell.configure(userId: self.userId)
                  
                 commentCell.selectionStyle = .none
                 return commentCell
@@ -403,6 +406,9 @@ extension BottomSheetViewController: UITableViewDataSource {
                 
                 // 데이터 전달
                 commentCell.supportsCommentsContent = self.supportsComments[indexPath.row]
+                
+                // configure
+                commentCell.configure(userId: self.userId)
                 
                 commentCell.selectionStyle = .none
                 return commentCell
@@ -445,11 +451,24 @@ extension BottomSheetViewController: UITextViewDelegate {
   }
 }
 
-// MARK: - CommentCell Delegate
+// MARK: - CommentCell Delegate 댓글 수정, 삭제 버튼
 extension BottomSheetViewController: CommentCellDelegate {
     func didTapEditButton(in cell: CommentCell, commentId: Int) {
         AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true) { _ in
             print("\(self.infoType) 댓글 commentId: \(commentId)")
+            switch self.infoType {
+            case .discount:
+                self.commentManager.getOneDiscountsComments(commentId: commentId) { result in
+                    switch result {
+                    case .success(let response):
+                        print(response.result)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            case .support:
+                print("여기 구현 해야합니다....")
+            }
         }
     }
     

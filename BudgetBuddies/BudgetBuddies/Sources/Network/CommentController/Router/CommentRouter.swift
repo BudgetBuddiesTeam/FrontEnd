@@ -14,6 +14,8 @@ enum CommentRouter {
     case addDiscountsComments(userId: Int, request: DiscountsCommentsRequestDTO)
     case addSupportsComments(userId: Int, request: SupportsCommentsRequestDTO)
     case deleteComments(commentId: Int)
+    case getOneDiscountsComments(commentId: Int)
+    case getOneSupportsComments(commentId: Int)
 }
 
 extension CommentRouter: TargetType {
@@ -37,6 +39,12 @@ extension CommentRouter: TargetType {
             
         case .deleteComments(commentId: let commentId):
             return "comments/delete/\(commentId)"
+            
+        case .getOneDiscountsComments(commentId: let commentId):
+            return "discounts/comments/getOne/\(commentId)"
+            
+        case .getOneSupportsComments(commentId: let commentId):
+            return "supports/comments/getOne/\(commentId)"
         }
     }
     
@@ -56,6 +64,12 @@ extension CommentRouter: TargetType {
             
         case .deleteComments(commentId: let commentId):
             return .delete
+            
+        case .getOneDiscountsComments:
+            return .get
+            
+        case .getOneSupportsComments:
+            return .get
         }
     }
     
@@ -91,6 +105,12 @@ extension CommentRouter: TargetType {
             )
             
         case .deleteComments:
+            return .requestPlain
+            
+        case .getOneDiscountsComments:
+            return .requestPlain
+            
+        case .getOneSupportsComments:
             return .requestPlain
         }
     }

@@ -24,7 +24,8 @@ class AlertManager {
   ///   - needsCancelButton: 'true'일 경우 취소 버튼이 추가되고, 'false'일 경우 추가되지 않습니다.
   ///
   public static func showAlert(
-    on vc: UIViewController, title: String, message: String?, needsCancelButton: Bool
+    on vc: UIViewController, title: String, message: String?, needsCancelButton: Bool,
+    confirmHandler: ((UIAlertAction) -> Void)? = nil
   ) {
     // 나중에 api통신을 위해 UI작업은 main큐에서
     DispatchQueue.main.async {
@@ -37,7 +38,7 @@ class AlertManager {
       }
 
       // 뷰컨에 알림 표시
-      alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+      alert.addAction(UIAlertAction(title: "확인", style: .default, handler: confirmHandler))
       vc.present(alert, animated: true, completion: nil)
     }
   }

@@ -1,5 +1,5 @@
 //
-//  SupportsResponse.swift
+//  DiscountsResponse.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/8/24.
@@ -7,33 +7,34 @@
 
 import Foundation
 
-// MARK: - SupportInfoResponse
-struct SupportsResponse: Codable {
+// MARK: - DiscountResponse
+struct DiscountsResponseDTO: Codable {
   let isSuccess: Bool
   let code, message: String
-  let result: SupportsResult
+  let result: DiscountsResult
 }
 
-// MARK: - SupportsResult
-struct SupportsResult: Codable {
+// MARK: - DiscountsResult
+struct DiscountsResult: Codable {
   let totalPages, totalElements, size: Int
-  let content: [SupportContent]
+  let content: [DiscountContent]
   let number: Int
-  let sort: SupportSort
-  let pageable: SupportPageable
+  let sort: Sort
+  let pageable: Pageable
   let numberOfElements: Int
   let first, last, empty: Bool
 }
 
 // MARK: - Content
-struct SupportContent: Codable {
+struct DiscountContent: Codable {
   let id: Int
   let title, startDate, endDate: String
   let anonymousNumber, likeCount: Int
+  let discountRate: Int?
   let siteURL, thumbnailURL: String
 
   enum CodingKeys: String, CodingKey {
-    case id, title, startDate, endDate, anonymousNumber, likeCount
+    case id, title, startDate, endDate, anonymousNumber, discountRate, likeCount
     case siteURL = "siteUrl"
     case thumbnailURL = "thumbnailUrl"
   }
@@ -58,17 +59,4 @@ struct SupportContent: Codable {
     // 변환된 날짜를 'MM.dd' 형식으로 변환하고 문자열로 반환
     return "\(dateFormatter.string(from: startDate)) ~ \(dateFormatter.string(from: endDate))"
   }
-}
-
-// MARK: - Pageable
-struct SupportPageable: Codable {
-  let offset: Int
-  let sort: SupportSort
-  let unpaged, paged: Bool
-  let pageNumber, pageSize: Int
-}
-
-// MARK: - Sort
-struct SupportSort: Codable {
-  let empty, unsorted, sorted: Bool
 }

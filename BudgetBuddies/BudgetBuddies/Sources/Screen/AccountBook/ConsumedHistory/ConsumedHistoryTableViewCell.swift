@@ -43,9 +43,9 @@ class ConsumedHistoryTableViewCell: UITableViewCell {
   }
 
   // MARK: - Methods
-  
+
   public func configure(categoryId: Int, description: String, amount: Int) {
-    let categoryImage : UIImage
+    let categoryImage: UIImage
     switch categoryId {
     case 1:
       categoryImage = BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image

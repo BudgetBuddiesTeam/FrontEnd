@@ -15,7 +15,7 @@ struct ExpenseResponseDTO: Codable {
   let amount: Int
   let expenseDescription: String
   let expenseDate: String
-  
+
   enum CodingKeys: String, CodingKey {
     case expenseId, userId, categoryId, categoryName, amount, expenseDate
     case expenseDescription = "description"

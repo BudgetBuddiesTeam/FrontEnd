@@ -122,7 +122,8 @@ class CategorySelectTableViewController: UITableViewController {
         } catch (let error) {
         }
       case .failure(let error):
-        let fetchCategoriesDataFailureAlertController = UIAlertController(title: "에러", message: "카테고리를 가져오지 못했습니다", preferredStyle: .alert)
+        let fetchCategoriesDataFailureAlertController = UIAlertController(
+          title: "에러", message: "카테고리를 가져오지 못했습니다", preferredStyle: .alert)
         let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
           self?.navigationController?.popViewController(animated: true)
         }

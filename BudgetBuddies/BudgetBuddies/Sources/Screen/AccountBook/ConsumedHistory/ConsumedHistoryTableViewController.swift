@@ -45,7 +45,7 @@ final class ConsumedHistoryTableViewController: UIViewController {
   }()
   private var lastDay: Int = 0
   private var expensesByDay: [[Expense]] = []
-  
+
   // MARK: - View Life Cycle
 
   override func viewWillAppear(_ animated: Bool) {
@@ -102,9 +102,10 @@ final class ConsumedHistoryTableViewController: UIViewController {
       make.left.right.bottom.equalToSuperview()
     }
   }
-  
+
   private func showDataFetchingFailureUIAlertController() {
-    let getMonthlyExpenseDataFailedAlertController = UIAlertController(title: "문제발생", message: "서버에서 데이터를 가져오지 못했습니다", preferredStyle: .alert)
+    let getMonthlyExpenseDataFailedAlertController = UIAlertController(
+      title: "문제발생", message: "서버에서 데이터를 가져오지 못했습니다", preferredStyle: .alert)
     let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
       self?.navigationController?.popViewController(animated: true)
     }
@@ -130,21 +131,23 @@ extension ConsumedHistoryTableViewController {
 // MARK: - Network
 
 extension ConsumedHistoryTableViewController {
-  
+
   /// 월별 소비 조회 메소드
   private func getMonthlyExpenseDataFromServer() {
-    provider.request(.getMonthlyExpenses(
-      userId: self.userId,
-      pageable: self.pageable,
-      date: self.currentDateString)) { [weak self] result in
+    provider.request(
+      .getMonthlyExpenses(
+        userId: self.userId,
+        pageable: self.pageable,
+        date: self.currentDateString)
+    ) { [weak self] result in
       switch result {
       case .success(let response):
         do {
           let decodedData = try JSONDecoder().decode(
             MonthlyExpenseResponseDTO.self, from: response.data)
-          
+
           self?.parseExpenseListData(expenseList: decodedData.expenseList)
-          
+
           self?.consumedHistoryTableView.reloadData()
         } catch {
           self?.showDataFetchingFailureUIAlertController()
@@ -154,7 +157,7 @@ extension ConsumedHistoryTableViewController {
       }
     }
   }
-  
+
   /*
    해야 할 일
    - 해당 부분은 서버에서 처리를 다 해서 프론트엔드로 전달해야 함
@@ -169,15 +172,14 @@ extension ConsumedHistoryTableViewController {
     inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     let outputFormatter = DateFormatter()
     outputFormatter.dateFormat = "dd"
-    
-    
+
     if let date = inputFormatter.date(from: expenseList[0].expenseDate) {
       let dayString = outputFormatter.string(from: date)
       self.lastDay = Int(dayString)!
     } else {
       self.lastDay = 0
     }
-    
+
     self.expensesByDay = Array(repeating: [Expense](), count: self.lastDay)
     for expense in expenseList {
       if let date = inputFormatter.date(from: expense.expenseDate) {
@@ -194,11 +196,11 @@ extension ConsumedHistoryTableViewController {
 // MARK: - UITableView Delegate & DataSource
 
 extension ConsumedHistoryTableViewController: UITableViewDataSource {
-  
+
   func numberOfSections(in tableView: UITableView) -> Int {
     return self.expensesByDay.count
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.expensesByDay[section].count
   }
@@ -212,10 +214,12 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
       tableView.dequeueReusableCell(
         withIdentifier: ConsumedHistoryTableViewCell.identifier, for: indexPath)
       as! ConsumedHistoryTableViewCell
-    
+
     let expense = self.expensesByDay[indexPath.section][indexPath.row]
-    cell.configure(categoryId: expense.categoryID, description: expense.expenseDescription, amount: expense.amount)
-    
+    cell.configure(
+      categoryId: expense.categoryID, description: expense.expenseDescription,
+      amount: expense.amount)
+
     return cell
   }
 
@@ -230,7 +234,8 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let expense = self.expensesByDay[indexPath.section][indexPath.row]
-    let consumedHistoryDetailViewController = ConsumedHistoryDetailViewController(expenseId: expense.expenseID)
+    let consumedHistoryDetailViewController = ConsumedHistoryDetailViewController(
+      expenseId: expense.expenseID)
     navigationController?.pushViewController(consumedHistoryDetailViewController, animated: true)
     tableView.deselectRow(at: indexPath, animated: true)
   }

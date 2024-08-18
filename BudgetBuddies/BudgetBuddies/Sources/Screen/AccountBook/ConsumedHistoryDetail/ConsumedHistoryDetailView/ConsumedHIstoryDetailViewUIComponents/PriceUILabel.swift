@@ -24,10 +24,10 @@ class PriceUILabel: UILabel {
     fatalError("init(coder:) has not been implemented")
   }
   // MARK: - Methods
-  
+
   public func updateExpensePriceDate(amount: Int) {
     self.expensePriceData = amount
-    
+
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal

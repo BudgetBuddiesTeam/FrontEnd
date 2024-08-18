@@ -107,7 +107,8 @@ class ConsumedHistoryDetailView: UIView {
   private func setLayout() {
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     addSubviews(
-      categoryIcon, expenseDescriptionLabel, priceLabel, categoryStringLabel, consumedDateStringLabel,
+      categoryIcon, expenseDescriptionLabel, priceLabel, categoryStringLabel,
+      consumedDateStringLabel,
       categorySettingButton, consumedDatePicker, saveButton)
 
     // 카테고리 아이콘

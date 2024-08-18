@@ -57,7 +57,7 @@ final class ConsumedHistoryDetailViewController: UIViewController {
   override func loadView() {
     view = consumedHistoryDetailView
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -82,21 +82,22 @@ final class ConsumedHistoryDetailViewController: UIViewController {
     consumedHistoryDetailView.saveButton.addTarget(
       self, action: #selector(saveButtonTapped), for: .touchUpInside)
   }
-  
+
   private func setDatePickerAction() {
-    consumedHistoryDetailView.consumedDatePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+    consumedHistoryDetailView.consumedDatePicker.addTarget(
+      self, action: #selector(dateChanged(_:)), for: .valueChanged)
   }
 
   private func observeSelectedCategory() {
     self.categorySelectTableViewController.$selectedCategoryName
       .sink { [weak self] newValue in
         self?.categoryName = newValue
-        
+
         /*
          해야 할 일
          - 카테고리 이름에 따른 이미지 반환 함수 모듈화
          */
-        
+
         let categoryImage: UIImage
         let categoryId: Int
         switch newValue {
@@ -124,10 +125,11 @@ final class ConsumedHistoryDetailViewController: UIViewController {
           categoryImage = BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
         }
         self?.consumedHistoryDetailView.categoryIcon.image = categoryImage
-        self?.consumedHistoryDetailView.categorySettingButton.setTitle(self?.categoryName, for: .normal)
+        self?.consumedHistoryDetailView.categorySettingButton.setTitle(
+          self?.categoryName, for: .normal)
       }
       .store(in: &cancellables)
-    
+
     self.categorySelectTableViewController.$selectedCateogryId
       .sink { [weak self] newValue in
         self?.categoryId = newValue
@@ -139,7 +141,7 @@ final class ConsumedHistoryDetailViewController: UIViewController {
 // MARK: - Network
 
 extension ConsumedHistoryDetailViewController {
-  
+
   /// 서버에서 단일 소비 내역 조회 메소드
   private func getSingleExpense(expenseId: Int) {
     provider.request(.getSingleExpense(userId: self.userId, expenseId: expenseId)) { result in
@@ -156,12 +158,12 @@ extension ConsumedHistoryDetailViewController {
           if let formattedDate = dateFormatter.date(from: decodedData.expenseDate) {
             self.expenseDate = formattedDate
           } else {
-            
+
             /*
              해야 할 일
              - 옵셔널 데이터를 바인딩할 때, 처리 방법에 대한 연구
              */
-            
+
             self.expenseDate = Date()
           }
 
@@ -216,7 +218,7 @@ extension ConsumedHistoryDetailViewController {
       }
     }
   }
-  
+
   /// 해당 단일 소비 내역 제거 후 서버로 변경사항 발송
   private func deleteExpense(expenseId: Int) {
     provider.request(.deleteSingleExpense(expenseId: self.expenseId)) { result in
@@ -238,20 +240,26 @@ extension ConsumedHistoryDetailViewController {
       }
     }
   }
-  
+
   /// 단일 소비 내역 편집 후 서버 업로드 메소드
-  private func postUpdatedSingleExpense(userId: Int, expenseUpdatedRequestDTO: ExpenseUpdateRequestDTO) {
-    provider.request(.postUpdatedSingleExpense(userId: userId, updatedExpenseRequestDTO: expenseUpdatedRequestDTO)) { result in
+  private func postUpdatedSingleExpense(
+    userId: Int, expenseUpdatedRequestDTO: ExpenseUpdateRequestDTO
+  ) {
+    provider.request(
+      .postUpdatedSingleExpense(userId: userId, updatedExpenseRequestDTO: expenseUpdatedRequestDTO)
+    ) { result in
       switch result {
       case .success:
-        let postUpdatedConfirmedUIAlertController = UIAlertController(title: "알림", message: "업데이트 성공", preferredStyle: .alert)
+        let postUpdatedConfirmedUIAlertController = UIAlertController(
+          title: "알림", message: "업데이트 성공", preferredStyle: .alert)
         let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
           self?.navigationController?.popViewController(animated: true)
         }
         postUpdatedConfirmedUIAlertController.addAction(confirmedButtonAction)
         self.present(postUpdatedConfirmedUIAlertController, animated: true)
       case .failure:
-        let postUpdatedFailureUIAlertController = UIAlertController(title: "다시 시도하세요", message: "소비 내역 업데이트 실패", preferredStyle: .alert)
+        let postUpdatedFailureUIAlertController = UIAlertController(
+          title: "다시 시도하세요", message: "소비 내역 업데이트 실패", preferredStyle: .alert)
         let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
         postUpdatedFailureUIAlertController.addAction(confirmedButtonAction)
         self.present(postUpdatedFailureUIAlertController, animated: true)
@@ -274,15 +282,18 @@ extension ConsumedHistoryDetailViewController {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     let formattedExpenseDate = dateFormatter.string(from: self.expenseDate)
-    let expenseUpdatedRequestDTO = ExpenseUpdateRequestDTO(expenseId: self.expenseId, categoryId: self.categoryId, expenseDate: formattedExpenseDate, amount: self.amount)
-    self.postUpdatedSingleExpense(userId: self.userId, expenseUpdatedRequestDTO: expenseUpdatedRequestDTO)
+    let expenseUpdatedRequestDTO = ExpenseUpdateRequestDTO(
+      expenseId: self.expenseId, categoryId: self.categoryId, expenseDate: formattedExpenseDate,
+      amount: self.amount)
+    self.postUpdatedSingleExpense(
+      userId: self.userId, expenseUpdatedRequestDTO: expenseUpdatedRequestDTO)
   }
 
   @objc
   private func trashRightBarButtonTapped() {
     self.deleteExpense(expenseId: self.expenseId)
   }
-  
+
   @objc
   private func dateChanged(_ sender: UIDatePicker) {
     self.expenseDate = sender.date

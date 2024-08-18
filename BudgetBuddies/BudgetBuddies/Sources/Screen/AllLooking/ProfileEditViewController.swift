@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Moya
 import SnapKit
 import UIKit
 
@@ -16,9 +17,16 @@ class ProfileEditViewController: UIViewController {
   // View
   private var profileEditView = ProfileEditView()
 
+  // Combine
+  private let cancellable = Set<AnyCancellable>()
+
+  // Network
+  private let provider = MoyaProvider<UserRouter>()
+
   // Variable
-  @Published var writtenName = "빈주머니즈"
-  private var writtenEmail = "budgetbuddies@gmail.com"
+  private var writtenName = String()
+  private var writtenEmail = String()
+  private var userId = 1
 
   // MARK: - View Life Cycle
 
@@ -52,15 +60,39 @@ class ProfileEditViewController: UIViewController {
   }
 }
 
+// MARK: - Network
+
+extension ProfileEditViewController {
+  private func postEditedUserInfo(userId: Int, userInfoRequestDTO: UserInfoRequestDTO) {
+    provider.request(.modify(userId: userId, userInfoRequestDTO: userInfoRequestDTO)) {
+      result in
+      switch result {
+      case .success:
+        let successAlertController = UIAlertController(
+          title: "알림", message: "사용자 정보 변경에 성공했습니다", preferredStyle: .alert)
+        let confirmedAction = UIAlertAction(title: "학인", style: .default) { [weak self] _ in
+          self?.navigationController?.popViewController(animated: true)
+        }
+        successAlertController.addAction(confirmedAction)
+        self.present(successAlertController, animated: true)
+      case .failure:
+        let failureAlertController = UIAlertController(
+          title: "알림", message: "사용자 정보 변경에 실패했습니다", preferredStyle: .alert)
+        let confirmedAction = UIAlertAction(title: "확인", style: .default)
+        failureAlertController.addAction(confirmedAction)
+        self.present(failureAlertController, animated: true)
+      }
+    }
+  }
+}
+
 // MARK: - Object C Methods
 
 extension ProfileEditViewController {
   @objc
   private func saveButtonTapped() {
-    debugPrint(writtenName)
-    debugPrint(writtenEmail)
-
-    navigationController?.popViewController(animated: true)
+    let userInfoRequestDTO = UserInfoRequestDTO(email: self.writtenEmail, name: self.writtenName)
+    self.postEditedUserInfo(userId: self.userId, userInfoRequestDTO: userInfoRequestDTO)
   }
 }
 

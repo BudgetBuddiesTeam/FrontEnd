@@ -115,8 +115,8 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(
-      userId: self.userId, categoryId: 1, amount: 50000, description: "스타벅스 5만원 충전",
-      expenseDate: "2024-08-16 11:22:00")
+      userId: self.userId, categoryId: 1, amount: 12345, description: "iOS 회식비",
+      expenseDate: "2024-08-18 15:33:46")
 
     // Network Transmitting Code
     provider.request(.postAddedExpense(addedExpenseRequestDTO: sampleNewExpenseRequestDTO)) {

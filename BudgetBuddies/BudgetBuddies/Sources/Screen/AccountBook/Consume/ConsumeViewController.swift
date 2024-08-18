@@ -6,10 +6,10 @@
 //
 
 import Combine
+import Foundation
 import Moya
 import SnapKit
 import UIKit
-import Foundation
 
 final class ConsumeViewController: UIViewController {
   // MARK: - Properties
@@ -138,7 +138,7 @@ extension ConsumeViewController {
     let amount: Int
     let description = self.writtenConsumedContentText
     let expenseDate: String
-    
+
     /*
      해야 할 일
      - 하드코딩 되어 있는 아래 카테고리 문자열에서 카테고리 아이디 변환 작업을 모듈화
@@ -167,22 +167,22 @@ extension ConsumeViewController {
     default:
       categoryId = 11
     }
-  
+
     if let writtenConsumedPrice = Int(self.writtenConsumedPriceText) {
       amount = writtenConsumedPrice
     } else {
       amount = 0
     }
-    
+
     let dateFormatter = DateFormatter()
     /*
      해야 할 일
      - 서버에 발송하는 날짜 형식도 지정 날짜 형식으로 Namespace에 모듈화
      */
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    
+
     expenseDate = dateFormatter.string(from: self.selectedDate)
-        
+
     let newExpenseRequestDTO = NewExpenseRequestDTO(
       userId: userId,
       categoryId: categoryId,
@@ -190,7 +190,7 @@ extension ConsumeViewController {
       description: description,
       expenseDate: expenseDate
     )
-    
+
     self.postNewExpense(newExpenseRequestDTO: newExpenseRequestDTO)
   }
 }
@@ -203,7 +203,8 @@ extension ConsumeViewController {
       result in
       switch result {
       case .success:
-        let postSuccessAlertController = UIAlertController(title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
+        let postSuccessAlertController = UIAlertController(
+          title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
         let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
         postSuccessAlertController.addAction(confirmedButtonAction)
         self.present(postSuccessAlertController, animated: true)
@@ -212,7 +213,8 @@ extension ConsumeViewController {
          해야 할 일
          - UIAlertController 모듈화하기
          */
-        let postFailureAlertController = UIAlertController(title: "문제발생", message: "새로운 소비 내역을 추가하지 못했습니다", preferredStyle: .alert)
+        let postFailureAlertController = UIAlertController(
+          title: "문제발생", message: "새로운 소비 내역을 추가하지 못했습니다", preferredStyle: .alert)
         let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
           self?.navigationController?.popViewController(animated: true)
         }

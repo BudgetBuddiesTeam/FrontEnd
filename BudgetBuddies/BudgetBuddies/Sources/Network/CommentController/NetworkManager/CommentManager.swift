@@ -18,6 +18,7 @@ final class CommentManager {
     typealias DiscountsCommentsNetworkCompletion = (Result<DiscountsCommentsResponseDTO, Error>) -> Void
     typealias SupportsCommentsNetworkCompletion = (Result<SupportsCommentsResponseDTO, Error>) -> Void
     typealias postCommentsNetworkCompletion = (Result<Response, Error>) -> Void
+    typealias deleteCommentsNetworkCompletion = (Result<Response, Error>) -> Void
     
     // MARK: - 할인정보 전체 댓글 불러오기
     func fetchDiscountsComments(discountInfoId: Int, request: CommentRequest, completion: @escaping(DiscountsCommentsNetworkCompletion)) {
@@ -84,6 +85,21 @@ final class CommentManager {
     // MARK: - 지원정보 댓글 쓰기
     func postSupportsComments(userId: Int, request: SupportsCommentsRequestDTO, completion: @escaping(postCommentsNetworkCompletion)) {
         CommentProvider.request(.addSupportsComments(userId: userId, request: request)) { result in
+            switch result {
+            case .success(let response):
+                print("통신 성공")
+                completion(.success(response))
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 댓글 삭제
+    func deleteComments(commentId: Int, completion: @escaping(deleteCommentsNetworkCompletion)) {
+        CommentProvider.request(.deleteComments(commentId: commentId)) { result in
             switch result {
             case .success(let response):
                 print("통신 성공")

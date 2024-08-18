@@ -448,12 +448,27 @@ extension BottomSheetViewController: UITextViewDelegate {
 // MARK: - CommentCell Delegate
 extension BottomSheetViewController: CommentCellDelegate {
     func didTapEditButton(in cell: CommentCell, commentId: Int) {
-        AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
-        print("해당 댓글 commentId: \(commentId)")
+        AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true) { _ in
+            print("해당 댓글 commentId: \(commentId)")
+        }
     }
     
+    
     func didTapDeleteButton(in cell: CommentCell, commentId: Int) {
-        AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
-        print("해당 댓글 commentId: \(commentId)")
+        AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true) { _ in
+            
+            // 댓글 delete ⭐️
+            self.commentManager.deleteComments(commentId: commentId) { result in
+                switch result {
+                case .success(let response):
+                    print("commentId: \(commentId)번 댓글 삭제 완료")
+                    
+                    self.setupData()
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
 }

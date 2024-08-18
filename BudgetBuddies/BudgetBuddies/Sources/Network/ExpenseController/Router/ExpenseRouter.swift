@@ -35,7 +35,7 @@ enum ExpenseRouter {
   /// description: String,
   /// expenseDate: String
   /// 값을 갖는 POST JSON BODY
-  case postAddedExpense(addedExpenseRequestDTO: AddedExpenseRequestDTO)
+  case postAddedExpense(addedExpenseRequestDTO: NewExpenseRequestDTO)
 
   /// "/expenses/{userId}/{expeseId}"
   ///

@@ -13,6 +13,11 @@ struct ExpenseResponseDTO: Codable {
   let categoryId: Int
   let categoryName: String
   let amount: Int
-  let description: String
+  let expenseDescription: String
   let expenseDate: String
+
+  enum CodingKeys: String, CodingKey {
+    case expenseId, userId, categoryId, categoryName, amount, expenseDate
+    case expenseDescription = "description"
+  }
 }

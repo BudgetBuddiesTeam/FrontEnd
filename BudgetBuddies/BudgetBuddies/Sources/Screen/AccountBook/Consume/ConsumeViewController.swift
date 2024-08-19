@@ -6,11 +6,12 @@
 //
 
 import Combine
+import Foundation
 import Moya
 import SnapKit
 import UIKit
 
-class ConsumeViewController: UIViewController {
+final class ConsumeViewController: UIViewController {
   // MARK: - Properties
 
   // View
@@ -21,12 +22,13 @@ class ConsumeViewController: UIViewController {
   private lazy var consumedHistoryTableViewController = ConsumedHistoryTableViewController()
 
   // Network
-  private let provider = MoyaProvider<CategoryRouter>()
+  private let provider = MoyaProvider<ExpenseRouter>()
 
   // Combine
   private var cancellables = Set<AnyCancellable>()
 
   // Variable
+  private let userId = 1
   private var writtenConsumedPriceText = ""
   private var writtenConsumedContentText = ""
   private var selectedDate = Date()
@@ -117,36 +119,110 @@ extension ConsumeViewController {
 
   @objc
   private func rightBarButtonItemButtonTapped() {
-    debugPrint("소비기록 버튼 탭")
     navigationController?.pushViewController(ConsumedHistoryTableViewController(), animated: true)
   }
 
   @objc
   private func categorySettingButtonTapped() {
-    debugPrint("카테고리 세팅 버튼 탭")
-
     navigationController?.pushViewController(self.categorySelectTableViewController, animated: true)
   }
 
   @objc
   private func addButtonTapped() {
-    debugPrint("추가하기 버튼 탭")
     /*
      해야 할 일
-     - "추가하기 버튼"이 탭 되었을 때, 서버로 새로운 소비기록을 발송합니다.
-     - 여기서 Variable 프로퍼티를 전부 서버로 발송합니다.
+     - ViewController에 있는 비즈니스 로직 코드도 XCTest 프레임워크 기반으로 개발할 수 있는지 연구
      */
-    debugPrint(self.writtenConsumedPriceText)
-    debugPrint(self.writtenConsumedContentText)
-    debugPrint(self.selectedDate)
-    debugPrint(self.selectedCategory)
+    let userId = self.userId
+    let categoryId: Int
+    let amount: Int
+    let description = self.writtenConsumedContentText
+    let expenseDate: String
+
+    /*
+     해야 할 일
+     - 하드코딩 되어 있는 아래 카테고리 문자열에서 카테고리 아이디 변환 작업을 모듈화
+     */
+    switch selectedCategory {
+    case "식비":
+      categoryId = 1
+    case "쇼핑":
+      categoryId = 2
+    case "패션":
+      categoryId = 3
+    case "문화생활":
+      categoryId = 4
+    case "교통":
+      categoryId = 5
+    case "카페":
+      categoryId = 6
+    case "유흥":
+      categoryId = 7
+    case "경조사":
+      categoryId = 8
+    case "정기결제":
+      categoryId = 9
+    case "기타":
+      categoryId = 10
+    default:
+      categoryId = 11
+    }
+
+    if let writtenConsumedPrice = Int(self.writtenConsumedPriceText) {
+      amount = writtenConsumedPrice
+    } else {
+      amount = 0
+    }
+
+    let dateFormatter = DateFormatter()
+    /*
+     해야 할 일
+     - 서버에 발송하는 날짜 형식도 지정 날짜 형식으로 Namespace에 모듈화
+     */
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+    expenseDate = dateFormatter.string(from: self.selectedDate)
+
+    let newExpenseRequestDTO = NewExpenseRequestDTO(
+      userId: userId,
+      categoryId: categoryId,
+      amount: amount,
+      description: description,
+      expenseDate: expenseDate
+    )
+
+    self.postNewExpense(newExpenseRequestDTO: newExpenseRequestDTO)
   }
 }
 
 // MARK: - Network
 
 extension ConsumeViewController {
-
+  private func postNewExpense(newExpenseRequestDTO: NewExpenseRequestDTO) {
+    provider.request(.postAddedExpense(addedExpenseRequestDTO: newExpenseRequestDTO)) {
+      result in
+      switch result {
+      case .success:
+        let postSuccessAlertController = UIAlertController(
+          title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
+        postSuccessAlertController.addAction(confirmedButtonAction)
+        self.present(postSuccessAlertController, animated: true)
+      case .failure:
+        /*
+         해야 할 일
+         - UIAlertController 모듈화하기
+         */
+        let postFailureAlertController = UIAlertController(
+          title: "문제발생", message: "새로운 소비 내역을 추가하지 못했습니다", preferredStyle: .alert)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+          self?.navigationController?.popViewController(animated: true)
+        }
+        postFailureAlertController.addAction(confirmedButtonAction)
+        self.present(postFailureAlertController, animated: true)
+      }
+    }
+  }
 }
 
 // MARK: - UITextField Delegate

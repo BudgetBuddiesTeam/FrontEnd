@@ -5,6 +5,7 @@
 //  Created by Jiwoong CHOI on 8/5/24.
 //
 
+import Combine
 import Kingfisher
 import Moya
 import SnapKit
@@ -30,11 +31,21 @@ final class MainViewController: UIViewController {
 
   // MARK: - Propertieas
 
+  // View
   private let mainScrollView = UIScrollView()
   private let mainView = MainView()
 
-  private let provider = MoyaProvider<MainRouter>()
+  // Network
+  private let mainRouterProvider = MoyaProvider<MainRouter>()
+  private let userRouterProvider = MoyaProvider<UserRouter>()
+
+  // Combine
+  private var canecellable = Set<AnyCancellable>()
+
+  // Variable
   private let userId = 1
+  @Published private var userName = String()
+  @Published private var totalConsumptionAmount = 0
 
   // MARK: - View Life Cycle
 
@@ -42,7 +53,8 @@ final class MainViewController: UIViewController {
     super.viewWillAppear(animated)
 
     setNavigationSetting()
-    fetchDataFromMainPageAPI()
+    fetchUserDataFromServer(userId: self.userId)
+    fetchDataFromMainPageAPI(userId: self.userId)
   }
 
   override func viewDidLoad() {
@@ -53,9 +65,25 @@ final class MainViewController: UIViewController {
     setNavigationSetting()
     setButtonAction()
     setGestureAction()
+    observeDataModel()
   }
 
   // MARK: - Methods
+
+  private func observeDataModel() {
+    self.$userName
+      .sink { [weak self] newUserName in
+        self?.mainView.summaryInfoContainerView.mainTextLabel.userName = newUserName
+      }
+      .store(in: &canecellable)
+
+    self.$totalConsumptionAmount
+      .sink { [weak self] newTotalConsumptionAmount in
+        self?.mainView.summaryInfoContainerView.mainTextLabel.totalConsumptionAmount =
+          newTotalConsumptionAmount
+      }
+      .store(in: &canecellable)
+  }
 
   // Methods in ViewDidLoad method
   private func setScrollViewSetting() {
@@ -161,12 +189,29 @@ extension MainViewController {
 
 extension MainViewController {
 
+  private func fetchUserDataFromServer(userId: Int) {
+    userRouterProvider.request(.find(userId: self.userId)) { result in
+      switch result {
+      case .success(let response):
+        do {
+          let decodedData = try JSONDecoder().decode(
+            ApiResponseResponseUserDto.self, from: response.data)
+          self.userName = decodedData.result.name
+        } catch (let error) {
+          self.userName = "익명"
+        }
+      case .failure(let error):
+        self.userName = "익명"
+      }
+    }
+  }
+
   /// MainPageAPI에서 데이터를 불러와, UICollectionViewDataSource에서 사용하는 함수입니다.
   ///
   /// # 설명
   /// - 메인화면에서 보여지는 데이터들을 가져오기 위해서 사용합니다.
-  private func fetchDataFromMainPageAPI() {
-    provider.request(.get(userId: self.userId)) { result in
+  private func fetchDataFromMainPageAPI(userId: Int) {
+    mainRouterProvider.request(.get(userId: userId)) { result in
       switch result {
       case let .success(moyaResponse):
         //        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
@@ -181,6 +226,12 @@ extension MainViewController {
 
           // 전체 소비 금액
           let totalConsumptionAmount = consumptionGoalResponseListData.totalConsumptionAmount
+          /*
+           해야 할 일
+           - 현재 네트워크 통신이 비동기로 처리되고 난 이후에 UI에 해당 데이터를 업데이트 하는 코드가 없다
+           - 새로고침하는 코드가 없다.
+           */
+          self.totalConsumptionAmount = totalConsumptionAmount
           self.mainView.summaryInfoContainerView.mainTextLabel.updateUsedMoney(
             usedMoney: totalConsumptionAmount)
 
@@ -225,10 +276,18 @@ extension MainViewController {
             categoryId: fourthCategoryData.categoryId,
             categoryText: fourthCategoryData.categoryName, leftMoney: fourthCategoryLeftMoneyAmount)
         } catch (let error) {
+          /*
+           해야 할 일
+           - 디코딩 실패 시나리오 UX 설계
+           */
           debugPrint("main-page-controller API로부터 가져온 데이터 디코딩 실패")
           debugPrint(error.localizedDescription)
         }
       case let .failure(error):
+        /*
+         해야 할 일
+         - 서버 연결 실패 시나리오 UX 설계
+         */
         debugPrint("main-page-controller API로부터 데이터 가져오기 실패")
         debugPrint(error.localizedDescription)
       }
@@ -245,9 +304,10 @@ extension MainViewController {
   /// - Parameters:
   ///   - completion: MainPageResponseDTO를 반환합니다.
   private func fetchDataFromMainPageAPI(
+    userId: Int,
     completion: @escaping (_ mainPageResponseData: MainPageResponseDto) -> Void
   ) {
-    provider.request(.get(userId: self.userId)) { result in
+    mainRouterProvider.request(.get(userId: userId)) { result in
       switch result {
       case let .success(moyaResponse):
         //        debugPrint("MainPageResponseAPI로부터 데이터 가져오기 성공")
@@ -289,9 +349,10 @@ extension MainViewController: UICollectionViewDataSource {
 
     /*
      해결해야 할 일
-     1. 하드코딩되어 있는 부분을 모듈화할 것
+     - 하드코딩되어 있는 부분을 모듈화할 것
+     - MVC 아키텍처에서 Model 부분을 준수할 것 - 현재 네트워크에서 데이터를 직접 받아서 사용하고 있음
      */
-    self.fetchDataFromMainPageAPI { mainPageResponseData in
+    self.fetchDataFromMainPageAPI(userId: self.userId) { mainPageResponseData in
       let discountResponse: DiscountResponseDto
       let supportResponse: SupportResponseDto
 

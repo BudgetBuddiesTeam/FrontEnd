@@ -1,38 +1,38 @@
 //
-//  PriceUILabel.swift
+//  SpentPriceUILabel.swift
 //  BudgetBuddies
 //
-//  Created by Jiwoong CHOI on 8/14/24.
+//  Created by Jiwoong CHOI on 8/17/24.
 //
 
 import UIKit
 
-class PriceUILabel: UILabel {
-  // MARK: - Properties
+class SpentPriceUILabel: UILabel {
 
-  private var expensePriceData = 0
+  // MARK: - Properties
+  private var spentPrice = 0
 
   // MARK: - Initializer
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    setProperties()
+    self.setProperties()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
   // MARK: - Methods
 
-  public func updateExpensePriceDate(amount: Int) {
-    self.expensePriceData = amount
-
+  public func updateSpentPrice(spentPrice: Int) {
+    self.spentPrice = spentPrice
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
 
-    if let formattedString = numberFormatter.string(from: NSNumber(value: self.expensePriceData)) {
+    if let formattedString = numberFormatter.string(from: NSNumber(value: self.spentPrice)) {
       self.text = "-\(formattedString)원"
     } else {
       self.text = "0원"
@@ -40,18 +40,16 @@ class PriceUILabel: UILabel {
   }
 
   private func setProperties() {
-    self.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
+    self.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     self.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
 
-    if let formattedString = numberFormatter.string(from: NSNumber(value: self.expensePriceData)) {
+    if let formattedString = numberFormatter.string(from: NSNumber(value: self.spentPrice)) {
       self.text = "-\(formattedString)원"
     } else {
       self.text = "0원"
     }
   }
-
 }

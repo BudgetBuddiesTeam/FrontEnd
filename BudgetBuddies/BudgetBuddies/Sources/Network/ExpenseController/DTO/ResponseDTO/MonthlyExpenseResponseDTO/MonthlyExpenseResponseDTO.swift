@@ -13,19 +13,22 @@ struct MonthlyExpenseResponseDTO: Codable {
   let expenseMonth: String
   let currentPage: Int
   let hasNext: Bool
-  let expenseList: [ExpenseList]
+  let expenseList: [Expense]
 }
 
-// MARK: - ExpenseList
+// MARK: - Expense
 
-struct ExpenseList: Codable {
+struct Expense: Codable {
   let expenseID: Int
-  let description: String
+  let expenseDescription: String
   let amount: Int
+  let categoryID: Int
   let expenseDate: String
 
   enum CodingKeys: String, CodingKey {
     case expenseID = "expenseId"
-    case description, amount, expenseDate
+    case categoryID = "categoryId"
+    case expenseDescription = "description"
+    case amount, expenseDate
   }
 }

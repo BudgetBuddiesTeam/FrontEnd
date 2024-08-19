@@ -1,5 +1,5 @@
 //
-//  AddedExpenseRequestDTO.swift
+//  NewExpenseRequestDTO.swift
 //  BudgetBuddies
 //
 //  Created by Jiwoong CHOI on 8/14/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AddedExpenseRequestDTO: Codable {
+struct NewExpenseRequestDTO: Codable {
   let userId: Int
   let categoryId: Int
   let amount: Int

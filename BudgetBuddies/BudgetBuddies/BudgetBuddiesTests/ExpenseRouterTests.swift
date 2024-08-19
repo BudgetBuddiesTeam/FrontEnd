@@ -32,6 +32,11 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let pageable = Pageable(page: 0, size: 100)
+    /*
+     해야 할 일
+     - 서버에서 사용하는 날짜 형식이 맞지 않다.
+     - 어떤 곳에서는 yyyy-MM-ss HH:mm:ss이고 여기 같은 곳에서는 yyyy-MM-ss이다.
+     */
     let date = "2024-08-16"
 
     // Network Transmitting Code
@@ -72,7 +77,7 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let expenseUpdateRequestDTO = ExpenseUpdateRequestDTO(
-      expenseId: 3, categoryId: 2, expenseDate: "2024-08-16 12:50:00", amount: 6000)
+      expenseId: 62, categoryId: 16, expenseDate: "2024-08-21 12:50:00", amount: 1234)
 
     // Network Transmitting Code
     provider.request(
@@ -109,12 +114,12 @@ final class ExpenseRouterTests: XCTestCase {
   func testPostAddedExpenseEndpoint() {
 
     // Request Variable
-    let sampleAddedExpenseRequestDTO = AddedExpenseRequestDTO(
-      userId: self.userId, categoryId: 1, amount: 50000, description: "스타벅스 5만원 충전",
-      expenseDate: "2024-08-16 11:22:00")
+    let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(
+      userId: self.userId, categoryId: 1, amount: 12345, description: "iOS 회식비",
+      expenseDate: "2024-08-18 15:33:46")
 
     // Network Transmitting Code
-    provider.request(.postAddedExpense(addedExpenseRequestDTO: sampleAddedExpenseRequestDTO)) {
+    provider.request(.postAddedExpense(addedExpenseRequestDTO: sampleNewExpenseRequestDTO)) {
       result in
       defer { self.expectation.fulfill() }
 
@@ -151,7 +156,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testGetSingleExpenseEndpoint() {
 
     // Request Variable
-    let expenseId = 43
+    let expenseId = 95
 
     // Network Transmitting Code
     provider.request(.getSingleExpense(userId: self.userId, expenseId: expenseId)) { result in
@@ -191,7 +196,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testDeleteSingleExpenseEndpoint() {
 
     // Request Variale
-    let expenseId = 93
+    let expenseId = 95
 
     // Network Transmitting Code
     provider.request(.deleteSingleExpense(expenseId: expenseId)) { result in

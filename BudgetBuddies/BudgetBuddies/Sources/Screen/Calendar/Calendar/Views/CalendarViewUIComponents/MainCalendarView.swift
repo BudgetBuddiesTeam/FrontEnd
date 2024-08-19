@@ -346,15 +346,21 @@ extension MainCalendarView {
     let widthInt = Int(backViewMargin.frame.width / 7)
 
     // RaisedInfoView를 생성하고 배치하는 함수
-    func createRaisedView(topInsetBase: Int, row: Int, leadingInset: Int, trailingInset: Int)
+    func createRaisedView(
+      topInsetBase: Int, row: Int, leadingInset: CGFloat, trailingInset: CGFloat
+    )
       -> RaisedInfoView
     {
       let raisedView = RaisedInfoView(title: title, infoType: infoType)
       backViewMargin.addSubview(raisedView)
+
+      let scale = UIScreen.main.scale
+      let adjustedInset = 3.0 / scale
+
       raisedView.snp.makeConstraints { make in
         make.top.equalTo(headerStackView.snp.bottom).inset(topInsetBase - (80 * row))
-        make.leading.equalToSuperview().inset(leadingInset + 1)
-        make.trailing.equalToSuperview().inset(trailingInset + 1)
+        make.leading.equalToSuperview().inset(leadingInset + adjustedInset)  // 연달아 있을 경우를 대비
+        make.trailing.equalToSuperview().inset(trailingInset + adjustedInset)  // 연달아 있을 경우를 대비
         make.height.equalTo(17)
       }
       return raisedView
@@ -364,8 +370,8 @@ extension MainCalendarView {
     _ = createRaisedView(
       topInsetBase: isOverlapped ? -61 : -40,
       row: startDatePosition.row,
-      leadingInset: widthInt * startDatePosition.column,
-      trailingInset: widthInt * (7 - endDatePosition.column - 1)
+      leadingInset: CGFloat(widthInt) * CGFloat(startDatePosition.column),
+      trailingInset: CGFloat(widthInt) * CGFloat(7 - endDatePosition.column - 1)
     )
   }
 }

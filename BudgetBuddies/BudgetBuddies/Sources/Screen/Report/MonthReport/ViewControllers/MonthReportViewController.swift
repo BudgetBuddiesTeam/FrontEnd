@@ -10,8 +10,34 @@ import SnapKit
 import UIKit
 
 final class MonthReportViewController: UIViewController {
-  // MARK: - UI Componenets
 
+  // MARK: - Property
+  var services = Services()
+  var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
+  var getTopGoalResponse: GetTopGoalResponse? = nil
+  var getTopGoalsResponse: GetTopGoalsResponse? = nil
+  var getTopConsumptionResponse: GetTopConsumptionResponse? = nil
+  var getTopConsumptionsResponse: GetTopConsumptionsResponse? = nil
+  var getTopUserResponse: GetTopUserResponse? = nil
+  var consumePeerInfoResponse: ConsumePeerInfoResponse? = nil
+
+  let images: [UIImage] = [
+    BudgetBuddiesAsset.AppImage.Face.failureFace.image,
+    BudgetBuddiesAsset.AppImage.Face.crisisFace.image,
+    BudgetBuddiesAsset.AppImage.Face.anxietyFace.image,
+    BudgetBuddiesAsset.AppImage.Face.basicFace.image,
+    BudgetBuddiesAsset.AppImage.Face.goodFace.image,
+    BudgetBuddiesAsset.AppImage.Face.successFace.image,
+  ]
+
+  // 총 목표액과 총 소비액 변수
+  var totalGoalAmount: Double = 0
+  var totalSpentAmount: Double = 0
+
+  // Scroll
+  var lastContentOffset: CGFloat = 0.0
+
+  // MARK: - UI Component
   lazy var scrollView = {
     let view = UIScrollView()
     view.delegate = self
@@ -19,6 +45,12 @@ final class MonthReportViewController: UIViewController {
   }()
 
   let contentView = UIView()
+
+  let backgroundView = {
+    let view = UIView()
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
+    return view
+  }()
 
   // TableView: 소비 목표
   let spendGoalTableView = UITableView()
@@ -77,6 +109,7 @@ final class MonthReportViewController: UIViewController {
     button.setTitle("더보기 >", for: .normal)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.subGray.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
+    button.addTarget(self, action: #selector(accountBookButtonTapped), for: .touchUpInside)
     view.addSubview(button)
 
     // 라벨의 제약 조건 설정
@@ -87,18 +120,9 @@ final class MonthReportViewController: UIViewController {
     return view
   }()
 
-  var lastContentOffset: CGFloat = 0.0
-
-  //    var previousScrollOffset: CGFloat = 0.0
-  //    var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
-
   override func viewWillAppear(_ animated: Bool) {
-    setNavigationSetting()
+    setNavi()
   }
-
-  // 총 목표액과 총 소비액 변수
-  let totalGoalAmount: Double = 800000
-  let totalSpentAmount: Double = 612189
 
   let topView = {
     let view = UIView()
@@ -163,7 +187,8 @@ final class MonthReportViewController: UIViewController {
     let view = TopStackView()
     view.titleLabel.text = "가계부"
     view.totalButton.setTitle("가계부 입력하기", for: .normal)
-    view.totalButton.addTarget(self, action: #selector(spendGoalButtonTapped), for: .touchUpInside)
+    view.totalButton.addTarget(
+      self, action: #selector(accountBookButtonTapped), for: .touchUpInside)
     return view
   }()
 
@@ -175,29 +200,25 @@ final class MonthReportViewController: UIViewController {
       icon: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, amount: "-3,180원",
       description: "과자"),
   ]
-  // MARK: - View Life Cycle
-
-  override func viewWillDisappear(_ animated: Bool) {
-    unSetNavigationSetting()
-  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
-    setNavigationSetting()
+    loadConsumeGoal()
+
+    setNavi()
     setup()
     setConst()
     setChart()
     setTableView()
-    updateLabels()
   }
 
-  private func setNavigationSetting() {
+  private func setNavi() {
     navigationItem.title = "이번달 리포트"
     let appearance = UINavigationBarAppearance()
     appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
+    //    appearance.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     appearance.shadowColor = nil
 
     navigationController?.navigationBar.standardAppearance = appearance
@@ -207,17 +228,6 @@ final class MonthReportViewController: UIViewController {
     let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
     backBarButtonItem.tintColor = .black
     self.navigationItem.backBarButtonItem = backBarButtonItem
-  }
-
-  private func unSetNavigationSetting() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .clear
-    appearance.shadowColor = nil
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
   }
 
   private func setup() {
@@ -321,28 +331,73 @@ final class MonthReportViewController: UIViewController {
   }
 
   // 금액을 포맷팅하는 헬퍼 함수
-  private func formatCurrency(_ amount: Double) -> String {
+  private func formatCurrency(_ amount: Int) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     return formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
   }
 
   // 소비 목표 함수
-  private func updateLabels() {
-    let formattedSpent = formatCurrency(totalSpentAmount)
-    let formattedRemaining = formatCurrency(totalGoalAmount - totalSpentAmount)
+  //    private func updateLabels() {
+  //        let formattedSpent = formatCurrency(totalSpentAmount)
+  //        let formattedRemaining = formatCurrency(totalGoalAmount - totalSpentAmount)
+  //        faceChartView.updateLabels(spend: "\(formattedSpent)원", remain: "\(formattedRemaining)원")
+  //    }
+  //
+  func updateGoalAndConsumption(goal: Int, spent: Int, remaining: Int) {
+    // 금액 포맷팅
+    let formattedGoal = formatCurrency(goal)
+    let formattedSpent = formatCurrency(spent)
+    let formattedRemaining = formatCurrency(remaining)
+
+    // 남은 금액 비율 계산 (남은 금액 / 총 목표 금액)
+    let remainingPercentage = Double(remaining) / Double(goal) * 100
+
+    var selectedImage: UIImage?
+    switch remainingPercentage {
+    case 81...100:
+      selectedImage = images[5]  // 가장 긍정적인 이미지
+    case 61...80:
+      selectedImage = images[4]
+    case 41...60:
+      selectedImage = images[3]
+    case 21...40:
+      selectedImage = images[2]
+    case 1...20:
+      selectedImage = images[1]
+    default:
+      selectedImage = images[0]  // 가장 부정적인 이미지
+    }
+
+    // 뷰에 값 반영
     faceChartView.updateLabels(spend: "\(formattedSpent)원", remain: "\(formattedRemaining)원")
+
+    faceChartView.updateCenterImage(image: selectedImage)
+
+    // 필요하다면 다른 라벨에도 반영
+    totalSpendLabel.text = "총 소비액: \(formattedSpent)원"
+    remainingAmountLabel.text = "남은 금액: \(formattedRemaining)원"
+    spendingGoalsLabel.text = "목표 금액: \(formattedGoal)원"
+
+    // 차트 데이터 업데이트
+    self.totalGoalAmount = Double(goal)
+    self.totalSpentAmount = Double(spent)
+
+    setChart()
   }
 
   @objc func spendGoalButtonTapped() {
     if let naviController = self.navigationController {
-      let goalEditVC = GoalEditViewController()
-      naviController.pushViewController(goalEditVC, animated: true)
+      let goalTotalVC = GoalTotalViewController()
+      naviController.pushViewController(goalTotalVC, animated: true)
     }
   }
 
   @objc func accountBookButtonTapped() {
-
+    if let naviController = self.navigationController {
+      let consumeVC = ConsumeViewController()
+      naviController.pushViewController(consumeVC, animated: true)
+    }
   }
 }
 
@@ -355,7 +410,6 @@ extension MonthReportViewController: UITableViewDelegate, UITableViewDataSource 
     } else if tableView == accountBookTableView {
       return accountBooks.count
     }
-
     return 0
   }
 
@@ -413,5 +467,104 @@ extension MonthReportViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     return UITableViewCell()
+  }
+}
+
+// MARK: - 네트워킹
+extension MonthReportViewController {
+  func loadConsumeGoal() {
+    services.consumeGoalService.getConsumeGoal(date: "2024-08-18", userId: 1) { result in
+      switch result {
+      case .success(let response):
+        self.getConsumeGoalResponse = response
+        dump(response)
+
+        // 받아온 값을 업데이트
+        guard let totalGoalAmount = response.result?.totalGoalAmount,
+          let totalSpentAmount = response.result?.totalConsumptionAmount,
+          let totalRemainingBalance = response.result?.totalRemainingBalance
+        else {
+          print("Some values are nil")
+          return
+        }
+
+        self.updateGoalAndConsumption(
+          goal: totalGoalAmount,
+          spent: totalSpentAmount,
+          remaining: totalRemainingBalance
+        )
+
+      case .failure(let error):
+        print("Failed to load Top goal: \(error)")
+      }
+    }
+  }
+
+  func loadTopGoal() {
+    services.consumeGoalService.getTopGoal(
+      userId: 1, peerAgeStart: 23, peerAgeEnd: 25, peerGender: "male"
+    ) { result in
+      switch result {
+      case .success(let response):
+        self.getTopGoalResponse = response
+        dump(response)
+      case .failure(let error):
+        print("Failed to load Top goal: \(error)")
+      }
+    }
+  }
+
+  func loadTopConsumption() {
+    services.consumeGoalService.getTopConsumption(
+      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
+    ) { result in
+      switch result {
+      case .success(let response):
+        self.getTopConsumptionResponse = response
+        dump(response)
+      case .failure(let error):
+        print("Failed to load Top Consumption: \(error)")
+      }
+    }
+  }
+
+  func loadTopConsumptions() {
+    services.consumeGoalService.getTopConsumptions(
+      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
+    ) { result in
+      switch result {
+      case .success(let response):
+        self.getTopConsumptionsResponse = response
+        dump(response)
+      case .failure(let error):
+        print("Failed to load Top Consumptions: \(error)")
+      }
+    }
+  }
+
+  func loadTopUser() {
+    services.consumeGoalService.getTopUser(userId: 1) { result in
+      switch result {
+      case .success(let response):
+        self.getTopUserResponse = response
+        dump(response)
+      case .failure(let error):
+        print("Failed to load Top User: \(error)")
+      }
+    }
+  }
+
+  func loadPeerInfo() {
+    services.consumeGoalService.getPeerInfo(
+      userId: 1, peerAgeStart: 25, peerAgeEnd: 25, peerGender: "male"
+    ) { result in
+      switch result {
+      case .success(let response):
+        self.consumePeerInfoResponse = response
+        dump(response)
+      case .failure(let error):
+        print("Failed to load peer info: \(error)")
+      }
+    }
   }
 }

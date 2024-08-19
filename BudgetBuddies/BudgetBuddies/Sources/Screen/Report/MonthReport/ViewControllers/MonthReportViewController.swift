@@ -192,6 +192,11 @@ final class MonthReportViewController: UIViewController {
     setTableView()
     updateLabels()
   }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.scrollView.contentInset.bottom = 50
+    }
 
   private func setNavigationSetting() {
     navigationItem.title = "이번달 리포트"

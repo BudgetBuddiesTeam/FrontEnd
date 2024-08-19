@@ -12,6 +12,20 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
   var infoType: InfoType
   var infoId: Int
+    
+    // 댓글 수정 중인지 판단하는 변수
+    var nowModify: Bool = false {
+        didSet {
+            if nowModify {
+                print("댓글 수정 시작")
+                self.bottomSheet.commentTextView.becomeFirstResponder()
+                // 키보드 올리는 코드 넣어야 한다.
+            } else {
+                print("댓글 수정 취소")
+                // 키보드 내리기
+            }
+        }
+    }
 
   let textViewPrompt = "댓글을 입력해 주세요"
 
@@ -57,6 +71,10 @@ final class BottomSheetViewController: DimmedViewController {
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
+      
+      if self.nowModify {
+          self.nowModify = false
+      }
   }
 
   deinit {
@@ -232,6 +250,9 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   private func didTapTableView() {
     self.view.endEditing(true)
+      if self.nowModify {
+          self.nowModify = false
+      }
   }
 
   // MARK: - Handle PanGesture
@@ -292,19 +313,26 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
-  // MARK: - 댓글 POST부분 ⭐️
+  // MARK: - 댓글 POST, PUT ⭐️
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
+      
+      if self.nowModify {
+          // 수정 중이면 PUT
+          self.nowModify = false
+          print("댓글 수정 완료")
+          
+      } else {
+          // 수정 중이 아니면 POST
+          switch self.infoType {
+          case .discount:
+            postDiscountsComments()
 
-    // 댓글 post
-    switch self.infoType {
-    case .discount:
-      postDiscountsComments()
-
-    case .support:
-      postSupportsComments()
-    }
+          case .support:
+            postSupportsComments()
+          }
+      }
 
     // 플레이스홀더 재배치
     bottomSheet.commentTextView.text = textViewPrompt
@@ -365,6 +393,7 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 }
+
 // MARK: - UITableView DataSource
 extension BottomSheetViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -469,7 +498,7 @@ extension BottomSheetViewController: UITextViewDelegate {
   }
 }
 
-// MARK: - CommentCell Delegate
+// MARK: - CommentCell Delegate ⭐️
 extension BottomSheetViewController: CommentCellDelegate {
     // 댓글 수정 버튼 눌리는 시점
   func didTapEditButton(in cell: CommentCell, commentId: Int) {
@@ -484,6 +513,13 @@ extension BottomSheetViewController: CommentCellDelegate {
           switch result {
           case .success(let response):
               dump(response.result)
+              print("수정할 댓글 content: \(response.result.content)")
+              self.nowModify = true
+              
+              // 수정할 content를 TextView에 올리기
+              DispatchQueue.main.async {
+                  self.bottomSheet.commentTextView.text = response.result.content
+              }
               
           case .failure(let error):
             print(error.localizedDescription)
@@ -497,6 +533,13 @@ extension BottomSheetViewController: CommentCellDelegate {
               switch result {
               case .success(let response):
                   dump(response.result)
+                  print("수정할 댓글 content: \(response.result.content)")
+                  self.nowModify = true
+                  
+                  // 수정할 content를 TextView에 올리기
+                  DispatchQueue.main.async {
+                      self.bottomSheet.commentTextView.text = response.result.content
+                  }
                   
               case .failure(let error):
                   print(error.localizedDescription)

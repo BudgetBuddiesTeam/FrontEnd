@@ -9,12 +9,10 @@ import Foundation
 
 // MARK: - ConsumeRequest
 struct ConsumeRequest: Codable {
-    let consumptionGoalList: [ConsumptionGoalList]
+  let consumptionGoalList: [ConsumptionGoalList]
 }
 
 // MARK: - ConsumptionGoalList
 struct ConsumptionGoalList: Codable {
-    let categoryId, goalAmount: Int
+  let categoryId, goalAmount: Int
 }
-
-

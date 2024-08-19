@@ -8,15 +8,13 @@
 import Foundation
 
 protocol ServiceType {
-    var consumeGoalService: ConsumeGoalServiceType { get set }
+  var consumeGoalService: ConsumeGoalServiceType { get set }
 }
 
 class Services: ServiceType {
-    var consumeGoalService: ConsumeGoalServiceType
-    
-    init() {
-        self.consumeGoalService = ConsumeGoalService()
-    }
+  var consumeGoalService: ConsumeGoalServiceType
+
+  init() {
+    self.consumeGoalService = ConsumeGoalService()
+  }
 }
-
-

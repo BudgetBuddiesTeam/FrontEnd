@@ -9,16 +9,16 @@ import SnapKit
 import UIKit
 
 final class AgeEditViewController: UIViewController {
-    
-    // MARK: - Property
-    var services = Services()
-    var consumePeerInfoResponse: ConsumePeerInfoResponse? = nil
-    
-    var selectedGender: String? // 선택된 성별 저장
-    var selectedAgeRange: (Int, Int)? // 선택된 연령대 저장
-    
-    // Delegate 프로퍼티 추가
-    weak var delegate: AgeEditViewControllerDelegate?
+
+  // MARK: - Property
+  var services = Services()
+  var consumePeerInfoResponse: ConsumePeerInfoResponse? = nil
+
+  var selectedGender: String?  // 선택된 성별 저장
+  var selectedAgeRange: (Int, Int)?  // 선택된 연령대 저장
+
+  // Delegate 프로퍼티 추가
+  weak var delegate: AgeEditViewControllerDelegate?
 
   let titleLabel = {
     let label = UILabel()
@@ -108,7 +108,7 @@ final class AgeEditViewController: UIViewController {
     button.setTitle("저장하기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
-      button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     button.layer.cornerRadius = 15
     return button
   }()
@@ -118,12 +118,12 @@ final class AgeEditViewController: UIViewController {
 
     setup()
     setConsts()
-      loadPeerInfo()
+    loadPeerInfo()
   }
 
   private func setup() {
-      view.backgroundColor = .white
-      
+    view.backgroundColor = .white
+
     [titleLabel, genderLabel, femaleButton, maleButton, ageLabel, saveButton].forEach {
       view.addSubviews($0)
     }
@@ -182,53 +182,53 @@ final class AgeEditViewController: UIViewController {
   }
 
   @objc private func selectGender(_ sender: UIButton) {
-      selectedGender = sender.tag == 0 ? "female" : "male"
+    selectedGender = sender.tag == 0 ? "female" : "male"
     [femaleButton, maleButton].forEach { $0.setSelected($0 == sender) }
   }
 
   @objc private func selectAge(_ sender: UIButton) {
-      switch sender.tag {
-      case 0: selectedAgeRange = (20, 22)
-      case 1: selectedAgeRange = (23, 25)
-      case 2: selectedAgeRange = (26, 28)
-      case 3: selectedAgeRange = (29, 99) // 29세 이상으로 설정
-      default: break
-      }
+    switch sender.tag {
+    case 0: selectedAgeRange = (20, 22)
+    case 1: selectedAgeRange = (23, 25)
+    case 2: selectedAgeRange = (26, 28)
+    case 3: selectedAgeRange = (29, 99)  // 29세 이상으로 설정
+    default: break
+    }
     ageButtons.forEach { $0.setSelected($0 == sender) }
   }
-    
-    @objc private func saveButtonTapped() {
-        guard let gender = selectedGender, let ageRange = selectedAgeRange else {
-            print("성별 또는 연령대가 선택되지 않았습니다.")
-            return
-        }
-        
-        // 서버에 저장하는 로직 대신, delegate를 통해 데이터를 전달
-        delegate?.didUpdateAgeAndGender(ageRange: ageRange, gender: gender)
-        
-        // 이전 화면으로 돌아가기
-        navigationController?.popViewController(animated: true)
+
+  @objc private func saveButtonTapped() {
+    guard let gender = selectedGender, let ageRange = selectedAgeRange else {
+      print("성별 또는 연령대가 선택되지 않았습니다.")
+      return
     }
-    
-    // MARK: - UI 업데이트
-    func updateUIWithPeerInfo(peerInfo: ConsumePeerInfoResponse.ConsumePeerInfoResult) {
-        // 성별 버튼 선택 업데이트
-        if peerInfo.peerGender == "male" {
-            selectGender(maleButton)
-        } else {
-            selectGender(femaleButton)
-        }
-        
-        // 연령대 버튼 선택 업데이트
-        let ageRange = (peerInfo.peerAgeStart, peerInfo.peerAgeEnd)
-        switch ageRange {
-        case (20, 22): selectAge(ageButtons[0])
-        case (23, 25): selectAge(ageButtons[1])
-        case (26, 28): selectAge(ageButtons[2])
-        case (29, _): selectAge(ageButtons[3])
-        default: break
-        }
+
+    // 서버에 저장하는 로직 대신, delegate를 통해 데이터를 전달
+    delegate?.didUpdateAgeAndGender(ageRange: ageRange, gender: gender)
+
+    // 이전 화면으로 돌아가기
+    navigationController?.popViewController(animated: true)
+  }
+
+  // MARK: - UI 업데이트
+  func updateUIWithPeerInfo(peerInfo: ConsumePeerInfoResponse.ConsumePeerInfoResult) {
+    // 성별 버튼 선택 업데이트
+    if peerInfo.peerGender == "male" {
+      selectGender(maleButton)
+    } else {
+      selectGender(femaleButton)
     }
+
+    // 연령대 버튼 선택 업데이트
+    let ageRange = (peerInfo.peerAgeStart, peerInfo.peerAgeEnd)
+    switch ageRange {
+    case (20, 22): selectAge(ageButtons[0])
+    case (23, 25): selectAge(ageButtons[1])
+    case (26, 28): selectAge(ageButtons[2])
+    case (29, _): selectAge(ageButtons[3])
+    default: break
+    }
+  }
 }
 
 extension UIButton {
@@ -248,26 +248,28 @@ extension UIButton {
 // MARK: - 네트워킹
 
 extension AgeEditViewController {
-    
-    func loadPeerInfo() {
-        services.consumeGoalService.getPeerInfo(userId: 1, peerAgeStart: 25, peerAgeEnd: 25, peerGender: "male") { result in
-            switch result {
-            case .success(let response):
-                self.consumePeerInfoResponse = response
-                dump(response)
-                
-                // UI 업데이트
-                if let peerInfo = response.result {
-                    self.updateUIWithPeerInfo(peerInfo: peerInfo)
-                }
-                
-            case .failure(let error):
-                print("Failed to load peer info: \(error)")
-            }
+
+  func loadPeerInfo() {
+    services.consumeGoalService.getPeerInfo(
+      userId: 1, peerAgeStart: 25, peerAgeEnd: 25, peerGender: "male"
+    ) { result in
+      switch result {
+      case .success(let response):
+        self.consumePeerInfoResponse = response
+        dump(response)
+
+        // UI 업데이트
+        if let peerInfo = response.result {
+          self.updateUIWithPeerInfo(peerInfo: peerInfo)
         }
+
+      case .failure(let error):
+        print("Failed to load peer info: \(error)")
+      }
     }
+  }
 }
 
 protocol AgeEditViewControllerDelegate: AnyObject {
-    func didUpdateAgeAndGender(ageRange: (Int, Int), gender: String)
+  func didUpdateAgeAndGender(ageRange: (Int, Int), gender: String)
 }

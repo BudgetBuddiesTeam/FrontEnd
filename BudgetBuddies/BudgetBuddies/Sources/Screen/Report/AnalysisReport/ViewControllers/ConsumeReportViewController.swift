@@ -9,10 +9,10 @@ import SnapKit
 import UIKit
 
 final class ConsumeReportViewController: UIViewController {
-    
-    // MARK: - Property
-    var services = Services()
-    var getTopConsumptionResponse: GetTopConsumptionResponse? = nil
+
+  // MARK: - Property
+  var services = Services()
+  var getTopConsumptionResponse: GetTopConsumptionResponse? = nil
 
   // MARK: - UI Components
 
@@ -27,7 +27,7 @@ final class ConsumeReportViewController: UIViewController {
     return label
   }()
 
-    var reports: [ReportModel] = [
+  var reports: [ReportModel] = [
     ReportModel(
       categoryImage: UIImage(named: "FoodIcon2") ?? UIImage(), rank: "1", title: "식비",
       amount: "123,180",
@@ -55,24 +55,23 @@ final class ConsumeReportViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-      setNavigationSetting()
+    setNavigationSetting()
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-      
-      loadConsume()
 
-      setNavigationSetting()
+    loadConsume()
+
+    setNavigationSetting()
     setTableView()
     setup()
     setConsts()
   }
 
-
-    // MARK: - Methods
+  // MARK: - Methods
   private func setNavigationSetting() {
-      navigationController?.navigationBar.isHidden = false
+    navigationController?.navigationBar.isHidden = false
     navigationItem.title = "소비 레포트"
   }
 
@@ -106,48 +105,51 @@ final class ConsumeReportViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide)
     }
   }
-    
-    private func updateReports(with consumes: [GetTopConsumptionResponse.GetTopConsumptionResult]) {
-        // avgAmount 기준으로 goals 배열을 정렬
-        let sortedConsumes = consumes.sorted { ($0.avgAmount ?? 0) > ($1.avgAmount ?? 0) }
 
-        // 정렬된 배열을 기반으로 reports 배열 업데이트
-        self.reports = sortedConsumes.enumerated().compactMap { (index, goal) in
-            guard let categoryName = goal.categoryName,
-                  let avgAmount = goal.avgAmount,
-                  let amountDifference = goal.amountDifference else {
-                return nil  // 필수 데이터가 없는 경우 무시
-            }
+  private func updateReports(with consumes: [GetTopConsumptionResponse.GetTopConsumptionResult]) {
+    // avgAmount 기준으로 goals 배열을 정렬
+    let sortedConsumes = consumes.sorted { ($0.avgAmount ?? 0) > ($1.avgAmount ?? 0) }
 
-            let image = BudgetBuddiesAsset.AppImage.CategoryIcon.getImageForCategory(categoryName)
-            let rank = "\(index + 1)"  // 순위를 업데이트
-            return ReportModel(
-                categoryImage: image,
-                rank: rank,
-                title: categoryName,
-                amount: "\(avgAmount.formatted())",  // 평균 금액
-                description: "\(amountDifference.formatted())"  // 금액 차이
-            )
-        }
-        
-        // 가장 많이 목표로 한 카테고리 찾기
-        if let highestConsume = sortedConsumes.first,
-           let categoryName = highestConsume.categoryName {
-            updateMainLabel(with: categoryName)
-        }
+    // 정렬된 배열을 기반으로 reports 배열 업데이트
+    self.reports = sortedConsumes.enumerated().compactMap { (index, goal) in
+      guard let categoryName = goal.categoryName,
+        let avgAmount = goal.avgAmount,
+        let amountDifference = goal.amountDifference
+      else {
+        return nil  // 필수 데이터가 없는 경우 무시
+      }
+
+      let image = BudgetBuddiesAsset.AppImage.CategoryIcon.getImageForCategory(categoryName)
+      let rank = "\(index + 1)"  // 순위를 업데이트
+      return ReportModel(
+        categoryImage: image,
+        rank: rank,
+        title: categoryName,
+        amount: "\(avgAmount.formatted())",  // 평균 금액
+        description: "\(amountDifference.formatted())"  // 금액 차이
+      )
     }
-    
-    private func updateMainLabel(with categoryName: String) {
-        let text = "또래 친구들은\n\(categoryName)에 가장 많이\n소비했어요"
-        let attributedText = NSMutableAttributedString(string: text)
 
-        // categoryName의 범위를 찾아서 색상 변경
-        let range = (text as NSString).range(of: categoryName)
-        attributedText.addAttribute(.foregroundColor, value: BudgetBuddiesAsset.AppColor.logoLine2.color, range: range)
-        
-        mainLabel.attributedText = attributedText
-        
+    // 가장 많이 목표로 한 카테고리 찾기
+    if let highestConsume = sortedConsumes.first,
+      let categoryName = highestConsume.categoryName
+    {
+      updateMainLabel(with: categoryName)
     }
+  }
+
+  private func updateMainLabel(with categoryName: String) {
+    let text = "또래 친구들은\n\(categoryName)에 가장 많이\n소비했어요"
+    let attributedText = NSMutableAttributedString(string: text)
+
+    // categoryName의 범위를 찾아서 색상 변경
+    let range = (text as NSString).range(of: categoryName)
+    attributedText.addAttribute(
+      .foregroundColor, value: BudgetBuddiesAsset.AppColor.logoLine2.color, range: range)
+
+    mainLabel.attributedText = attributedText
+
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -176,21 +178,23 @@ extension ConsumeReportViewController: UITableViewDelegate, UITableViewDataSourc
 // MARK: - 네트워킹
 
 extension ConsumeReportViewController {
-    func loadConsume() {
-        services.consumeGoalService.getTopConsumption(userId: 1, peerAgeStart: 0, peerAgeEnd: 0, peerGender: "male") { [weak self] result in
-                guard let self = self else { return }
+  func loadConsume() {
+    services.consumeGoalService.getTopConsumption(
+      userId: 1, peerAgeStart: 0, peerAgeEnd: 0, peerGender: "male"
+    ) { [weak self] result in
+      guard let self = self else { return }
 
-                switch result {
-                case .success(let response):
-                    if let topConsumeResults = response.result {
-                        self.updateReports(with: topConsumeResults)
-                        self.tableView.reloadData()  // 테이블 뷰 리로드
-                    } else {
-                        print("No data in result")
-                    }
-                case .failure(let error):
-                    print("Failed to load Top goals: \(error)")
-                }
-            }
+      switch result {
+      case .success(let response):
+        if let topConsumeResults = response.result {
+          self.updateReports(with: topConsumeResults)
+          self.tableView.reloadData()  // 테이블 뷰 리로드
+        } else {
+          print("No data in result")
         }
+      case .failure(let error):
+        print("Failed to load Top goals: \(error)")
+      }
+    }
+  }
 }

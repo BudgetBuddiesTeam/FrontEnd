@@ -9,10 +9,10 @@ import SnapKit
 import UIKit
 
 final class GoalReportViewController: UIViewController {
-    
-    // MARK: - Property
-    var services = Services()
-    var getTopGoalResponse: GetTopGoalResponse? = nil
+
+  // MARK: - Property
+  var services = Services()
+  var getTopGoalResponse: GetTopGoalResponse? = nil
 
   // MARK: - UI Components
 
@@ -27,7 +27,7 @@ final class GoalReportViewController: UIViewController {
     return label
   }()
 
-    var reports: [ReportModel] = [
+  var reports: [ReportModel] = [
     ReportModel(
       categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, rank: "1",
       title: "식비", amount: "123,180",
@@ -60,7 +60,7 @@ final class GoalReportViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-      loadGoal()
+    loadGoal()
 
     setNavigationSetting()
     setTableView()
@@ -105,47 +105,50 @@ final class GoalReportViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide)
     }
   }
-    
-    private func updateReports(with goals: [GetTopGoalResponse.GetTopGoalResult]) {
-        // avgAmount 기준으로 goals 배열을 정렬
-        let sortedGoals = goals.sorted { ($0.avgAmount ?? 0) > ($1.avgAmount ?? 0) }
 
-        // 정렬된 배열을 기반으로 reports 배열 업데이트
-        self.reports = sortedGoals.enumerated().compactMap { (index, goal) in
-            guard let categoryName = goal.categoryName,
-                  let avgAmount = goal.avgAmount,
-                  let amountDifference = goal.amountDifference else {
-                return nil  // 필수 데이터가 없는 경우 무시
-            }
+  private func updateReports(with goals: [GetTopGoalResponse.GetTopGoalResult]) {
+    // avgAmount 기준으로 goals 배열을 정렬
+    let sortedGoals = goals.sorted { ($0.avgAmount ?? 0) > ($1.avgAmount ?? 0) }
 
-            let image = BudgetBuddiesAsset.AppImage.CategoryIcon.getImageForCategory(categoryName)
-            let rank = "\(index + 1)"  // 순위를 업데이트
-            return ReportModel(
-                categoryImage: image,
-                rank: rank,
-                title: categoryName,
-                amount: "\(avgAmount.formatted())",  // 평균 금액
-                description: "\(amountDifference.formatted())"  // 금액 차이
-            )
-        }
-        
-        // 가장 많이 목표로 한 카테고리 찾기
-        if let highestGoal = sortedGoals.first,
-           let categoryName = highestGoal.categoryName {
-            updateMainLabel(with: categoryName)
-        }
+    // 정렬된 배열을 기반으로 reports 배열 업데이트
+    self.reports = sortedGoals.enumerated().compactMap { (index, goal) in
+      guard let categoryName = goal.categoryName,
+        let avgAmount = goal.avgAmount,
+        let amountDifference = goal.amountDifference
+      else {
+        return nil  // 필수 데이터가 없는 경우 무시
+      }
+
+      let image = BudgetBuddiesAsset.AppImage.CategoryIcon.getImageForCategory(categoryName)
+      let rank = "\(index + 1)"  // 순위를 업데이트
+      return ReportModel(
+        categoryImage: image,
+        rank: rank,
+        title: categoryName,
+        amount: "\(avgAmount.formatted())",  // 평균 금액
+        description: "\(amountDifference.formatted())"  // 금액 차이
+      )
     }
-    
-    private func updateMainLabel(with categoryName: String) {
-        let text = "또래 친구들은\n\(categoryName)에 가장\n큰 목표예산을 세웠어요"
-        let attributedText = NSMutableAttributedString(string: text)
 
-        // categoryName의 범위를 찾아서 색상 변경
-        let range = (text as NSString).range(of: categoryName)
-        attributedText.addAttribute(.foregroundColor, value: BudgetBuddiesAsset.AppColor.logoLine2.color, range: range)
-        
-        mainLabel.attributedText = attributedText
+    // 가장 많이 목표로 한 카테고리 찾기
+    if let highestGoal = sortedGoals.first,
+      let categoryName = highestGoal.categoryName
+    {
+      updateMainLabel(with: categoryName)
     }
+  }
+
+  private func updateMainLabel(with categoryName: String) {
+    let text = "또래 친구들은\n\(categoryName)에 가장\n큰 목표예산을 세웠어요"
+    let attributedText = NSMutableAttributedString(string: text)
+
+    // categoryName의 범위를 찾아서 색상 변경
+    let range = (text as NSString).range(of: categoryName)
+    attributedText.addAttribute(
+      .foregroundColor, value: BudgetBuddiesAsset.AppColor.logoLine2.color, range: range)
+
+    mainLabel.attributedText = attributedText
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -175,41 +178,43 @@ extension GoalReportViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - 네트워킹
 
 extension GoalReportViewController {
-    func loadGoal() {
-            services.consumeGoalService.getTopGoal(userId: 1, peerAgeStart: 0, peerAgeEnd: 0, peerGender: "male") { [weak self] result in
-                guard let self = self else { return }
+  func loadGoal() {
+    services.consumeGoalService.getTopGoal(
+      userId: 1, peerAgeStart: 0, peerAgeEnd: 0, peerGender: "male"
+    ) { [weak self] result in
+      guard let self = self else { return }
 
-                switch result {
-                case .success(let response):
-                    if let topGoalResults = response.result {
-                        self.updateReports(with: topGoalResults)
-                        self.tableView.reloadData()  // 테이블 뷰 리로드
-                    } else {
-                        print("No data in result")
-                    }
-                case .failure(let error):
-                    print("Failed to load Top goals: \(error)")
-                }
-            }
+      switch result {
+      case .success(let response):
+        if let topGoalResults = response.result {
+          self.updateReports(with: topGoalResults)
+          self.tableView.reloadData()  // 테이블 뷰 리로드
+        } else {
+          print("No data in result")
         }
+      case .failure(let error):
+        print("Failed to load Top goals: \(error)")
+      }
+    }
+  }
 }
 
 extension BudgetBuddiesAsset.AppImage.CategoryIcon {
-    static func getImageForCategory(_ category: String) -> UIImage {
-        switch category {
-        case "식비":
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
-        case "쇼핑":
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
-        case "패션":
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
-        case "문화생활":
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
-        case "교통":
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
-        // 필요한 경우 더 많은 카테고리 추가
-        default:
-            return UIImage()  // 기본 이미지
-        }
+  static func getImageForCategory(_ category: String) -> UIImage {
+    switch category {
+    case "식비":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
+    case "쇼핑":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
+    case "패션":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
+    case "문화생활":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
+    case "교통":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
+    // 필요한 경우 더 많은 카테고리 추가
+    default:
+      return UIImage()  // 기본 이미지
     }
+  }
 }

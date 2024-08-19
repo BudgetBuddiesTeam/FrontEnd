@@ -19,26 +19,26 @@ final class ReportBarChartView: UIView {
     return label
   }()
 
-    let dateLabel: UILabel = {
-      let label = UILabel()
-      label.textColor = .gray
-      label.font = .systemFont(ofSize: 12, weight: .regular)
-        
-        // 현재 날짜 및 시간 가져오기
-        let currentDate = Date()
-        
-        // 날짜 포맷터 생성
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR") // 한국식 날짜 표현을 위해 로케일 설정
-        dateFormatter.dateFormat = "yy년 M월 (M/dd HH:mm)" // 원하는 형식
-        
-        // 현재 날짜를 포맷된 문자열로 변환
-        let dateString = dateFormatter.string(from: currentDate)
-        
-        // 라벨에 텍스트 설정
-        label.text = dateString
-      return label
-    }()
+  let dateLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .gray
+    label.font = .systemFont(ofSize: 12, weight: .regular)
+
+    // 현재 날짜 및 시간 가져오기
+    let currentDate = Date()
+
+    // 날짜 포맷터 생성
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko_KR")  // 한국식 날짜 표현을 위해 로케일 설정
+    dateFormatter.dateFormat = "yy년 M월 (M/dd HH:mm)"  // 원하는 형식
+
+    // 현재 날짜를 포맷된 문자열로 변환
+    let dateString = dateFormatter.string(from: currentDate)
+
+    // 라벨에 텍스트 설정
+    label.text = dateString
+    return label
+  }()
 
   let stackView = {
     let sv = UIStackView()
@@ -84,10 +84,10 @@ final class ReportBarChartView: UIView {
       $0.bottom.equalToSuperview().offset(-10)
     }
   }
-    
-    func updateFirstSpend(category: String) {
-        titleLabel.text = "\(category)에 가장 많이 \n소비했어요"
-    }
+
+  func updateFirstSpend(category: String) {
+    titleLabel.text = "\(category)에 가장 많이 \n소비했어요"
+  }
 
   func setChartData(data: [(rank: String, category: String, value: Int, color: UIColor)]) {
     stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

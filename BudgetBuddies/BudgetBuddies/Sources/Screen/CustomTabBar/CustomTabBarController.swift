@@ -116,7 +116,7 @@ class CustomTabBarController: UIViewController {
         
         selectedVC.view.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(self.tabBarView.snp.top)
+            make.bottom.equalTo(self.tabBarView.snp.top).inset(10)
         }
         
         selectedVC.didMove(toParent: self)

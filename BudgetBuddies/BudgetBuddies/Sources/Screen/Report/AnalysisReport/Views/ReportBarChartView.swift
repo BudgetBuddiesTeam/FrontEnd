@@ -19,11 +19,24 @@ final class ReportBarChartView: UIView {
     return label
   }()
 
-  let dateLabel = {
+  let dateLabel: UILabel = {
     let label = UILabel()
-    label.text = "24년 8월 (8/25 11:30)"
     label.textColor = .gray
     label.font = .systemFont(ofSize: 12, weight: .regular)
+
+    // 현재 날짜 및 시간 가져오기
+    let currentDate = Date()
+
+    // 날짜 포맷터 생성
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko_KR")  // 한국식 날짜 표현을 위해 로케일 설정
+    dateFormatter.dateFormat = "yy년 M월 (M/dd HH:mm)"  // 원하는 형식
+
+    // 현재 날짜를 포맷된 문자열로 변환
+    let dateString = dateFormatter.string(from: currentDate)
+
+    // 라벨에 텍스트 설정
+    label.text = dateString
     return label
   }()
 
@@ -72,6 +85,10 @@ final class ReportBarChartView: UIView {
     }
   }
 
+  func updateFirstSpend(category: String) {
+    titleLabel.text = "\(category)에 가장 많이 \n소비했어요"
+  }
+
   func setChartData(data: [(rank: String, category: String, value: Int, color: UIColor)]) {
     stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
@@ -110,7 +127,7 @@ final class ReportBarChartView: UIView {
 
     let valueLabel = {
       let label = UILabel()
-      label.text = "\(value)"
+      label.text = "\(Int(value))"
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
       return label
@@ -148,7 +165,7 @@ final class ReportBarChartView: UIView {
       $0.leading.equalTo(categoryLabel.snp.trailing).offset(8)
       $0.centerY.equalToSuperview()
       $0.height.equalTo(24)
-      $0.width.equalTo(value * 1.5)
+      $0.width.equalTo(value * 30)
     }
 
     return containerView

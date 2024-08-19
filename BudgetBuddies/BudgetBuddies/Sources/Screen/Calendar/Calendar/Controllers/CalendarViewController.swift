@@ -51,7 +51,7 @@ final class CalendarViewController: UIViewController {
     // 탭바에 가려지는 요소 보이게 하기
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.calendarView.scrollView.contentInset.bottom = 50
+        self.calendarView.scrollView.contentInset.bottom = 15
     }
 
   deinit {

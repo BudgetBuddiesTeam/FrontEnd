@@ -193,9 +193,10 @@ final class MonthReportViewController: UIViewController {
     updateLabels()
   }
     
+    // 탭바에 가려지는 요소 보이게 하기
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.scrollView.contentInset.bottom = 50
+        self.scrollView.contentInset.bottom = 15
     }
 
   private func setNavigationSetting() {

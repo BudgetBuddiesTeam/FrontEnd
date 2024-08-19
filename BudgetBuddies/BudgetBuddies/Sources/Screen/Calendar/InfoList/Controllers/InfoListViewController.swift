@@ -63,7 +63,7 @@ final class InfoListViewController: UIViewController {
     // 탭바에 가려지는 요소 보이게 하기
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.contentInset.bottom = 50
+        self.tableView.contentInset.bottom = 15
     }
 
   // MARK: - Set up Title

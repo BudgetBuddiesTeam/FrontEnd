@@ -58,7 +58,7 @@ final class MainViewController: UIViewController {
     // 탭바에 가려지는 요소 보이게 하기
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.mainScrollView.contentInset.bottom = 50
+        self.mainScrollView.contentInset.bottom = 10
     }
 
   // MARK: - Methods

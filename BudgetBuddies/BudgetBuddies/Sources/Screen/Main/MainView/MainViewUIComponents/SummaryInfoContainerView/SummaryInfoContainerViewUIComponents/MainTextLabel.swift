@@ -9,9 +9,11 @@ import Foundation
 import UIKit
 
 class MainTextLabel: UILabel {
+
   // MARK: - Properties
 
-  private var usedMoney = 234470
+  public var userName = String()
+  public var totalConsumptionAmount = 0
   private let highlightedColor = BudgetBuddiesAsset.AppColor.coreYellow.color
 
   // MARK: - Initializer
@@ -29,14 +31,14 @@ class MainTextLabel: UILabel {
   // MARK: - Methods
 
   public func updateUsedMoney(usedMoney: Int) {
-    self.usedMoney = usedMoney
+    self.totalConsumptionAmount = usedMoney
 
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
 
     if let formattedString = numberFormatter.string(from: NSNumber(value: usedMoney)) {
-      let mainText = "혜인님!\n이번달에\n\(formattedString)원 썼어요"
+      let mainText = "\(self.userName)님!\n이번달에\n\(formattedString)원 썼어요"
       let attributedString = NSMutableAttributedString(string: mainText)
       if let range = mainText.range(of: formattedString) {
         let nsRange = NSRange(range, in: mainText)
@@ -47,7 +49,7 @@ class MainTextLabel: UILabel {
         self.text = mainText
       }
     } else {
-      self.text = "혜인님!\n이번달에\n많이 썼어요"
+      self.text = "\(self.userName)님!\n이번달에\n많이 썼어요"
     }
   }
 
@@ -60,8 +62,10 @@ class MainTextLabel: UILabel {
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
 
-    if let formattedString = numberFormatter.string(from: NSNumber(value: usedMoney)) {
-      let mainText = "혜인님!\n이번달에\n\(formattedString)원 썼어요"
+    if let formattedString = numberFormatter.string(
+      from: NSNumber(value: self.totalConsumptionAmount))
+    {
+      let mainText = "\(self.userName)님!\n이번달에\n\(formattedString)원 썼어요"
       let attributedString = NSMutableAttributedString(string: mainText)
       if let range = mainText.range(of: formattedString) {
         let nsRange = NSRange(range, in: mainText)
@@ -72,7 +76,7 @@ class MainTextLabel: UILabel {
         self.text = mainText
       }
     } else {
-      self.text = "혜인님!\n이번달에\n많이 썼어요"
+      self.text = "\(self.userName)님!\n이번달에\n많이 썼어요"
     }
   }
 }

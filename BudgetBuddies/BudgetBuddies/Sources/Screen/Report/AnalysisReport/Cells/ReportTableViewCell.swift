@@ -126,7 +126,15 @@ final class ReportTableViewCell: UITableViewCell {
     rankLabel.text = report.rank
     titleLabel.text = report.title
     amountLabel.text = "\(report.amount)원"
-    descriptionLabel.text = "나는 평균보다 \(report.description)원 더 계획했어요"
+    let text = "나는 평균보다 \(report.description)원 더 계획했어요"
+    let attributedText = NSMutableAttributedString(string: text)
+
+    // categoryName의 범위를 찾아서 색상 변경
+    let range = (text as NSString).range(of: report.description)
+    attributedText.addAttribute(
+      .foregroundColor, value: BudgetBuddiesAsset.AppColor.logoLine2.color, range: range)  // Set your desired color
+
+    descriptionLabel.attributedText = attributedText
   }
 }
 

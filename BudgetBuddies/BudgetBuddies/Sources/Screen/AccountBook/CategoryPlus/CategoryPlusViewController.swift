@@ -57,7 +57,8 @@ class CategoryPlusViewController: UIViewController {
     let categoryRequestDTO = CategoryRequestDTO(
       userID: self.userId, name: self.name, isDefault: self.isDefault)
     debugPrint(categoryRequestDTO.name)
-    provider.request(.addCategory(categoryRequest: categoryRequestDTO)) { result in
+    provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
+      result in
       switch result {
       case .success(let response):
         debugPrint("새로 추가한 카테고리를 서버에 전달 성공")

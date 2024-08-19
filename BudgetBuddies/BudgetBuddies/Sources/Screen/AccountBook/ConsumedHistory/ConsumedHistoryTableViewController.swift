@@ -16,7 +16,7 @@ import UIKit
  3. 이전 달(month)와 다음 달(month) 버튼 로직 설계
  */
 
-class ConsumedHistoryTableViewController: UIViewController {
+final class ConsumedHistoryTableViewController: UIViewController {
   // MARK: - Properties
 
   // View Properties
@@ -27,14 +27,18 @@ class ConsumedHistoryTableViewController: UIViewController {
   private var provider = MoyaProvider<ExpenseRouter>()
 
   // Variable Properties
-  private let userId = 1
+  private let consumedHistoryModel = ConsumedHistoryModel()
 
   // MARK: - View Life Cycle
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    fetchExpenseDataFromExpenseControllerAPI()
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(
+      dateString: self.consumedHistoryModel.getCurrentDateString()
+    ) { [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+    }
+    self.consumedHistoryTableView.reloadData()
   }
 
   override func viewDidLoad() {
@@ -47,6 +51,23 @@ class ConsumedHistoryTableViewController: UIViewController {
   }
 
   // MARK: - Methods
+  
+  /// 모델 객체이 데이터를 서버에서 가져오고 난 후 UX 제어 함수
+  ///
+  /// 모델 객체를 사용해서 비즈니스 로직이라는 관심사를 분리한 후, 발생할 수 있는 경우에 따른 UX 설계는 컨트롤러에서 진행
+  private func setActionAfterGetMonthlyExpenseData(result: Result<String, ConsumedHistoryModel.NetworkError>) {
+    var errorMessage: String
+    switch result {
+    case .success:
+      // 네트워크 로직이 성공해도 컨트롤러에서 딱히 할 것이 없는 상황
+      errorMessage = String()
+    case .failure(.connectionFailedError):
+      errorMessage = "네트워크에 문제가 있습니다"
+    case .failure(.decodingError):
+      errorMessage = "데이터 처리 간 문제가 발생했습니다"
+    }
+    self.showFailureAlertController(errorMessage: errorMessage)
+  }
 
   private func setButtonAction() {
     consumedHistoryHeaderView.previousMonthButton.addTarget(
@@ -85,6 +106,16 @@ class ConsumedHistoryTableViewController: UIViewController {
       make.left.right.bottom.equalToSuperview()
     }
   }
+
+  private func showFailureAlertController(errorMessage: String) {
+    let failureAlertController = UIAlertController(
+      title: "문제발생", message: "서버에서 데이터를 가져오지 못했습니다", preferredStyle: .alert)
+    let confirmedAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+      self?.navigationController?.popViewController(animated: true)
+    }
+    failureAlertController.addAction(confirmedAction)
+    self.present(failureAlertController, animated: true)
+  }
 }
 
 // MARK: - Object C Methods
@@ -101,48 +132,20 @@ extension ConsumedHistoryTableViewController {
   }
 }
 
-// MARK: - Network
-
-extension ConsumedHistoryTableViewController {
-  /*
-   해야 할 일
-   - Status Code : 400
-   - getMonthlyExpenses에서는 Query Parameter도 있기 때문에 400이 나타나는 것이다.
-   */
-  private func fetchExpenseDataFromExpenseControllerAPI() {
-    provider.request(.getMonthlyExpenses(userId: self.userId)) { result in
-      switch result {
-      case .success(let response):
-        debugPrint("소비 조회 API에서 데이터 가져오기 성공")
-        debugPrint(response.statusCode)
-        do {
-          let decodedData = try JSONDecoder().decode(
-            MonthlyExpenseResponseDTO.self, from: response.data)
-          debugPrint("소비 조회 API에서 가져온 데이터 디코딩 성공")
-        } catch (let error) {
-          debugPrint("소비 조회 API에서 가져온 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
-        }
-      case .failure(let error):
-        debugPrint("소비 조회 API에서 데이터 가져오기 실패")
-        debugPrint(error.localizedDescription)
-      }
-    }
-  }
-}
-
 // MARK: - UITableView Delegate & DataSource
 
-extension ConsumedHistoryTableViewController: UITableViewDelegate, UITableViewDataSource {
+extension ConsumedHistoryTableViewController: UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 10
+    return 0
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return 0
   }
+}
 
+extension ConsumedHistoryTableViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
     -> UITableViewCell
   {
@@ -163,27 +166,10 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate, UITableViewDa
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    navigationController?.pushViewController(ConsumedHistoryDetailViewController(), animated: true)
+    /*
+     해야 할 일
+     - 셀을 탭했을 때 구현
+     */
     tableView.deselectRow(at: indexPath, animated: true)
   }
 }
-
-#if DEBUG
-  import SwiftUI
-
-  struct ConsumedHistoryTableViewControllerRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> ConsumedHistoryTableViewController {
-      return ConsumedHistoryTableViewController()
-    }
-
-    func updateUIViewController(
-      _ uiViewController: ConsumedHistoryTableViewController, context: Context
-    ) {}
-  }
-
-  struct ConsumedHistoryTableViewController_Previews: PreviewProvider {
-    static var previews: some View {
-      ConsumedHistoryTableViewControllerRepresentable()
-    }
-  }
-#endif

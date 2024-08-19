@@ -8,29 +8,26 @@
 import SnapKit
 import UIKit
 
+struct GoalCategory {
+  let name: String
+  let placeholder: String
+  var amount: Int?
+}
+
 final class GoalEditViewController: UIViewController {
+
+  var goalCategories: [GoalCategory] = [
+    GoalCategory(name: "식비", placeholder: "ex) 200,000"),
+    GoalCategory(name: "쇼핑", placeholder: "ex) 200,000"),
+    GoalCategory(name: "문화생활", placeholder: "ex) 200,000"),
+    GoalCategory(name: "패션", placeholder: "ex) 200,000"),
+  ]
 
   let textFieldStackView = {
     let sv = UIStackView()
     sv.axis = .vertical
     sv.spacing = 16
     return sv
-  }()
-
-  // UITextField 추가 버튼
-  lazy var addTextFieldButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("Add TextField", for: .normal)
-    button.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
-    return button
-  }()
-
-  // UITextField 제거 버튼
-  lazy var removeTextFieldButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("Remove TextField", for: .normal)
-    button.addTarget(self, action: #selector(removeTextField), for: .touchUpInside)
-    return button
   }()
 
   let totalGoalTitleLabel = {
@@ -60,6 +57,7 @@ final class GoalEditViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
+
   }
 
   override func viewDidLoad() {
@@ -67,6 +65,7 @@ final class GoalEditViewController: UIViewController {
 
     setup()
     setConsts()
+    setupTextFields()
   }
 
   private func setNavi() {
@@ -82,10 +81,9 @@ final class GoalEditViewController: UIViewController {
   }
 
   private func setup() {
-    view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+    view.backgroundColor = .white
     [
-      textFieldStackView, addTextFieldButton, removeTextFieldButton, totalGoalTitleLabel,
-      totalGoalLabel, finishButton,
+      textFieldStackView, totalGoalTitleLabel, totalGoalLabel, finishButton,
     ].forEach {
       view.addSubview($0)
     }
@@ -97,18 +95,8 @@ final class GoalEditViewController: UIViewController {
       $0.leading.trailing.equalTo(view).inset(16)
     }
 
-    addTextFieldButton.snp.makeConstraints {
-      $0.top.equalTo(textFieldStackView.snp.bottom).offset(20)
-      $0.leading.equalTo(view).inset(16)
-    }
-
-    removeTextFieldButton.snp.makeConstraints {
-      $0.top.equalTo(textFieldStackView.snp.bottom).offset(20)
-      $0.trailing.equalTo(view).inset(16)
-    }
-
     totalGoalTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(addTextFieldButton.snp.bottom).offset(50)
+      $0.top.equalTo(textFieldStackView.snp.bottom).offset(50)
       $0.leading.equalToSuperview().offset(20)
     }
 
@@ -125,38 +113,35 @@ final class GoalEditViewController: UIViewController {
     }
   }
 
-  @objc private func addTextField() {
-    let label = UILabel()
-    label.text = "식비"
-    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
-    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+  // 모델에 기반하여 텍스트 필드를 생성하는 함수
+  private func setupTextFields() {
+    for category in goalCategories {
+      let label = UILabel()
+      label.text = category.name
+      label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+      label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
 
-    let textField = UITextField()
-    textField.layer.cornerRadius = 15
-    textField.placeholder = "ex) 200,000"
-    textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
-    textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
-    textField.leftViewMode = .always
+      let textField = UITextField()
+      textField.layer.cornerRadius = 15
+      textField.placeholder = category.placeholder
+      textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
+      textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
+      textField.leftViewMode = .always
 
-    let stack = UIStackView(arrangedSubviews: [label, textField])
-    stack.axis = .vertical
-    stack.spacing = 8
+      let stack = UIStackView(arrangedSubviews: [label, textField])
+      stack.axis = .vertical
+      stack.spacing = 8
 
-    textFieldStackView.addArrangedSubview(stack)
+      textFieldStackView.addArrangedSubview(stack)
 
-    textField.snp.makeConstraints {
-      $0.height.equalTo(50)
+      textField.snp.makeConstraints {
+        $0.height.equalTo(50)
+      }
+
+      stack.snp.makeConstraints {
+        $0.leading.trailing.equalToSuperview()
+      }
     }
-
-    stack.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-    }
-  }
-
-  @objc private func removeTextField() {
-    guard let lastStack = textFieldStackView.arrangedSubviews.last else { return }
-    textFieldStackView.removeArrangedSubview(lastStack)
-    lastStack.removeFromSuperview()
   }
 }
 

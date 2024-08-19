@@ -14,7 +14,7 @@ enum DiscountInfoRouter {
 
 extension DiscountInfoRouter: TargetType {
   var baseURL: URL {
-    return URL(string: ServerInfo.baseURL)!
+    return URL(string: ServerInfo.baseURLString)!
   }
 
   var path: String {

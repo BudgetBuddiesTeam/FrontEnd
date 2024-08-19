@@ -20,9 +20,22 @@ final class GoalChartView: UIView {
 
   let dateLabel: UILabel = {
     let label = UILabel()
-    label.text = "24년 8월 (8/25 11:30)"
     label.textColor = .gray
     label.font = .systemFont(ofSize: 12, weight: .regular)
+      
+      // 현재 날짜 및 시간 가져오기
+      let currentDate = Date()
+      
+      // 날짜 포맷터 생성
+      let dateFormatter = DateFormatter()
+      dateFormatter.locale = Locale(identifier: "ko_KR") // 한국식 날짜 표현을 위해 로케일 설정
+      dateFormatter.dateFormat = "yy년 M월 (M/dd HH:mm)" // 원하는 형식
+      
+      // 현재 날짜를 포맷된 문자열로 변환
+      let dateString = dateFormatter.string(from: currentDate)
+      
+      // 라벨에 텍스트 설정
+      label.text = dateString
     return label
   }()
 
@@ -141,6 +154,12 @@ final class GoalChartView: UIView {
     pieChartView.notifyDataSetChanged()
     pieChartView.animate(xAxisDuration: 1.4, easingOption: .easeOutBack)
   }
+    
+    func updateFirstGoal(category: String, value: Int) {
+        firstLabel.text = category
+        firstPrice.text = "\(value.formatted())원" // 가격 형식으로 변환
+        planLabel.text = "\(category)에 가장 큰 \n계획을 세웠어요"
+    }
 
   func setChartData(data: [(rank: String, category: String, value: Int, color: UIColor)]) {
     stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -185,7 +204,7 @@ final class GoalChartView: UIView {
 
     let valueLabel: UILabel = {
       let label = UILabel()
-      label.text = "\(value)원"
+        label.text = "\(value.formatted())원"
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
       return label

@@ -34,7 +34,7 @@ final class CommentManager {
 
   // MARK: - 할인정보 전체 댓글 불러오기
   func fetchDiscountsComments(
-    discountInfoId: Int, request: CommentRequest,
+    discountInfoId: Int, request: PostCommentRequest,
     completion: @escaping (DiscountsCommentsNetworkCompletion)
   ) {
     CommentProvider.request(.getDiscountsComments(discountInfoId: discountInfoId, request: request))
@@ -61,7 +61,7 @@ final class CommentManager {
 
   // MARK: - 지원정보 전체 댓글 불러오기
   func fetchSupportsComments(
-    supportsInfoId: Int, request: CommentRequest,
+    supportsInfoId: Int, request: PostCommentRequest,
     completion: @escaping (SupportsCommentsNetworkCompletion)
   ) {
     CommentProvider.request(.getSupportsComments(supportInfoId: supportsInfoId, request: request)) {

@@ -9,8 +9,8 @@ import Foundation
 import Moya
 
 enum CommentRouter {
-  case getDiscountsComments(discountInfoId: Int, request: CommentRequest)
-  case getSupportsComments(supportInfoId: Int, request: CommentRequest)
+  case getDiscountsComments(discountInfoId: Int, request: PostCommentRequest)
+  case getSupportsComments(supportInfoId: Int, request: PostCommentRequest)
   case addDiscountsComments(userId: Int, request: DiscountsCommentsRequestDTO)
   case addSupportsComments(userId: Int, request: SupportsCommentsRequestDTO)
   case deleteComments(commentId: Int)

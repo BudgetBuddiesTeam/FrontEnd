@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CommentRequest {
+struct PostCommentRequest {
   let page: Int
   let size: Int
 }

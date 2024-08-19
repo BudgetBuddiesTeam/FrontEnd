@@ -18,11 +18,11 @@ final class BottomSheetViewController: DimmedViewController {
         didSet {
             if nowModify {
                 print("댓글 수정 시작")
+                // 키보드 올리기
                 self.bottomSheet.commentTextView.becomeFirstResponder()
-                // 키보드 올리는 코드 넣어야 한다.
+                
             } else {
                 print("댓글 수정 취소")
-                // 키보드 내리기
             }
         }
     }
@@ -43,7 +43,7 @@ final class BottomSheetViewController: DimmedViewController {
   var discountsComments: [DiscountsCommentsContent] = []
   var supportsComments: [SupportsCommentsContent] = []
   var userId: Int = 1  // 일단 하드 코딩
-  var commentRequest: CommentRequest?
+  var commentRequest: PostCommentRequest?
 
   // MARK: - Life Cycle
   init(infoType: InfoType, infoId: Int) {
@@ -84,7 +84,7 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up Data
   private func setupData() {
     print("BottomSheetViewController: \(#function)")
-    self.commentRequest = CommentRequest(page: 0, size: 20)  // 일단 20개만 불러오기
+    self.commentRequest = PostCommentRequest(page: 0, size: 20)  // 일단 20개만 불러오기
     guard let commentRequest = self.commentRequest else { return }
 
     switch self.infoType {

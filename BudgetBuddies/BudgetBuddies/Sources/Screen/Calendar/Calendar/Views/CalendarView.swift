@@ -126,7 +126,7 @@ class CalendarView: UIView {
     supportInfoTableView.snp.removeConstraints()
     supportInfoTableView.snp.remakeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(supportTableViewHeight)
+      make.height.equalTo(supportTableViewHeight + 10)
     }
   }
 

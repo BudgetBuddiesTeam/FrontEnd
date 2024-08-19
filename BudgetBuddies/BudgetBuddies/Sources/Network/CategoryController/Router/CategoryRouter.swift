@@ -15,24 +15,21 @@ import Moya
  */
 
 enum CategoryRouter {
-  case addCategory(categoryRequest: CategoryRequestDTO)
-  case getCategoryWithPathVariable(userId: Int)
-  case getCategoryWithRequestParameter(userId: Int)
+  case addCategory(userId: Int, categoryRequest: CategoryRequestDTO)
+  case getCategory(userId: Int)
 }
 
 extension CategoryRouter: TargetType {
   var baseURL: URL {
-    return URL(string: ServerInfo.baseURL)!
+    return URL(string: ServerInfo.baseURLString)!
   }
 
   var path: String {
     switch self {
-    case .addCategory:
-      return "/categories/add"
-    case .getCategoryWithPathVariable(let userId):
+    case .addCategory(let userId, _):
+      return "/categories/add/\(userId)"
+    case .getCategory(let userId):
       return "categories/get/\(userId)"
-    case .getCategoryWithRequestParameter:
-      return "/categories/get"
     }
   }
 
@@ -40,19 +37,17 @@ extension CategoryRouter: TargetType {
     switch self {
     case .addCategory:
       return .post
-    case .getCategoryWithRequestParameter, .getCategoryWithPathVariable:
+    case .getCategory:
       return .get
     }
   }
 
   var task: Moya.Task {
     switch self {
-    case .addCategory(let categoryRequest):
+    case .addCategory(_, let categoryRequest):
       return .requestJSONEncodable(categoryRequest)
-    case .getCategoryWithPathVariable:
+    case .getCategory:
       return .requestPlain
-    case .getCategoryWithRequestParameter(let userId):
-      return .requestParameters(parameters: ["userId": userId], encoding: URLEncoding.queryString)
     }
   }
 

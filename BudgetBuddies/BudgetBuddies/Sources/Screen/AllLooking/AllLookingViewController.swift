@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Moya
 import SnapKit
 import UIKit
 
@@ -32,6 +33,13 @@ class AllLookingViewController: UIViewController {
   // Combine
   private var cancellable = Set<AnyCancellable>()
 
+  // Network
+  private let provider = MoyaProvider<UserRouter>()
+
+  // Variable
+  private let userId = 1
+  @Published private var userName = String()
+
   // MARK: - View Life Cycle
 
   override func loadView() {
@@ -42,6 +50,7 @@ class AllLookingViewController: UIViewController {
     super.viewWillAppear(animated)
 
     hideNavigationBar()
+    self.fetchUserData(userId: self.userId)
   }
 
   override func viewDidLoad() {
@@ -74,7 +83,7 @@ class AllLookingViewController: UIViewController {
   }
 
   private func observeUserNameProperty() {
-    profileEditViewController.$writtenName
+    self.$userName
       .sink { [weak self] newValue in
         self?.allLookingView.profileContainerView.userNameText.text = newValue
       }
@@ -119,27 +128,24 @@ class AllLookingViewController: UIViewController {
 
     allLookingView.isUserInteractionEnabled = true
   }
+}
 
-  // MARK: - Objc Methods
+// MARK: - Object C Methods
 
+extension AllLookingViewController {
   @objc private func profileContainerViewTapped() {
-    debugPrint("프로필 세부사항 탭")
     navigationController?.pushViewController(profileEditViewController, animated: true)
   }
 
   @objc private func thisMonthReportContainerTapped() {
-    debugPrint("이번 달 레포트")
     navigationController?.pushViewController(monthReportViewController, animated: true)
   }
 
   @objc private func peerConsumedAnalysisReportContainerTapped() {
-    debugPrint("또래 소비분석 리포트")
     navigationController?.pushViewController(analysisReportViewController, animated: true)
   }
 
   @objc private func pocketCalendarContainerTapped() {
-    debugPrint("주머니 캘린더")
-    //    navigationController?.pushViewController(calendarViewController, animated: true)
     if let tabBarController = self.tabBarController as? RootTabBarViewController {
       tabBarController.selectedIndex = 2
 
@@ -150,14 +156,39 @@ class AllLookingViewController: UIViewController {
   }
 
   @objc private func priceEventInfoContainerTapped() {
-    debugPrint("이번 달 할인정보 확인하기")
     navigationController?.pushViewController(discountInfoListViewController, animated: true)
     discountInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
 
   @objc private func supportInfoConfirmContainerTapped() {
-    debugPrint("이번 달 지원정보 확인하기")
     navigationController?.pushViewController(supportInfoListViewController, animated: true)
     supportInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
+  }
+}
+
+// MARK: - Network
+
+extension AllLookingViewController {
+  private func fetchUserData(userId: Int) {
+    provider.request(.find(userId: userId)) { result in
+      switch result {
+      case .success(let response):
+        do {
+          let decodedData = try JSONDecoder().decode(
+            ApiResponseResponseUserDto.self, from: response.data)
+          self.userName = decodedData.result.name
+        } catch {
+          self.userName = "다시 시도하세요"
+        }
+      case .failure:
+        let fetchUserFailureAlertController = UIAlertController(
+          title: "알림", message: "사용자 정보를 가져오지 못했습니다", preferredStyle: .alert)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+          self?.userName = "다시 시도하세요"
+        }
+        fetchUserFailureAlertController.addAction(confirmedButtonAction)
+        self.present(fetchUserFailureAlertController, animated: true)
+      }
+    }
   }
 }

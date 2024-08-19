@@ -153,11 +153,6 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
   }
 
   private func setLayout() {
-    self.snp.makeConstraints { make in
-      make.width.equalTo(127)
-      make.height.equalTo(162)
-    }
-
     layer.cornerRadius = 15
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
 

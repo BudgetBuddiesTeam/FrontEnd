@@ -21,7 +21,7 @@ enum ConsumeRouter {
 
 extension ConsumeRouter: TargetType {
   var baseURL: URL {
-    URL(string: ServerInfo.baseURL)!
+    URL(string: ServerInfo.baseURLString)!
   }
 
   var path: String {

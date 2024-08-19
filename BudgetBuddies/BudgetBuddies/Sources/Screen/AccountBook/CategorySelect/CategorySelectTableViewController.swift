@@ -31,6 +31,7 @@ class CategorySelectTableViewController: UITableViewController {
   private var defaultCategoryIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   @Published var selectedCategoryName = "카테고리를 선택하세요"
+  @Published var selectedCateogryId = 0
 
   // MARK: - View Life Cycle
 
@@ -110,24 +111,23 @@ class CategorySelectTableViewController: UITableViewController {
 
   /// 카테고리 컨트롤러 서버에서 데이터를 가져오는 함수입니다.
   private func fetchDataFromCategoryControllerAPI() {
-    provider.request(.getCategoryWithPathVariable(userId: 1)) { [weak self] result in
+    provider.request(.getCategory(userId: 1)) { [weak self] result in
       switch result {
       case .success(let response):
-        debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 성공")
-        debugPrint(response.statusCode)
         do {
           let decodedData = try JSONDecoder().decode(
             [CategoryResponseDTO].self, from: response.data)
-          debugPrint("카테고리 컨트롤러 API로부터 추출한 데이터 디코딩 성공")
           self?.categories = decodedData
           self?.tableView.reloadData()
         } catch (let error) {
-          debugPrint("카테고리 컨트롤러 API로부터 추출한 데이터 디코딩 실패")
-          debugPrint(error.localizedDescription)
         }
       case .failure(let error):
-        debugPrint("카테고리 컨트롤러 API로부터 데이터 가져오기 실패")
-        debugPrint(error.localizedDescription)
+        let fetchCategoriesDataFailureAlertController = UIAlertController(
+          title: "에러", message: "카테고리를 가져오지 못했습니다", preferredStyle: .alert)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+          self?.navigationController?.popViewController(animated: true)
+        }
+        self?.present(fetchCategoriesDataFailureAlertController, animated: true)
       }
     }
   }
@@ -190,6 +190,7 @@ class CategorySelectTableViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     self.selectedCategoryName = self.categories[indexPath.row].name
+    self.selectedCateogryId = self.categories[indexPath.row].id
 
     navigationController?.popViewController(animated: true)
   }

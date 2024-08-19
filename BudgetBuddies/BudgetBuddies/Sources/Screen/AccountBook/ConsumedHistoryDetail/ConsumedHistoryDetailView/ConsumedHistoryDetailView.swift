@@ -22,9 +22,8 @@ class ConsumedHistoryDetailView: UIView {
   }()
 
   // 카테고리 텍스트
-  public var categoryLabel: UILabel = {
+  public var expenseDescriptionLabel: UILabel = {
     let label = UILabel()
-    label.text = "과자"
     label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
@@ -108,7 +107,8 @@ class ConsumedHistoryDetailView: UIView {
   private func setLayout() {
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     addSubviews(
-      categoryIcon, categoryLabel, priceLabel, categoryStringLabel, consumedDateStringLabel,
+      categoryIcon, expenseDescriptionLabel, priceLabel, categoryStringLabel,
+      consumedDateStringLabel,
       categorySettingButton, consumedDatePicker, saveButton)
 
     // 카테고리 아이콘
@@ -118,7 +118,7 @@ class ConsumedHistoryDetailView: UIView {
     }
 
     // 카테고리 텍스트
-    categoryLabel.snp.makeConstraints { make in
+    expenseDescriptionLabel.snp.makeConstraints { make in
       make.top.equalTo(categoryIcon.snp.top)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(12)
     }

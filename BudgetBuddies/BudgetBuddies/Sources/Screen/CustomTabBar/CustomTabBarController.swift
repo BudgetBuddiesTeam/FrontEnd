@@ -19,6 +19,7 @@ class CustomTabBarController: UIViewController {
         UIImage(systemName: "ellipsis")!
     ]
     private var tabBarLabels: [String] = ["홈", "가계부", "정보", "전체"]
+    private var tabBarIconSizes: [Int] = [29, 24, 25, 24]
     
     private let marginInset = 20
     
@@ -28,6 +29,8 @@ class CustomTabBarController: UIViewController {
         }
         didSet {
             updateView()
+            print("\(self.selectedIndex)번 뷰 보이기")
+            setupButtons()
         }
     }
     
@@ -45,7 +48,6 @@ class CustomTabBarController: UIViewController {
         view.layer.shadowOpacity = 1
         view.layer.shadowRadius = 5  //반경 일단 10 -> 5로 변경해놓음 (피그마랑 비슷하게 보이게)
         view.layer.shadowOffset = CGSize(width: 0, height: -5)
-        view.layer.masksToBounds = false
         
         return view
     }()
@@ -89,14 +91,18 @@ class CustomTabBarController: UIViewController {
     
     // MARK: - Set up Buttons (탭바 버튼)
     private func setupButtons() {
+        print("CustomTabBarController: 탭바 버튼 생성")
+        buttons.removeAll()
         // 버튼의 넓이는 tab 개수에 맞춰서 유동적으로 변함
         let buttonWidth = (view.bounds.width - CGFloat(marginInset * 2)) / CGFloat(viewControllers.count)
         
         // 터치 되는 범위(버튼) 설정
         for (index, _) in viewControllers.enumerated() {
+            // 현재 눌린 탭바 이이콘 식별 변수
+            var isSelected = selectedIndex == index ? true : false
+            
             let tabBarButton = UIButton()
             tabBarButton.tag = index
-//            tabBarButton.layer.borderWidth = 1
             tabBarButton.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
             tabBarMargin.addSubview(tabBarButton)
             
@@ -108,47 +114,15 @@ class CustomTabBarController: UIViewController {
                 
             }
             
-            // 탭바 버튼 아이콘
-            let tabBarIconImageView: UIImageView = {
-                let iv = UIImageView()
-                iv.image = tabBarIcons[index]
-                iv.tintColor = BudgetBuddiesAsset.AppColor.barGray.color
-                iv.contentMode = .scaleAspectFit
-                return iv
-            }()
+            // 탭바 아이콘 생성
+            let tabBarIcon = TabBarIcon(tabBarIcon: tabBarIcons[index],
+                                        tabBarLabel: tabBarLabels[index],
+                                        isSelected: isSelected,
+                                        size: tabBarIconSizes[index])
             
-            tabBarIconImageView.snp.makeConstraints { make in
-                make.height.width.equalTo(27)
-            }
-            
-            // 탭바 라벨
-            let tabBarLabel: UILabel = {
-                let lb = UILabel()
-                lb.text = tabBarLabels[index]
-                lb.textColor = BudgetBuddiesAsset.AppColor.barGray.color
-                lb.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
-                lb.setCharacterSpacing(-0.35)
-                return lb
-            }()
-            
-            tabBarLabel.snp.makeConstraints { make in
-                make.height.equalTo(17)
-            }
-            
-            // 스택뷰
-            lazy var tabBarStackView: UIStackView = {
-                let sv = UIStackView(arrangedSubviews: [tabBarIconImageView, tabBarLabel])
-                sv.axis = .vertical
-                sv.spacing = 16 // 디자이너님께 SE모델 보여드리고 컨펌 받기
-                sv.alignment = .center
-                sv.distribution = .fill
-                sv.isUserInteractionEnabled = false
-                return sv
-            }()
-            
-            tabBarButton.addSubviews(tabBarStackView)
-            tabBarStackView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
+            tabBarButton.addSubviews(tabBarIcon)
+            tabBarIcon.snp.makeConstraints { make in
+                make.leading.trailing.bottom.equalToSuperview()
                 make.top.equalToSuperview().inset(16)
             }
             
@@ -158,7 +132,6 @@ class CustomTabBarController: UIViewController {
     
     // MARK: - Update View
     private func updateView() {
-        print("\(selectedIndex)번호 뷰로 바꿈")
         deleteView()
         setupView()
         

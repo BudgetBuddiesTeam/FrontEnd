@@ -94,7 +94,7 @@ extension CommentRouter: TargetType {
         "page": request.page,
         "size": request.size,
       ]
-      return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+      return .requestParameters(parameters: parameters, encoding: URLEncoding.default) // url에 담아 보내기
 
     case .getSupportsComments(_, let request):
       let parameters: [String: Any] = [
@@ -128,17 +128,17 @@ extension CommentRouter: TargetType {
         
     case .putDiscountsComments(request: let request):
         let parameters: [String: Any] = [
-            "commentId": request.commentId,
-            "content": request.content
+            "content": request.content,
+            "commentId": request.commentId
         ]
-        return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+        return .requestParameters(parameters: parameters, encoding: JSONEncoding.default) // 바디에 담아 보내기
         
     case .putSupportsComments(request: let request):
         let parameters: [String: Any] = [
-            "commentId": request.commentId,
-            "content": request.content
+            "content": request.content,
+            "commentId": request.commentId
         ]
-        return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+        return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
     }
   }
 

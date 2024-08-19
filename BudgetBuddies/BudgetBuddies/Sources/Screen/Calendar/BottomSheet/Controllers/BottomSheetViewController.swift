@@ -13,6 +13,7 @@ final class BottomSheetViewController: DimmedViewController {
   var infoType: InfoType
   var infoId: Int
     
+    var modifyId: Int?
     // 댓글 수정 중인지 판단하는 변수
     var nowModify: Bool = false {
         didSet {
@@ -21,8 +22,6 @@ final class BottomSheetViewController: DimmedViewController {
                 // 키보드 올리기
                 self.bottomSheet.commentTextView.becomeFirstResponder()
                 
-            } else {
-                print("댓글 수정 취소")
             }
         }
     }
@@ -325,8 +324,45 @@ final class BottomSheetViewController: DimmedViewController {
     self.bottomSheet.endEditing(true)
       
       if self.nowModify {
-          // 수정 중이면 PUT
-          // 👋🏻
+          // 수정 중이면서, textView.text가 비어있지 않으면 수정 (PUT)
+          if let newText = self.bottomSheet.commentTextView.text {
+              print(newText)
+              guard let commentId = self.modifyId else { return }
+              
+              // request 생성
+              let request = PutCommentRequest(content: newText, commentId: commentId)
+              print(request)
+              
+              switch self.infoType {
+              case .discount:
+                  commentManager.modifyDiscountsComments(request: request) { result in
+                      
+                      switch result {
+                      case .success(let response):
+                          print("댓글 수정 성공 statusCode: \(response.statusCode)")
+                          self.setupData()
+                          
+                      case .failure(let error):
+                          print(error.localizedDescription)
+                          
+                      }
+                  }
+                  
+              case .support:
+                  commentManager.modifySupportsComments(request: request) { result in
+                      
+                      switch result {
+                      case .success(let response):
+                          print("댓글 수정 성공 statusCode: \(response.statusCode)")
+                          self.setupData()
+                          
+                      case .failure(let error):
+                          print(error.localizedDescription)
+                          
+                      }
+                  }
+              }
+          }
           
           self.nowModify = false
           print("댓글 수정 완료")
@@ -514,6 +550,7 @@ extension BottomSheetViewController: CommentCellDelegate {
     AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
     { _ in
       print("\(self.infoType) 댓글 commentId: \(commentId)")
+        self.modifyId = commentId
       switch self.infoType {
       case .discount:
           

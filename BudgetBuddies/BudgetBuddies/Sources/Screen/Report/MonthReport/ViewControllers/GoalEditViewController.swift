@@ -120,7 +120,7 @@ final class GoalEditViewController: UIViewController {
     finishButton.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
       $0.trailing.equalToSuperview().offset(-20)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30) // 기존 -20에서 -10 추가 (탭바 가려짐 해결)
       $0.height.equalTo(60)
     }
   }

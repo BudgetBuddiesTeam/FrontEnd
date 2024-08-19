@@ -1,5 +1,5 @@
 //
-//  TabBarIcon.swift
+//  CustomTabBarIcon.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/19/24.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TabBarIcon: UIView {
+class CustomTabBarIcon: UIView {
     // MARK: - Properties
     private var size: Int
     private var tabBarIconColor: UIColor = BudgetBuddiesAsset.AppColor.barGray.color
@@ -31,7 +31,7 @@ class TabBarIcon: UIView {
     private lazy var tabBarStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [tabBarIconImageView, tabBarLabel])
         sv.axis = .vertical
-        sv.spacing = 16
+        sv.spacing = 12
         sv.alignment = .center
         sv.distribution = .fill
         return sv

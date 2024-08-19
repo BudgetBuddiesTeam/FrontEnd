@@ -104,14 +104,14 @@ class CustomTabBarController: UIViewController {
                 make.width.equalTo(buttonWidth)
             }
             
-            let tabBarIcon = TabBarIcon(tabBarIcon: tabBarIcons[index],
+            let tabBarIcon = CustomTabBarIcon(tabBarIcon: tabBarIcons[index],
                                         tabBarLabel: tabBarLabels[index],
                                         size: tabBarIconSizes[index])
             
             tabBarButton.addSubview(tabBarIcon)
             tabBarIcon.snp.makeConstraints { make in
-                make.leading.trailing.bottom.equalToSuperview()
-                make.top.equalToSuperview().inset(16)
+                make.leading.trailing.equalToSuperview()
+                make.bottom.equalToSuperview().inset(8)
             }
             
             buttons.append(tabBarButton)
@@ -125,7 +125,7 @@ class CustomTabBarController: UIViewController {
         for (index, button) in buttons.enumerated() {
             let isSelected = selectedIndex == index
             button.isSelected = isSelected
-            if let tabBarIcon = button.subviews.compactMap({ $0 as? TabBarIcon }).first {
+            if let tabBarIcon = button.subviews.compactMap({ $0 as? CustomTabBarIcon }).first {
                 tabBarIcon.updateAppearance(isSelected: isSelected)
             }
         }

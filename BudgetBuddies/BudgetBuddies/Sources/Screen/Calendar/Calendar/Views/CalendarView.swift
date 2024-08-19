@@ -37,7 +37,13 @@ class CalendarView: UIView {
 
   // MARK: - UI Components
   // 스크롤뷰
-  var scrollView = UIScrollView()
+    var scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = false
+        sv.showsHorizontalScrollIndicator = false
+        return sv
+    }()
+    
   lazy var stackView: UIStackView = {
     let sv = UIStackView(arrangedSubviews: [
       bannerView,
@@ -126,7 +132,7 @@ class CalendarView: UIView {
     supportInfoTableView.snp.removeConstraints()
     supportInfoTableView.snp.remakeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(supportTableViewHeight + 10)
+      make.height.equalTo(supportTableViewHeight)
     }
   }
 

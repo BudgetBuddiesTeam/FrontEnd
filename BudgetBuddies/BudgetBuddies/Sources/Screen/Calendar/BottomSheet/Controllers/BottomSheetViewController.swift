@@ -340,6 +340,8 @@ final class BottomSheetViewController: DimmedViewController {
                       switch result {
                       case .success(let response):
                           print("댓글 수정 성공 statusCode: \(response.statusCode)")
+                          
+                          AlertManager.showAlert(on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false, confirmHandler: nil)
                           self.setupData()
                           
                       case .failure(let error):
@@ -354,6 +356,8 @@ final class BottomSheetViewController: DimmedViewController {
                       switch result {
                       case .success(let response):
                           print("댓글 수정 성공 statusCode: \(response.statusCode)")
+                          
+                          AlertManager.showAlert(on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false, confirmHandler: nil)
                           self.setupData()
                           
                       case .failure(let error):

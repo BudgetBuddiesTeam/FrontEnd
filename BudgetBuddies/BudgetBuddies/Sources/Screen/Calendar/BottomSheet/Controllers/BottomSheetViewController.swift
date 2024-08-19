@@ -72,14 +72,22 @@ final class BottomSheetViewController: DimmedViewController {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
       
-      if self.nowModify {
-          self.nowModify = false
-      }
+      modifyCancled()
   }
 
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    
+    // MARK: - modify canceled
+    private func modifyCancled() {
+        if self.nowModify {
+            self.nowModify = false
+            self.bottomSheet.commentTextView.text = textViewPrompt
+            self.bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
+            self.bottomSheet.updateTextViewHeight()
+        }
+    }
 
   // MARK: - Set up Data
   private func setupData() {
@@ -250,9 +258,7 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   private func didTapTableView() {
     self.view.endEditing(true)
-      if self.nowModify {
-          self.nowModify = false
-      }
+      modifyCancled()
   }
 
   // MARK: - Handle PanGesture
@@ -320,6 +326,8 @@ final class BottomSheetViewController: DimmedViewController {
       
       if self.nowModify {
           // 수정 중이면 PUT
+          
+          
           self.nowModify = false
           print("댓글 수정 완료")
           
@@ -341,6 +349,7 @@ final class BottomSheetViewController: DimmedViewController {
   }
 
   // MARK: - Discount, Support Comments Post
+    // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
   private func postDiscountsComments() {
     guard let textContent = bottomSheet.commentTextView.text,
       bottomSheet.commentTextView.text != textViewPrompt

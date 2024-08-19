@@ -31,6 +31,10 @@ final class CommentManager {
   typealias GetOneSupportsCommentsNetworkCompletion = (
     Result<GetOneSupportsCommentsResponseDTO, Error>
   ) -> Void
+    
+    // 댓글 하나 수정하기
+    typealias PutDiscountsCommentsNetworkCompletion = (Result<Response, Error>) -> Void
+    typealias PutSupportsCommentsNetworkCompletion = (Result<Response, Error>) -> Void
 
   // MARK: - 할인정보 전체 댓글 불러오기
   func fetchDiscountsComments(
@@ -190,4 +194,34 @@ final class CommentManager {
     }
 
   }
+    
+    // MARK: - 할인정보 댓글 수정
+    func modifyDiscountsComments(request: PutCommentRequest, completion: @escaping (PutDiscountsCommentsNetworkCompletion)) {
+        CommentProvider.request(.putDiscountsComments(request: request)) { result in
+            switch result {
+            case .success(let response):
+                print("통신 성공")
+                completion(.success(response))
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 지원정보 댓글 수정
+    func modifySupportsComments(request: PutCommentRequest, completion: @escaping (PutSupportsCommentsNetworkCompletion)) {
+        CommentProvider.request(.putSupportsComments(request: request)) { result in
+            switch result {
+            case .success(let response):
+                print("통신 성공")
+                completion(.success(response))
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+    }
 }

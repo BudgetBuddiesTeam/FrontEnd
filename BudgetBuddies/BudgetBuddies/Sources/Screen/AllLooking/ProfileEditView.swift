@@ -123,7 +123,7 @@ class ProfileEditView: UIView {
 
     saveButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(42)
+      make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)
     }
   }
 }

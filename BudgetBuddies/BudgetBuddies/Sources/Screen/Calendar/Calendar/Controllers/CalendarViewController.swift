@@ -48,6 +48,12 @@ final class CalendarViewController: UIViewController {
     setupNavigationBar()
   }
 
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.calendarView.scrollView.contentInset.bottom = 15
+  }
+
   deinit {
     // 노티 remove (메모리 누수 방지)
     NotificationCenter.default.removeObserver(

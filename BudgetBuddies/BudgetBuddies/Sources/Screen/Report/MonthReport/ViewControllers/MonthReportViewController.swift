@@ -214,6 +214,12 @@ final class MonthReportViewController: UIViewController {
     setTableView()
   }
 
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.scrollView.contentInset.bottom = 15
+  }
+
   private func setNavi() {
     navigationItem.title = "이번달 리포트"
     let appearance = UINavigationBarAppearance()

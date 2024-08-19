@@ -60,6 +60,12 @@ final class InfoListViewController: UIViewController {
     setupTableView()
   }
 
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tableView.contentInset.bottom = 15
+  }
+
   // MARK: - Set up Title
   private func setupTitle() {
     guard let yearMonth = self.yearMonth else { return }
@@ -213,8 +219,9 @@ extension InfoListViewController: UITableViewDataSource {
       cell.backgroundColor = .clear
       cell.selectionStyle = .none
       return cell
+    }
 
-    } else {
+    if indexPath.row >= 1 {
       switch infoType {
       case .discount:  // 할인정보
         let informationCell =
@@ -258,6 +265,8 @@ extension InfoListViewController: UITableViewDataSource {
         return informationCell
       }
     }
+
+    return UITableViewCell()
   }
 }
 

@@ -62,7 +62,7 @@ extension CommentRouter: TargetType {
     case .addSupportsComments:
       return .post
 
-    case .deleteComments(let commentId):
+    case .deleteComments:
       return .delete
 
     case .getOneDiscountsComments:

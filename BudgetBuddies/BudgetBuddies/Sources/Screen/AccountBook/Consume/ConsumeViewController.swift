@@ -198,7 +198,9 @@ extension ConsumeViewController {
 
 extension ConsumeViewController {
   private func postNewExpense(newExpenseRequestDTO: NewExpenseRequestDTO) {
-    provider.request(.postAddedExpense(userId: self.userId, addedExpenseRequestDTO: newExpenseRequestDTO)) {
+    provider.request(
+      .postAddedExpense(userId: self.userId, addedExpenseRequestDTO: newExpenseRequestDTO)
+    ) {
       result in
       switch result {
       case .success:

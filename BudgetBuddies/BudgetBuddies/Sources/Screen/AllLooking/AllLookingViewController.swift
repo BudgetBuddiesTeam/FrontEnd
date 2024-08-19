@@ -146,8 +146,9 @@ extension AllLookingViewController {
   }
 
   @objc private func pocketCalendarContainerTapped() {
-    if let tabBarController = self.tabBarController as? RootTabBarViewController {
-      tabBarController.selectedIndex = 2
+    debugPrint("주머니 캘린더")
+    if let rootTabBarController = self.navigationController?.parent as? RootTabBarController {
+      rootTabBarController.selectedIndex = 2  // CalendarViewController가 있는 인덱스로 설정
 
       // 노티로 시점 전달 (CalendarViewController에게)
       NotificationCenter.default.post(

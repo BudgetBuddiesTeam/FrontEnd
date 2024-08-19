@@ -113,10 +113,14 @@ final class ExpenseRouterTests: XCTestCase {
   func testPostAddedExpenseEndpoint() {
 
     // Request Variable
-    let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(categoryId: 2, amount: 98700, description: "뭐에 거의 10만원이나 썼을까", expenseDate: "2024-08-18 00:00:00")
+    let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(
+      categoryId: 2, amount: 98700, description: "뭐에 거의 10만원이나 썼을까",
+      expenseDate: "2024-08-18 00:00:00")
 
     // Network Transmitting Code
-    provider.request(.postAddedExpense(userId: self.userId, addedExpenseRequestDTO: sampleNewExpenseRequestDTO)) {
+    provider.request(
+      .postAddedExpense(userId: self.userId, addedExpenseRequestDTO: sampleNewExpenseRequestDTO)
+    ) {
       result in
       defer { self.expectation.fulfill() }
 
@@ -129,7 +133,7 @@ final class ExpenseRouterTests: XCTestCase {
         do {
           let decodedData = try JSONDecoder().decode(
             AddedExpenseResponseDTO.self, from: response.data)
-          debugPrint("/expenses/add/{userId} API에서 가져온 데이터 디코딩 성공")	
+          debugPrint("/expenses/add/{userId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
           XCTFail("/expenses/add/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")

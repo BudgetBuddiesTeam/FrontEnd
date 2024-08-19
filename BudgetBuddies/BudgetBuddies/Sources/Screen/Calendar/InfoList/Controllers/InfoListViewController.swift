@@ -59,12 +59,12 @@ final class InfoListViewController: UIViewController {
     setupNavigationBar()
     setupTableView()
   }
-    
-    // 탭바에 가려지는 요소 보이게 하기
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.tableView.contentInset.bottom = 15
-    }
+
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tableView.contentInset.bottom = 15
+  }
 
   // MARK: - Set up Title
   private func setupTitle() {
@@ -205,7 +205,7 @@ extension InfoListViewController: UITableViewDataSource {
 
     case .discount:
       let discountsCount = self.discounts.count
-      return discountsCount + 1   // 제일 위에 빈 셀 포함
+      return discountsCount + 1  // 제일 위에 빈 셀 포함
 
     case .support:
       let supportsCount = self.supports.count
@@ -213,61 +213,61 @@ extension InfoListViewController: UITableViewDataSource {
     }
   }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = UITableViewCell()
-            cell.backgroundColor = .clear
-            cell.selectionStyle = .none
-            return cell
-        }
-        
-        if indexPath.row >= 1 {
-            switch infoType {
-            case .discount:  // 할인정보
-                let informationCell =
-                tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-                as! InformationCell
-                informationCell.configure(infoType: .discount)
-                
-                // 대리자 설정
-                informationCell.delegate = self
-                
-                // 데이터 전달
-                let discount = discounts[indexPath.row - 1]
-                informationCell.discount = discount
-                
-                // 자간 조절
-                informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
-                informationCell.dateLabel.setCharacterSpacing(-0.3)
-                informationCell.percentLabel.setCharacterSpacing(-0.3)
-                
-                informationCell.selectionStyle = .none
-                return informationCell
-                
-            case .support:  // 지원정보
-                let informationCell =
-                tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-                as! InformationCell
-                informationCell.configure(infoType: .support)
-                
-                // 대리자 설정
-                informationCell.delegate = self
-                
-                // 데이터 전달
-                let support = supports[indexPath.row - 1]
-                informationCell.support = support
-                
-                // 자간 조절
-                informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
-                informationCell.dateLabel.setCharacterSpacing(-0.3)
-                
-                informationCell.selectionStyle = .none
-                return informationCell
-            }
-        }
-        
-        return UITableViewCell()
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == 0 {
+      let cell = UITableViewCell()
+      cell.backgroundColor = .clear
+      cell.selectionStyle = .none
+      return cell
     }
+
+    if indexPath.row >= 1 {
+      switch infoType {
+      case .discount:  // 할인정보
+        let informationCell =
+          tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+          as! InformationCell
+        informationCell.configure(infoType: .discount)
+
+        // 대리자 설정
+        informationCell.delegate = self
+
+        // 데이터 전달
+        let discount = discounts[indexPath.row - 1]
+        informationCell.discount = discount
+
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
+        informationCell.percentLabel.setCharacterSpacing(-0.3)
+
+        informationCell.selectionStyle = .none
+        return informationCell
+
+      case .support:  // 지원정보
+        let informationCell =
+          tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+          as! InformationCell
+        informationCell.configure(infoType: .support)
+
+        // 대리자 설정
+        informationCell.delegate = self
+
+        // 데이터 전달
+        let support = supports[indexPath.row - 1]
+        informationCell.support = support
+
+        // 자간 조절
+        informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
+        informationCell.dateLabel.setCharacterSpacing(-0.3)
+
+        informationCell.selectionStyle = .none
+        return informationCell
+      }
+    }
+
+    return UITableViewCell()
+  }
 }
 
 // MARK: - UITableView Delegate

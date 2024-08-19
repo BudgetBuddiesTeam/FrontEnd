@@ -67,12 +67,12 @@ final class MainViewController: UIViewController {
     setGestureAction()
     observeDataModel()
   }
-    
-    // 탭바에 가려지는 요소 보이게 하기
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.mainScrollView.contentInset.bottom = 10
-    }
+
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.mainScrollView.contentInset.bottom = 10
+  }
 
   // MARK: - Methods
 
@@ -162,12 +162,13 @@ extension MainViewController {
 
   // "N월 주머니 정보" 옆에 있는 "전체보기 >" 버튼
   @objc private func budgetInfoLookEntireButtonContainerTapped() {
-      if let rootTabBarController = self.navigationController?.parent as? RootTabBarController {
-          rootTabBarController.selectedIndex = 2  // CalendarViewController가 있는 인덱스로 설정
-          
-          // 노티로 시점 전달 (CalendarViewController에게)
-          NotificationCenter.default.post(name: NSNotification.Name("AllLookingToCalendar"), object: nil)
-      }
+    if let rootTabBarController = self.navigationController?.parent as? RootTabBarController {
+      rootTabBarController.selectedIndex = 2  // CalendarViewController가 있는 인덱스로 설정
+
+      // 노티로 시점 전달 (CalendarViewController에게)
+      NotificationCenter.default.post(
+        name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+    }
   }
 
   // "N월 소비 분석" 옆에 있는 "전체보기 >" 버튼

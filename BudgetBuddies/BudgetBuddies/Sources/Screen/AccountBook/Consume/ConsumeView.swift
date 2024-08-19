@@ -203,7 +203,7 @@ class ConsumeView: UIView {
       make.width.equalTo(rectangleWidth)
       make.height.equalTo(rectangleHeight)
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30) // 기존 20에서 10 추가(탭바 가림 해결)
+      make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)  // 기존 20에서 10 추가(탭바 가림 해결)
     }
   }
 }

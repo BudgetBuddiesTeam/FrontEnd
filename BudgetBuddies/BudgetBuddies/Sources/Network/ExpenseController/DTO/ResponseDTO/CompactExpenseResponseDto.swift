@@ -8,13 +8,13 @@
 import Foundation
 
 struct CompactExpenseResponseDto: Codable {
-    let expenseID: Int
-    let description: String
-    let amount, categoryID: Int
+  let expenseID: Int
+  let description: String
+  let amount, categoryID: Int
 
-    enum CodingKeys: String, CodingKey {
-        case expenseID = "expenseId"
-        case description, amount
-        case categoryID = "categoryId"
-    }
+  enum CodingKeys: String, CodingKey {
+    case expenseID = "expenseId"
+    case description, amount
+    case categoryID = "categoryId"
+  }
 }

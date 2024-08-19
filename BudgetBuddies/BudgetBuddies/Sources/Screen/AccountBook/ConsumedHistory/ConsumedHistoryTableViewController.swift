@@ -51,11 +51,13 @@ final class ConsumedHistoryTableViewController: UIViewController {
   }
 
   // MARK: - Methods
-  
+
   /// 모델 객체이 데이터를 서버에서 가져오고 난 후 UX 제어 함수
   ///
   /// 모델 객체를 사용해서 비즈니스 로직이라는 관심사를 분리한 후, 발생할 수 있는 경우에 따른 UX 설계는 컨트롤러에서 진행
-  private func setActionAfterGetMonthlyExpenseData(result: Result<String, ConsumedHistoryModel.NetworkError>) {
+  private func setActionAfterGetMonthlyExpenseData(
+    result: Result<String, ConsumedHistoryModel.NetworkError>
+  ) {
     var errorMessage: String
     switch result {
     case .success:

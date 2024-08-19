@@ -8,7 +8,7 @@
 import Foundation
 
 struct MonthlyExpenseCompactResponseDto: Codable {
-    let expenseMonth: String
-    let totalConsumptionAmount: Int
-    let expenses: [String: [CompactExpenseResponseDto]]
+  let expenseMonth: String
+  let totalConsumptionAmount: Int
+  let expenses: [String: [CompactExpenseResponseDto]]
 }

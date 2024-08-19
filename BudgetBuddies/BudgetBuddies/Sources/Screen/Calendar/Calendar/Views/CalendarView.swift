@@ -37,13 +37,13 @@ class CalendarView: UIView {
 
   // MARK: - UI Components
   // 스크롤뷰
-    var scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsVerticalScrollIndicator = false
-        sv.showsHorizontalScrollIndicator = false
-        return sv
-    }()
-    
+  var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.showsVerticalScrollIndicator = false
+    sv.showsHorizontalScrollIndicator = false
+    return sv
+  }()
+
   lazy var stackView: UIStackView = {
     let sv = UIStackView(arrangedSubviews: [
       bannerView,

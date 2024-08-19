@@ -137,11 +137,11 @@ final class AnalysisReportViewController: UIViewController {
     setupConstraints()
     setupPieChart()
   }
-    // 탭바에 가려지는 요소 보이게 하기
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.scrollView.contentInset.bottom = 10
-    }
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.scrollView.contentInset.bottom = 10
+  }
 
   // MARK: - Methods
 

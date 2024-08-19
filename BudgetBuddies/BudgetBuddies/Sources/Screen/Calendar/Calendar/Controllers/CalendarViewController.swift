@@ -298,6 +298,22 @@ extension CalendarViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 168
   }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if tableView == calendarView.discountInfoTableView, self.discountRecommends.count != 0 {
+      let infoId = self.discountRecommends[indexPath.row].id
+      let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
+    }
+
+    if tableView == calendarView.supportInfoTableView, self.supportRecommends.count != 0 {
+      let infoId = self.supportRecommends[indexPath.row].id
+      let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
+    }
+  }
 }
 
 extension CalendarViewController: MonthPickerViewControllerDelegate {
@@ -308,12 +324,6 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 }
 
 extension CalendarViewController: InformationCellDelegate {
-  func didTabInformationCell(in cell: InformationCell) {
-    let vc = BottomSheetViewController()
-    vc.modalPresentationStyle = .overFullScreen
-    self.present(vc, animated: true, completion: nil)
-  }
-
   func didTapWebButton(in cell: InformationCell, urlString: String) {
     guard let url = URL(string: urlString) else {
       print("Error: 유효하지 않은 url \(urlString)")

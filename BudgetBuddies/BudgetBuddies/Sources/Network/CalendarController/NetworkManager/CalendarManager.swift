@@ -14,7 +14,7 @@ final class CalendarManager {
 
   let CalendarProvider = MoyaProvider<CalendarRouter>()
 
-  typealias CalendarNetworkCompletion = (Result<CalendarResponse, Error>) -> Void
+  typealias CalendarNetworkCompletion = (Result<CalendarResponseDTO, Error>) -> Void
 
   func fetchCalendar(request: YearMonth, completion: @escaping (CalendarNetworkCompletion)) {
     CalendarProvider.request(.getCalendar(request: request)) { result in
@@ -24,7 +24,7 @@ final class CalendarManager {
         print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
-          let CalendarResponse = try decoder.decode(CalendarResponse.self, from: response.data)
+          let CalendarResponse = try decoder.decode(CalendarResponseDTO.self, from: response.data)
           completion(.success(CalendarResponse))
 
         } catch {

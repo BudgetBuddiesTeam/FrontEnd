@@ -14,7 +14,7 @@ final class DiscountInfoManager {
 
   let DiscountInfoProvider = MoyaProvider<DiscountInfoRouter>()
 
-  typealias DiscountInfoNetworkCompletion = (Result<DiscountsResponse, Error>) -> Void
+  typealias DiscountInfoNetworkCompletion = (Result<DiscountsResponseDTO, Error>) -> Void
 
   func fetchDiscounts(request: InfoRequest, completion: @escaping (DiscountInfoNetworkCompletion)) {
     DiscountInfoProvider.request(.getDiscounts(request: request)) { result in
@@ -24,7 +24,7 @@ final class DiscountInfoManager {
         print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
-          let DiscountsResponse = try decoder.decode(DiscountsResponse.self, from: response.data)
+          let DiscountsResponse = try decoder.decode(DiscountsResponseDTO.self, from: response.data)
           completion(.success(DiscountsResponse))
 
         } catch {

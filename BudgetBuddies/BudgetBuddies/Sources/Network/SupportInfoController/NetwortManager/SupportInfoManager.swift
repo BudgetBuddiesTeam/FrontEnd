@@ -14,7 +14,7 @@ final class SupportInfoManager {
 
   let SupportInfoProvider = MoyaProvider<SupportInfoRouter>()
 
-  typealias SupportInfoNetworkCompletion = (Result<SupportsResponse, Error>) -> Void
+  typealias SupportInfoNetworkCompletion = (Result<SupportsResponseDTO, Error>) -> Void
 
   func fetchSupports(request: InfoRequest, completion: @escaping (SupportInfoNetworkCompletion)) {
     SupportInfoProvider.request(.getSupports(request: request)) { result in
@@ -24,7 +24,7 @@ final class SupportInfoManager {
         print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
-          let SupportsResponse = try decoder.decode(SupportsResponse.self, from: response.data)
+          let SupportsResponse = try decoder.decode(SupportsResponseDTO.self, from: response.data)
           completion(.success(SupportsResponse))
 
         } catch {

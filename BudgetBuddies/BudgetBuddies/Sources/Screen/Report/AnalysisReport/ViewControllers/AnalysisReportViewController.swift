@@ -33,6 +33,8 @@ final class AnalysisReportViewController: UIViewController {
   let scrollView = UIScrollView()
   let contentView = UIView()
 
+  // MARK: - UI Components
+
   let titleLabel = {
     let label = UILabel()
     label.text = "혜인님 또래는 \n어떻게 소비했을까요?"
@@ -117,6 +119,14 @@ final class AnalysisReportViewController: UIViewController {
     return view
   }()
 
+  // MARK: - View Life Cycle
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    navigationController?.navigationBar.isHidden = false
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
       setNavi()
@@ -127,6 +137,8 @@ final class AnalysisReportViewController: UIViewController {
     setupConstraints()
     setupPieChart()
   }
+
+  // MARK: - Methods
 
   private func setupViews() {
     view.backgroundColor = .white

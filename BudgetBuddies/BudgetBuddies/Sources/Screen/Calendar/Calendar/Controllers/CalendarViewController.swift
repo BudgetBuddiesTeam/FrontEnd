@@ -2,31 +2,44 @@
 //  CalendarViewController.swift
 //  BudgetBuddies
 //
-//  Created by 김승원 on 7/24/24.
+//  Created by 김승원 on 8/12/24.
 //
 
-import SnapKit
 import UIKit
 
 final class CalendarViewController: UIViewController {
-  // MARK: - UI Components
-  lazy var tableView = UITableView()
-
-  // 일단 임시로 2024.07
-  var calendarModel: YearMonth? {
+  // MARK: - Properties
+  var yearMonth: YearMonth? {
     didSet {
-      self.tableView.reloadData()
+      setupData()
+      calendarView.yearMonth = self.yearMonth
     }
   }
 
+  // networking
+  var calendarManager = CalendarManager.shared
+  var discountRecommends: [InfoDtoList] = []
+  var supportRecommends: [InfoDtoList] = []
+  var calendarInfos: MonthInfoDto?
+
+  // MARK: - UI Components
+  // 뷰
+  var calendarView = CalendarView()
+
   // MARK: - Life Cycle ⭐️
+  override func loadView() {
+    self.view = calendarView
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
-    setupData()
+    setupNowYearMonth()
+    //    setupData()
+    setupTableViews()
+    setupButtonActions()
     setupNavigationBar()
-    setupTableView()
+    setupNotificationCenterObservers()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -35,248 +48,289 @@ final class CalendarViewController: UIViewController {
     setupNavigationBar()
   }
 
-  // MARK: - Set up Data
-  private func setupData() {
-    self.calendarModel = YearMonth(year: 2024, month: 7)  // 현재 달로 바꾸기
+  deinit {
+    // 노티 remove (메모리 누수 방지)
+    NotificationCenter.default.removeObserver(
+      self, name: NSNotification.Name("MainToCalendar"), object: nil)
+    NotificationCenter.default.removeObserver(
+      self, name: NSNotification.Name("AllLookingToCalendar"), object: nil)
   }
 
-  // MARK: - Set up NavigationBar
+  // MARK: - Set up NotificationCenterObservers
+  // 노티 등록
+  private func setupNotificationCenterObservers() {
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(switchToCalendarHandler),
+      name: NSNotification.Name("MainToCalendar"), object: nil)
+
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(switchToCalendarHandler),
+      name: NSNotification.Name("AllLookingToCalendar"), object: nil)
+  }
+
+  // MARK: - Set up Now YearMonth
+  func setupNowYearMonth() {
+    self.yearMonth = YearMonth.setNowYearMonth()
+  }
+
+  // MARK: - Set up Data
+  private func setupData() {
+    print("-----------캘린더 메인 fetch-----------")
+    guard let yearMonth = self.yearMonth else { return }
+
+    calendarManager.fetchCalendar(request: yearMonth) { result in
+      switch result {
+      case .success(let response):
+        print("데이터 디코딩 성공")
+        self.discountRecommends = response.result.recommendMonthInfoDto.discountInfoDtoList
+        self.supportRecommends = response.result.recommendMonthInfoDto.supportInfoDtoList
+        self.calendarInfos = response.result.calendarMonthInfoDto
+
+        DispatchQueue.main.async {
+          // 캘린더 api
+          self.calendarView.mainCalendarView.calendarInfos = self.calendarInfos
+
+          // 추천 api
+          // 데이터 개수에 따라 테이블 뷰 높이 설정
+          let discountCount = self.discountRecommends.count
+          let supportCount = self.supportRecommends.count
+          self.calendarView.discountTableViewHeight = discountCount == 0 ? 168 : discountCount * 168
+          self.calendarView.supportTableViewHeight = supportCount == 0 ? 168 : supportCount * 168
+
+          // 데이터 유무에 따라 전체보기 활성화 여부 전달
+          let discountInfoListEnabled = self.discountRecommends.count == 0 ? false : true
+          let supportInfoListEnabled = self.supportRecommends.count == 0 ? false : true
+          self.calendarView.discountInfoTitleWithButtonView.isEnabled = discountInfoListEnabled
+          self.calendarView.supportInfoTitleWithButtonView.isEnabled = supportInfoListEnabled
+
+          // 테이블 뷰 리로드
+          self.calendarView.discountInfoTableView.reloadData()
+          self.calendarView.supportInfoTableView.reloadData()
+        }
+
+      case .failure(let error):
+        print("데이터 디코딩 실패")
+        print(error.localizedDescription)
+      }
+    }
+  }
+
+  // MARK: - Set up TableViews
+  private func setupTableViews() {
+    // 할인정보 테이블 뷰
+    let discountTV = calendarView.discountInfoTableView
+    discountTV.delegate = self
+    discountTV.dataSource = self
+
+    // 지원정보 테이블 뷰
+    let supportTV = calendarView.supportInfoTableView
+    supportTV.delegate = self
+    supportTV.dataSource = self
+
+    // 셀 등록
+    registerCells()
+
+  }
+
+  // MARK: - Register Cells
+  private func registerCells() {
+    let discountTV = calendarView.discountInfoTableView
+    discountTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+    discountTV.register(ReadyInfoCell.self, forCellReuseIdentifier: ReadyInfoCell.identifier)
+
+    let supportTV = calendarView.supportInfoTableView
+    supportTV.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+    supportTV.register(ReadyInfoCell.self, forCellReuseIdentifier: ReadyInfoCell.identifier)
+
+  }
+
+  // MARK: - Set up Button Actions
+  // 뷰컨에서 버튼 액션 관리 (MVC 패턴)
+  private func setupButtonActions() {
+    // 할인정보 전체보기 제스처
+    let discountDetailTapGesture = UITapGestureRecognizer(
+      target: self, action: #selector(didTapShowDiscountDetail))
+    calendarView.discountInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(
+      discountDetailTapGesture)
+
+    // 지원정보 전체보기 제스처
+    let supportDetailTapGesture = UITapGestureRecognizer(
+      target: self, action: #selector(didTapShowSupportDetail))
+    calendarView.supportInfoTitleWithButtonView.showDetailStackView.addGestureRecognizer(
+      supportDetailTapGesture)
+
+    // 캘린더 선택 제스처
+    let selectCalendarTapGesture = UITapGestureRecognizer(
+      target: self, action: #selector(didTapSelectCalendar))
+    calendarView.mainCalendarView.yearMonthStackView.addGestureRecognizer(selectCalendarTapGesture)
+
+    // 버튼 액션
+  }
+
+  // MARK: - Set up Navigation Bar
   private func setupNavigationBar() {
     navigationController?.navigationBar.isHidden = true
   }
 
-  // MARK: - Set up TableView
-  private func setupTableView() {
+  // MARK: - Selectors
+  // 할인정보 전체보기
+  @objc
+  private func didTapShowDiscountDetail() {
 
-    registerTableViewCell()
-
-    tableView.backgroundColor = .clear
-    tableView.separatorStyle = .none
-    tableView.allowsSelection = true
-    tableView.showsVerticalScrollIndicator = false
-
-    tableView.dataSource = self
-    tableView.delegate = self
-
-    self.view.addSubview(tableView)
-
-    // 제약조건
-    tableView.snp.makeConstraints { make in
-      make.top.bottom.equalToSuperview()
-      make.leading.trailing.equalToSuperview()
+    // 할인정보가 하나라도 있으면 전체보기
+    if discountRecommends.count >= 1 {
+      let vc = InfoListViewController(infoType: .discount)
+      vc.yearMonth = self.yearMonth
+      self.navigationController?.pushViewController(vc, animated: true)
     }
   }
 
-  // MARK: - Register TableView Cell
-  private func registerTableViewCell() {
-    tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
-    tableView.register(MainCalendarCell.self, forCellReuseIdentifier: MainCalendarCell.identifier)
-    tableView.register(
-      InfoTitleWithButtonCell.self, forCellReuseIdentifier: InfoTitleWithButtonCell.identifier)
-    tableView.register(InformationCell.self, forCellReuseIdentifier: InformationCell.identifier)
+  // 지원정보 전체보기
+  @objc
+  private func didTapShowSupportDetail() {
+
+    // 지원정보가 하나라도 있으면 전체보기
+    if supportRecommends.count >= 1 {
+      let vc = InfoListViewController(infoType: .support)
+      vc.yearMonth = self.yearMonth
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
+  // 날짜 선택
+  @objc
+  private func didTapSelectCalendar() {
+    print(#function)
+    let vc = MonthPickerViewController()
+    vc.yearMonth = yearMonth
+
+    vc.delegate = self
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  @objc
+  private func switchToCalendarHandler() {
+    setupNowYearMonth()
   }
 }
 
 // MARK: - UITableView DataSource
 extension CalendarViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 8
+    if tableView == calendarView.discountInfoTableView {
+      let discountCount = discountRecommends.count == 0 ? 1 : discountRecommends.count
+      return discountCount
+    }
+
+    if tableView == calendarView.supportInfoTableView {
+      let supportCount = supportRecommends.count == 0 ? 1 : supportRecommends.count
+      return supportCount
+    }
+
+    return 1
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let tempCell = UITableViewCell()
-    tempCell.backgroundColor = .gray
+    // 할인정보 테이블 뷰
+    if tableView == calendarView.discountInfoTableView {
+      if indexPath.row < discountRecommends.count {
+        let cell =
+          tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+          as! InformationCell
+        cell.configure(infoType: .discount)
 
-    if indexPath.row == 0 {  // 상단 배너
-      let bannerCell =
-        tableView.dequeueReusableCell(withIdentifier: BannerCell.identifier, for: indexPath)
-        as! BannerCell
+        // 대리자
+        cell.delegate = self
 
-      bannerCell.selectionStyle = .none
-      return bannerCell
+        // 데이터 전달
+        let discountRecommend = self.discountRecommends[indexPath.row]
+        cell.recommend = discountRecommend
 
-    } else if indexPath.row == 1 {  // 메인 캘린더
-      let mainCalendarCell =
-        tableView.dequeueReusableCell(withIdentifier: MainCalendarCell.identifier, for: indexPath)
-        as! MainCalendarCell
+        cell.selectionStyle = .none
+        return cell
 
-      // 임시로 날짜 전달
-      if let calendarModel = calendarModel {
-        mainCalendarCell.ymModel = calendarModel
-        mainCalendarCell.isSixWeek = calendarModel.isSixWeeksLong()
-        // 여기서 나중에 특정월에있는 할인지원정보들 fetch해서 보내기
+      } else {
+        let cell =
+          tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath)
+          as! ReadyInfoCell
+        cell.configure(infoType: .discount)
+
+        cell.selectionStyle = .none
+        return cell
       }
-
-      mainCalendarCell.delegate = self
-
-      mainCalendarCell.selectionStyle = .none
-      return mainCalendarCell
-
-    } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
-      let infoTitleWithButtonCell =
-        tableView.dequeueReusableCell(
-          withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
-        as! InfoTitleWithButtonCell
-      infoTitleWithButtonCell.configure(infoType: .discount)
-
-      // 대리자 설정
-      infoTitleWithButtonCell.delegate = self
-
-      infoTitleWithButtonCell.selectionStyle = .none
-      return infoTitleWithButtonCell
-
-    } else if indexPath.row == 3 || indexPath.row == 4 {  // 할인정보 셀
-      let informationCell =
-        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-        as! InformationCell
-      informationCell.configure(infoType: .discount)
-
-      // 대리자 설정
-      informationCell.delegate = self
-
-      // 데이터 전달
-      informationCell.infoTitleLabel.text = "지그재그 썸머세일"
-      informationCell.dateLabel.text = "08.17 ~ 08.20"
-      informationCell.percentLabel.text = "~80%"
-      informationCell.urlString = "https://www.naver.com"
-
-      informationCell.selectionStyle = .none
-      return informationCell
-
-    } else if indexPath.row == 5 {  // 지원정보 타이틀, 전체보기 버튼
-      let infoTitleWithButtonCell =
-        tableView.dequeueReusableCell(
-          withIdentifier: InfoTitleWithButtonCell.identifier, for: indexPath)
-        as! InfoTitleWithButtonCell
-      infoTitleWithButtonCell.configure(infoType: .support)
-
-      // 대리자 설정
-      infoTitleWithButtonCell.delegate = self
-
-      infoTitleWithButtonCell.selectionStyle = .none
-      return infoTitleWithButtonCell
-
-    } else if indexPath.row == 6 || indexPath.row == 7 {  // 지원정보 셀
-      let informationCell =
-        tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
-        as! InformationCell
-      informationCell.configure(infoType: .support)
-
-      // 대리자 설정
-      informationCell.delegate = self
-
-      // 데이터 전달
-      informationCell.infoTitleLabel.text = "국가장학금 1차 신청"
-      informationCell.dateLabel.text = "08.17 ~ 08.20"
-      informationCell.urlString = "https://www.google.com"
-
-      informationCell.selectionStyle = .none
-      return informationCell
     }
 
-    return tempCell
+    // 지원정보 테이블 뷰
+    if tableView == calendarView.supportInfoTableView {
+      if indexPath.row < supportRecommends.count {
+        let cell =
+          tableView.dequeueReusableCell(withIdentifier: InformationCell.identifier, for: indexPath)
+          as! InformationCell
+        cell.configure(infoType: .support)
 
+        // 대리자
+        cell.delegate = self
+
+        // 데이터 전달
+        let supportRecommend = self.supportRecommends[indexPath.row]
+        cell.recommend = supportRecommend
+
+        cell.selectionStyle = .none
+        return cell
+
+      } else {
+        let cell =
+          tableView.dequeueReusableCell(withIdentifier: ReadyInfoCell.identifier, for: indexPath)
+          as! ReadyInfoCell
+        cell.configure(infoType: .support)
+
+        cell.selectionStyle = .none
+        return cell
+      }
+    }
+
+    return UITableViewCell()
   }
 }
 
 // MARK: - UITableView Delegate
 extension CalendarViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if indexPath.row == 0 {  // 상단 배너
-      return 127  //
-
-    } else if indexPath.row == 1 {  // 메인 캘린더
-      //      return 538 // 510 + 7 + 15 + 6
-      return UITableView.automaticDimension
-
-    } else if indexPath.row == 2 {  // 할인정보 타이틀, 전체보기 버튼
-      return 64
-
-    } else if indexPath.row == 3 || indexPath.row == 4 {  // 할인정보 셀
-      return 168
-
-    } else if indexPath.row == 5 {  // 지원정보 타이틀, 전체보기 버튼
-      return 64
-
-    } else if indexPath.row == 6 || indexPath.row == 7 {  // 지원정보 셀
-      return 168
-    }
-
-    return 100
+    return 168
   }
 
-  //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-  //        if indexPath.row == 1 {
-  //            return 538 // 캘린더 셀 최소 높이
-  //        }
-  //
-  //        return UITableView.automaticDimension
-  //    }
-
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 6 || indexPath.row == 7 {
-      let vc = BottomSheetViewController()
+    if tableView == calendarView.discountInfoTableView, self.discountRecommends.count != 0 {
+      let infoId = self.discountRecommends[indexPath.row].id
+      let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
+      vc.modalPresentationStyle = .overFullScreen
+      self.present(vc, animated: true, completion: nil)
+    }
+
+    if tableView == calendarView.supportInfoTableView, self.supportRecommends.count != 0 {
+      let infoId = self.supportRecommends[indexPath.row].id
+      let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
       vc.modalPresentationStyle = .overFullScreen
       self.present(vc, animated: true, completion: nil)
     }
   }
 }
 
-// MARK: - MonthPickerViewController Delegate
 extension CalendarViewController: MonthPickerViewControllerDelegate {
-  // 년도, 달 바꾸기 완료 버튼을 누르는 시점
+  // MonthPickerViewController에서 년월 선택버튼 누르는 시점
   func didTapSelectButton(year: Int, month: Int) {
-    print("CalendarViewController 전달받은 날짜: \(year)년 \(month)월")
-    self.calendarModel = YearMonth(year: year, month: month)
+    self.yearMonth = YearMonth(year: year, month: month)
   }
 }
 
-// MARK: - MainCalendarCell Delegate
-extension CalendarViewController: MainCalendarCellDelegate {
-  // 년도, 달 바꾸기 버튼 누르는 시점
-  func didTapSelectYearMonth(in cell: MainCalendarCell) {
-    let vc = MonthPickerViewController()
-    vc.calendarModel = calendarModel
-
-    vc.delegate = self
-
-    self.present(vc, animated: true, completion: nil)
-  }
-}
-
-// MARK: - InfoTitleWithButtonCell Delegate
-extension CalendarViewController: InfoTitleWithButtonCellDelegate {
-  // infoTitleWithButtonCell: 전체보기 버튼 눌리는 시점
-  func didTapShowDetailViewButton(
-    in cell: InfoTitleWithButtonCell, infoType: InfoType
-  ) {
-
-    let vc: UIViewController
-
-    switch infoType {
-    case .discount:
-
-      vc = InfoListViewController(infoType: .discount)
-      vc.title = "8월 할인정보"  // 추후에 데이터 받기
-    case .support:
-      vc = InfoListViewController(infoType: .support)
-      vc.title = "8월 지원정보"  // 추후에 데이터 받기
-    }
-
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-}
-
-// MARK: - InformationCell Delegate
 extension CalendarViewController: InformationCellDelegate {
-  // informationCell: 사이트 바로가기 버튼이 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {
     guard let url = URL(string: urlString) else {
       print("Error: 유효하지 않은 url \(urlString)")
       return
     }
 
-    // 외부 웹사이트로 이동
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
+
 }

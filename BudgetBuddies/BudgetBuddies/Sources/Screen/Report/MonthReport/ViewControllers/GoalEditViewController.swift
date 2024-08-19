@@ -57,6 +57,7 @@ final class GoalEditViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         setNavi()
+
     }
 
     override func viewDidLoad() {

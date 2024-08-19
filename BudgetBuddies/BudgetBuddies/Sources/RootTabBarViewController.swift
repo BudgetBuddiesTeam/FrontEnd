@@ -7,11 +7,16 @@
 
 import UIKit
 
+/*
+ 해야 할 일
+ 1. 하나의 userId로 예하 ViewController에서 사용할 수 있도록 설계해야 함
+ */
+
 class RootTabBarViewController: UITabBarController {
 
   // MARK: - Properties
 
-  private let mainViewController = MainViewController()
+  private let mainViewController = UINavigationController(rootViewController: MainViewController())
   private let consumeViewController = UINavigationController(
     rootViewController: ConsumeViewController())
   private let calendarViewController = UINavigationController(

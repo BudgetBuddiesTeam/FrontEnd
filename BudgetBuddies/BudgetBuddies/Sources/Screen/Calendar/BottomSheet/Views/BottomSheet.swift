@@ -130,15 +130,15 @@ class BottomSheet: UIView {
     }
 
     topRectView.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(14)
+      make.top.equalToSuperview().inset(15)
       make.centerX.equalToSuperview()
-      make.width.equalTo(70)
+      make.width.equalTo(71)
       make.height.equalTo(4)
     }
 
     commentsLabel.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(50)
-      make.leading.equalToSuperview().inset(38)
+      make.top.equalToSuperview().inset(44)
+      make.leading.equalToSuperview().inset(22)
       make.height.equalTo(28)
       make.width.equalTo(38)
     }

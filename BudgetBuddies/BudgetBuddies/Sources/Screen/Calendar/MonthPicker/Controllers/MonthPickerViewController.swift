@@ -27,9 +27,9 @@ final class MonthPickerViewController: DimmedViewController {
     }
   }
 
-  var calendarModel: YearMonth? {
+  var yearMonth: YearMonth? {
     didSet {
-      guard let calendarModel = calendarModel else { return }
+      guard let calendarModel = yearMonth else { return }
       guard let month = calendarModel.month else { return }
       selectedMonth = month
       setupData()
@@ -77,7 +77,7 @@ final class MonthPickerViewController: DimmedViewController {
 
   // MARK: - Set up Data
   private func setupData() {
-    monthPicker.calendarModel = calendarModel
+    monthPicker.yearMonth = yearMonth
   }
 
   // MARK: - Set up Buttons
@@ -137,7 +137,7 @@ extension MonthPickerViewController: UICollectionViewDataSource {
     monthCell.monthLabel.text = "\(indexPath.row + 1)월"
 
     // 지금 현재 month 노란색으로
-    if let month = calendarModel?.month {
+    if let month = yearMonth?.month {
       if indexPath.row + 1 == month {
         monthCell.backView.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
         monthCell.monthLabel.textColor = BudgetBuddiesAsset.AppColor.white.color

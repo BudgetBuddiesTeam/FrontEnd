@@ -14,6 +14,8 @@ final class GoalReportViewController: UIViewController {
     var services = Services()
     var getTopGoalResponse: GetTopGoalResponse? = nil
 
+  // MARK: - UI Components
+
   let tableView = UITableView()
 
   let mainLabel = {
@@ -48,17 +50,28 @@ final class GoalReportViewController: UIViewController {
       description: "50,000"),
   ]
 
+  // MARK: - View Life Cycle
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    setNavigationSetting()
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
       loadGoal()
 
-    setNavi()
+    setNavigationSetting()
     setTableView()
     setup()
     setConsts()
   }
 
-  private func setNavi() {
+  // MARK: - Methods
+
+  private func setNavigationSetting() {
+    navigationController?.navigationBar.isHidden = false
     navigationItem.title = "소비목표 레포트"
   }
 

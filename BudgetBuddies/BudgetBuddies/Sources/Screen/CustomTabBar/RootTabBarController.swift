@@ -24,7 +24,7 @@ class RootTabBarController: CustomTabBarController {
     
     // MARK: - Set up TabBar
     private func setupTabBar() {
-        print("탭바 로드")
+        self.view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
         
         self.setupViewControllers([mainViewController,
                                    consumeViewController,

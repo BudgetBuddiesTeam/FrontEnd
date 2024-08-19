@@ -32,6 +32,12 @@ class CustomTabBarController: UIViewController {
         view.layer.cornerRadius = 30
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowRadius = 10  //반경
+        view.layer.shadowOffset = CGSize(width: 0, height: -5)
+        view.layer.masksToBounds = false
+        
         return view
     }()
     
@@ -68,7 +74,7 @@ class CustomTabBarController: UIViewController {
         for (index, _) in viewControllers.enumerated() {
             let button = UIButton()
             button.tag = index
-            button.layer.borderWidth = 1
+//            button.layer.borderWidth = 1
             button.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
             tabBarView.addSubview(button)
             
@@ -107,7 +113,12 @@ class CustomTabBarController: UIViewController {
         
         self.addChild(selectedVC)
         view.insertSubview(selectedVC.view, belowSubview: tabBarView)
-        selectedVC.view.frame = view.bounds
+        
+        selectedVC.view.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.equalTo(self.tabBarView.snp.top)
+        }
+        
         selectedVC.didMove(toParent: self)
     }
     

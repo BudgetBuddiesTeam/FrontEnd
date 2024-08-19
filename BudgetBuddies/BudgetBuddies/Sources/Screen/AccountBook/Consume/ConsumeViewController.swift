@@ -184,7 +184,6 @@ extension ConsumeViewController {
     expenseDate = dateFormatter.string(from: self.selectedDate)
 
     let newExpenseRequestDTO = NewExpenseRequestDTO(
-      userId: userId,
       categoryId: categoryId,
       amount: amount,
       description: description,
@@ -199,7 +198,7 @@ extension ConsumeViewController {
 
 extension ConsumeViewController {
   private func postNewExpense(newExpenseRequestDTO: NewExpenseRequestDTO) {
-    provider.request(.postAddedExpense(addedExpenseRequestDTO: newExpenseRequestDTO)) {
+    provider.request(.postAddedExpense(userId: self.userId, addedExpenseRequestDTO: newExpenseRequestDTO)) {
       result in
       switch result {
       case .success:

@@ -16,11 +16,6 @@ import UIKit
  3. 이전 달(month)와 다음 달(month) 버튼 로직 설계
  */
 
-struct ExpenseByDay {
-  let day: Int
-  let expenseList: Expense
-}
-
 final class ConsumedHistoryTableViewController: UIViewController {
   // MARK: - Properties
 
@@ -32,25 +27,17 @@ final class ConsumedHistoryTableViewController: UIViewController {
   private var provider = MoyaProvider<ExpenseRouter>()
 
   // Variable Properties
-  private let userId = 1
-  private let pageable = Pageable(page: 0, size: 100)
-  private let currentDateString: String = {
-    var formattedCurrentDateString = String()
-    let currentDate = Date()
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    dateFormatter.locale = Locale(identifier: "ko_KR")
-    formattedCurrentDateString = dateFormatter.string(from: currentDate)
-    return formattedCurrentDateString
-  }()
-  private var lastDay: Int = 0
-  private var expensesByDay: [[Expense]] = []
+  private let consumedHistoryModel = ConsumedHistoryModel()
 
   // MARK: - View Life Cycle
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.getMonthlyExpenseDataFromServer()
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(
+      dateString: self.consumedHistoryModel.getCurrentDateString()
+    ) { [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+    }
     self.consumedHistoryTableView.reloadData()
   }
 
@@ -64,6 +51,23 @@ final class ConsumedHistoryTableViewController: UIViewController {
   }
 
   // MARK: - Methods
+  
+  /// 모델 객체이 데이터를 서버에서 가져오고 난 후 UX 제어 함수
+  ///
+  /// 모델 객체를 사용해서 비즈니스 로직이라는 관심사를 분리한 후, 발생할 수 있는 경우에 따른 UX 설계는 컨트롤러에서 진행
+  private func setActionAfterGetMonthlyExpenseData(result: Result<String, ConsumedHistoryModel.NetworkError>) {
+    var errorMessage: String
+    switch result {
+    case .success:
+      // 네트워크 로직이 성공해도 컨트롤러에서 딱히 할 것이 없는 상황
+      errorMessage = String()
+    case .failure(.connectionFailedError):
+      errorMessage = "네트워크에 문제가 있습니다"
+    case .failure(.decodingError):
+      errorMessage = "데이터 처리 간 문제가 발생했습니다"
+    }
+    self.showFailureAlertController(errorMessage: errorMessage)
+  }
 
   private func setButtonAction() {
     consumedHistoryHeaderView.previousMonthButton.addTarget(
@@ -103,14 +107,14 @@ final class ConsumedHistoryTableViewController: UIViewController {
     }
   }
 
-  private func showDataFetchingFailureUIAlertController() {
-    let getMonthlyExpenseDataFailedAlertController = UIAlertController(
+  private func showFailureAlertController(errorMessage: String) {
+    let failureAlertController = UIAlertController(
       title: "문제발생", message: "서버에서 데이터를 가져오지 못했습니다", preferredStyle: .alert)
-    let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+    let confirmedAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
       self?.navigationController?.popViewController(animated: true)
     }
-    getMonthlyExpenseDataFailedAlertController.addAction(confirmedButtonAction)
-    self.present(getMonthlyExpenseDataFailedAlertController, animated: true)
+    failureAlertController.addAction(confirmedAction)
+    self.present(failureAlertController, animated: true)
   }
 }
 
@@ -128,81 +132,16 @@ extension ConsumedHistoryTableViewController {
   }
 }
 
-// MARK: - Network
-
-extension ConsumedHistoryTableViewController {
-
-  /// 월별 소비 조회 메소드
-  private func getMonthlyExpenseDataFromServer() {
-    provider.request(
-      .getMonthlyExpenses(
-        userId: self.userId,
-        pageable: self.pageable,
-        date: self.currentDateString)
-    ) { [weak self] result in
-      switch result {
-      case .success(let response):
-        do {
-          let decodedData = try JSONDecoder().decode(
-            MonthlyExpenseResponseDTO.self, from: response.data)
-
-          self?.parseExpenseListData(expenseList: decodedData.expenseList)
-
-          self?.consumedHistoryTableView.reloadData()
-        } catch {
-          self?.showDataFetchingFailureUIAlertController()
-        }
-      case .failure:
-        self?.showDataFetchingFailureUIAlertController()
-      }
-    }
-  }
-
-  /*
-   해야 할 일
-   - 해당 부분은 서버에서 처리를 다 해서 프론트엔드로 전달해야 함
-   - 하지만 해당 비즈니스 로직 처리 코드가 없었기 때문에, 프론트엔드에서 재가공하는 코드를 생성
-   - 해당 코드는 앱에서 없어야 함
-   */
-  /// 서버에서 처리해주지 않은 소비일자 별 데이터 가공 메소드
-  ///
-  /// - Parameter expenseList: 월별 소비 항목 데이터들
-  private func parseExpenseListData(expenseList: [Expense]) {
-    let inputFormatter = DateFormatter()
-    inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    let outputFormatter = DateFormatter()
-    outputFormatter.dateFormat = "dd"
-
-    if let date = inputFormatter.date(from: expenseList[0].expenseDate) {
-      let dayString = outputFormatter.string(from: date)
-      self.lastDay = Int(dayString)!
-    } else {
-      self.lastDay = 0
-    }
-
-    self.expensesByDay = Array(repeating: [Expense](), count: self.lastDay)
-    for expense in expenseList {
-      if let date = inputFormatter.date(from: expense.expenseDate) {
-        let dayString = outputFormatter.string(from: date)
-        var dayInt = Int(dayString)!
-        dayInt -= 1
-        self.expensesByDay[dayInt].append(expense)
-      }
-    }
-    self.expensesByDay.reverse()
-  }
-}
-
 // MARK: - UITableView Delegate & DataSource
 
 extension ConsumedHistoryTableViewController: UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return self.expensesByDay.count
+    return 0
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.expensesByDay[section].count
+    return 0
   }
 }
 
@@ -215,11 +154,6 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
         withIdentifier: ConsumedHistoryTableViewCell.identifier, for: indexPath)
       as! ConsumedHistoryTableViewCell
 
-    let expense = self.expensesByDay[indexPath.section][indexPath.row]
-    cell.configure(
-      categoryId: expense.categoryID, description: expense.expenseDescription,
-      amount: expense.amount)
-
     return cell
   }
 
@@ -228,15 +162,14 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    let reversedSectionIndex = self.lastDay - section
-    return "\(reversedSectionIndex)일 N요일"
+    return "N일 N요일"
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let expense = self.expensesByDay[indexPath.section][indexPath.row]
-    let consumedHistoryDetailViewController = ConsumedHistoryDetailViewController(
-      expenseId: expense.expenseID)
-    navigationController?.pushViewController(consumedHistoryDetailViewController, animated: true)
+    /*
+     해야 할 일
+     - 셀을 탭했을 때 구현
+     */
     tableView.deselectRow(at: indexPath, animated: true)
   }
 }

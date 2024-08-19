@@ -17,7 +17,7 @@ enum ExpenseRouter {
   /// "expenses/{userId}" : 월별 소비조회
   ///
   /// - Parameter userId: 유저아이디
-  case getMonthlyExpenses(userId: Int, pageable: Pageable, date: String)
+  case getMonthlyExpenses(userId: Int, date: String)
 
   /// "expenses/{userId}"
   ///
@@ -35,7 +35,7 @@ enum ExpenseRouter {
   /// description: String,
   /// expenseDate: String
   /// 값을 갖는 POST JSON BODY
-  case postAddedExpense(addedExpenseRequestDTO: NewExpenseRequestDTO)
+  case postAddedExpense(userId: Int, addedExpenseRequestDTO: NewExpenseRequestDTO)
 
   /// "/expenses/{userId}/{expeseId}"
   ///
@@ -57,12 +57,12 @@ extension ExpenseRouter: TargetType {
 
   var path: String {
     switch self {
-    case .getMonthlyExpenses(let userId, _, _):
+    case .getMonthlyExpenses(let userId, _):
       return "/expenses/\(userId)"
     case .postUpdatedSingleExpense(let userId, _):
       return "/expenses/\(userId)"
-    case .postAddedExpense:
-      return "/expenses/add"
+    case .postAddedExpense(let userId, _):
+      return "/expenses/add/\(userId)"
     case .getSingleExpense(let userId, let expenseId):
       return "/expenses/\(userId)/\(expenseId)"
     case .deleteSingleExpense(let expenseId):
@@ -83,15 +83,13 @@ extension ExpenseRouter: TargetType {
 
   var task: Moya.Task {
     switch self {
-    case .getMonthlyExpenses(let userId, let pageable, let date):
-      return .requestParameters(
-        parameters: ["page": pageable.page, "size": pageable.size, "date": date, "userId": userId],
-        encoding: URLEncoding.queryString)
+    case .getMonthlyExpenses(_, let date):
+      return .requestParameters(parameters: ["date": date], encoding: URLEncoding.queryString)
     case .getSingleExpense:
       return .requestPlain
     case .postUpdatedSingleExpense(_, let updatedExpenseRequestDTO):
       return .requestJSONEncodable(updatedExpenseRequestDTO)
-    case .postAddedExpense(let addedExpenseRequestDTO):
+    case .postAddedExpense(_, let addedExpenseRequestDTO):
       return .requestJSONEncodable(addedExpenseRequestDTO)
     case .deleteSingleExpense:
       return .requestPlain

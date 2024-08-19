@@ -8,7 +8,6 @@
 import Foundation
 
 struct NewExpenseRequestDTO: Codable {
-  let userId: Int
   let categoryId: Int
   let amount: Int
   let description: String

@@ -31,7 +31,6 @@ final class ExpenseRouterTests: XCTestCase {
   func testGetMonthlyExpensesEndpoint() {
 
     // Request Variable
-    let pageable = Pageable(page: 0, size: 100)
     /*
      해야 할 일
      - 서버에서 사용하는 날짜 형식이 맞지 않다.
@@ -40,7 +39,7 @@ final class ExpenseRouterTests: XCTestCase {
     let date = "2024-08-16"
 
     // Network Transmitting Code
-    provider.request(.getMonthlyExpenses(userId: self.userId, pageable: pageable, date: date)) {
+    provider.request(.getMonthlyExpenses(userId: self.userId, date: date)) {
       result in
       defer { self.expectation.fulfill() }
 
@@ -53,7 +52,7 @@ final class ExpenseRouterTests: XCTestCase {
 
         do {
           let decodedData = try JSONDecoder().decode(
-            MonthlyExpenseResponseDTO.self, from: response.data)
+            MonthlyExpenseCompactResponseDto.self, from: response.data)
           debugPrint(decodedData)
         } catch (let error) {
           XCTFail("/expenses/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
@@ -77,7 +76,7 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let expenseUpdateRequestDTO = ExpenseUpdateRequestDTO(
-      expenseId: 62, categoryId: 16, expenseDate: "2024-08-21 12:50:00", amount: 1234)
+      expenseId: 101, categoryId: 1, expenseDate: "2024-08-21 12:50:00", amount: 96000)
 
     // Network Transmitting Code
     provider.request(
@@ -114,31 +113,29 @@ final class ExpenseRouterTests: XCTestCase {
   func testPostAddedExpenseEndpoint() {
 
     // Request Variable
-    let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(
-      userId: self.userId, categoryId: 1, amount: 12345, description: "iOS 회식비",
-      expenseDate: "2024-08-18 15:33:46")
+    let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(categoryId: 2, amount: 98700, description: "뭐에 거의 10만원이나 썼을까", expenseDate: "2024-08-18 00:00:00")
 
     // Network Transmitting Code
-    provider.request(.postAddedExpense(addedExpenseRequestDTO: sampleNewExpenseRequestDTO)) {
+    provider.request(.postAddedExpense(userId: self.userId, addedExpenseRequestDTO: sampleNewExpenseRequestDTO)) {
       result in
       defer { self.expectation.fulfill() }
 
       switch result {
       case .success(let response):
-        debugPrint("/expenses/add API 연결 성공")
+        debugPrint("/expenses/add/{userId} API 연결 성공")
         debugPrint(response.statusCode)
         XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
         debugPrint(response.request?.url as Any)
         do {
           let decodedData = try JSONDecoder().decode(
             AddedExpenseResponseDTO.self, from: response.data)
-          debugPrint("/expenses/add API에서 가져온 데이터 디코딩 성공")
+          debugPrint("/expenses/add/{userId} API에서 가져온 데이터 디코딩 성공")	
           debugPrint(decodedData)
         } catch (let error) {
-          XCTFail("/expenses/add API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
+          XCTFail("/expenses/add/{userId} API에서 가져온 데이터 디코딩 실패 : \(error.localizedDescription)")
         }
       case .failure(let error):
-        XCTFail("/expenses/add API 연결 실패 : \(error.localizedDescription)")
+        XCTFail("/expenses/add/{userId} API 연결 실패 : \(error.localizedDescription)")
       }
     }
 
@@ -156,7 +153,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testGetSingleExpenseEndpoint() {
 
     // Request Variable
-    let expenseId = 95
+    let expenseId = 102
 
     // Network Transmitting Code
     provider.request(.getSingleExpense(userId: self.userId, expenseId: expenseId)) { result in
@@ -196,7 +193,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testDeleteSingleExpenseEndpoint() {
 
     // Request Variale
-    let expenseId = 95
+    let expenseId = 100
 
     // Network Transmitting Code
     provider.request(.deleteSingleExpense(expenseId: expenseId)) { result in

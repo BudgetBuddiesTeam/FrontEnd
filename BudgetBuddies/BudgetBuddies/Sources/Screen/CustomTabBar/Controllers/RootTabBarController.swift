@@ -13,6 +13,7 @@ class RootTabBarController: CustomTabBarController {
     private let consumeViewController = UINavigationController(rootViewController: ConsumeViewController())
     private let calendarViewController = UINavigationController(rootViewController: CalendarViewController())
     private let allLookingViewController = UINavigationController(rootViewController: AllLookingViewController())
+
     
     
     // MARK: - Life Cycle

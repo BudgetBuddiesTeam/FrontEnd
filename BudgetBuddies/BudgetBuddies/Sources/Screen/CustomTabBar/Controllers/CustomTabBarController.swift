@@ -29,8 +29,7 @@ class CustomTabBarController: UIViewController {
         }
         didSet {
             updateView()
-            print("\(self.selectedIndex)번 뷰 보이기")
-            setupButtons()
+            updateButtons()
         }
     }
     
@@ -39,23 +38,19 @@ class CustomTabBarController: UIViewController {
     // MARK: - UI Components
     private lazy var tabBarView: UIView = {
         let view = UIView()
-        
         view.backgroundColor = .white
         view.layer.cornerRadius = 30
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
         view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
         view.layer.shadowOpacity = 1
-        view.layer.shadowRadius = 5  //반경 일단 10 -> 5로 변경해놓음 (피그마랑 비슷하게 보이게)
+        view.layer.shadowRadius = 5
         view.layer.shadowOffset = CGSize(width: 0, height: -5)
-        
         return view
     }()
     
     private lazy var tabBarMargin: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
-//        view.layer.borderWidth = 1
         return view
     }()
     
@@ -82,7 +77,7 @@ class CustomTabBarController: UIViewController {
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-80)
         }
         
-        tabBarView.addSubviews(tabBarMargin)
+        tabBarView.addSubview(tabBarMargin)
         tabBarMargin.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(marginInset)
@@ -91,16 +86,12 @@ class CustomTabBarController: UIViewController {
     
     // MARK: - Set up Buttons (탭바 버튼)
     private func setupButtons() {
-        print("CustomTabBarController: 탭바 버튼 생성")
+        buttons.forEach { $0.removeFromSuperview() } // Remove old buttons
         buttons.removeAll()
-        // 버튼의 넓이는 tab 개수에 맞춰서 유동적으로 변함
+            
         let buttonWidth = (view.bounds.width - CGFloat(marginInset * 2)) / CGFloat(viewControllers.count)
         
-        // 터치 되는 범위(버튼) 설정
         for (index, _) in viewControllers.enumerated() {
-            // 현재 눌린 탭바 이이콘 식별 변수
-            var isSelected = selectedIndex == index ? true : false
-            
             let tabBarButton = UIButton()
             tabBarButton.tag = index
             tabBarButton.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
@@ -111,16 +102,13 @@ class CustomTabBarController: UIViewController {
                 make.bottom.equalTo(view.layoutMarginsGuide.snp.bottom)
                 make.leading.equalTo(tabBarMargin.snp.leading).offset(CGFloat(index) * buttonWidth)
                 make.width.equalTo(buttonWidth)
-                
             }
             
-            // 탭바 아이콘 생성
             let tabBarIcon = TabBarIcon(tabBarIcon: tabBarIcons[index],
                                         tabBarLabel: tabBarLabels[index],
-                                        isSelected: isSelected,
                                         size: tabBarIconSizes[index])
             
-            tabBarButton.addSubviews(tabBarIcon)
+            tabBarButton.addSubview(tabBarIcon)
             tabBarIcon.snp.makeConstraints { make in
                 make.leading.trailing.bottom.equalToSuperview()
                 make.top.equalToSuperview().inset(16)
@@ -128,14 +116,25 @@ class CustomTabBarController: UIViewController {
             
             buttons.append(tabBarButton)
         }
+        
+        updateButtons() // Initial update of buttons
+    }
+    
+    // MARK: - Update Buttons
+    private func updateButtons() {
+        for (index, button) in buttons.enumerated() {
+            let isSelected = selectedIndex == index
+            button.isSelected = isSelected
+            if let tabBarIcon = button.subviews.compactMap({ $0 as? TabBarIcon }).first {
+                tabBarIcon.updateAppearance(isSelected: isSelected)
+            }
+        }
     }
     
     // MARK: - Update View
     private func updateView() {
         deleteView()
         setupView()
-        
-        buttons.forEach { $0.isSelected = ($0.tag == selectedIndex) }
     }
         
     // MARK: - Delete View
@@ -162,9 +161,9 @@ class CustomTabBarController: UIViewController {
     }
     
     // MARK: - Selectors
-    // 탭바 버튼 누르면 tag바꾸기
     @objc private func tabButtonTapped(_ sender: UIButton) {
-        selectedIndex = sender.tag
-        print("CustomTabBarController: \(selectedIndex) 눌림")
+        if selectedIndex != sender.tag {
+            selectedIndex = sender.tag
+        }
     }
 }

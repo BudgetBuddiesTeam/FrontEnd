@@ -184,7 +184,7 @@ final class FaceChartView: UIView {
 
     totalSpendLabel.snp.makeConstraints {
       $0.top.equalTo(spendTitleLabel.snp.bottom).offset(4)
-      $0.leading.equalToSuperview().offset(60)
+        $0.centerX.equalTo(spendTitleLabel)
     }
 
     separatorView.snp.makeConstraints {
@@ -201,14 +201,14 @@ final class FaceChartView: UIView {
 
     totalRemainLabel.snp.makeConstraints {
       $0.top.equalTo(remainTitleLabel.snp.bottom).offset(4)
-      $0.trailing.equalToSuperview().offset(-60)
+        $0.centerX.equalTo(remainTitleLabel)
     }
   }
 
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "")
     dataSet.colors = [
-      BudgetBuddiesAsset.AppColor.coreYellow.color, BudgetBuddiesAsset.AppColor.barGray.color,
+        BudgetBuddiesAsset.AppColor.coreYellow.color, BudgetBuddiesAsset.AppColor.strokeGray1.color,
     ]
     dataSet.drawValuesEnabled = false
     dataSet.sliceSpace = 2
@@ -226,6 +226,10 @@ final class FaceChartView: UIView {
     pieChartView.notifyDataSetChanged()
     pieChartView.animate(xAxisDuration: 1.4, easingOption: .easeOutBack)  // 애니메이션을 추가
   }
+    
+    func updateCenterImage(image: UIImage?) {
+        centerImageView.image = image
+    }
 
   func updateLabels(spend: String, remain: String) {
     totalSpendLabel.text = spend

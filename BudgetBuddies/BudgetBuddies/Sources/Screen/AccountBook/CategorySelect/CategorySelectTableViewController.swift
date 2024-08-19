@@ -54,6 +54,11 @@ class CategorySelectTableViewController: UITableViewController {
       forCellReuseIdentifier: CategorySelectTableViewCell.identifier)
     setNavigation()
   }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.tableView.contentInset.bottom = 15
+    }
 
   // MARK: - Methods
 

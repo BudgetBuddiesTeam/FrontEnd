@@ -164,6 +164,46 @@ class CustomTabBarController: UIViewController {
     @objc private func tabButtonTapped(_ sender: UIButton) {
         if selectedIndex != sender.tag {
             selectedIndex = sender.tag
+        } else {
+            
+            // 선택된 NavController가져오기
+            if let navController = viewControllers[selectedIndex] as? UINavigationController {
+                
+                if navController.viewControllers.count > 1 {
+                    navController.popToRootViewController(animated: true)
+                    
+                    print("CustomTabBarController: To RootViewController")
+                } else {
+                    // 현재 뷰가 root뷰컨(젤 처음)이라면 리프레시
+                    if let rootViewController = navController.viewControllers.first {
+                        // 루트 뷰 컨트롤러의 view에서 UIScrollView를 찾습니다.
+                        if let scrollView = findScrollView(in: rootViewController.view) {
+                            scrollView.layoutIfNeeded()
+                                                    
+                            // Safe Area까지 정확히 스크롤되도록 설정
+                            let topInset = scrollView.adjustedContentInset.top
+                            scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
+                            
+                            print("CustomTabBarController: ScrollView REFRESH")
+                        }
+                    }
+                    
+                    print("CustomTabBarController: RootViewController REFRESH")
+                }
+            }
         }
+    }
+    
+    // MARK: - Function
+    // 서브뷰에서 UIScrollView를 찾는 함수
+    private func findScrollView(in view: UIView) -> UIScrollView? {
+        for subview in view.subviews {
+            if let scrollView = subview as? UIScrollView {
+                return scrollView
+            } else if let found = findScrollView(in: subview) {
+                return found
+            }
+        }
+        return nil
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class ConsumedPriceUILabel: UILabel {
   // MARK: - Properties
 
-  private var consumedPrice = 132128
+  private var totalConsumedPrice = 0
 
   // MARK: - Initializer
 
@@ -34,14 +34,26 @@ class ConsumedPriceUILabel: UILabel {
     numberFormatter.locale = Locale(identifier: "ko_KR")
     numberFormatter.numberStyle = .decimal
 
-    if let formattedString = numberFormatter.string(from: NSNumber(value: consumedPrice)) {
+    if let formattedString = numberFormatter.string(from: NSNumber(value: self.totalConsumedPrice))
+    {
+      self.text = "\(formattedString)원"
+    } else {
+      self.text = "\(self.totalConsumedPrice)원"
+    }
+  }
+
+  public func updateTotalConsumedPriceData(totalConsumedPrice: Int) {
+    self.totalConsumedPrice = totalConsumedPrice
+
+    let numberFormatter = NumberFormatter()
+    numberFormatter.locale = Locale(identifier: "ko_KR")
+    numberFormatter.numberStyle = .decimal
+
+    if let formattedString = numberFormatter.string(from: NSNumber(value: self.totalConsumedPrice))
+    {
       self.text = "\(formattedString)원"
     } else {
       self.text = "0원"
     }
-  }
-
-  public func updateConsumedPriceData(consumedPrice: Int) {
-    self.consumedPrice = consumedPrice
   }
 }

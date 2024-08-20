@@ -16,7 +16,7 @@ import UIKit
 class CurrentMonthUILabel: UILabel {
 
   // MARK: - Properties
-  private var monthData = 8
+  private var monthData = 0
 
   // MARK: - Initializer
 
@@ -39,5 +39,6 @@ class CurrentMonthUILabel: UILabel {
 
   public func updateMonthData(monthData: Int) {
     self.monthData = monthData
+    self.text = "\(self.monthData)월"
   }
 }

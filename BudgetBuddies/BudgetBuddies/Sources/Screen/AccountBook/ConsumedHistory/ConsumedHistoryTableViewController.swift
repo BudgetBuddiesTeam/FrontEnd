@@ -33,12 +33,10 @@ final class ConsumedHistoryTableViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(
-      dateString: self.consumedHistoryModel.getCurrentDateString()
-    ) { [weak self] result in
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer { [weak self] result in
       self?.setActionAfterGetMonthlyExpenseData(result: result)
+      self?.consumedHistoryTableView.reloadData()
     }
-    self.consumedHistoryTableView.reloadData()
   }
 
   override func viewDidLoad() {
@@ -58,17 +56,22 @@ final class ConsumedHistoryTableViewController: UIViewController {
   private func setActionAfterGetMonthlyExpenseData(
     result: Result<String, ConsumedHistoryModel.NetworkError>
   ) {
-    var errorMessage: String
     switch result {
     case .success:
-      // 네트워크 로직이 성공해도 컨트롤러에서 딱히 할 것이 없는 상황
-      errorMessage = String()
+      self.consumedHistoryHeaderView
+        .currentMonthLabel
+        .updateMonthData(monthData: self.consumedHistoryModel.getModelMonthNumber())
+      self.consumedHistoryHeaderView
+        .totalConsumedPriceLabel
+        .updateTotalConsumedPriceData(
+          totalConsumedPrice: self.consumedHistoryModel.getTotalConsumptionAmount())
     case .failure(.connectionFailedError):
-      errorMessage = "네트워크에 문제가 있습니다"
+      let errorMessage = "네트워크에 문제가 있습니다"
+      self.showFailureAlertController(errorMessage: errorMessage)
     case .failure(.decodingError):
-      errorMessage = "데이터 처리 간 문제가 발생했습니다"
+      let errorMessage = "데이터 처리 간 문제가 발생했습니다"
+      self.showFailureAlertController(errorMessage: errorMessage)
     }
-    self.showFailureAlertController(errorMessage: errorMessage)
   }
 
   private func setButtonAction() {
@@ -125,12 +128,50 @@ final class ConsumedHistoryTableViewController: UIViewController {
 extension ConsumedHistoryTableViewController {
   @objc
   private func consumedHistoryHeaderViewPreviousMonthButtonTapped() {
+    let calendar = Calendar.current
+    let currentModelDateString = self.consumedHistoryModel.getModelDateString()
+    let currentModelDateFormatter = DateFormatter()
+    currentModelDateFormatter.dateFormat = "yyyy-MM-dd"
+    let currentModelDateObject = currentModelDateFormatter.date(from: currentModelDateString)!
 
+    let currentMonthComponents = calendar.dateComponents(
+      [.year, .month], from: currentModelDateObject)
+    let firstDayOfCurrentMonth = calendar.date(from: currentMonthComponents)!
+
+    let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: firstDayOfCurrentMonth)!
+
+    let currentMonthFormatted = currentModelDateFormatter.string(from: firstDayOfCurrentMonth)
+    let previousMonthDateString = currentModelDateFormatter.string(from: previousMonthDate)
+
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(dateString: previousMonthDateString) {
+      [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+      self?.consumedHistoryTableView.reloadData()
+    }
   }
 
   @objc
   private func consumedHistoryHeaderViewNextMonthButtonTapped() {
+    let calendar = Calendar.current
+    let currentModelDateString = self.consumedHistoryModel.getModelDateString()
+    let currentModelDateFormatter = DateFormatter()
+    currentModelDateFormatter.dateFormat = "yyyy-MM-dd"
+    let currentModelDateObject = currentModelDateFormatter.date(from: currentModelDateString)!
 
+    let currentMonthComponents = calendar.dateComponents(
+      [.year, .month], from: currentModelDateObject)
+    let firstDayOfCurrentMonth = calendar.date(from: currentMonthComponents)!
+
+    let nextMonthDate = calendar.date(byAdding: .month, value: +1, to: firstDayOfCurrentMonth)!
+
+    let currentMonthFormatted = currentModelDateFormatter.string(from: firstDayOfCurrentMonth)
+    let nextMonthDateString = currentModelDateFormatter.string(from: nextMonthDate)
+
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(dateString: nextMonthDateString) {
+      [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+      self?.consumedHistoryTableView.reloadData()
+    }
   }
 }
 
@@ -139,11 +180,11 @@ extension ConsumedHistoryTableViewController {
 extension ConsumedHistoryTableViewController: UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 0
+    return self.consumedHistoryModel.getSpentDaysCountInMonth()
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 0
+    return self.consumedHistoryModel.getDailyExpenses(section: section).count
   }
 }
 
@@ -156,6 +197,13 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
         withIdentifier: ConsumedHistoryTableViewCell.identifier, for: indexPath)
       as! ConsumedHistoryTableViewCell
 
+    let expenses = self.consumedHistoryModel.getDailyExpenses(section: indexPath.section)
+    let singleExpense = expenses[indexPath.row]
+
+    cell.configure(
+      categoryId: singleExpense.categoryId, description: singleExpense.description,
+      amount: singleExpense.amount)
+
     return cell
   }
 
@@ -164,14 +212,18 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return "N일 N요일"
+    let titleForHeader: String
+    let dailyExpense = self.consumedHistoryModel.getSpentDaysInfo(section: section)
+    titleForHeader = "\(dailyExpense.daysOfMonth)일 \(dailyExpense.daysOfTheWeek)"
+    return titleForHeader
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    /*
-     해야 할 일
-     - 셀을 탭했을 때 구현
-     */
+    let expenses = self.consumedHistoryModel.getDailyExpenses(section: indexPath.section)
+    let singleExpense = expenses[indexPath.row]
+    let consumedHistoryDetailViewController = ConsumedHistoryDetailViewController(
+      expenseId: singleExpense.expenseId)
+    navigationController?.pushViewController(consumedHistoryDetailViewController, animated: true)
     tableView.deselectRow(at: indexPath, animated: true)
   }
 }

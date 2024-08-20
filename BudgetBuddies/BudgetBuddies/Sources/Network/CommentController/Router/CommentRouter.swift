@@ -9,15 +9,15 @@ import Foundation
 import Moya
 
 enum CommentRouter {
-  case getDiscountsComments(discountInfoId: Int, request: PostCommentRequest)
-  case getSupportsComments(supportInfoId: Int, request: PostCommentRequest)
+  case getDiscountsComments(discountInfoId: Int, request: PostCommentRequestDTO)
+  case getSupportsComments(supportInfoId: Int, request: PostCommentRequestDTO)
   case addDiscountsComments(userId: Int, request: DiscountsCommentsRequestDTO)
   case addSupportsComments(userId: Int, request: SupportsCommentsRequestDTO)
   case deleteComments(commentId: Int)
   case getOneDiscountsComments(commentId: Int)
   case getOneSupportsComments(commentId: Int)
-    case putDiscountsComments(request: PutCommentRequest)
-    case putSupportsComments(request: PutCommentRequest)
+    case putDiscountsComments(request: PutCommentRequestDTO)
+    case putSupportsComments(request: PutCommentRequestDTO)
 }
 
 extension CommentRouter: TargetType {

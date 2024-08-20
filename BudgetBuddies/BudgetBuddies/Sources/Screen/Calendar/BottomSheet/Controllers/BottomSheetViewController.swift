@@ -42,7 +42,7 @@ final class BottomSheetViewController: DimmedViewController {
   var discountsComments: [DiscountsCommentsContent] = []
   var supportsComments: [SupportsCommentsContent] = []
   var userId: Int = 1  // 일단 하드 코딩
-  var commentRequest: PostCommentRequest?
+  var commentRequest: PostCommentRequestDTO?
 
   // MARK: - Life Cycle
   init(infoType: InfoType, infoId: Int) {
@@ -91,7 +91,7 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Set up Data
   private func setupData() {
     print("BottomSheetViewController: \(#function)")
-    self.commentRequest = PostCommentRequest(page: 0, size: 20)  // 일단 20개만 불러오기
+    self.commentRequest = PostCommentRequestDTO(page: 0, size: 20)  // 일단 20개만 불러오기
     guard let commentRequest = self.commentRequest else { return }
 
     switch self.infoType {
@@ -330,7 +330,7 @@ final class BottomSheetViewController: DimmedViewController {
               guard let commentId = self.modifyId else { return }
               
               // request 생성
-              let request = PutCommentRequest(content: newText, commentId: commentId)
+              let request = PutCommentRequestDTO(content: newText, commentId: commentId)
               print(request)
               
               switch self.infoType {

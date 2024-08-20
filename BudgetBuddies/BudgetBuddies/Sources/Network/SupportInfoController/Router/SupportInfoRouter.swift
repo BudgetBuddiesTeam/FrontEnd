@@ -11,7 +11,7 @@ import Moya
 // 입력할 파라미터 값
 
 enum SupportInfoRouter {
-  case getSupports(request: InfoRequest)
+  case getSupports(request: InfoRequestDTO)
 }
 
 extension SupportInfoRouter: TargetType {

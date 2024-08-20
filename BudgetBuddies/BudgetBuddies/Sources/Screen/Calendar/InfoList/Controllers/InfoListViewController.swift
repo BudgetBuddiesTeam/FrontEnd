@@ -21,7 +21,7 @@ final class InfoListViewController: UIViewController {
   var discountInfoManager = DiscountInfoManager.shared
   var supports: [SupportContent] = []
   var discounts: [DiscountContent] = []
-  var infoRequest: InfoRequest?
+  var infoRequest: InfoRequestDTO?
 
   // 전달받을 년월
   var yearMonth: YearMonth? {  // didSet 지워도 ok
@@ -88,7 +88,7 @@ final class InfoListViewController: UIViewController {
     guard let month = yearMonth.month else { return }
     print("InfoListViewController: \(year)년 \(month)월")
 
-    self.infoRequest = InfoRequest(year: year, month: month, page: 0, size: 10)
+    self.infoRequest = InfoRequestDTO(year: year, month: month, page: 0, size: 10)
     guard let infoRequest = self.infoRequest else { return }
 
     switch infoType {

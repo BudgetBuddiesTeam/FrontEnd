@@ -1,5 +1,5 @@
 //
-//  PutCommentRequest.swift
+//  PutCommentRequestDTO.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/20/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PutCommentRequest {
+struct PutCommentRequestDTO {
     let content: String
     let commentId: Int
 }

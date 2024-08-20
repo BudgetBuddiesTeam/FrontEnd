@@ -39,10 +39,10 @@ class ConsumedHistoryModel {
 
   // MARK: - Methods
 
-  /// 서버에서 받아온 데이터의 Month 값 반환 메소드
+  /// 서버에서 받아온 데이터의 Month 값을 반환하는 메소드
   ///
   /// 데이터를 가져오지 못했을 때는 0 값으로 반환합니다.
-  public func getDataMonth() -> Int {
+  public func getModelMonthNumber() -> Int {
     if let expenseMonth = self.monthlyExpenseResponseData?.expenseMonth {
       let inputDateFormatter = DateFormatter()
       inputDateFormatter.dateFormat = "yyyy-MM-dd"
@@ -62,8 +62,17 @@ class ConsumedHistoryModel {
     }
   }
 
-  /// 현재 날짜 데이터를 문자열로 반환합니다
-  public func getCurrentDateString() -> String {
+  /// 서버에서 불러온 데이터 모델의 날짜 데이터를 문자열로 반환하는 메소드
+  public func getModelDateString() -> String {
+    if let expenseMonth = monthlyExpenseResponseData?.expenseMonth {
+      return expenseMonth
+    } else {
+      return "0000-00-00"
+    }
+  }
+
+  /// 디바이스의 현재 날짜 데이터를 문자열로 반환합니다
+  public func getDeviceCurrentDateString() -> String {
     return self.currentDateString
   }
 
@@ -215,6 +224,7 @@ class ConsumedHistoryModel {
           let decodedData = try JSONDecoder().decode(
             MonthlyExpenseResponseDto.self, from: response.data)
           self?.monthlyExpenseResponseData = decodedData
+          handler(.success("서버에서 데이터를 불러옵니다"))
         } catch {
           handler(.failure(.decodingError))
         }

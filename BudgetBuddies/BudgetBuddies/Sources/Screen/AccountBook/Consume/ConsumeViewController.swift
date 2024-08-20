@@ -33,6 +33,7 @@ final class ConsumeViewController: UIViewController {
   private var writtenConsumedContentText = ""
   private var selectedDate = Date()
   private var selectedCategory = ""
+  private var selectedCategoryId = 0
 
   // MARK: - View Life Cycle
 
@@ -96,9 +97,15 @@ final class ConsumeViewController: UIViewController {
    */
   private func observeSelectedCategory() {
     self.categorySelectTableViewController.$selectedCategoryName
-      .sink { [weak self] newValue in
-        self?.consumeView.categorySettingButton.setTitle(newValue, for: .normal)
-        self?.selectedCategory = newValue
+      .sink { [weak self] newCategoryName in
+        self?.consumeView.categorySettingButton.setTitle(newCategoryName, for: .normal)
+        self?.selectedCategory = newCategoryName
+      }
+      .store(in: &cancellables)
+
+    self.categorySelectTableViewController.$selectedCateogryId
+      .sink { [weak self] newCategoryId in
+        self?.selectedCategoryId = newCategoryId
       }
       .store(in: &cancellables)
   }
@@ -134,40 +141,10 @@ extension ConsumeViewController {
      해야 할 일
      - ViewController에 있는 비즈니스 로직 코드도 XCTest 프레임워크 기반으로 개발할 수 있는지 연구
      */
-    let categoryId: Int
+    let categoryId = self.selectedCategoryId
     let amount: Int
     let description = self.writtenConsumedContentText
     let expenseDate: String
-
-    /*
-     해야 할 일
-     - 하드코딩 되어 있는 아래 카테고리 문자열에서 카테고리 아이디 변환 작업을 모듈화
-     */
-    switch selectedCategory {
-    case "식비":
-      categoryId = 1
-    case "쇼핑":
-      categoryId = 2
-    case "패션":
-      categoryId = 3
-    case "문화생활":
-      categoryId = 4
-    case "교통":
-      categoryId = 5
-    case "카페":
-      categoryId = 6
-    case "유흥":
-      categoryId = 7
-    case "경조사":
-      categoryId = 8
-    case "정기결제":
-      categoryId = 9
-    case "기타":
-      categoryId = 10
-    default:
-      categoryId = 11
-    }
-
     if let writtenConsumedPrice = Int(self.writtenConsumedPriceText) {
       amount = writtenConsumedPrice
     } else {

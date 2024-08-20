@@ -76,7 +76,7 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let expenseUpdateRequestDTO = ExpenseUpdateRequestDTO(
-      expenseId: 101, categoryId: 1, expenseDate: "2024-08-21 12:50:00", amount: 96000)
+      expenseId: 166, categoryId: 4, expenseDate: "2024-08-27 12:50:00", amount: 96000)
 
     // Network Transmitting Code
     provider.request(
@@ -114,8 +114,8 @@ final class ExpenseRouterTests: XCTestCase {
 
     // Request Variable
     let sampleNewExpenseRequestDTO = NewExpenseRequestDTO(
-      categoryId: 2, amount: 13500, description: "이제 머지 않았다",
-      expenseDate: "2024-08-18 00:00:00")
+      categoryId: 2, amount: 64400, description: "이제 업데이트만 남았다",
+      expenseDate: "2024-08-29 00:00:00")
 
     // Network Transmitting Code
     provider.request(
@@ -132,7 +132,7 @@ final class ExpenseRouterTests: XCTestCase {
         debugPrint(response.request?.url as Any)
         do {
           let decodedData = try JSONDecoder().decode(
-            AddedExpenseResponseDTO.self, from: response.data)
+            ExpenseResponseDTO.self, from: response.data)
           debugPrint("/expenses/add/{userId} API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {
@@ -157,7 +157,7 @@ final class ExpenseRouterTests: XCTestCase {
   func testGetSingleExpenseEndpoint() {
 
     // Request Variable
-    let expenseId = 102
+    let expenseId = 136
 
     // Network Transmitting Code
     provider.request(.getSingleExpense(userId: self.userId, expenseId: expenseId)) { result in

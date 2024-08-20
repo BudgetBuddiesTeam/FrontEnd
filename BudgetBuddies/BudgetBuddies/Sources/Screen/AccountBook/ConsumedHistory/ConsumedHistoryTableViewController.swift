@@ -60,7 +60,7 @@ final class ConsumedHistoryTableViewController: UIViewController {
     case .success:
       self.consumedHistoryHeaderView
         .currentMonthLabel
-        .updateMonthData(monthData: self.consumedHistoryModel.getDataMonth())
+        .updateMonthData(monthData: self.consumedHistoryModel.getModelMonthNumber())
       self.consumedHistoryHeaderView
         .totalConsumedPriceLabel
         .updateTotalConsumedPriceData(
@@ -128,12 +128,50 @@ final class ConsumedHistoryTableViewController: UIViewController {
 extension ConsumedHistoryTableViewController {
   @objc
   private func consumedHistoryHeaderViewPreviousMonthButtonTapped() {
+    let calendar = Calendar.current
+    let currentModelDateString = self.consumedHistoryModel.getModelDateString()
+    let currentModelDateFormatter = DateFormatter()
+    currentModelDateFormatter.dateFormat = "yyyy-MM-dd"
+    let currentModelDateObject = currentModelDateFormatter.date(from: currentModelDateString)!
 
+    let currentMonthComponents = calendar.dateComponents(
+      [.year, .month], from: currentModelDateObject)
+    let firstDayOfCurrentMonth = calendar.date(from: currentMonthComponents)!
+
+    let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: firstDayOfCurrentMonth)!
+
+    let currentMonthFormatted = currentModelDateFormatter.string(from: firstDayOfCurrentMonth)
+    let previousMonthDateString = currentModelDateFormatter.string(from: previousMonthDate)
+
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(dateString: previousMonthDateString) {
+      [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+      self?.consumedHistoryTableView.reloadData()
+    }
   }
 
   @objc
   private func consumedHistoryHeaderViewNextMonthButtonTapped() {
+    let calendar = Calendar.current
+    let currentModelDateString = self.consumedHistoryModel.getModelDateString()
+    let currentModelDateFormatter = DateFormatter()
+    currentModelDateFormatter.dateFormat = "yyyy-MM-dd"
+    let currentModelDateObject = currentModelDateFormatter.date(from: currentModelDateString)!
 
+    let currentMonthComponents = calendar.dateComponents(
+      [.year, .month], from: currentModelDateObject)
+    let firstDayOfCurrentMonth = calendar.date(from: currentMonthComponents)!
+
+    let nextMonthDate = calendar.date(byAdding: .month, value: +1, to: firstDayOfCurrentMonth)!
+
+    let currentMonthFormatted = currentModelDateFormatter.string(from: firstDayOfCurrentMonth)
+    let nextMonthDateString = currentModelDateFormatter.string(from: nextMonthDate)
+
+    self.consumedHistoryModel.getMonthlyExpenseDataFromServer(dateString: nextMonthDateString) {
+      [weak self] result in
+      self?.setActionAfterGetMonthlyExpenseData(result: result)
+      self?.consumedHistoryTableView.reloadData()
+    }
   }
 }
 
@@ -181,10 +219,11 @@ extension ConsumedHistoryTableViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    /*
-     해야 할 일
-     - 셀을 탭했을 때 구현
-     */
+    let expenses = self.consumedHistoryModel.getDailyExpenses(section: indexPath.section)
+    let singleExpense = expenses[indexPath.row]
+    let consumedHistoryDetailViewController = ConsumedHistoryDetailViewController(
+      expenseId: singleExpense.expenseId)
+    navigationController?.pushViewController(consumedHistoryDetailViewController, animated: true)
     tableView.deselectRow(at: indexPath, animated: true)
   }
 }

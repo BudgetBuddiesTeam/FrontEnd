@@ -323,12 +323,20 @@ extension InfoListViewController: UITableViewDelegate {
         let infoId = self.discounts[indexPath.row - 1].id
         let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
         vc.modalPresentationStyle = .overFullScreen
+          
+          //대리자 설정
+          vc.delegate = self
+          
         self.present(vc, animated: true, completion: nil)
 
       case .support:
         let infoId = self.supports[indexPath.row - 1].id
         let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
         vc.modalPresentationStyle = .overFullScreen
+          
+          //대리자 설정
+          vc.delegate = self
+          
         self.present(vc, animated: true, completion: nil)
       }
     }
@@ -366,4 +374,11 @@ extension InfoListViewController: InformationCellDelegate {
     // 외부 웹사이트로 이동
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
+}
+
+// MARK: - BottomSheetViewController Delegate
+extension InfoListViewController: BottomSheetViewControllerDelegate {
+    func didBottomSheetViewControllerDismissed() {
+        setupData()
+    }
 }

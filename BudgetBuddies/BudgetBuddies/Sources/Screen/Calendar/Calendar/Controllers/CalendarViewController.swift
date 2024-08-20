@@ -386,6 +386,7 @@ extension CalendarViewController: InformationCellDelegate {
 
 }
 
+// MARK: - BottomSheetViewController Delegate
 extension CalendarViewController: BottomSheetViewControllerDelegate {
     func didBottomSheetViewControllerDismissed() {
         setupData()

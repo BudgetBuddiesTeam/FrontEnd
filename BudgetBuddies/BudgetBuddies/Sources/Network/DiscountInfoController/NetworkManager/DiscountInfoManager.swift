@@ -16,7 +16,9 @@ final class DiscountInfoManager {
 
   typealias DiscountInfoNetworkCompletion = (Result<DiscountsResponseDTO, Error>) -> Void
 
-  func fetchDiscounts(request: InfoRequest, completion: @escaping (DiscountInfoNetworkCompletion)) {
+  func fetchDiscounts(
+    request: InfoRequestDTO, completion: @escaping (DiscountInfoNetworkCompletion)
+  ) {
     DiscountInfoProvider.request(.getDiscounts(request: request)) { result in
 
       switch result {

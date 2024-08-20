@@ -32,9 +32,13 @@ final class CommentManager {
     Result<GetOneSupportsCommentsResponseDTO, Error>
   ) -> Void
 
+  // 댓글 하나 수정하기
+  typealias PutDiscountsCommentsNetworkCompletion = (Result<Response, Error>) -> Void
+  typealias PutSupportsCommentsNetworkCompletion = (Result<Response, Error>) -> Void
+
   // MARK: - 할인정보 전체 댓글 불러오기
   func fetchDiscountsComments(
-    discountInfoId: Int, request: CommentRequest,
+    discountInfoId: Int, request: PostCommentRequestDTO,
     completion: @escaping (DiscountsCommentsNetworkCompletion)
   ) {
     CommentProvider.request(.getDiscountsComments(discountInfoId: discountInfoId, request: request))
@@ -61,7 +65,7 @@ final class CommentManager {
 
   // MARK: - 지원정보 전체 댓글 불러오기
   func fetchSupportsComments(
-    supportsInfoId: Int, request: CommentRequest,
+    supportsInfoId: Int, request: PostCommentRequestDTO,
     completion: @escaping (SupportsCommentsNetworkCompletion)
   ) {
     CommentProvider.request(.getSupportsComments(supportInfoId: supportsInfoId, request: request)) {
@@ -189,5 +193,39 @@ final class CommentManager {
       }
     }
 
+  }
+
+  // MARK: - 할인정보 댓글 수정
+  func modifyDiscountsComments(
+    request: PutCommentRequestDTO, completion: @escaping (PutDiscountsCommentsNetworkCompletion)
+  ) {
+    CommentProvider.request(.putDiscountsComments(request: request)) { result in
+      switch result {
+      case .success(let response):
+        print("통신 성공")
+        completion(.success(response))
+
+      case .failure(let error):
+        print("통신 에러 발생")
+        completion(.failure(error))
+      }
+    }
+  }
+
+  // MARK: - 지원정보 댓글 수정
+  func modifySupportsComments(
+    request: PutCommentRequestDTO, completion: @escaping (PutSupportsCommentsNetworkCompletion)
+  ) {
+    CommentProvider.request(.putSupportsComments(request: request)) { result in
+      switch result {
+      case .success(let response):
+        print("통신 성공")
+        completion(.success(response))
+
+      case .failure(let error):
+        print("통신 에러 발생")
+        completion(.failure(error))
+      }
+    }
   }
 }

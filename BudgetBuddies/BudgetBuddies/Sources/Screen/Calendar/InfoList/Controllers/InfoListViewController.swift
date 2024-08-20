@@ -21,7 +21,9 @@ final class InfoListViewController: UIViewController {
   var discountInfoManager = DiscountInfoManager.shared
   var supports: [SupportContent] = []
   var discounts: [DiscountContent] = []
-  var infoRequest: InfoRequest?
+  var infoRequest: InfoRequestDTO?
+
+  var commentManager = CommentManager.shared
 
   // 전달받을 년월
   var yearMonth: YearMonth? {  // didSet 지워도 ok
@@ -88,7 +90,7 @@ final class InfoListViewController: UIViewController {
     guard let month = yearMonth.month else { return }
     print("InfoListViewController: \(year)년 \(month)월")
 
-    self.infoRequest = InfoRequest(year: year, month: month, page: 0, size: 10)
+    self.infoRequest = InfoRequestDTO(year: year, month: month, page: 0, size: 10)
     guard let infoRequest = self.infoRequest else { return }
 
     switch infoType {
@@ -236,6 +238,22 @@ extension InfoListViewController: UITableViewDataSource {
         let discount = discounts[indexPath.row - 1]
         informationCell.discount = discount
 
+        // 댓글 개수 통신
+        let id = discount.id
+        let request = PostCommentRequestDTO(page: 0, size: 10)
+
+        commentManager.fetchDiscountsComments(discountInfoId: id, request: request) { result in
+          switch result {
+          case .success(let response):
+            DispatchQueue.main.async {
+              let commentCount = response.result.content.count
+              informationCell.commentCount = commentCount
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
+
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
         informationCell.dateLabel.setCharacterSpacing(-0.3)
@@ -256,6 +274,22 @@ extension InfoListViewController: UITableViewDataSource {
         // 데이터 전달
         let support = supports[indexPath.row - 1]
         informationCell.support = support
+
+        // 댓글 개수 통신
+        let id = support.id
+        let request = PostCommentRequestDTO(page: 0, size: 10)
+
+        commentManager.fetchSupportsComments(supportsInfoId: id, request: request) { result in
+          switch result {
+          case .success(let response):
+            DispatchQueue.main.async {
+              let commentCount = response.result.content.count
+              informationCell.commentCount = commentCount
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
 
         // 자간 조절
         informationCell.infoTitleLabel.setCharacterSpacing(-0.4)
@@ -289,12 +323,20 @@ extension InfoListViewController: UITableViewDelegate {
         let infoId = self.discounts[indexPath.row - 1].id
         let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
         vc.modalPresentationStyle = .overFullScreen
+
+        //대리자 설정
+        vc.delegate = self
+
         self.present(vc, animated: true, completion: nil)
 
       case .support:
         let infoId = self.supports[indexPath.row - 1].id
         let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
         vc.modalPresentationStyle = .overFullScreen
+
+        //대리자 설정
+        vc.delegate = self
+
         self.present(vc, animated: true, completion: nil)
       }
     }
@@ -331,5 +373,12 @@ extension InfoListViewController: InformationCellDelegate {
 
     // 외부 웹사이트로 이동
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
+}
+
+// MARK: - BottomSheetViewController Delegate
+extension InfoListViewController: BottomSheetViewControllerDelegate {
+  func didBottomSheetViewControllerDismissed() {
+    setupData()
   }
 }

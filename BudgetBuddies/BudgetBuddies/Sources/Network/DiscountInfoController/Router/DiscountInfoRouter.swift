@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 enum DiscountInfoRouter {
-  case getDiscounts(request: InfoRequest)
+  case getDiscounts(request: InfoRequestDTO)
 }
 
 extension DiscountInfoRouter: TargetType {

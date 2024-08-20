@@ -45,6 +45,9 @@ final class CalendarViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+      let topInset = self.calendarView.scrollView.adjustedContentInset.top
+      self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
+      
     setupNavigationBar()
   }
 

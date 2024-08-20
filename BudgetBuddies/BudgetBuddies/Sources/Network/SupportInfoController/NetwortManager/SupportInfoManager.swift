@@ -16,7 +16,8 @@ final class SupportInfoManager {
 
   typealias SupportInfoNetworkCompletion = (Result<SupportsResponseDTO, Error>) -> Void
 
-  func fetchSupports(request: InfoRequestDTO, completion: @escaping (SupportInfoNetworkCompletion)) {
+  func fetchSupports(request: InfoRequestDTO, completion: @escaping (SupportInfoNetworkCompletion))
+  {
     SupportInfoProvider.request(.getSupports(request: request)) { result in
 
       switch result {

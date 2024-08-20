@@ -16,8 +16,8 @@ enum CommentRouter {
   case deleteComments(commentId: Int)
   case getOneDiscountsComments(commentId: Int)
   case getOneSupportsComments(commentId: Int)
-    case putDiscountsComments(request: PutCommentRequestDTO)
-    case putSupportsComments(request: PutCommentRequestDTO)
+  case putDiscountsComments(request: PutCommentRequestDTO)
+  case putSupportsComments(request: PutCommentRequestDTO)
 }
 
 extension CommentRouter: TargetType {
@@ -47,12 +47,12 @@ extension CommentRouter: TargetType {
 
     case .getOneSupportsComments(let commentId):
       return "supports/comments/getOne/\(commentId)"
-        
+
     case .putDiscountsComments:
-        return "discounts/comments/modify"
-        
+      return "discounts/comments/modify"
+
     case .putSupportsComments:
-        return "supports/comments/modify"
+      return "supports/comments/modify"
     }
   }
 
@@ -78,12 +78,12 @@ extension CommentRouter: TargetType {
 
     case .getOneSupportsComments:
       return .get
-        
+
     case .putDiscountsComments:
-        return .put
-        
+      return .put
+
     case .putSupportsComments:
-        return .put
+      return .put
     }
   }
 
@@ -94,7 +94,7 @@ extension CommentRouter: TargetType {
         "page": request.page,
         "size": request.size,
       ]
-      return .requestParameters(parameters: parameters, encoding: URLEncoding.default) // url에 담아 보내기
+      return .requestParameters(parameters: parameters, encoding: URLEncoding.default)  // url에 담아 보내기
 
     case .getSupportsComments(_, let request):
       let parameters: [String: Any] = [
@@ -125,20 +125,20 @@ extension CommentRouter: TargetType {
 
     case .getOneSupportsComments:
       return .requestPlain
-        
-    case .putDiscountsComments(request: let request):
-        let parameters: [String: Any] = [
-            "content": request.content,
-            "commentId": request.commentId
-        ]
-        return .requestParameters(parameters: parameters, encoding: JSONEncoding.default) // 바디에 담아 보내기
-        
-    case .putSupportsComments(request: let request):
-        let parameters: [String: Any] = [
-            "content": request.content,
-            "commentId": request.commentId
-        ]
-        return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+
+    case .putDiscountsComments(let request):
+      let parameters: [String: Any] = [
+        "content": request.content,
+        "commentId": request.commentId,
+      ]
+      return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)  // 바디에 담아 보내기
+
+    case .putSupportsComments(let request):
+      let parameters: [String: Any] = [
+        "content": request.content,
+        "commentId": request.commentId,
+      ]
+      return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
     }
   }
 

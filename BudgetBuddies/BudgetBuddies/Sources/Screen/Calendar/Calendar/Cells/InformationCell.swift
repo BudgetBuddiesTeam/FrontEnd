@@ -84,14 +84,14 @@ class InformationCell: UITableViewCell {
 
   var likesToggle: Bool = false
   var likes: Int = 0
-    
-    // 댓글
-    var commentCount: Int? {
-        didSet {
-            guard let commentCount = self.commentCount else { return }
-            self.commentsLabel.text = String(commentCount)
-        }
+
+  // 댓글
+  var commentCount: Int? {
+    didSet {
+      guard let commentCount = self.commentCount else { return }
+      self.commentsLabel.text = String(commentCount)
     }
+  }
 
   // MARK: - UI Components
   // 뒷 배경

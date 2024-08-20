@@ -8,6 +8,6 @@
 import Foundation
 
 struct PutCommentRequestDTO {
-    let content: String
-    let commentId: Int
+  let content: String
+  let commentId: Int
 }

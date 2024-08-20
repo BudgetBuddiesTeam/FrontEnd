@@ -253,11 +253,11 @@ extension ConsumedHistoryDetailViewController {
         do {
           let decodedData = try JSONDecoder().decode(ExpenseResponseDTO.self, from: response.data)
         } catch {
-         let postUpdatedFailureUIAlertController = UIAlertController(
-          title: "다시 시도하세요", message: "소비 내역 업데이트 실패", preferredStyle: .alert)
-        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
-        postUpdatedFailureUIAlertController.addAction(confirmedButtonAction)
- 
+          let postUpdatedFailureUIAlertController = UIAlertController(
+            title: "다시 시도하세요", message: "소비 내역 업데이트 실패", preferredStyle: .alert)
+          let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
+          postUpdatedFailureUIAlertController.addAction(confirmedButtonAction)
+
         }
         let postUpdatedConfirmedUIAlertController = UIAlertController(
           title: "알림", message: "업데이트 성공", preferredStyle: .alert)

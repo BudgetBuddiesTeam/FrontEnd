@@ -21,8 +21,8 @@ final class CalendarViewController: UIViewController {
   var discountRecommends: [InfoDtoList] = []
   var supportRecommends: [InfoDtoList] = []
   var calendarInfos: MonthInfoDto?
-    
-    var commentManager = CommentManager.shared
+
+  var commentManager = CommentManager.shared
 
   // MARK: - UI Components
   // 뷰
@@ -46,8 +46,8 @@ final class CalendarViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-      
-      setupData()
+
+    setupData()
     setupNavigationBar()
   }
 
@@ -219,9 +219,9 @@ final class CalendarViewController: UIViewController {
 
   @objc
   private func switchToCalendarHandler() {
-      // 다른 뷰컨에서 넘어온 경우에 스크롤 처음으로
-      let topInset = self.calendarView.scrollView.adjustedContentInset.top
-      self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
+    // 다른 뷰컨에서 넘어온 경우에 스크롤 처음으로
+    let topInset = self.calendarView.scrollView.adjustedContentInset.top
+    self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
     setupNowYearMonth()
   }
 }
@@ -258,22 +258,22 @@ extension CalendarViewController: UITableViewDataSource {
         let discountRecommend = self.discountRecommends[indexPath.row]
         cell.recommend = discountRecommend
 
-          // 댓글 개수 통신 (수정하면 좋을 듯)
-          let id = discountRecommend.id
-          let request = PostCommentRequestDTO(page: 0, size: 10)
-          
-          commentManager.fetchDiscountsComments(discountInfoId: id, request: request) { result in
-              switch result {
-              case .success(let response):
-                  DispatchQueue.main.async {
-                      let commentCount = response.result.content.count
-                      cell.commentCount = commentCount
-                  }
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
+        // 댓글 개수 통신 (수정하면 좋을 듯)
+        let id = discountRecommend.id
+        let request = PostCommentRequestDTO(page: 0, size: 10)
+
+        commentManager.fetchDiscountsComments(discountInfoId: id, request: request) { result in
+          switch result {
+          case .success(let response):
+            DispatchQueue.main.async {
+              let commentCount = response.result.content.count
+              cell.commentCount = commentCount
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
           }
-          
+        }
+
         cell.selectionStyle = .none
         return cell
 
@@ -302,22 +302,22 @@ extension CalendarViewController: UITableViewDataSource {
         // 데이터 전달
         let supportRecommend = self.supportRecommends[indexPath.row]
         cell.recommend = supportRecommend
-          
-          // 댓글 개수 통신 (수정하면 좋을 듯)
-          let id = supportRecommend.id
-          let request = PostCommentRequestDTO(page: 0, size: 10)
-          
-          commentManager.fetchSupportsComments(supportsInfoId: id, request: request) { result in
-              switch result {
-              case .success(let response):
-                  DispatchQueue.main.async {
-                      let commentCount = response.result.content.count
-                      cell.commentCount = commentCount
-                  }
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
+
+        // 댓글 개수 통신 (수정하면 좋을 듯)
+        let id = supportRecommend.id
+        let request = PostCommentRequestDTO(page: 0, size: 10)
+
+        commentManager.fetchSupportsComments(supportsInfoId: id, request: request) { result in
+          switch result {
+          case .success(let response):
+            DispatchQueue.main.async {
+              let commentCount = response.result.content.count
+              cell.commentCount = commentCount
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
           }
+        }
 
         cell.selectionStyle = .none
         return cell
@@ -348,10 +348,10 @@ extension CalendarViewController: UITableViewDelegate {
       let infoId = self.discountRecommends[indexPath.row].id
       let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
       vc.modalPresentationStyle = .overFullScreen
-        
-        // 대리자 설정
-        vc.delegate = self
-        
+
+      // 대리자 설정
+      vc.delegate = self
+
       self.present(vc, animated: true, completion: nil)
     }
 
@@ -359,10 +359,10 @@ extension CalendarViewController: UITableViewDelegate {
       let infoId = self.supportRecommends[indexPath.row].id
       let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
       vc.modalPresentationStyle = .overFullScreen
-        
-        // 대리자 설정
-        vc.delegate = self
-        
+
+      // 대리자 설정
+      vc.delegate = self
+
       self.present(vc, animated: true, completion: nil)
     }
   }
@@ -389,7 +389,7 @@ extension CalendarViewController: InformationCellDelegate {
 
 // MARK: - BottomSheetViewController Delegate
 extension CalendarViewController: BottomSheetViewControllerDelegate {
-    func didBottomSheetViewControllerDismissed() {
-        setupData()
-    }
+  func didBottomSheetViewControllerDismissed() {
+    setupData()
+  }
 }

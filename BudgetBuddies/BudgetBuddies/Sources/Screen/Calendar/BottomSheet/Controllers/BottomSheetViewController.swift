@@ -9,28 +9,28 @@ import SnapKit
 import UIKit
 
 protocol BottomSheetViewControllerDelegate: AnyObject {
-    func didBottomSheetViewControllerDismissed()
+  func didBottomSheetViewControllerDismissed()
 }
 
 final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
-    weak var delegate: BottomSheetViewControllerDelegate?
-    
+  weak var delegate: BottomSheetViewControllerDelegate?
+
   var infoType: InfoType
   var infoId: Int
-    
-    var modifyId: Int?
-    // 댓글 수정 중인지 판단하는 변수
-    var nowModify: Bool = false {
-        didSet {
-            if nowModify {
-                print("댓글 수정 시작")
-                // 키보드 올리기
-                self.bottomSheet.commentTextView.becomeFirstResponder()
-                
-            }
-        }
+
+  var modifyId: Int?
+  // 댓글 수정 중인지 판단하는 변수
+  var nowModify: Bool = false {
+    didSet {
+      if nowModify {
+        print("댓글 수정 시작")
+        // 키보드 올리기
+        self.bottomSheet.commentTextView.becomeFirstResponder()
+
+      }
     }
+  }
 
   let textViewPrompt = "댓글을 입력해 주세요"
 
@@ -76,30 +76,30 @@ final class BottomSheetViewController: DimmedViewController {
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
-      
-      modifyCancled()
+
+    modifyCancled()
   }
 
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
-    // MARK: - selfDismiss
-    private func selfDismiss() {
-        print("댓글창 dismiss")
-        self.dismiss(animated: true, completion: nil)
-        delegate?.didBottomSheetViewControllerDismissed()
-        print("bottomSheetViewController 대리자에게 시점 전달")
+  // MARK: - selfDismiss
+  private func selfDismiss() {
+    print("댓글창 dismiss")
+    self.dismiss(animated: true, completion: nil)
+    delegate?.didBottomSheetViewControllerDismissed()
+    print("bottomSheetViewController 대리자에게 시점 전달")
+  }
+
+  // MARK: - modify canceled
+  private func modifyCancled() {
+    if self.nowModify {
+      self.nowModify = false
+      self.bottomSheet.commentTextView.text = textViewPrompt
+      self.bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
+      self.bottomSheet.updateTextViewHeight()
     }
-    
-    // MARK: - modify canceled
-    private func modifyCancled() {
-        if self.nowModify {
-            self.nowModify = false
-            self.bottomSheet.commentTextView.text = textViewPrompt
-            self.bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
-            self.bottomSheet.updateTextViewHeight()
-        }
-    }
+  }
 
   // MARK: - Set up Data
   private func setupData() {
@@ -242,8 +242,8 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Selectors
   @objc
   private func didTapView() {
-      print("댓글창 내림")
-      selfDismiss()
+    print("댓글창 내림")
+    selfDismiss()
   }
 
   @objc
@@ -271,7 +271,7 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   private func didTapTableView() {
     self.view.endEditing(true)
-      modifyCancled()
+    modifyCancled()
   }
 
   // MARK: - Handle PanGesture
@@ -304,7 +304,7 @@ final class BottomSheetViewController: DimmedViewController {
         if constant > fullScreenThreshold {
           // 특정 높이까지 내려오면 dismiss
           if constant > dismissThreshold {
-              selfDismiss()
+            selfDismiss()
           }
         }
       }
@@ -318,7 +318,7 @@ final class BottomSheetViewController: DimmedViewController {
           } else {
             // 댓글창이 중간 상태일 때 dismiss 여부 결정
             if constant > dismissThreshold {
-                self.selfDismiss()
+              self.selfDismiss()
             } else {
               self.bottomSheetTopConstraint?.update(offset: 0)
             }
@@ -336,65 +336,69 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
-      
-      if self.nowModify {
-          // 수정 중이면서, textView.text가 비어있지 않으면 수정 (PUT)
-          if let newText = self.bottomSheet.commentTextView.text {
-              print(newText)
-              guard let commentId = self.modifyId else { return }
-              
-              // request 생성
-              let request = PutCommentRequestDTO(content: newText, commentId: commentId)
-              print(request)
-              
-              switch self.infoType {
-              case .discount:
-                  commentManager.modifyDiscountsComments(request: request) { result in
-                      
-                      switch result {
-                      case .success(let response):
-                          print("댓글 수정 성공 statusCode: \(response.statusCode)")
-                          
-                          AlertManager.showAlert(on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false, confirmHandler: nil)
-                          self.setupData()
-                          
-                      case .failure(let error):
-                          print(error.localizedDescription)
-                          
-                      }
-                  }
-                  
-              case .support:
-                  commentManager.modifySupportsComments(request: request) { result in
-                      
-                      switch result {
-                      case .success(let response):
-                          print("댓글 수정 성공 statusCode: \(response.statusCode)")
-                          
-                          AlertManager.showAlert(on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false, confirmHandler: nil)
-                          self.setupData()
-                          
-                      case .failure(let error):
-                          print(error.localizedDescription)
-                          
-                      }
-                  }
-              }
-          }
-          
-          self.nowModify = false
-          print("댓글 수정 완료")
-          
-      } else {
-          // 수정 중이 아니면 POST
-          switch self.infoType {
-          case .discount:
-            postDiscountsComments()
 
-          case .support:
-            postSupportsComments()
+    if self.nowModify {
+      // 수정 중이면서, textView.text가 비어있지 않으면 수정 (PUT)
+      if let newText = self.bottomSheet.commentTextView.text {
+        print(newText)
+        guard let commentId = self.modifyId else { return }
+
+        // request 생성
+        let request = PutCommentRequestDTO(content: newText, commentId: commentId)
+        print(request)
+
+        switch self.infoType {
+        case .discount:
+          commentManager.modifyDiscountsComments(request: request) { result in
+
+            switch result {
+            case .success(let response):
+              print("댓글 수정 성공 statusCode: \(response.statusCode)")
+
+              AlertManager.showAlert(
+                on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false,
+                confirmHandler: nil)
+              self.setupData()
+
+            case .failure(let error):
+              print(error.localizedDescription)
+
+            }
           }
+
+        case .support:
+          commentManager.modifySupportsComments(request: request) { result in
+
+            switch result {
+            case .success(let response):
+              print("댓글 수정 성공 statusCode: \(response.statusCode)")
+
+              AlertManager.showAlert(
+                on: self, title: "댓글이 수정되었습니다.", message: nil, needsCancelButton: false,
+                confirmHandler: nil)
+              self.setupData()
+
+            case .failure(let error):
+              print(error.localizedDescription)
+
+            }
+          }
+        }
       }
+
+      self.nowModify = false
+      print("댓글 수정 완료")
+
+    } else {
+      // 수정 중이 아니면 POST
+      switch self.infoType {
+      case .discount:
+        postDiscountsComments()
+
+      case .support:
+        postSupportsComments()
+      }
+    }
 
     // 플레이스홀더 재배치
     bottomSheet.commentTextView.text = textViewPrompt
@@ -403,7 +407,7 @@ final class BottomSheetViewController: DimmedViewController {
   }
 
   // MARK: - Discount, Support Comments Post
-    // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
+  // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
   private func postDiscountsComments() {
     guard let textContent = bottomSheet.commentTextView.text,
       bottomSheet.commentTextView.text != textViewPrompt
@@ -563,57 +567,57 @@ extension BottomSheetViewController: UITextViewDelegate {
 
 // MARK: - CommentCell Delegate ⭐️
 extension BottomSheetViewController: CommentCellDelegate {
-    // 댓글 수정 버튼 눌리는 시점
+  // 댓글 수정 버튼 눌리는 시점
   func didTapEditButton(in cell: CommentCell, commentId: Int) {
     AlertManager.showAlert(on: self, title: "댓글을 수정하시겠습니까?", message: nil, needsCancelButton: true)
     { _ in
       print("\(self.infoType) 댓글 commentId: \(commentId)")
-        self.modifyId = commentId
+      self.modifyId = commentId
       switch self.infoType {
       case .discount:
-          
+
         self.commentManager.getOneDiscountsComments(commentId: commentId) { result in
-            
+
           switch result {
           case .success(let response):
-              dump(response.result)
-              print("수정할 댓글 content: \(response.result.content)")
-              self.nowModify = true
-              
-              // 수정할 content를 TextView에 올리기
-              DispatchQueue.main.async {
-                  self.bottomSheet.commentTextView.text = response.result.content
-              }
-              
+            dump(response.result)
+            print("수정할 댓글 content: \(response.result.content)")
+            self.nowModify = true
+
+            // 수정할 content를 TextView에 올리기
+            DispatchQueue.main.async {
+              self.bottomSheet.commentTextView.text = response.result.content
+            }
+
           case .failure(let error):
             print(error.localizedDescription)
           }
         }
-          
+
       case .support:
-        
-          self.commentManager.getOneSupportsComments(commentId: commentId) { result in
-              
-              switch result {
-              case .success(let response):
-                  dump(response.result)
-                  print("수정할 댓글 content: \(response.result.content)")
-                  self.nowModify = true
-                  
-                  // 수정할 content를 TextView에 올리기
-                  DispatchQueue.main.async {
-                      self.bottomSheet.commentTextView.text = response.result.content
-                  }
-                  
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
+
+        self.commentManager.getOneSupportsComments(commentId: commentId) { result in
+
+          switch result {
+          case .success(let response):
+            dump(response.result)
+            print("수정할 댓글 content: \(response.result.content)")
+            self.nowModify = true
+
+            // 수정할 content를 TextView에 올리기
+            DispatchQueue.main.async {
+              self.bottomSheet.commentTextView.text = response.result.content
+            }
+
+          case .failure(let error):
+            print(error.localizedDescription)
           }
+        }
       }
     }
   }
 
-    // 댓글 삭제 버튼 눌리는 시점
+  // 댓글 삭제 버튼 눌리는 시점
   func didTapDeleteButton(in cell: CommentCell, commentId: Int) {
     AlertManager.showAlert(on: self, title: "댓글을 삭제하시겠습니까?", message: nil, needsCancelButton: true)
     { _ in

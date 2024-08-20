@@ -119,7 +119,8 @@ extension ConsumeViewController {
 
   @objc
   private func rightBarButtonItemButtonTapped() {
-    navigationController?.pushViewController(ConsumedHistoryTableViewController(), animated: true)
+    navigationController?.pushViewController(
+      self.consumedHistoryTableViewController, animated: true)
   }
 
   @objc
@@ -133,7 +134,6 @@ extension ConsumeViewController {
      해야 할 일
      - ViewController에 있는 비즈니스 로직 코드도 XCTest 프레임워크 기반으로 개발할 수 있는지 연구
      */
-    let userId = self.userId
     let categoryId: Int
     let amount: Int
     let description = self.writtenConsumedContentText

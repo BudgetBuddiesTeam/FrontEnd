@@ -18,7 +18,7 @@ class ConsumedHistoryHeaderView: UIView {
     return button
   }()
 
-  public var monthTextLabel = CurrentMonthUILabel()
+  public var currentMonthLabel = CurrentMonthUILabel()
 
   public let nextMonthButton: UIButton = {
     let button = UIButton()
@@ -27,7 +27,7 @@ class ConsumedHistoryHeaderView: UIView {
     return button
   }()
 
-  public var consumedPriceLabel = ConsumedPriceUILabel()
+  public var totalConsumedPriceLabel = ConsumedPriceUILabel()
 
   // MARK: - Initializer
 
@@ -45,26 +45,26 @@ class ConsumedHistoryHeaderView: UIView {
 
   private func setLayout() {
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
-    addSubviews(previousMonthButton, monthTextLabel, consumedPriceLabel, nextMonthButton)
+    addSubviews(previousMonthButton, currentMonthLabel, totalConsumedPriceLabel, nextMonthButton)
 
     previousMonthButton.snp.makeConstraints { make in
-      make.centerY.equalTo(monthTextLabel.snp.centerY)
-      make.trailing.equalTo(monthTextLabel.snp.leading).offset(-6)
+      make.centerY.equalTo(currentMonthLabel.snp.centerY)
+      make.trailing.equalTo(currentMonthLabel.snp.leading).offset(-6)
     }
 
-    monthTextLabel.snp.makeConstraints { make in
+    currentMonthLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(46)
       make.top.equalToSuperview().inset(30)
     }
 
     nextMonthButton.snp.makeConstraints { make in
-      make.centerY.equalTo(monthTextLabel.snp.centerY)
-      make.leading.equalTo(monthTextLabel.snp.trailing).offset(6)
+      make.centerY.equalTo(currentMonthLabel.snp.centerY)
+      make.leading.equalTo(currentMonthLabel.snp.trailing).offset(6)
     }
 
-    consumedPriceLabel.snp.makeConstraints { make in
+    totalConsumedPriceLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(25)
-      make.top.equalTo(monthTextLabel.snp.bottom).offset(15)
+      make.top.equalTo(currentMonthLabel.snp.bottom).offset(15)
     }
   }
 }

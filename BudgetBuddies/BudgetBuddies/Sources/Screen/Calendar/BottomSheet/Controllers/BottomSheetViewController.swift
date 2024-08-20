@@ -8,8 +8,14 @@
 import SnapKit
 import UIKit
 
+protocol BottomSheetViewControllerDelegate: AnyObject {
+    func didBottomSheetViewControllerDismissed()
+}
+
 final class BottomSheetViewController: DimmedViewController {
   // MARK: - Properties
+    weak var delegate: BottomSheetViewControllerDelegate?
+    
   var infoType: InfoType
   var infoId: Int
     
@@ -77,6 +83,13 @@ final class BottomSheetViewController: DimmedViewController {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    // MARK: - selfDismiss
+    private func selfDismiss() {
+        print("댓글창 dismiss")
+        self.dismiss(animated: true, completion: nil)
+        delegate?.didBottomSheetViewControllerDismissed()
+        print("bottomSheetViewController 대리자에게 시점 전달")
+    }
     
     // MARK: - modify canceled
     private func modifyCancled() {
@@ -230,7 +243,7 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   private func didTapView() {
       print("댓글창 내림")
-    self.dismiss(animated: true, completion: nil)
+      selfDismiss()
   }
 
   @objc
@@ -291,7 +304,7 @@ final class BottomSheetViewController: DimmedViewController {
         if constant > fullScreenThreshold {
           // 특정 높이까지 내려오면 dismiss
           if constant > dismissThreshold {
-            self.dismiss(animated: true, completion: nil)
+              selfDismiss()
           }
         }
       }
@@ -305,7 +318,7 @@ final class BottomSheetViewController: DimmedViewController {
           } else {
             // 댓글창이 중간 상태일 때 dismiss 여부 결정
             if constant > dismissThreshold {
-              self.dismiss(animated: true, completion: nil)
+                self.selfDismiss()
             } else {
               self.bottomSheetTopConstraint?.update(offset: 0)
             }

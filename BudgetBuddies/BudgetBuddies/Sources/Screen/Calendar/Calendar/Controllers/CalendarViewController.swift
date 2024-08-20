@@ -345,6 +345,10 @@ extension CalendarViewController: UITableViewDelegate {
       let infoId = self.discountRecommends[indexPath.row].id
       let vc = BottomSheetViewController(infoType: .discount, infoId: infoId)
       vc.modalPresentationStyle = .overFullScreen
+        
+        // 대리자 설정
+        vc.delegate = self
+        
       self.present(vc, animated: true, completion: nil)
     }
 
@@ -352,6 +356,10 @@ extension CalendarViewController: UITableViewDelegate {
       let infoId = self.supportRecommends[indexPath.row].id
       let vc = BottomSheetViewController(infoType: .support, infoId: infoId)
       vc.modalPresentationStyle = .overFullScreen
+        
+        // 대리자 설정
+        vc.delegate = self
+        
       self.present(vc, animated: true, completion: nil)
     }
   }
@@ -374,4 +382,10 @@ extension CalendarViewController: InformationCellDelegate {
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 
+}
+
+extension CalendarViewController: BottomSheetViewControllerDelegate {
+    func didBottomSheetViewControllerDismissed() {
+        setupData()
+    }
 }

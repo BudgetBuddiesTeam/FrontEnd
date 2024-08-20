@@ -229,6 +229,7 @@ final class BottomSheetViewController: DimmedViewController {
   // MARK: - Selectors
   @objc
   private func didTapView() {
+      print("댓글창 내림")
     self.dismiss(animated: true, completion: nil)
   }
 

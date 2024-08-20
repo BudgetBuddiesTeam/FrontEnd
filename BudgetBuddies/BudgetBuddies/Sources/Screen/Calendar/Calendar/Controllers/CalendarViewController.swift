@@ -21,6 +21,8 @@ final class CalendarViewController: UIViewController {
   var discountRecommends: [InfoDtoList] = []
   var supportRecommends: [InfoDtoList] = []
   var calendarInfos: MonthInfoDto?
+    
+    var commentManager = CommentManager.shared
 
   // MARK: - UI Components
   // 뷰
@@ -44,7 +46,7 @@ final class CalendarViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
+      
       let topInset = self.calendarView.scrollView.adjustedContentInset.top
       self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
       
@@ -255,6 +257,21 @@ extension CalendarViewController: UITableViewDataSource {
         let discountRecommend = self.discountRecommends[indexPath.row]
         cell.recommend = discountRecommend
 
+          // 댓글 개수 통신 (수정하면 좋을 듯)
+          let id = discountRecommend.id
+          let request = PostCommentRequestDTO(page: 0, size: 10)
+          commentManager.fetchDiscountsComments(discountInfoId: id, request: request) { result in
+              switch result {
+              case .success(let response):
+                  DispatchQueue.main.async {
+                      let commentCount = response.result.content.count
+                      cell.commentCount = commentCount
+                  }
+              case .failure(let error):
+                  print(error.localizedDescription)
+              }
+          }
+          
         cell.selectionStyle = .none
         return cell
 
@@ -283,6 +300,21 @@ extension CalendarViewController: UITableViewDataSource {
         // 데이터 전달
         let supportRecommend = self.supportRecommends[indexPath.row]
         cell.recommend = supportRecommend
+          
+          // 댓글 개수 통신 (수정하면 좋을 듯)
+          let id = supportRecommend.id
+          let request = PostCommentRequestDTO(page: 0, size: 10)
+          commentManager.fetchSupportsComments(supportsInfoId: id, request: request) { result in
+              switch result {
+              case .success(let response):
+                  DispatchQueue.main.async {
+                      let commentCount = response.result.content.count
+                      cell.commentCount = commentCount
+                  }
+              case .failure(let error):
+                  print(error.localizedDescription)
+              }
+          }
 
         cell.selectionStyle = .none
         return cell

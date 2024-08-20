@@ -47,9 +47,9 @@ final class CalendarViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
       
-      let topInset = self.calendarView.scrollView.adjustedContentInset.top
-      self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
-      
+//      let topInset = self.calendarView.scrollView.adjustedContentInset.top
+//      self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
+      setupData()
     setupNavigationBar()
   }
 
@@ -260,6 +260,7 @@ extension CalendarViewController: UITableViewDataSource {
           // 댓글 개수 통신 (수정하면 좋을 듯)
           let id = discountRecommend.id
           let request = PostCommentRequestDTO(page: 0, size: 10)
+          
           commentManager.fetchDiscountsComments(discountInfoId: id, request: request) { result in
               switch result {
               case .success(let response):
@@ -304,6 +305,7 @@ extension CalendarViewController: UITableViewDataSource {
           // 댓글 개수 통신 (수정하면 좋을 듯)
           let id = supportRecommend.id
           let request = PostCommentRequestDTO(page: 0, size: 10)
+          
           commentManager.fetchSupportsComments(supportsInfoId: id, request: request) { result in
               switch result {
               case .success(let response):

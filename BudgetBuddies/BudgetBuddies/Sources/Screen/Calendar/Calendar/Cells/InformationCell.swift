@@ -353,7 +353,6 @@ class InformationCell: UITableViewCell {
       make.trailing.equalTo(likesIconImageView.snp.leading).offset(-8)
       make.top.equalToSuperview().inset(16)
       make.height.equalTo(21)
-      make.width.equalTo(9)
     }
 
     commentsIconImageView.snp.makeConstraints { make in

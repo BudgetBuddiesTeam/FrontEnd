@@ -54,7 +54,7 @@ final class ConsumeReportViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
+      loadConsume()
     setNavigationSetting()
   }
 

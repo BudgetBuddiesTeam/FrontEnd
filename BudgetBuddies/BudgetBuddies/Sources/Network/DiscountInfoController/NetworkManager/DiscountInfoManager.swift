@@ -15,7 +15,7 @@ final class DiscountInfoManager {
   let DiscountInfoProvider = MoyaProvider<DiscountInfoRouter>()
 
   typealias DiscountInfoNetworkCompletion = (Result<DiscountsResponseDTO, Error>) -> Void
-    typealias DiscountsLikesNetworkCompletion = (Result<Response, Error>) -> Void
+    typealias DiscountsLikesNetworkCompletion = (Result<DiscountOneResponseDTO, Error>) -> Void
 
   func fetchDiscounts(
     request: InfoRequestDTO, completion: @escaping (DiscountInfoNetworkCompletion)
@@ -27,8 +27,8 @@ final class DiscountInfoManager {
         print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
-          let DiscountsResponse = try decoder.decode(DiscountsResponseDTO.self, from: response.data)
-          completion(.success(DiscountsResponse))
+          let discountsResponse = try decoder.decode(DiscountsResponseDTO.self, from: response.data)
+          completion(.success(discountsResponse))
 
         } catch {
           print("데이터 디코딩 실패")
@@ -42,6 +42,7 @@ final class DiscountInfoManager {
     }
   }
     
+    // MARK: - 할인 정보에 좋아요 누르기
     func postDiscountsLikes(userId: Int, discountInfoId: Int, completion: @escaping(DiscountsLikesNetworkCompletion)) {
         
         DiscountInfoProvider.request(.postDiscountsLikes(userId: userId, discountInfoId: discountInfoId)) { result in
@@ -49,7 +50,15 @@ final class DiscountInfoManager {
             switch result {
             case .success(let response):
                 print("통신 성공")
-                completion(.success(response))
+                do {
+                    let decoder = JSONDecoder()
+                    let discountOneResponse = try decoder.decode(DiscountOneResponseDTO.self, from: response.data)
+                    completion(.success(discountOneResponse))
+                    
+                } catch {
+                    print("데이터 디코딩 실패")
+                    completion(.failure(error))
+                }
                 
             case .failure(let error):
                 print("통신 에러 발생")

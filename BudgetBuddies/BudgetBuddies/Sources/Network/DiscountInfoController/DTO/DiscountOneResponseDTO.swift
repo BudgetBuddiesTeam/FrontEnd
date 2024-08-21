@@ -1,5 +1,5 @@
 //
-//  DiscountResponseDTO.swift
+//  DiscountOneResponseDTO.swift
 //  BudgetBuddies
 //
 //  Created by 김승원 on 8/22/24.
@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - DiscountResponseDTO
-struct DiscountResponseDTO: Codable {
+struct DiscountOneResponseDTO: Codable {
     let isSuccess: Bool
     let code, message: String
     let result: DiscountResult

@@ -25,6 +25,12 @@ class InformationCell: UITableViewCell {
   var infoType: InfoType?
     
     var infoId: Int?
+    
+//    var likesToggle: Bool = false {
+//        didSet {
+//            print(self.likesToggle)
+//        }
+//    }
 
   // 전체보기 - 지원
   var support: SupportContent? {
@@ -383,6 +389,14 @@ class InformationCell: UITableViewCell {
       guard let id = self.infoId,
             let infoType = self.infoType else { return }
       
+//      self.likesToggle.toggle()
+//
+//      if likesToggle {
+//          self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
+//      } else {
+//          self.likesIconImageView.image = UIImage(named: "heartIconImage")
+//      }
+
       delegate?.didTapLikesButton(in: self, infoType: infoType, infoId: id)
   }
 }

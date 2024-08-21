@@ -380,10 +380,9 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 
 extension CalendarViewController: InformationCellDelegate {
     // 좋아요 버튼 눌리는 시점
-    func didTapLikesButton(in cell: InformationCell,infoType: InfoType, infoId: Int) {
+    func didTapLikesButton(in cell: InformationCell, infoType: InfoType, infoId: Int) {
         print("좋아요 눌린: \(infoId)")
         print("CalendarViewController: 좋아요 눌림")
-        
         switch infoType {
         case .discount:
             discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
@@ -391,6 +390,7 @@ extension CalendarViewController: InformationCellDelegate {
                 case .success(let response):
                     print("좋아요 성공")
                     print(response)
+                    
                     self.setupData()
                     
                 case .failure(let error):

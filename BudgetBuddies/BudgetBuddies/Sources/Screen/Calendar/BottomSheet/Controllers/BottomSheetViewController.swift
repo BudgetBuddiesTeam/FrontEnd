@@ -639,6 +639,10 @@ extension BottomSheetViewController: CommentCellDelegate {
         switch result {
         case .success(let response):
           print("commentId: \(commentId)번 댓글 삭제 완료 statusCode: \(response.statusCode)")
+            
+            AlertManager.showAlert(
+              on: self, title: "댓글이 삭제되었습니다.", message: nil, needsCancelButton: false,
+              confirmHandler: nil)
 
           self.setupData()
 

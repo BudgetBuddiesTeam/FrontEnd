@@ -332,11 +332,11 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
-  // MARK: - 댓글 POST, PUT ⭐️
+  // MARK: - (전송버튼) 댓글 POST, PUT ⭐️
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
-
+      
     if self.nowModify {
       // 수정 중이면서, textView.text가 비어있지 않으면 수정 (PUT)
       if let newText = self.bottomSheet.commentTextView.text {
@@ -405,6 +405,16 @@ final class BottomSheetViewController: DimmedViewController {
     bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
     bottomSheet.updateTextViewHeight()
   }
+    
+    // MARK: - scrollToBottom
+    private func scrollToBottom() {
+        let bottomInset = self.bottomSheet.commentsTableView.adjustedContentInset.bottom
+        let contentHeight = self.bottomSheet.commentsTableView.contentSize.height
+        let tableViewHeight = self.bottomSheet.commentsTableView.bounds.height
+
+        let yOffset = contentHeight - tableViewHeight + bottomInset // 테이블 뷰 스크롤이 끝까지 안 되면 offset + 20 추가
+        self.bottomSheet.commentsTableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
+    }
 
   // MARK: - Discount, Support Comments Post
   // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
@@ -427,6 +437,7 @@ final class BottomSheetViewController: DimmedViewController {
         print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
 
         self.setupData()
+          self.scrollToBottom()
 
       case .failure(let error):
         print(error.localizedDescription)
@@ -453,6 +464,7 @@ final class BottomSheetViewController: DimmedViewController {
         print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
 
         self.setupData()
+          self.scrollToBottom()
 
       case .failure(let error):
         print(error.localizedDescription)

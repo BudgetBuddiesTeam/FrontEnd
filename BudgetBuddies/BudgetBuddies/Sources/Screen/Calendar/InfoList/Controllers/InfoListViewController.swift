@@ -140,6 +140,9 @@ final class InfoListViewController: UIViewController {
     let appearance = UINavigationBarAppearance()
     appearance.configureWithDefaultBackground()
     appearance.shadowColor = nil
+      
+      // 뒤로가기 제스처 추가
+      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
     // 네비게이션 바 타이틀 폰트, 자간 설정
     let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
@@ -431,4 +434,11 @@ extension InfoListViewController: BottomSheetViewControllerDelegate {
   func didBottomSheetViewControllerDismissed() {
     setupData()
   }
+}
+
+// MARK: - 뒤로 가기 제스처 추가
+extension InfoListViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }

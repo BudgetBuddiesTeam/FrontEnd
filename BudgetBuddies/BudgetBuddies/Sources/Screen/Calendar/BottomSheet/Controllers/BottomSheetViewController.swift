@@ -336,7 +336,7 @@ final class BottomSheetViewController: DimmedViewController {
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
-      
+
     if self.nowModify {
       // 수정 중이면서, textView.text가 비어있지 않으면 수정 (PUT)
       if let newText = self.bottomSheet.commentTextView.text {
@@ -405,7 +405,7 @@ final class BottomSheetViewController: DimmedViewController {
     bottomSheet.commentTextView.textColor = BudgetBuddiesAsset.AppColor.textExample.color
     bottomSheet.updateTextViewHeight()
   }
-    
+
   // MARK: - Discount, Support Comments Post
   // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
   private func postDiscountsComments() {
@@ -587,7 +587,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
-                self.bottomSheet.updateTextViewHeight()
+              self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):
@@ -608,7 +608,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
-                self.bottomSheet.updateTextViewHeight()
+              self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):
@@ -629,10 +629,10 @@ extension BottomSheetViewController: CommentCellDelegate {
         switch result {
         case .success(let response):
           print("commentId: \(commentId)번 댓글 삭제 완료 statusCode: \(response.statusCode)")
-            
-            AlertManager.showAlert(
-              on: self, title: "댓글이 삭제되었습니다.", message: nil, needsCancelButton: false,
-              confirmHandler: nil)
+
+          AlertManager.showAlert(
+            on: self, title: "댓글이 삭제되었습니다.", message: nil, needsCancelButton: false,
+            confirmHandler: nil)
 
           self.setupData()
 

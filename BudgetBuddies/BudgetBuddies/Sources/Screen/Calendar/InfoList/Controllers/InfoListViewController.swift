@@ -374,6 +374,7 @@ extension InfoListViewController: InformationCellDelegate {
                 case .success(let response):
                     print("좋아요 성공")
                     print(response)
+                    self.setupData()
                     
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -385,6 +386,7 @@ extension InfoListViewController: InformationCellDelegate {
                 case .success(let response):
                     print("좋아요 성공")
                     print(response)
+                    self.setupData()
                     
                 case .failure(let error):
                     print(error.localizedDescription)

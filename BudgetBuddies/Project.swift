@@ -32,7 +32,7 @@ let project = Project(
       name: "BudgetBuddies",
       destinations: .iOS,
       product: .app,
-      bundleId: "com.budgetBuddies.app",
+      bundleId: "com.budgetbuddiesteam.budgetbuddiesapp",
       infoPlist: budgetBuddiesInfoPlist,
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],

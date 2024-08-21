@@ -15,6 +15,7 @@ final class SupportInfoManager {
   let SupportInfoProvider = MoyaProvider<SupportInfoRouter>()
 
   typealias SupportInfoNetworkCompletion = (Result<SupportsResponseDTO, Error>) -> Void
+    typealias SupportsLikesNetworkCompletion = (Result<Response, Error>) -> Void
 
   func fetchSupports(request: InfoRequestDTO, completion: @escaping (SupportInfoNetworkCompletion))
   {
@@ -39,4 +40,21 @@ final class SupportInfoManager {
       }
     }
   }
+    
+    func postSupportsLikes(userId: Int, supportInfoId: Int, completion: @escaping(SupportsLikesNetworkCompletion)) {
+        
+        SupportInfoProvider.request(.postSupportsLikes(userId: userId, supportInfoId: supportInfoId)) { result in
+            
+            switch result {
+            case .success(let response):
+                print("통신 성공")
+                completion(.success(response))
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+        
+    }
 }

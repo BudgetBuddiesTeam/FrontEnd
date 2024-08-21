@@ -15,6 +15,7 @@ final class DiscountInfoManager {
   let DiscountInfoProvider = MoyaProvider<DiscountInfoRouter>()
 
   typealias DiscountInfoNetworkCompletion = (Result<DiscountsResponseDTO, Error>) -> Void
+    typealias DiscountsLikesNetworkCompletion = (Result<Response, Error>) -> Void
 
   func fetchDiscounts(
     request: InfoRequestDTO, completion: @escaping (DiscountInfoNetworkCompletion)
@@ -40,4 +41,20 @@ final class DiscountInfoManager {
       }
     }
   }
+    
+    func postDiscountsLikes(userId: Int, discountInfoId: Int, completion: @escaping(DiscountsLikesNetworkCompletion)) {
+        
+        DiscountInfoProvider.request(.postDiscountsLikes(userId: userId, discountInfoId: discountInfoId)) { result in
+            
+            switch result {
+            case .success(let response):
+                print("통신 성공")
+                completion(.success(response))
+                
+            case .failure(let error):
+                print("통신 에러 발생")
+                completion(.failure(error))
+            }
+        }
+    }
 }

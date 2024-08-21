@@ -23,6 +23,9 @@ final class CalendarViewController: UIViewController {
   var calendarInfos: MonthInfoDto?
 
   var commentManager = CommentManager.shared
+    
+    var discountInfoManager = DiscountInfoManager.shared
+    var supportInfoManager = SupportInfoManager.shared
 
   // MARK: - UI Components
   // 뷰
@@ -380,6 +383,32 @@ extension CalendarViewController: InformationCellDelegate {
     func didTapLikesButton(in cell: InformationCell,infoType: InfoType, infoId: Int) {
         print("좋아요 눌린: \(infoId)")
         print("CalendarViewController: 좋아요 눌림")
+        
+        switch infoType {
+        case .discount:
+            discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
+                switch result {
+                case .success(let response):
+                    print("좋아요 성공")
+                    print(response)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        case .support:
+            supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
+                switch result {
+                case .success(let response):
+                    print("좋아요 성공")
+                    print(response)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
     // 사이트 바로가기 버튼 눌리는 시점

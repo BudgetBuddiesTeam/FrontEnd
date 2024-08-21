@@ -11,7 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-    func didTapLikesButton(in cell: InformationCell,infoType: InfoType, infoId: Int)
+    func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
 }
 
 class InformationCell: UITableViewCell {
@@ -26,12 +26,7 @@ class InformationCell: UITableViewCell {
     
     var infoId: Int?
     
-//    var likesToggle: Bool = false {
-//        didSet {
-//            print(self.likesToggle)
-//        }
-//    }
-
+    var likesCount: Int?
   // 전체보기 - 지원
   var support: SupportContent? {
     didSet {
@@ -47,6 +42,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(support.likeCount)
+        self.likesCount = support.likeCount
     }
   }
 
@@ -69,6 +65,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(discount.likeCount)
+        self.likesCount = discount.likeCount
     }
   }
 
@@ -91,7 +88,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(recommend.likeCount)
-
+        self.likesCount = recommend.likeCount
     }
   }
 
@@ -387,16 +384,9 @@ class InformationCell: UITableViewCell {
   @objc
   private func didTapLikesButton() {
       guard let id = self.infoId,
-            let infoType = self.infoType else { return }
-      
-//      self.likesToggle.toggle()
-//
-//      if likesToggle {
-//          self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
-//      } else {
-//          self.likesIconImageView.image = UIImage(named: "heartIconImage")
-//      }
+            let infoType = self.infoType,
+            let likesCount = self.likesCount else { return }
 
-      delegate?.didTapLikesButton(in: self, infoType: infoType, infoId: id)
+      delegate?.didTapLikesButton(in: self, likesCount: likesCount, infoType: infoType, infoId: id)
   }
 }

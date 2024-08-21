@@ -380,7 +380,7 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 
 extension CalendarViewController: InformationCellDelegate {
     // 좋아요 버튼 눌리는 시점
-    func didTapLikesButton(in cell: InformationCell, infoType: InfoType, infoId: Int) {
+    func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int) {
         print("좋아요 눌린: \(infoId)")
         print("CalendarViewController: 좋아요 눌림")
         switch infoType {
@@ -389,9 +389,16 @@ extension CalendarViewController: InformationCellDelegate {
                 switch result {
                 case .success(let response):
                     print("좋아요 성공")
-                    print(response)
                     
-                    self.setupData()
+                    if response.result.likeCount > likesCount {
+                        AlertManager.showAlert(on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false) { _ in
+                            self.setupData()
+                        }
+                    } else {
+                        AlertManager.showAlert(on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false) { _ in
+                            self.setupData()
+                        }
+                    }  
                     
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -403,8 +410,16 @@ extension CalendarViewController: InformationCellDelegate {
                 switch result {
                 case .success(let response):
                     print("좋아요 성공")
-                    print(response)
-                    self.setupData()
+                    
+                    if response.result.likeCount > likesCount {
+                        AlertManager.showAlert(on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false) { _ in
+                            self.setupData()
+                        }
+                    } else {
+                        AlertManager.showAlert(on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false) { _ in
+                            self.setupData()
+                        }
+                    }
                     
                 case .failure(let error):
                     print(error.localizedDescription)

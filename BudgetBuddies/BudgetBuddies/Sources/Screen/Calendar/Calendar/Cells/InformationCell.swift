@@ -11,6 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
+    func didTapLikesButton(in cell: InformationCell, id: Int)
 }
 
 class InformationCell: UITableViewCell {
@@ -22,12 +23,15 @@ class InformationCell: UITableViewCell {
   var urlString: String = ""  // customDelegate로 넘겨줘야하기 때문에 따로 보관
 
   var infoType: InfoType?
+    
+    var infoId: Int?
 
   // 전체보기 - 지원
   var support: SupportContent? {
     didSet {
       guard let support = support else { return }
 
+        self.infoId = support.id
       self.infoTitleLabel.text = support.title
       self.dateLabel.text = support.dateRangeString
       self.urlString = support.siteURL
@@ -45,6 +49,7 @@ class InformationCell: UITableViewCell {
     didSet {
       guard let discount = discount else { return }
 
+        self.infoId = discount.id
       self.infoTitleLabel.text = discount.title
       self.dateLabel.text = discount.dateRangeString
       self.urlString = discount.siteURL
@@ -65,6 +70,8 @@ class InformationCell: UITableViewCell {
   var recommend: InfoDtoList? {
     didSet {
       guard let recommend = recommend else { return }
+        
+        self.infoId = recommend.id
       self.infoTitleLabel.text = recommend.title
       self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
@@ -81,9 +88,6 @@ class InformationCell: UITableViewCell {
 
     }
   }
-
-  var likesToggle: Bool = false
-  var likes: Int = 0
 
   // 댓글
   var commentCount: Int? {
@@ -376,16 +380,7 @@ class InformationCell: UITableViewCell {
 
   @objc
   private func didTapLikesButton() {
-    print(#function)
-    self.likesToggle.toggle()
-    if likesToggle {
-      self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
-      likes += 1
-      self.likesLabel.text = String(self.likes)
-    } else {
-      self.likesIconImageView.image = UIImage(named: "heartIconImage")
-      likes -= 1
-      self.likesLabel.text = String(self.likes)
-    }
+      guard let id = infoId else { return }
+      delegate?.didTapLikesButton(in: self, id: id)
   }
 }

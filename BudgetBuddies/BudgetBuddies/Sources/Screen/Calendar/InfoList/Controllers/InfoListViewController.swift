@@ -363,6 +363,12 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
+    // 좋아요 눌리는 시점
+    func didTapLikesButton(in cell: InformationCell, id: Int) {
+        print("좋아요 눌린: \(id)")
+        print("InfoListViewController: 좋아요 눌림")
+    }
+    
 
   // informationCell: 사이트 바로가기 버튼이 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {

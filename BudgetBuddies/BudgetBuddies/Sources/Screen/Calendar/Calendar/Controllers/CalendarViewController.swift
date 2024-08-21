@@ -376,6 +376,13 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 }
 
 extension CalendarViewController: InformationCellDelegate {
+    // 좋아요 버튼 눌리는 시점
+    func didTapLikesButton(in cell: InformationCell, id: Int) {
+        print("좋아요 눌린: \(id)")
+        print("CalendarViewController: 좋아요 눌림")
+    }
+    
+    // 사이트 바로가기 버튼 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {
     guard let url = URL(string: urlString) else {
       print("Error: 유효하지 않은 url \(urlString)")

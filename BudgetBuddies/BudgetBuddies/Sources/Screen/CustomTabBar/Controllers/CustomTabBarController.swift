@@ -110,7 +110,7 @@ class CustomTabBarController: UIViewController {
         tabBarLabel: tabBarLabels[index],
         size: tabBarIconSizes[index])
 
-      tabBarButton.addSubview(tabBarIcon)
+      tabBarButton.addSubviews(tabBarIcon)
       tabBarIcon.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview()
         make.bottom.equalToSuperview().inset(8)

@@ -46,7 +46,7 @@ final class CommentManager {
 
       switch result {
       case .success(let response):
-        print("통신 성공.... 데이터 디코딩 시작")
+        //        print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
           let comments = try decoder.decode(DiscountsCommentsResponseDTO.self, from: response.data)
@@ -73,7 +73,7 @@ final class CommentManager {
 
       switch result {
       case .success(let response):
-        print("통신 성공.... 데이터 디코딩 시작")
+        //        print("통신 성공.... 데이터 디코딩 시작")
         do {
           let decoder = JSONDecoder()
           let comments = try decoder.decode(SupportsCommentsResponseDTO.self, from: response.data)

@@ -74,7 +74,7 @@ class CustomTabBarController: UIViewController {
     tabBarView.snp.makeConstraints { make in
       make.leading.trailing.equalTo(self.view)
       make.bottom.equalTo(self.view)
-      make.top.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-80)
+      make.top.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-83)  // 탭바의 높이를 safeArea기준으로 측정
     }
 
     tabBarView.addSubview(tabBarMargin)
@@ -110,7 +110,7 @@ class CustomTabBarController: UIViewController {
         tabBarLabel: tabBarLabels[index],
         size: tabBarIconSizes[index])
 
-      tabBarButton.addSubview(tabBarIcon)
+      tabBarButton.addSubviews(tabBarIcon)
       tabBarIcon.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview()
         make.bottom.equalToSuperview().inset(8)

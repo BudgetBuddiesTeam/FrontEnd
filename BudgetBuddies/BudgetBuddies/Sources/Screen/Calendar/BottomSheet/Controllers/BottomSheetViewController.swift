@@ -253,7 +253,7 @@ final class BottomSheetViewController: DimmedViewController {
     else { return }
 
     let keyboardHeight = keyboardFrame.height
-    UIView.animate(withDuration: 0.3) {
+    UIView.animate(withDuration: 0.5) {
       self.bottomSheetBottomConstraint?.update(offset: -keyboardHeight)
       self.bottomSheetTopConstraint?.update(inset: 0)
       self.view.layoutIfNeeded()
@@ -332,7 +332,7 @@ final class BottomSheetViewController: DimmedViewController {
     }
   }
 
-  // MARK: - 댓글 POST, PUT ⭐️
+  // MARK: - (전송버튼) 댓글 POST, PUT ⭐️
   @objc
   func didTapSendButton() {
     self.bottomSheet.endEditing(true)
@@ -587,6 +587,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
+              self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):
@@ -607,6 +608,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
+              self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):
@@ -627,6 +629,10 @@ extension BottomSheetViewController: CommentCellDelegate {
         switch result {
         case .success(let response):
           print("commentId: \(commentId)번 댓글 삭제 완료 statusCode: \(response.statusCode)")
+
+          AlertManager.showAlert(
+            on: self, title: "댓글이 삭제되었습니다.", message: nil, needsCancelButton: false,
+            confirmHandler: nil)
 
           self.setupData()
 

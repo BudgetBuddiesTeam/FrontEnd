@@ -11,7 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-    func didTapLikesButton(in cell: InformationCell, id: Int)
+    func didTapLikesButton(in cell: InformationCell,infoType: InfoType, infoId: Int)
 }
 
 class InformationCell: UITableViewCell {
@@ -380,7 +380,9 @@ class InformationCell: UITableViewCell {
 
   @objc
   private func didTapLikesButton() {
-      guard let id = infoId else { return }
-      delegate?.didTapLikesButton(in: self, id: id)
+      guard let id = self.infoId,
+            let infoType = self.infoType else { return }
+      
+      delegate?.didTapLikesButton(in: self, infoType: infoType, infoId: id)
   }
 }

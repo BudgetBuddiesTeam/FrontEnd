@@ -60,7 +60,7 @@ extension SupportInfoRouter: TargetType {
         let parameters: [String: Any] = [
             "userId": userId
         ]
-        return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+        return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
     }
   }
 

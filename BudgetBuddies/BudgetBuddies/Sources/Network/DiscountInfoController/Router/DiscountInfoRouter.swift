@@ -49,11 +49,11 @@ extension DiscountInfoRouter: TargetType {
       ]
       return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         
-    case .postDiscountsLikes(userId: let userId, _):
+    case .postDiscountsLikes(let userId, _):
         let parameters: [String: Any] = [
-            "userId": userId
+            "userId": userId,
         ]
-        return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+        return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString) // path만 쓰면 .queryString
     }
   }
 

@@ -364,9 +364,33 @@ extension InfoListViewController: UITableViewDelegate {
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
     // 좋아요 눌리는 시점
-    func didTapLikesButton(in cell: InformationCell, id: Int) {
-        print("좋아요 눌린: \(id)")
+    func didTapLikesButton(in cell: InformationCell, infoType: InfoType, infoId: Int) {
+        print("좋아요 눌린: \(infoId)")
         print("InfoListViewController: 좋아요 눌림")
+        switch infoType {
+        case .discount:
+            discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
+                switch result {
+                case .success(let response):
+                    print("좋아요 성공")
+                    print(response)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        case .support:
+            supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
+                switch result {
+                case .success(let response):
+                    print("좋아요 성공")
+                    print(response)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
 

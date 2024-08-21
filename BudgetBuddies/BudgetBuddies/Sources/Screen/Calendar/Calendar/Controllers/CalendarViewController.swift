@@ -377,8 +377,8 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 
 extension CalendarViewController: InformationCellDelegate {
     // 좋아요 버튼 눌리는 시점
-    func didTapLikesButton(in cell: InformationCell, id: Int) {
-        print("좋아요 눌린: \(id)")
+    func didTapLikesButton(in cell: InformationCell,infoType: InfoType, infoId: Int) {
+        print("좋아요 눌린: \(infoId)")
         print("CalendarViewController: 좋아요 눌림")
     }
     

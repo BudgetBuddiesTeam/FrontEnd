@@ -10,7 +10,7 @@ import Moya
 
 enum DiscountInfoRouter {
   case getDiscounts(request: InfoRequestDTO)
-    case postDiscountsLikes(userId: Int, discountInfoId: Int)
+  case postDiscountsLikes(userId: Int, discountInfoId: Int)
 }
 
 extension DiscountInfoRouter: TargetType {
@@ -22,9 +22,9 @@ extension DiscountInfoRouter: TargetType {
     switch self {
     case .getDiscounts:
       return "/discounts"
-        
-    case .postDiscountsLikes(_, discountInfoId: let discountInfoId):
-        return "/discounts/likes/\(discountInfoId)"
+
+    case .postDiscountsLikes(_, let discountInfoId):
+      return "/discounts/likes/\(discountInfoId)"
     }
   }
 
@@ -32,9 +32,9 @@ extension DiscountInfoRouter: TargetType {
     switch self {
     case .getDiscounts:
       return .get
-        
+
     case .postDiscountsLikes:
-        return .post
+      return .post
     }
   }
 
@@ -48,17 +48,17 @@ extension DiscountInfoRouter: TargetType {
         "size": request.size,
       ]
       return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        
+
     case .postDiscountsLikes(let userId, _):
-        let parameters: [String: Any] = [
-            "userId": userId,
-        ]
-        return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString) // path만 쓰면 .queryString
+      let parameters: [String: Any] = [
+        "userId": userId
+      ]
+      return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)  // path만 쓰면 .queryString
     }
   }
 
   var headers: [String: String]? {
-      return ["Content-type": "application/json"]
+    return ["Content-type": "application/json"]
   }
 
 }

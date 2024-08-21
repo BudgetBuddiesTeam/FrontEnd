@@ -140,9 +140,9 @@ final class InfoListViewController: UIViewController {
     let appearance = UINavigationBarAppearance()
     appearance.configureWithDefaultBackground()
     appearance.shadowColor = nil
-      
-      // 뒤로가기 제스처 추가
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
     // 네비게이션 바 타이틀 폰트, 자간 설정
     let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
@@ -366,56 +366,64 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
-    // 좋아요 눌리는 시점
-    func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int) {
-        print("좋아요 눌린: \(infoId)")
-        print("InfoListViewController: 좋아요 눌림")
-        switch infoType {
-        case .discount:
-            discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
-                switch result {
-                case .success(let response):
-                    print("좋아요 성공")
-                    
-                    if response.result.likeCount > likesCount {
-                        AlertManager.showAlert(on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false) { _ in
-                            self.setupData()
-                        }
-                        
-                    } else {
-                        AlertManager.showAlert(on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false) { _ in
-                            self.setupData()
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+  // 좋아요 눌리는 시점
+  func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
+  {
+    print("좋아요 눌린: \(infoId)")
+    print("InfoListViewController: 좋아요 눌림")
+    switch infoType {
+    case .discount:
+      discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false
+            ) { _ in
+              self.setupData()
             }
-        case .support:
-            supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
-                switch result {
-                case .success(let response):
-                    print("좋아요 성공")
-                    
-                    if response.result.likeCount > likesCount {
-                        AlertManager.showAlert(on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false) { _ in
-                            self.setupData()
-                        }
-                        
-                    } else {
-                        AlertManager.showAlert(on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false) { _ in
-                            self.setupData()
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false
+            ) { _ in
+              self.setupData()
             }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
         }
+      }
+    case .support:
+      supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false
+            ) { _ in
+              self.setupData()
+            }
+
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false
+            ) { _ in
+              self.setupData()
+            }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
     }
-    
+  }
 
   // informationCell: 사이트 바로가기 버튼이 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {
@@ -438,7 +446,7 @@ extension InfoListViewController: BottomSheetViewControllerDelegate {
 
 // MARK: - 뒤로 가기 제스처 추가
 extension InfoListViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
 }

@@ -11,7 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
-    func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
+  func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
 }
 
 class InformationCell: UITableViewCell {
@@ -23,16 +23,16 @@ class InformationCell: UITableViewCell {
   var urlString: String = ""  // customDelegate로 넘겨줘야하기 때문에 따로 보관
 
   var infoType: InfoType?
-    
-    var infoId: Int?
-    
-    var likesCount: Int?
+
+  var infoId: Int?
+
+  var likesCount: Int?
   // 전체보기 - 지원
   var support: SupportContent? {
     didSet {
       guard let support = support else { return }
 
-        self.infoId = support.id
+      self.infoId = support.id
       self.infoTitleLabel.text = support.title
       self.dateLabel.text = support.dateRangeString
       self.urlString = support.siteURL
@@ -42,7 +42,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(support.likeCount)
-        self.likesCount = support.likeCount
+      self.likesCount = support.likeCount
     }
   }
 
@@ -51,7 +51,7 @@ class InformationCell: UITableViewCell {
     didSet {
       guard let discount = discount else { return }
 
-        self.infoId = discount.id
+      self.infoId = discount.id
       self.infoTitleLabel.text = discount.title
       self.dateLabel.text = discount.dateRangeString
       self.urlString = discount.siteURL
@@ -65,7 +65,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(discount.likeCount)
-        self.likesCount = discount.likeCount
+      self.likesCount = discount.likeCount
     }
   }
 
@@ -73,8 +73,8 @@ class InformationCell: UITableViewCell {
   var recommend: InfoDtoList? {
     didSet {
       guard let recommend = recommend else { return }
-        
-        self.infoId = recommend.id
+
+      self.infoId = recommend.id
       self.infoTitleLabel.text = recommend.title
       self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
@@ -88,7 +88,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(recommend.likeCount)
-        self.likesCount = recommend.likeCount
+      self.likesCount = recommend.likeCount
     }
   }
 
@@ -383,10 +383,11 @@ class InformationCell: UITableViewCell {
 
   @objc
   private func didTapLikesButton() {
-      guard let id = self.infoId,
-            let infoType = self.infoType,
-            let likesCount = self.likesCount else { return }
+    guard let id = self.infoId,
+      let infoType = self.infoType,
+      let likesCount = self.likesCount
+    else { return }
 
-      delegate?.didTapLikesButton(in: self, likesCount: likesCount, infoType: infoType, infoId: id)
+    delegate?.didTapLikesButton(in: self, likesCount: likesCount, infoType: infoType, infoId: id)
   }
 }

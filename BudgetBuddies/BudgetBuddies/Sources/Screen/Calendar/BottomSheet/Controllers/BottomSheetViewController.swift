@@ -253,7 +253,7 @@ final class BottomSheetViewController: DimmedViewController {
     else { return }
 
     let keyboardHeight = keyboardFrame.height
-    UIView.animate(withDuration: 0.3) {
+    UIView.animate(withDuration: 0.5) {
       self.bottomSheetBottomConstraint?.update(offset: -keyboardHeight)
       self.bottomSheetTopConstraint?.update(inset: 0)
       self.view.layoutIfNeeded()
@@ -406,16 +406,6 @@ final class BottomSheetViewController: DimmedViewController {
     bottomSheet.updateTextViewHeight()
   }
     
-    // MARK: - scrollToBottom
-    private func scrollToBottom() {
-        let bottomInset = self.bottomSheet.commentsTableView.adjustedContentInset.bottom
-        let contentHeight = self.bottomSheet.commentsTableView.contentSize.height
-        let tableViewHeight = self.bottomSheet.commentsTableView.bounds.height
-
-        let yOffset = contentHeight - tableViewHeight + bottomInset // 테이블 뷰 스크롤이 끝까지 안 되면 offset + 20 추가
-        self.bottomSheet.commentsTableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
-    }
-
   // MARK: - Discount, Support Comments Post
   // 추후에 빈 텍스트 뷰 확인하는 코드를 위에 함수에 옮겨서 하나로 관리
   private func postDiscountsComments() {
@@ -437,7 +427,6 @@ final class BottomSheetViewController: DimmedViewController {
         print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
 
         self.setupData()
-          self.scrollToBottom()
 
       case .failure(let error):
         print(error.localizedDescription)
@@ -464,7 +453,6 @@ final class BottomSheetViewController: DimmedViewController {
         print("\(self.infoType)셀의 \(self.infoId)번 게시물 statusCode: \(response.statusCode)")
 
         self.setupData()
-          self.scrollToBottom()
 
       case .failure(let error):
         print(error.localizedDescription)
@@ -599,6 +587,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
+                self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):
@@ -619,6 +608,7 @@ extension BottomSheetViewController: CommentCellDelegate {
             // 수정할 content를 TextView에 올리기
             DispatchQueue.main.async {
               self.bottomSheet.commentTextView.text = response.result.content
+                self.bottomSheet.updateTextViewHeight()
             }
 
           case .failure(let error):

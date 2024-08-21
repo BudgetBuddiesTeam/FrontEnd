@@ -31,7 +31,7 @@ class CustomTabBarIcon: UIView {
   private lazy var tabBarStackView: UIStackView = {
     let sv = UIStackView(arrangedSubviews: [tabBarIconImageView, tabBarLabel])
     sv.axis = .vertical
-    sv.spacing = 12
+    sv.spacing = 16
     sv.alignment = .center
     sv.distribution = .fill
     return sv

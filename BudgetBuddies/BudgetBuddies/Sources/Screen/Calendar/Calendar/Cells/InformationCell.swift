@@ -11,6 +11,7 @@ import UIKit
 
 protocol InformationCellDelegate: AnyObject {
   func didTapWebButton(in cell: InformationCell, urlString: String)
+  func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
 }
 
 class InformationCell: UITableViewCell {
@@ -23,11 +24,15 @@ class InformationCell: UITableViewCell {
 
   var infoType: InfoType?
 
+  var infoId: Int?
+
+  var likesCount: Int?
   // 전체보기 - 지원
   var support: SupportContent? {
     didSet {
       guard let support = support else { return }
 
+      self.infoId = support.id
       self.infoTitleLabel.text = support.title
       self.dateLabel.text = support.dateRangeString
       self.urlString = support.siteURL
@@ -37,6 +42,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(support.likeCount)
+      self.likesCount = support.likeCount
     }
   }
 
@@ -45,6 +51,7 @@ class InformationCell: UITableViewCell {
     didSet {
       guard let discount = discount else { return }
 
+      self.infoId = discount.id
       self.infoTitleLabel.text = discount.title
       self.dateLabel.text = discount.dateRangeString
       self.urlString = discount.siteURL
@@ -58,6 +65,7 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(discount.likeCount)
+      self.likesCount = discount.likeCount
     }
   }
 
@@ -65,6 +73,8 @@ class InformationCell: UITableViewCell {
   var recommend: InfoDtoList? {
     didSet {
       guard let recommend = recommend else { return }
+
+      self.infoId = recommend.id
       self.infoTitleLabel.text = recommend.title
       self.dateLabel.text = recommend.dateRangeString
       self.urlString = recommend.siteURL
@@ -78,12 +88,9 @@ class InformationCell: UITableViewCell {
       }
 
       self.likesLabel.text = String(recommend.likeCount)
-
+      self.likesCount = recommend.likeCount
     }
   }
-
-  var likesToggle: Bool = false
-  var likes: Int = 0
 
   // 댓글
   var commentCount: Int? {
@@ -376,16 +383,11 @@ class InformationCell: UITableViewCell {
 
   @objc
   private func didTapLikesButton() {
-    print(#function)
-    self.likesToggle.toggle()
-    if likesToggle {
-      self.likesIconImageView.image = UIImage(named: "fillHeartIconImage")
-      likes += 1
-      self.likesLabel.text = String(self.likes)
-    } else {
-      self.likesIconImageView.image = UIImage(named: "heartIconImage")
-      likes -= 1
-      self.likesLabel.text = String(self.likes)
-    }
+    guard let id = self.infoId,
+      let infoType = self.infoType,
+      let likesCount = self.likesCount
+    else { return }
+
+    delegate?.didTapLikesButton(in: self, likesCount: likesCount, infoType: infoType, infoId: id)
   }
 }

@@ -10,6 +10,7 @@ import Kingfisher
 import Moya
 import SnapKit
 import UIKit
+import DGCharts
 
 /*
  재보수 해야 할 작업
@@ -46,6 +47,20 @@ final class MainViewController: UIViewController {
   private let userId = 1
   @Published private var userName = String()
   @Published private var totalConsumptionAmount = 0
+    
+    // 총 목표액과 총 소비액 변수
+    var totalGoalAmount: Double = 0
+    var totalSpentAmount: Double = 0
+    
+    // FaceImage
+    let images: [UIImage] = [
+      BudgetBuddiesAsset.AppImage.Face.failureFace.image,
+      BudgetBuddiesAsset.AppImage.Face.crisisFace.image,
+      BudgetBuddiesAsset.AppImage.Face.anxietyFace.image,
+      BudgetBuddiesAsset.AppImage.Face.basicFace.image,
+      BudgetBuddiesAsset.AppImage.Face.goodFace.image,
+      BudgetBuddiesAsset.AppImage.Face.successFace.image,
+    ]
 
   // MARK: - View Life Cycle
 
@@ -149,6 +164,56 @@ final class MainViewController: UIViewController {
 
     mainView.comsumedAnalysisFirstItem.isUserInteractionEnabled = true
   }
+    
+    // Chart
+    private func setChart() {
+      let spentEntry = PieChartDataEntry(value: totalSpentAmount)
+      let remainingEntry = PieChartDataEntry(value: totalGoalAmount - totalSpentAmount)
+
+        mainView.summaryInfoContainerView.faceChartView.setupChart(entries: [spentEntry, remainingEntry])
+    }
+    
+    // 금액을 포맷팅하는 헬퍼 함수
+    private func formatCurrency(_ amount: Int) -> String {
+      let formatter = NumberFormatter()
+      formatter.numberStyle = .decimal
+      return formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+    }
+    
+    func updateGoalAndConsumption(goal: Int, spent: Int, remaining: Int) {
+      // 금액 포맷팅
+        _ = formatCurrency(goal)
+        _ = formatCurrency(spent)
+        _ = formatCurrency(remaining)
+
+      // 남은 금액 비율 계산 (남은 금액 / 총 목표 금액)
+      let remainingPercentage = Double(remaining) / Double(goal) * 100
+
+      var selectedImage: UIImage?
+      switch remainingPercentage {
+      case 81...100:
+        selectedImage = images[5]  // 가장 긍정적인 이미지
+      case 61...80:
+        selectedImage = images[4]
+      case 41...60:
+        selectedImage = images[3]
+      case 21...40:
+        selectedImage = images[2]
+      case 1...20:
+        selectedImage = images[1]
+      default:
+        selectedImage = images[0]  // 가장 부정적인 이미지
+      }
+        
+//
+        mainView.summaryInfoContainerView.faceChartView.updateCenterImage(image: selectedImage)
+
+      // 차트 데이터 업데이트
+      self.totalGoalAmount = Double(goal)
+      self.totalSpentAmount = Double(spent)
+
+      setChart()
+    }
 }
 
 // MARK: - Object C Methods
@@ -240,6 +305,13 @@ extension MainViewController {
           self.mainView.summaryInfoContainerView.mainTextLabel.updateUsedMoney(
             usedMoney: totalConsumptionAmount)
 
+            self.updateGoalAndConsumption(
+                goal: consumptionGoalResponseListData.totalGoalAmount,
+                spent: consumptionGoalResponseListData.totalConsumptionAmount,
+                remaining: consumptionGoalResponseListData.totalGoalAmount
+                - consumptionGoalResponseListData.totalConsumptionAmount
+            )
+            
           // 전체 잔여 금액
           let totalLeftMoneyAmount =
             consumptionGoalResponseListData.totalGoalAmount

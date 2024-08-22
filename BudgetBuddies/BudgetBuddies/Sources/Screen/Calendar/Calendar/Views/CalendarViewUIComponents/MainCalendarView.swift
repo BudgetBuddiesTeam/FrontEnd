@@ -350,7 +350,7 @@ extension MainCalendarView {
       backViewMargin.addSubview(raisedView)
 
       let scale = UIScreen.main.scale
-      let adjustedInset = 3.0 / scale
+      let adjustedInset = 8.0 / scale
 
       raisedView.snp.makeConstraints { make in
         make.top.equalTo(headerStackView.snp.bottom).inset(topInsetBase - (80 * row))

@@ -106,13 +106,7 @@ class InformationCell: UITableViewCell {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.layer.cornerRadius = 15
-
-    view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-    view.layer.shadowOpacity = 1
-    view.layer.shadowRadius = 4  //반경
-    view.layer.shadowOffset = CGSize(width: 0, height: 0)
-    view.layer.masksToBounds = false
-
+      view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 0))
     return view
   }()
 

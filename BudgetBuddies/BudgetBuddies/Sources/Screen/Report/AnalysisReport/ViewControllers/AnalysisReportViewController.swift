@@ -6,19 +6,19 @@
 //
 
 import Charts
+import Combine
 import DGCharts
+import Moya
 import SnapKit
 import UIKit
-import Combine
-import Moya
 
 final class AnalysisReportViewController: UIViewController {
 
   // MARK: - Property
-    @Published private var userName = String()
-    
-    private let userRouterProvider = MoyaProvider<UserRouter>()
-    
+  @Published private var userName = String()
+
+  private let userRouterProvider = MoyaProvider<UserRouter>()
+
   var services = Services()
   var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
   var getTopGoalResponse: GetTopGoalResponse? = nil
@@ -30,21 +30,21 @@ final class AnalysisReportViewController: UIViewController {
 
   let scrollView = UIScrollView()
   let contentView = UIView()
-    
-    // Combine
-    private var canecellable = Set<AnyCancellable>()
-    
-    private let userId = 1
-    
-    // MARK: - Methods
 
-    private func observeDataModel() {
-      self.$userName
-        .sink { [weak self] newUserName in
-            self?.titleLabel.text = "\(newUserName)님 또래는 \n어떻게 소비했을까요?"
-        }
-        .store(in: &canecellable)
-    }
+  // Combine
+  private var canecellable = Set<AnyCancellable>()
+
+  private let userId = 1
+
+  // MARK: - Methods
+
+  private func observeDataModel() {
+    self.$userName
+      .sink { [weak self] newUserName in
+        self?.titleLabel.text = "\(newUserName)님 또래는 \n어떻게 소비했을까요?"
+      }
+      .store(in: &canecellable)
+  }
 
   // MARK: - UI Components
 
@@ -138,9 +138,9 @@ final class AnalysisReportViewController: UIViewController {
     super.viewWillAppear(animated)
 
     navigationController?.navigationBar.isHidden = false
-      setNavi()
-      loadPeerInfo()
-      setupPieChart()
+    setNavi()
+    loadPeerInfo()
+    setupPieChart()
   }
 
   override func viewDidLoad() {
@@ -184,9 +184,9 @@ final class AnalysisReportViewController: UIViewController {
     let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
     backBarButtonItem.tintColor = .black
     self.navigationItem.backBarButtonItem = backBarButtonItem
-      let appearance = UINavigationBarAppearance()
-      appearance.configureWithOpaqueBackground()
-      appearance.backgroundColor = .white
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
   }
 
   private func setupConstraints() {
@@ -349,23 +349,23 @@ final class AnalysisReportViewController: UIViewController {
 // MARK: - 네트워킹
 
 extension AnalysisReportViewController {
-    private func fetchUserDataFromServer(userId: Int) {
-      userRouterProvider.request(.find(userId: self.userId)) { result in
-        switch result {
-        case .success(let response):
-          do {
-            let decodedData = try JSONDecoder().decode(
-              ApiResponseResponseUserDto.self, from: response.data)
-            self.userName = decodedData.result.name
-          } catch (let error) {
-            self.userName = "익명"
-          }
-        case .failure(let error):
+  private func fetchUserDataFromServer(userId: Int) {
+    userRouterProvider.request(.find(userId: self.userId)) { result in
+      switch result {
+      case .success(let response):
+        do {
+          let decodedData = try JSONDecoder().decode(
+            ApiResponseResponseUserDto.self, from: response.data)
+          self.userName = decodedData.result.name
+        } catch (let error) {
           self.userName = "익명"
         }
+      case .failure(let error):
+        self.userName = "익명"
       }
     }
-    
+  }
+
   func loadPeerInfo() {
     services.consumeGoalService.getPeerInfo(
       userId: 1, peerAgeStart: 23, peerAgeEnd: 25, peerGender: "male"

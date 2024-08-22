@@ -213,17 +213,17 @@ extension BudgetBuddiesAsset.AppImage.CategoryIcon {
     case "교통":
       return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
     case "기타":
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
     case "유흥":
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
     case "경조사":
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
     case "정기결제":
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
     case "카페":
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
     default:
-        return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
   }
 }

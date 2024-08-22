@@ -122,8 +122,8 @@ final class MonthReportViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
-      loadConsumeGoal()
-      
+    loadConsumeGoal()
+
   }
 
   let topView = {
@@ -166,7 +166,7 @@ final class MonthReportViewController: UIViewController {
   let remainingAmountLabel = UILabel()
   let spendingGoalsLabel = UILabel()
 
-    var spendGoals: [SpendGoalModel] = [
+  var spendGoals: [SpendGoalModel] = [
     SpendGoalModel(
       categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비",
       amount: "123,180", progress: 0.66,
@@ -226,7 +226,7 @@ final class MonthReportViewController: UIViewController {
     navigationItem.title = "이번달 리포트"
     let appearance = UINavigationBarAppearance()
     appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
+    appearance.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     appearance.shadowColor = nil
 
     navigationController?.navigationBar.standardAppearance = appearance
@@ -386,41 +386,40 @@ final class MonthReportViewController: UIViewController {
 
     setChart()
   }
-    
-    private func updateUI(with spendGoals: [SpendGoalModel]) {
-        self.spendGoals = spendGoals
-        DispatchQueue.main.async {
-            self.spendGoalTableView.reloadData()
-        }
+
+  private func updateUI(with spendGoals: [SpendGoalModel]) {
+    self.spendGoals = spendGoals
+    DispatchQueue.main.async {
+      self.spendGoalTableView.reloadData()
     }
-    
-    private func setCategoryIconImage(categoryId: Int) -> UIImage{
-        switch categoryId {
-        case 1:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
-        case 2:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
-        case 3:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
-        case 4:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
-        case 5:
-            return  BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
-        case 6:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
-        case 7:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
-        case 8:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
-        case 9:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
-        case 10:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
-        default:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
-        }
+  }
+
+  private func setCategoryIconImage(categoryId: Int) -> UIImage {
+    switch categoryId {
+    case 1:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
+    case 2:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
+    case 3:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
+    case 4:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
+    case 5:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
+    case 6:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
+    case 7:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case 8:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case 9:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case 10:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    default:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
-    
+  }
 
   @objc func spendGoalButtonTapped() {
     if let naviController = self.navigationController {
@@ -435,13 +434,13 @@ final class MonthReportViewController: UIViewController {
       naviController.pushViewController(consumeVC, animated: true)
     }
   }
-    
-    @objc func accountBookTotalButtonTapped() {
-        if let naviController = self.navigationController {
-            let historyVC = ConsumedHistoryTableViewController()
-            naviController.pushViewController(historyVC, animated: true)
-        }
+
+  @objc func accountBookTotalButtonTapped() {
+    if let naviController = self.navigationController {
+      let historyVC = ConsumedHistoryTableViewController()
+      naviController.pushViewController(historyVC, animated: true)
     }
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -526,7 +525,7 @@ extension MonthReportViewController {
         guard let totalGoalAmount = response.result?.totalGoalAmount,
           let totalSpentAmount = response.result?.totalConsumptionAmount,
           let totalRemainingBalance = response.result?.totalRemainingBalance,
-              let consumptionGoalList = response.result?.consumptionGoalList
+          let consumptionGoalList = response.result?.consumptionGoalList
         else {
           print("Some values are nil")
           return
@@ -537,31 +536,35 @@ extension MonthReportViewController {
           spent: totalSpentAmount,
           remaining: totalRemainingBalance
         )
-          
-          let numberFormatter: NumberFormatter = {
-              let formatter = NumberFormatter()
-              formatter.numberStyle = .decimal
-              formatter.groupingSeparator = ","
-              formatter.maximumFractionDigits = 0 // 소수점을 표시하지 않도록 설정
-              return formatter
-          }()
-          
-          let spendGoals = consumptionGoalList.map { item -> SpendGoalModel in
-              let goalAmount = numberFormatter.string(from: NSNumber(value: item.goalAmount ?? 0)) ?? "0"
-              let consumeAmount = numberFormatter.string(from: NSNumber(value: item.consumeAmount ?? 0)) ?? "0"
-              let remainingBalance = numberFormatter.string(from: NSNumber(value: item.remainingBalance ?? 0)) ?? "0"
-              
-              return SpendGoalModel(
-                categoryImage: self.setCategoryIconImage(categoryId: item.categoryId!),
-                title: item.categoryName ?? "",
-                amount: "\(goalAmount)",
-                progress: item.goalAmount! > 0 ? Float(item.consumeAmount!) / Float(item.goalAmount!) : 0.0,
-                consumption:  "\(consumeAmount)",
-                remaining: "\(remainingBalance)"
-              )
-          }
-          
-          self.updateUI(with: spendGoals)
+
+        let numberFormatter: NumberFormatter = {
+          let formatter = NumberFormatter()
+          formatter.numberStyle = .decimal
+          formatter.groupingSeparator = ","
+          formatter.maximumFractionDigits = 0  // 소수점을 표시하지 않도록 설정
+          return formatter
+        }()
+
+        let spendGoals = consumptionGoalList.map { item -> SpendGoalModel in
+          let goalAmount =
+            numberFormatter.string(from: NSNumber(value: item.goalAmount ?? 0)) ?? "0"
+          let consumeAmount =
+            numberFormatter.string(from: NSNumber(value: item.consumeAmount ?? 0)) ?? "0"
+          let remainingBalance =
+            numberFormatter.string(from: NSNumber(value: item.remainingBalance ?? 0)) ?? "0"
+
+          return SpendGoalModel(
+            categoryImage: self.setCategoryIconImage(categoryId: item.categoryId!),
+            title: item.categoryName ?? "",
+            amount: "\(goalAmount)",
+            progress: item.goalAmount! > 0
+              ? Float(item.consumeAmount!) / Float(item.goalAmount!) : 0.0,
+            consumption: "\(consumeAmount)",
+            remaining: "\(remainingBalance)"
+          )
+        }
+
+        self.updateUI(with: spendGoals)
 
       case .failure(let error):
         print("Failed to load Top goal: \(error)")
@@ -569,72 +572,71 @@ extension MonthReportViewController {
     }
   }
 
-//  func loadTopGoal() {
-//    services.consumeGoalService.getTopGoal(
-//      userId: 1, peerAgeStart: 23, peerAgeEnd: 25, peerGender: "male"
-//    ) { result in
-//      switch result {
-//      case .success(let response):
-//        self.getTopGoalResponse = response
-//        dump(response)
-//      case .failure(let error):
-//        print("Failed to load Top goal: \(error)")
-//      }
-//    }
-//  }
-//
-//  func loadTopConsumption() {
-//    services.consumeGoalService.getTopConsumption(
-//      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
-//    ) { result in
-//      switch result {
-//      case .success(let response):
-//        self.getTopConsumptionResponse = response
-//        dump(response)
-//      case .failure(let error):
-//        print("Failed to load Top Consumption: \(error)")
-//      }
-//    }
-//  }
-//
-//  func loadTopConsumptions() {
-//    services.consumeGoalService.getTopConsumptions(
-//      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
-//    ) { result in
-//      switch result {
-//      case .success(let response):
-//        self.getTopConsumptionsResponse = response
-//        dump(response)
-//      case .failure(let error):
-//        print("Failed to load Top Consumptions: \(error)")
-//      }
-//    }
-//  }
-//
-//  func loadTopUser() {
-//    services.consumeGoalService.getTopUser(userId: 1) { result in
-//      switch result {
-//      case .success(let response):
-//        self.getTopUserResponse = response
-//        dump(response)
-//      case .failure(let error):
-//        print("Failed to load Top User: \(error)")
-//      }
-//    }
-//  }
-//
-//  func loadPeerInfo() {
-//    services.consumeGoalService.getPeerInfo(
-//      userId: 1, peerAgeStart: 25, peerAgeEnd: 25, peerGender: "male"
-//    ) { result in
-//      switch result {
-//      case .success(let response):
-//        self.consumePeerInfoResponse = response
-//        dump(response)
-//      case .failure(let error):
-//        print("Failed to load peer info: \(error)")
-//      }
-//    }
-//  }
+  //  func loadTopGoal() {
+  //    services.consumeGoalService.getTopGoal(
+  //      userId: 1, peerAgeStart: 23, peerAgeEnd: 25, peerGender: "male"
+  //    ) { result in
+  //      switch result {
+  //      case .success(let response):
+  //        self.getTopGoalResponse = response
+  //        dump(response)
+  //      case .failure(let error):
+  //        print("Failed to load Top goal: \(error)")
+  //      }
+  //    }
+  //  }
+  //
+  //  func loadTopConsumption() {
+  //    services.consumeGoalService.getTopConsumption(
+  //      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
+  //    ) { result in
+  //      switch result {
+  //      case .success(let response):
+  //        self.getTopConsumptionResponse = response
+  //        dump(response)
+  //      case .failure(let error):
+  //        print("Failed to load Top Consumption: \(error)")
+  //      }
+  //    }
+  //  }
+  //
+  //  func loadTopConsumptions() {
+  //    services.consumeGoalService.getTopConsumptions(
+  //      userId: 1, peerAgeStart: 22, peerAgeEnd: 25, peerGender: "male"
+  //    ) { result in
+  //      switch result {
+  //      case .success(let response):
+  //        self.getTopConsumptionsResponse = response
+  //        dump(response)
+  //      case .failure(let error):
+  //        print("Failed to load Top Consumptions: \(error)")
+  //      }
+  //    }
+  //  }
+  //
+  //  func loadTopUser() {
+  //    services.consumeGoalService.getTopUser(userId: 1) { result in
+  //      switch result {
+  //      case .success(let response):
+  //        self.getTopUserResponse = response
+  //        dump(response)
+  //      case .failure(let error):
+  //        print("Failed to load Top User: \(error)")
+  //      }
+  //    }
+  //  }
+  //
+  //  func loadPeerInfo() {
+  //    services.consumeGoalService.getPeerInfo(
+  //      userId: 1, peerAgeStart: 25, peerAgeEnd: 25, peerGender: "male"
+  //    ) { result in
+  //      switch result {
+  //      case .success(let response):
+  //        self.consumePeerInfoResponse = response
+  //        dump(response)
+  //      case .failure(let error):
+  //        print("Failed to load peer info: \(error)")
+  //      }
+  //    }
+  //  }
 }
-

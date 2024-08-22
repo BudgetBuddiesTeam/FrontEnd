@@ -9,10 +9,10 @@ import SnapKit
 import UIKit
 
 final class GoalTotalViewController: UIViewController {
-    
-    // MARK: - Property
-    var services = Services()
-    var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
+
+  // MARK: - Property
+  var services = Services()
+  var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
 
   let tableView = UITableView()
 
@@ -55,13 +55,13 @@ final class GoalTotalViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
-      loadTotalConsumeGoal()
+    loadTotalConsumeGoal()
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-      
-      loadTotalConsumeGoal()
+
+    loadTotalConsumeGoal()
     setup()
     setTableView()
     setConsts()
@@ -110,40 +110,40 @@ final class GoalTotalViewController: UIViewController {
       $0.height.equalTo(60)
     }
   }
-    
-    private func setCategoryIconImage(categoryId: Int) -> UIImage{
-        switch categoryId {
-        case 1:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
-        case 2:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
-        case 3:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
-        case 4:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
-        case 5:
-            return  BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
-        case 6:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
-        case 7:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
-        case 8:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
-        case 9:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
-        case 10:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
-        default:
-            return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
-        }
+
+  private func setCategoryIconImage(categoryId: Int) -> UIImage {
+    switch categoryId {
+    case 1:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
+    case 2:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
+    case 3:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
+    case 4:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
+    case 5:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
+    case 6:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
+    case 7:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case 8:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case 9:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case 10:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    default:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
-    
-    private func updateUI(with spendGoals: [SpendGoalModel]) {
-        self.spendGoals = spendGoals
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+  }
+
+  private func updateUI(with spendGoals: [SpendGoalModel]) {
+    self.spendGoals = spendGoals
+    DispatchQueue.main.async {
+      self.tableView.reloadData()
     }
+  }
 
   @objc private func editButtonTapped() {
     if let naviController = self.navigationController {
@@ -178,52 +178,56 @@ extension GoalTotalViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension GoalTotalViewController {
-    
-    func loadTotalConsumeGoal() {
-        services.consumeGoalService.getConsumeGoal(date: "2024-08-18", userId: 1) { result in
-            switch result {
-            case .success(let response):
-                self.getConsumeGoalResponse = response
-                dump(response)
-                
-                // 받아온 값을 업데이트
-                guard let totalGoalAmount = response.result?.totalGoalAmount,
-                      let totalSpentAmount = response.result?.totalConsumptionAmount,
-                      let totalRemainingBalance = response.result?.totalRemainingBalance,
-                      let consumptionGoalList = response.result?.consumptionGoalList
-                else {
-                    print("Some values are nil")
-                    return
-                }
-                
-                let numberFormatter: NumberFormatter = {
-                    let formatter = NumberFormatter()
-                    formatter.numberStyle = .decimal
-                    formatter.groupingSeparator = ","
-                    formatter.maximumFractionDigits = 0 // 소수점을 표시하지 않도록 설정
-                    return formatter
-                }()
-                
-                let spendGoals = consumptionGoalList.map { item -> SpendGoalModel in
-                    let goalAmount = numberFormatter.string(from: NSNumber(value: item.goalAmount ?? 0)) ?? "0"
-                      let consumeAmount = numberFormatter.string(from: NSNumber(value: item.consumeAmount ?? 0)) ?? "0"
-                      let remainingBalance = numberFormatter.string(from: NSNumber(value: item.remainingBalance ?? 0)) ?? "0"
-                    
-                    return SpendGoalModel(
-                        categoryImage: self.setCategoryIconImage(categoryId: item.categoryId!),
-                        title: item.categoryName ?? "",
-                        amount: "\(goalAmount)",
-                        progress: item.goalAmount! > 0 ? Float(item.consumeAmount!) / Float(item.goalAmount!) : 0.0,
-                        consumption:  "\(consumeAmount)",
-                        remaining: "\(remainingBalance)"
-                    )
-                }
-                
-                self.updateUI(with: spendGoals)
-                
-            case .failure(let error):
-                print("Failed to load Top goal: \(error)")
-            }
+
+  func loadTotalConsumeGoal() {
+    services.consumeGoalService.getConsumeGoal(date: "2024-08-18", userId: 1) { result in
+      switch result {
+      case .success(let response):
+        self.getConsumeGoalResponse = response
+        dump(response)
+
+        // 받아온 값을 업데이트
+        guard let totalGoalAmount = response.result?.totalGoalAmount,
+          let totalSpentAmount = response.result?.totalConsumptionAmount,
+          let totalRemainingBalance = response.result?.totalRemainingBalance,
+          let consumptionGoalList = response.result?.consumptionGoalList
+        else {
+          print("Some values are nil")
+          return
         }
+
+        let numberFormatter: NumberFormatter = {
+          let formatter = NumberFormatter()
+          formatter.numberStyle = .decimal
+          formatter.groupingSeparator = ","
+          formatter.maximumFractionDigits = 0  // 소수점을 표시하지 않도록 설정
+          return formatter
+        }()
+
+        let spendGoals = consumptionGoalList.map { item -> SpendGoalModel in
+          let goalAmount =
+            numberFormatter.string(from: NSNumber(value: item.goalAmount ?? 0)) ?? "0"
+          let consumeAmount =
+            numberFormatter.string(from: NSNumber(value: item.consumeAmount ?? 0)) ?? "0"
+          let remainingBalance =
+            numberFormatter.string(from: NSNumber(value: item.remainingBalance ?? 0)) ?? "0"
+
+          return SpendGoalModel(
+            categoryImage: self.setCategoryIconImage(categoryId: item.categoryId!),
+            title: item.categoryName ?? "",
+            amount: "\(goalAmount)",
+            progress: item.goalAmount! > 0
+              ? Float(item.consumeAmount!) / Float(item.goalAmount!) : 0.0,
+            consumption: "\(consumeAmount)",
+            remaining: "\(remainingBalance)"
+          )
+        }
+
+        self.updateUI(with: spendGoals)
+
+      case .failure(let error):
+        print("Failed to load Top goal: \(error)")
+      }
     }
+  }
 }

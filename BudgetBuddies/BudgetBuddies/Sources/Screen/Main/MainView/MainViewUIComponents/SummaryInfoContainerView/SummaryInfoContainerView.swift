@@ -44,11 +44,11 @@ final class SummaryInfoContainerView: UIView {
   public let mainTextLabel = MainTextLabel()
 
   // 반응형 차트
-    public let faceChartView = {
-      let view = FaceGraphView()
-      view.backgroundColor = .white
-      return view
-    }()
+  public let faceChartView = {
+    let view = FaceGraphView()
+    view.backgroundColor = .white
+    return view
+  }()
 
   // 코멘트 박스 이미지
   private let commentBoxImageView: UIImageView = {
@@ -158,12 +158,12 @@ final class SummaryInfoContainerView: UIView {
       make.top.equalToSuperview().inset(62)
     }
 
-      // 반응형 그래프
-      faceChartView.snp.makeConstraints { make in
-          make.trailing.equalToSuperview().offset(-20)
-          make.top.equalToSuperview().offset(50)
-          make.height.width.equalTo(100)
-      }
+    // 반응형 그래프
+    faceChartView.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().offset(-20)
+      make.top.equalToSuperview().offset(50)
+      make.height.width.equalTo(100)
+    }
 
     // 코멘트 박스 이미지
     commentBoxImageView.snp.makeConstraints { make in

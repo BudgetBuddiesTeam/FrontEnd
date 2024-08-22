@@ -119,12 +119,7 @@ final class AnalysisReportViewController: UIViewController {
     let view = ReportBarChartView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+      view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -243,7 +238,7 @@ final class AnalysisReportViewController: UIViewController {
       $0.leading.equalTo(contentView).offset(16)
       $0.trailing.equalTo(contentView).offset(-16)
       $0.bottom.equalTo(contentView).offset(-16)
-      $0.height.equalTo(300)
+      $0.height.equalTo(260)
     }
   }
 

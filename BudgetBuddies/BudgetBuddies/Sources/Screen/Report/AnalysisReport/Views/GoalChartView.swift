@@ -75,6 +75,8 @@ final class GoalChartView: UIView {
     let sv = UIStackView()
     sv.axis = .vertical
     sv.spacing = 36
+      sv.alignment = .leading
+      sv.distribution = .fill
     return sv
   }()
 
@@ -142,12 +144,12 @@ final class GoalChartView: UIView {
 
     legendStackView.snp.makeConstraints {
       $0.centerY.equalTo(pieChartView)
-      $0.leading.equalTo(pieChartView.snp.trailing).offset(30)
-      $0.trailing.equalToSuperview()
+        $0.trailing.equalToSuperview().inset(10)
+        $0.width.equalTo(70)
     }
 
     stackView.snp.makeConstraints {
-      $0.top.equalTo(pieChartView.snp.bottom).offset(40)
+      $0.top.equalTo(pieChartView.snp.bottom).offset(50)
       $0.leading.equalToSuperview().offset(20)
       $0.trailing.equalToSuperview().offset(-20)
       $0.bottom.equalToSuperview().offset(-30)

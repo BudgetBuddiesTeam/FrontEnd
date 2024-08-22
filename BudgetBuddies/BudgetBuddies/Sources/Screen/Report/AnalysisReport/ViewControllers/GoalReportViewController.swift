@@ -212,9 +212,18 @@ extension BudgetBuddiesAsset.AppImage.CategoryIcon {
       return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
     case "교통":
       return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
-    // 필요한 경우 더 많은 카테고리 추가
+    case "기타":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    case "유흥":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case "경조사":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case "정기결제":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case "카페":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
     default:
-      return UIImage()  // 기본 이미지
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
   }
 }

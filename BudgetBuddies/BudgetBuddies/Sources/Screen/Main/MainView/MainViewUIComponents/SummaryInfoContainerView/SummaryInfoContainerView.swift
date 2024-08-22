@@ -44,17 +44,11 @@ final class SummaryInfoContainerView: UIView {
   public let mainTextLabel = MainTextLabel()
 
   // 반응형 차트
-  /*
-
-
-
-
-   반응형 차트 UI 컴포넌트 선언 필요!!
-
-
-
-
-   */
+  public let faceChartView = {
+    let view = FaceGraphView()
+    view.backgroundColor = .white
+    return view
+  }()
 
   // 코멘트 박스 이미지
   private let commentBoxImageView: UIImageView = {
@@ -129,15 +123,7 @@ final class SummaryInfoContainerView: UIView {
     self.addSubviews(
       monthRoundedRectangle,
       mainTextLabel,
-      /*
-
-
-
-       반응형 차트 View 추가 코드 필요!!
-
-
-
-       */
+      faceChartView,
       commentBoxImageView,
       leftMoneyTextLabel,
       firstCategoryLeftMoneyContainer,
@@ -172,19 +158,12 @@ final class SummaryInfoContainerView: UIView {
       make.top.equalToSuperview().inset(62)
     }
 
-    /*
-
-
-
-
-
-     반응형 차트 레이아웃 코드 필요!!
-
-
-
-
-
-     */
+    // 반응형 그래프
+    faceChartView.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().offset(-20)
+      make.top.equalToSuperview().offset(50)
+      make.height.width.equalTo(100)
+    }
 
     // 코멘트 박스 이미지
     commentBoxImageView.snp.makeConstraints { make in

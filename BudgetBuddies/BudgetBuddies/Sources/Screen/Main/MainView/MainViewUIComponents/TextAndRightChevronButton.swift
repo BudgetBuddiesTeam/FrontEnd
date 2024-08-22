@@ -58,8 +58,8 @@ class TextAndRightChevronButton: UIButton {
 
     // 오른쪽 쉐브론 이미지뷰
     rightChevronImageView.snp.makeConstraints { make in
-      make.width.equalTo(10)
-      make.height.equalTo(13)
+      make.width.equalTo(8)
+      make.height.equalTo(15)
       make.centerY.equalToSuperview()
       make.trailing.equalToSuperview().inset(5)
     }

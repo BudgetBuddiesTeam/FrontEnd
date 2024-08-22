@@ -86,6 +86,8 @@ final class GoalReportViewController: UIViewController {
   }
 
   private func setTableView() {
+      self.tableView.showsVerticalScrollIndicator = false
+      self.tableView.showsHorizontalScrollIndicator = false
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(

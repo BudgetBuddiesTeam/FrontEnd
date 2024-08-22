@@ -238,6 +238,9 @@ final class MonthReportViewController: UIViewController {
   }
 
   private func setTableView() {
+      self.scrollView.showsVerticalScrollIndicator = false
+      self.scrollView.showsHorizontalScrollIndicator = false
+      
       spendGoalTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
       accountBookTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     spendGoalTableView.delegate = self

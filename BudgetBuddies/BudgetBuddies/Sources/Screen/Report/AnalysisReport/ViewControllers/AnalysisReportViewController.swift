@@ -144,7 +144,9 @@ final class AnalysisReportViewController: UIViewController {
     setupConstraints()
     setupPieChart()
       
-      scrollView.delegate = self
+      self.scrollView.delegate = self
+      self.scrollView.showsVerticalScrollIndicator = false
+      self.scrollView.showsHorizontalScrollIndicator = false
   }
   // 탭바에 가려지는 요소 보이게 하기
   override func viewDidLayoutSubviews() {
@@ -173,6 +175,7 @@ final class AnalysisReportViewController: UIViewController {
   }
 
   private func setNavi() {
+      self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "또래 비교 분석 레포트"
       self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
       self.addBackButton(selector: #selector(didTapBarButton))

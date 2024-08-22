@@ -18,6 +18,9 @@ import UIKit
 
 class CategorySelectTableViewController: UITableViewController {
   // MARK: - Properties
+    // 네비 애니메이션 변수
+    var previousScrollOffset: CGFloat = 0.0
+    var scrollThreshold: CGFloat = 1.0  // 네비게이션 바가 나타나거나
   
   // UITableView Delegate Properties
   private let heightBetweenCells: CGFloat = 12
@@ -39,7 +42,7 @@ class CategorySelectTableViewController: UITableViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+      self.setNavigation()
     self.getCategoriesFromServer()
   }
   
@@ -47,9 +50,11 @@ class CategorySelectTableViewController: UITableViewController {
     super.viewDidLoad()
     
     // 배경색이 완전 하얀색이 아님
-    view.backgroundColor = UIColor(red: 0.978, green: 0.978, blue: 0.978, alpha: 1)
+      view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     
     // tableView의 회색 구분선 제거하기
+      tableView.showsVerticalScrollIndicator = false
+      tableView.showsHorizontalScrollIndicator = false
     tableView.separatorStyle = .none
     tableView.register(
       CategorySelectTableViewCell.self,
@@ -80,6 +85,9 @@ class CategorySelectTableViewController: UITableViewController {
     
     navigationController?.navigationBar.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
+      
+      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+      self.addBackButton(selector: #selector(didTapBarButton))
   }
   
   override func setEditing(_ editing: Bool, animated: Bool) {
@@ -127,7 +135,12 @@ class CategorySelectTableViewController: UITableViewController {
   }
   
   // MARK: - Object C Methods
-  
+  @objc
+    private func didTapBarButton() {
+        self.navigationController?.popViewController(animated: true
+        )
+    }
+    
   @objc
   private func editButtonTapped() {
     self.setEditing(true, animated: true)
@@ -202,6 +215,7 @@ class CategorySelectTableViewController: UITableViewController {
 
     cell.configure(categoryID: selectedCategory.id, categoryName: selectedCategory.name)
 
+//      cell.selectionStyle = .none
     return cell
   }
 
@@ -274,4 +288,24 @@ class CategorySelectTableViewController: UITableViewController {
   {
     return defaultCategoryIndex.contains(indexPath.row) ? .none : .delete
   }
+}
+
+extension CategorySelectTableViewController {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      let currentOffset = scrollView.contentOffset.y
+      let offsetDifference = currentOffset - previousScrollOffset
+
+      if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
+      } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
+      } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
+      }
+
+      previousScrollOffset = currentOffset
+    }
 }

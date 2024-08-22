@@ -13,14 +13,17 @@ final class GoalChartView: UIView {
   let planLabel: UILabel = {
     let label = UILabel()
     label.text = "패션에 가장 큰 \n계획을 세웠어요"
-    label.font = .systemFont(ofSize: 22, weight: .semibold)
+      label.setCharacterSpacing(-0.55)
+      label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
     label.numberOfLines = 0
     return label
   }()
 
   let dateLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .gray
+      label.text = " "
+      label.setCharacterSpacing(-0.3)
+      label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     label.font = .systemFont(ofSize: 12, weight: .regular)
 
     // 현재 날짜 및 시간 가져오기
@@ -44,6 +47,7 @@ final class GoalChartView: UIView {
   let firstLabel = {
     let label = UILabel()
     label.text = "패션"
+      label.setCharacterSpacing(-0.45)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.textAlignment = .center
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
@@ -53,6 +57,7 @@ final class GoalChartView: UIView {
   let firstPrice = {
     let label = UILabel()
     label.text = "120,000원"
+      label.setCharacterSpacing(-0.35)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     label.textAlignment = .center
     label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
@@ -136,7 +141,10 @@ final class GoalChartView: UIView {
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "소비습관")
     dataSet.colors = [
-      UIColor.systemBlue, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemCyan,
+        BudgetBuddiesAsset.AppColor.coreBlue.color,
+        BudgetBuddiesAsset.AppColor.sky3.color,
+        BudgetBuddiesAsset.AppColor.orange2.color,
+        BudgetBuddiesAsset.AppColor.coreYellow.color
     ]
     dataSet.drawValuesEnabled = false
     dataSet.sliceSpace = 2
@@ -185,11 +193,11 @@ final class GoalChartView: UIView {
       label.text = rank
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.logoLine2.color
-      label.backgroundColor = BudgetBuddiesAsset.AppColor.face.color
+      label.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
       label.textAlignment = .center
-      label.layer.cornerRadius = 4
+      label.layer.cornerRadius = 8
       label.layer.borderWidth = 1
-      label.layer.borderColor = BudgetBuddiesAsset.AppColor.calendarYellow.color.cgColor
+      label.layer.borderColor = BudgetBuddiesAsset.AppColor.lemon.color.cgColor
       label.clipsToBounds = true
       return label
     }()
@@ -205,6 +213,7 @@ final class GoalChartView: UIView {
     let valueLabel: UILabel = {
       let label = UILabel()
       label.text = "\(value.formatted())원"
+        label.setCharacterSpacing(-0.35)
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
       return label
@@ -218,10 +227,11 @@ final class GoalChartView: UIView {
       $0.leading.equalToSuperview()
       $0.centerY.equalToSuperview()
       $0.width.equalTo(32)
+        $0.height.equalTo(20)
     }
 
     categoryLabel.snp.makeConstraints {
-      $0.leading.equalTo(rankLabel.snp.trailing).offset(8)
+      $0.leading.equalTo(rankLabel.snp.trailing).offset(17)
       $0.centerY.equalToSuperview()
     }
 

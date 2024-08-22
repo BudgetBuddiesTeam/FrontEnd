@@ -11,6 +11,9 @@ import UIKit
 final class GoalTotalViewController: UIViewController {
 
   // MARK: - Property
+    var previousScrollOffset: CGFloat = 0.0
+    var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+    
   var services = Services()
   var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
 
@@ -69,28 +72,19 @@ final class GoalTotalViewController: UIViewController {
 
   private func setNavi() {
     navigationItem.title = "소비 목표"
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
-    appearance.shadowColor = nil
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
+      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+      self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setup() {
-    view.backgroundColor = .white
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     [tableView, editButton].forEach {
       view.addSubview($0)
     }
   }
 
   private func setTableView() {
+      tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(SpendGoalCell.self, forCellReuseIdentifier: SpendGoalCell.identifier)
@@ -145,6 +139,12 @@ final class GoalTotalViewController: UIViewController {
     }
   }
 
+    // MARK: - Selector
+    @objc
+    private func didTapBarButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
   @objc private func editButtonTapped() {
     if let naviController = self.navigationController {
       let goalEditVC = GoalEditViewController()
@@ -175,6 +175,24 @@ extension GoalTotalViewController: UITableViewDelegate, UITableViewDataSource {
 
     return cell
   }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      let currentOffset = scrollView.contentOffset.y
+      let offsetDifference = currentOffset - previousScrollOffset
+
+      if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
+      } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
+      } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
+      }
+
+      previousScrollOffset = currentOffset
+    }
 }
 
 extension GoalTotalViewController {

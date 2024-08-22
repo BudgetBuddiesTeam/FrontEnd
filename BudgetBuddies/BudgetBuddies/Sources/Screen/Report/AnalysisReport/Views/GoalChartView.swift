@@ -42,6 +42,13 @@ final class GoalChartView: UIView {
     return label
   }()
 
+    let pieChartBackImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "pieChartBackImage")
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
   let pieChartView = PieChartView()
 
   let firstLabel = {
@@ -76,9 +83,11 @@ final class GoalChartView: UIView {
     sv.axis = .vertical
     sv.spacing = 36
     sv.distribution = .fillEqually
+      
     return sv
   }()
 
+    // MARK: - Init
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
@@ -90,10 +99,12 @@ final class GoalChartView: UIView {
   }
 
   private func setup() {
-    [planLabel, dateLabel, pieChartView, firstLabel, firstPrice, legendStackView, stackView].forEach
+    [planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView, stackView].forEach
     {
       self.addSubview($0)
     }
+      
+      pieChartBackImageView.addSubviews(pieChartView)
   }
 
   private func setConst() {
@@ -106,13 +117,18 @@ final class GoalChartView: UIView {
       $0.top.equalTo(planLabel.snp.bottom).offset(8)
       $0.leading.equalToSuperview().offset(20)
     }
+      
+      pieChartBackImageView.snp.makeConstraints { make in
+          make.top.equalTo(dateLabel.snp.bottom).offset(30)
+          make.leading.equalToSuperview().offset(20)
+          make.width.equalTo(215)
+          make.height.equalTo(pieChartView.snp.width)
+      }
 
-    pieChartView.snp.makeConstraints {
-      $0.top.equalTo(dateLabel.snp.bottom).offset(30)
-      $0.leading.equalToSuperview().offset(20)
-      $0.width.equalTo(200)
-      $0.height.equalTo(pieChartView.snp.width)
-    }
+      pieChartView.snp.makeConstraints { make in
+          make.center.equalToSuperview()
+          make.height.width.equalTo(200)
+      }
 
     firstLabel.snp.makeConstraints {
       $0.centerX.equalTo(pieChartView)

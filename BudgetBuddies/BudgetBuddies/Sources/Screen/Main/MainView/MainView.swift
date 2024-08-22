@@ -138,14 +138,14 @@ final class MainView: UIView {
 
     monthlyBudgetInfoCollectionView.snp.makeConstraints { make in
       make.width.equalToSuperview()
-      make.height.equalTo(162)
-      make.top.equalTo(monthlyBudgetInfoTextLabel.snp.bottom).offset(7)
+      make.height.equalTo(176)
+      make.top.equalTo(monthlyBudgetInfoTextLabel.snp.bottom)/*.offset(7)*/
       make.centerX.equalToSuperview()
     }
 
     monthlyConsumedAnalysisTextLabel.snp.makeConstraints { make in
       make.leading.equalTo(monthlyBudgetInfoTextLabel.snp.leading)
-      make.top.equalTo(monthlyBudgetInfoCollectionView.snp.bottom).offset(32)
+      make.top.equalTo(monthlyBudgetInfoCollectionView.snp.bottom).offset(25)
     }
 
     monthlyConsumedAnalysisLookEntireButton.snp.makeConstraints { make in

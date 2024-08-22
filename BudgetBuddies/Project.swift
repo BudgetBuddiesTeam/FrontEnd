@@ -18,21 +18,33 @@ let budgetBuddiesInfoPlist: InfoPlist = .extendingDefault(with: [
       ]
     ],
   ],
+  // BASE URL을 xcconfig 파일에서 도메인 가져오기
   "BASEURL": "http://$(Base_Domain)",
+  // HTTP 프로토콜 네트워크 통신 허용
   "NSAppTransportSecurity": [
     "NSAllowsArbitraryLoads": true
   ],
+  // 배포용 앱 한글 이름
+  "CFBundleDisplayName": "빈주머니즈",
+  // 다크모드 제한
+  "UIUserInterfaceStyle": "Light",
+  // 앱 카테고리 지정
+  "LSApplicationCategoryType": "public.app-category.finance",
+  // iPhone Orientation 지정
+  "UISupportedInterfaceOrientations": [
+    "UIInterfaceOrientationPortrait"
+  ]
 ])
 
 let project = Project(
   name: "BudgetBuddies",
-  settings: settings,
   targets: [
     .target(
       name: "BudgetBuddies",
-      destinations: .iOS,
+      destinations: [.iPhone],
       product: .app,
       bundleId: "com.budgetbuddiesteam.budgetbuddiesapp",
+      deploymentTargets: .iOS("17.0"),
       infoPlist: budgetBuddiesInfoPlist,
       sources: ["BudgetBuddies/Sources/**"],
       resources: ["BudgetBuddies/Resources/**"],
@@ -42,8 +54,6 @@ let project = Project(
         .external(name: "DGCharts", condition: .none),
         .external(name: "Moya", condition: .none),
         .external(name: "Kingfisher", condition: .none),
-        .external(name: "RxSwift", condition: .none),
-        .external(name: "RxCocoa", condition: .none),
         .external(name: "PromiseKit", condition: .none),
       ],
       settings: settings

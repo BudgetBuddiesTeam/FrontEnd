@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class AnalysisContainerView: UIView {
 
@@ -15,6 +16,7 @@ class AnalysisContainerView: UIView {
   private let analysisText: UILabel = {
     let label = UILabel()
     label.text = "분석"
+      label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
@@ -27,7 +29,6 @@ class AnalysisContainerView: UIView {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.snp.makeConstraints { make in
-      make.width.equalTo(320)
       make.height.equalTo(24)
     }
     return view
@@ -46,6 +47,7 @@ class AnalysisContainerView: UIView {
   private let thisMonthReportText: UILabel = {
     let label = UILabel()
     label.text = "이번 달 레포트"
+      label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -58,7 +60,7 @@ class AnalysisContainerView: UIView {
     imageView.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
     imageView.snp.makeConstraints { make in
       make.width.equalTo(10)
-      make.height.equalTo(21)
+      make.height.equalTo(19)
     }
     return imageView
   }()
@@ -69,7 +71,6 @@ class AnalysisContainerView: UIView {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.snp.makeConstraints { make in
-      make.width.equalTo(320)
       make.height.equalTo(24)
     }
     return view
@@ -88,6 +89,7 @@ class AnalysisContainerView: UIView {
   private let peerComsumedAnalysisReportText: UILabel = {
     let label = UILabel()
     label.text = "또래 소비분석 리포트"
+      label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -100,7 +102,7 @@ class AnalysisContainerView: UIView {
     imageView.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
     imageView.snp.makeConstraints { make in
       make.width.equalTo(10)
-      make.height.equalTo(21)
+      make.height.equalTo(19)
     }
     return imageView
   }()
@@ -122,10 +124,6 @@ class AnalysisContainerView: UIView {
   // MARK: - Methods
 
   private func setLayout() {
-    self.snp.makeConstraints { make in
-      make.width.equalTo(343)
-      make.height.equalTo(144)
-    }
 
     addSubviews(analysisText, thisMonthReportContainer, peerConsumedAnalysisReportContainer)
 
@@ -136,19 +134,19 @@ class AnalysisContainerView: UIView {
 
     thisMonthReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(52)
-      make.leading.equalToSuperview().inset(12)
+        make.leading.trailing.equalToSuperview().inset(20)
     }
 
     peerConsumedAnalysisReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(96)
-      make.leading.equalToSuperview().inset(12)
+        make.leading.trailing.equalToSuperview().inset(20)
     }
 
     thisMonthReportContainer.addSubviews(
       thisMonthReportIcon, thisMonthReportText, thisMonthReportChevronRight)
 
     thisMonthReportIcon.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(4)
+      make.leading.equalToSuperview()
       make.centerY.equalToSuperview()
     }
 
@@ -158,7 +156,7 @@ class AnalysisContainerView: UIView {
     }
 
     thisMonthReportChevronRight.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(4)
+      make.trailing.equalToSuperview()
       make.centerY.equalToSuperview()
     }
 
@@ -167,7 +165,7 @@ class AnalysisContainerView: UIView {
       peerConsumedAnalysisReportChevronRight)
 
     peerConsumedAnalysisReportIcon.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(4)
+      make.leading.equalToSuperview()
       make.centerY.equalToSuperview()
     }
 
@@ -177,7 +175,7 @@ class AnalysisContainerView: UIView {
     }
 
     peerConsumedAnalysisReportChevronRight.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(4)
+      make.trailing.equalToSuperview()
       make.centerY.equalToSuperview()
     }
   }

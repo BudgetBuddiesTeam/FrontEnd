@@ -23,6 +23,7 @@ final class GoalEditViewController: UIViewController {
     GoalCategory(name: "패션", placeholder: "ex) 200,000"),
   ]
 
+    // MARK: - UI Components
   let textFieldStackView = {
     let sv = UIStackView()
     sv.axis = .vertical
@@ -55,6 +56,7 @@ final class GoalEditViewController: UIViewController {
     return button
   }()
 
+    // MARK: - Life Cycle
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
 
@@ -68,7 +70,10 @@ final class GoalEditViewController: UIViewController {
     setupTextFields()
   }
 
+    // MARK: - Set Navi
   private func setNavi() {
+      navigationController?.navigationBar.isHidden = false
+      
     navigationItem.title = "6월 소비목표"
     let appearance = UINavigationBarAppearance()
     appearance.configureWithOpaqueBackground()

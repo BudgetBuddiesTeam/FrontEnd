@@ -60,7 +60,7 @@ final class ConsumeViewController: UIViewController {
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: "소비기록", image: UIImage(systemName: "list.clipboard"), target: self,
+      title: "소비기록", image: UIImage(systemName: "list.clipboard.fill"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))
 
     navigationItem.backBarButtonItem = UIBarButtonItem()
@@ -71,6 +71,9 @@ final class ConsumeViewController: UIViewController {
      */
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
+      
+      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+      
   }
 
   private func setUITextFieldDelegate() {

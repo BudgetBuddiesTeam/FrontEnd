@@ -140,7 +140,11 @@ class CategorySelectTableViewController: UITableViewController {
   
   @objc
   private func plusButtonTapped() {
-    self.present(CategoryPlusViewController(), animated: true)
+    let categoryPlusViewController = CategoryPlusViewController()
+    categoryPlusViewController.dismissHandler = {
+      self.tableView.reloadData()
+    }
+    self.present(categoryPlusViewController, animated: true)
   }
   
   // MARK: - Network
@@ -169,7 +173,7 @@ class CategorySelectTableViewController: UITableViewController {
     provider.request(.deleteCategory(userId: self.userId, categoryId: categoryId)) { [weak self] result in
       switch result {
       case .success:
-        self?.generateUIAlertControllerWithPopingViewController(message: "카테고리 제거에 성공했습니다")
+        self?.generateUIAlertController(message: "카테고리 제거에 성공했습니다")
       case .failure:
         self?.generateUIAlertController(message: "카테고리 제거에 실패했습니다")
       }

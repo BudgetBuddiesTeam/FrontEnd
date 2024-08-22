@@ -15,8 +15,13 @@ import Moya
  */
 
 enum CategoryRouter {
+  
+  /// 카테고리 추가 엔드포인트
   case addCategory(userId: Int, categoryRequest: CategoryRequestDTO)
-  case getCategory(userId: Int)
+  /// 카테고리 조회 엔드포인트
+  case getCategories(userId: Int)
+  /// 카테고리 제거 엔드포인트
+  case deleteCategory(userId: Int, categoryId: Int)
 }
 
 extension CategoryRouter: TargetType {
@@ -28,8 +33,10 @@ extension CategoryRouter: TargetType {
     switch self {
     case .addCategory(let userId, _):
       return "/categories/add/\(userId)"
-    case .getCategory(let userId):
+    case .getCategories(let userId):
       return "categories/get/\(userId)"
+    case .deleteCategory(_, let categoryId):
+      return "categories/delete/\(categoryId)"
     }
   }
 
@@ -37,8 +44,10 @@ extension CategoryRouter: TargetType {
     switch self {
     case .addCategory:
       return .post
-    case .getCategory:
+    case .getCategories:
       return .get
+    case .deleteCategory:
+      return .delete
     }
   }
 
@@ -46,8 +55,10 @@ extension CategoryRouter: TargetType {
     switch self {
     case .addCategory(_, let categoryRequest):
       return .requestJSONEncodable(categoryRequest)
-    case .getCategory:
+    case .getCategories:
       return .requestPlain
+    case .deleteCategory(let userId, _):
+      return .requestParameters(parameters: ["userId": userId], encoding: URLEncoding.queryString)
     }
   }
 

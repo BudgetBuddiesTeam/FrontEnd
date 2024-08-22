@@ -19,8 +19,8 @@ class ConsumeView: UIView {
 
   private let stringWidth = 100
   private let stringHeight = 24
-  private let rectangleWidth = 343
-  private let rectangleHeight = 54
+  //  private let rectangleWidth = 343
+  private let rectangleHeight = 60
 
   // MARK: - UI Components
 
@@ -28,6 +28,7 @@ class ConsumeView: UIView {
   private let consumedPriceText: UILabel = {
     let label = UILabel()
     label.text = "소비금액"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
@@ -39,6 +40,8 @@ class ConsumeView: UIView {
     textField.layer.cornerRadius = 15
     textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
     textField.keyboardType = .numberPad
+    textField.addLeftView(width: 16, height: 16)
+    textField.setCharacterSpacing(-0.4)
     return textField
   }()
 
@@ -46,6 +49,7 @@ class ConsumeView: UIView {
   private let consumedContentText: UILabel = {
     let label = UILabel()
     label.text = "소비내용"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
@@ -56,6 +60,8 @@ class ConsumeView: UIView {
     let textField = UITextField()
     textField.layer.cornerRadius = 15
     textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
+    textField.addLeftView(width: 16, height: 16)
+    textField.setCharacterSpacing(-0.4)
     return textField
   }()
 
@@ -63,6 +69,7 @@ class ConsumeView: UIView {
   private let consumedDateText: UILabel = {
     let label = UILabel()
     label.text = "지출일시"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
@@ -79,6 +86,7 @@ class ConsumeView: UIView {
   private let categorySetText: UILabel = {
     let label = UILabel()
     label.text = "카테고리 설정"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
     return label
@@ -90,6 +98,7 @@ class ConsumeView: UIView {
 
     // 버튼 타이틀 설정 코드
     button.setTitle("식비", for: .normal)
+    button.setCharacterSpacing(-0.4)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.subGray.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)
 
@@ -113,6 +122,7 @@ class ConsumeView: UIView {
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.layer.cornerRadius = 15
     button.setTitle("추가하기", for: .normal)
+    button.setCharacterSpacing(-0.45)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     return button
@@ -143,15 +153,15 @@ class ConsumeView: UIView {
       make.width.equalTo(stringWidth)
       make.height.equalTo(stringHeight)
       make.leading.equalTo(consumedPriceTextField.snp.leading)
-      make.top.equalTo(safeAreaLayoutGuide.snp.top)
+      make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(50)
     }
 
     // 소비금액 텍스트필드
     consumedPriceTextField.snp.makeConstraints { make in
-      make.width.equalTo(rectangleWidth)
-      make.height.equalTo(rectangleHeight)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(54)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedPriceText.snp.bottom)
+      make.top.equalTo(consumedPriceText.snp.bottom).offset(4)
     }
 
     // 소비내용 텍스트
@@ -164,10 +174,10 @@ class ConsumeView: UIView {
 
     // 소비내용 텍스트필드
     consumedContentTextField.snp.makeConstraints { make in
-      make.width.equalTo(rectangleWidth)
-      make.height.equalTo(rectangleHeight)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(54)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedContentText.snp.bottom)
+      make.top.equalTo(consumedContentText.snp.bottom).offset(4)
     }
 
     // 지출일시 텍스트
@@ -194,13 +204,13 @@ class ConsumeView: UIView {
 
     // 카테고리 설정 버튼
     categorySettingButton.snp.makeConstraints { make in
-      make.trailing.equalTo(consumedContentTextField.snp.trailing)
+      make.trailing.equalTo(consumedContentTextField.snp.trailing).offset(12)
       make.centerY.equalTo(categorySetText)
     }
 
     // 추가하기 버튼
     addButton.snp.makeConstraints { make in
-      make.width.equalTo(rectangleWidth)
+      make.leading.trailing.equalToSuperview().inset(16)
       make.height.equalTo(rectangleHeight)
       make.centerX.equalToSuperview()
       make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)  // 기존 20에서 10 추가(탭바 가림 해결)

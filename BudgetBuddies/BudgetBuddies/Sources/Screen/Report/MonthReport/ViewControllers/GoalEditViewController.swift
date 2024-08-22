@@ -23,6 +23,7 @@ final class GoalEditViewController: UIViewController {
     GoalCategory(name: "패션", placeholder: "ex) 200,000"),
   ]
 
+  // MARK: - UI Components
   let textFieldStackView = {
     let sv = UIStackView()
     sv.axis = .vertical
@@ -33,6 +34,7 @@ final class GoalEditViewController: UIViewController {
   let totalGoalTitleLabel = {
     let label = UILabel()
     label.text = "총 목표 금액"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     return label
@@ -41,6 +43,7 @@ final class GoalEditViewController: UIViewController {
   let totalGoalLabel = {
     let label = UILabel()
     label.text = "500,000원"
+    label.setCharacterSpacing(-0.55)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
     return label
@@ -49,12 +52,15 @@ final class GoalEditViewController: UIViewController {
   lazy var finishButton = {
     let button = UIButton(type: .custom)
     button.setTitle("작성완료", for: .normal)
+    button.setCharacterSpacing(-0.45)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.layer.cornerRadius = 15
     return button
   }()
 
+  // MARK: - Life Cycle
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
 
@@ -68,16 +74,14 @@ final class GoalEditViewController: UIViewController {
     setupTextFields()
   }
 
+  // MARK: - Set Navi
   private func setNavi() {
-    navigationItem.title = "6월 소비목표"
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
-    appearance.shadowColor = nil
+    navigationController?.navigationBar.isHidden = false
 
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    navigationItem.title = "6월 소비목표"
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+    self.addBackButton(selector: #selector(didTapBarButtonItem))
   }
 
   private func setup() {
@@ -89,9 +93,10 @@ final class GoalEditViewController: UIViewController {
     }
   }
 
+  // MARK: - Set Const
   private func setConsts() {
     textFieldStackView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(10)
       $0.leading.trailing.equalTo(view).inset(16)
     }
 
@@ -106,8 +111,7 @@ final class GoalEditViewController: UIViewController {
     }
 
     finishButton.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
+      $0.leading.trailing.equalToSuperview().inset(16)
       $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)  // 기존 -20에서 -10 추가 (탭바 가려짐 해결)
       $0.height.equalTo(60)
     }
@@ -118,12 +122,14 @@ final class GoalEditViewController: UIViewController {
     for category in goalCategories {
       let label = UILabel()
       label.text = category.name
+      label.setCharacterSpacing(-0.35)
       label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
 
       let textField = UITextField()
       textField.layer.cornerRadius = 15
       textField.placeholder = category.placeholder
+      textField.setCharacterSpacing(-0.35)
       textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
       textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
       textField.leftViewMode = .always
@@ -142,6 +148,12 @@ final class GoalEditViewController: UIViewController {
         $0.leading.trailing.equalToSuperview()
       }
     }
+  }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButtonItem() {
+    self.navigationController?.popViewController(animated: true)
   }
 }
 

@@ -47,6 +47,8 @@ class ProfileEditViewController: UIViewController {
   private func setNavigation() {
     navigationItem.title = "마이페이지"
     navigationController?.navigationBar.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setUITextFieldDelegate() {
@@ -93,6 +95,11 @@ extension ProfileEditViewController {
   private func saveButtonTapped() {
     let userInfoRequestDTO = UserInfoRequestDTO(email: self.writtenEmail, name: self.writtenName)
     self.postEditedUserInfo(userId: self.userId, userInfoRequestDTO: userInfoRequestDTO)
+  }
+
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
   }
 }
 

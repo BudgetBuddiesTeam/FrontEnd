@@ -60,10 +60,7 @@ final class MonthReportViewController: UIViewController {
     let view = UITableView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 15
-    view.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
-    view.layer.shadowOpacity = 1
-    view.layer.shadowRadius = 10
-    view.layer.masksToBounds = false
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -138,14 +135,12 @@ final class MonthReportViewController: UIViewController {
 
   let faceChartView = {
     let view = FaceChartView()
-    view.backgroundColor = .white
-    view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    //    view.backgroundColor = .white
+    //    view.layer.cornerRadius = 20
+    //    view.layer.borderWidth = 1
+    //    view.layer.borderColor = UIColor.white.cgColor
+    //      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: -1))
+    //
     return view
   }()
 
@@ -203,6 +198,7 @@ final class MonthReportViewController: UIViewController {
       description: "과자"),
   ]
 
+  // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
@@ -222,20 +218,11 @@ final class MonthReportViewController: UIViewController {
     self.scrollView.contentInset.bottom = 15
   }
 
+  // MARK: - Set Navi
   private func setNavi() {
     navigationItem.title = "이번달 리포트"
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
-    appearance.shadowColor = nil
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.coreYellow.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setup() {
@@ -251,6 +238,11 @@ final class MonthReportViewController: UIViewController {
   }
 
   private func setTableView() {
+    self.scrollView.showsVerticalScrollIndicator = false
+    self.scrollView.showsHorizontalScrollIndicator = false
+
+    spendGoalTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    accountBookTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     spendGoalTableView.delegate = self
     spendGoalTableView.dataSource = self
     spendGoalTableView.register(
@@ -276,6 +268,7 @@ final class MonthReportViewController: UIViewController {
     tableFooterView.frame = CGRect(x: 0, y: 0, width: accountBookTableView.frame.width, height: 50)
   }
 
+  // MARK: - Set Const
   private func setConst() {
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -295,9 +288,8 @@ final class MonthReportViewController: UIViewController {
 
     faceChartView.snp.makeConstraints {
       $0.top.equalTo(contentView).offset(20)
-      $0.leading.equalTo(contentView).offset(16)
-      $0.trailing.equalTo(contentView).offset(-16)
-      $0.height.equalTo(350)
+      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.height.equalTo(faceChartView.backView.snp.height)
     }
 
     spendGoalView.snp.makeConstraints {
@@ -309,8 +301,7 @@ final class MonthReportViewController: UIViewController {
 
     spendGoalTableView.snp.makeConstraints {
       $0.top.equalTo(spendGoalView.snp.bottom).offset(10)
-      $0.leading.equalTo(contentView).offset(8)
-      $0.trailing.equalTo(contentView).offset(-8)
+      $0.leading.trailing.equalTo(contentView)
       //            $0.bottom.equalTo(contentView).offset(-100)
       $0.height.equalTo(600)  // Adjust height as needed
     }
@@ -419,6 +410,12 @@ final class MonthReportViewController: UIViewController {
     default:
       return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
+  }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
   }
 
   @objc func spendGoalButtonTapped() {

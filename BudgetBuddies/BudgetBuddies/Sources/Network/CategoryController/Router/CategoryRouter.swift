@@ -15,7 +15,7 @@ import Moya
  */
 
 enum CategoryRouter {
-  
+
   /// 카테고리 추가 엔드포인트
   case addCategory(userId: Int, categoryRequest: CategoryRequestDTO)
   /// 카테고리 조회 엔드포인트

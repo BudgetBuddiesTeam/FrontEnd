@@ -10,9 +10,19 @@ import SnapKit
 import UIKit
 
 final class FaceChartView: UIView {
+
+  let backView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    view.layer.cornerRadius = 20
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: -1))
+    return view
+  }()
+
   let monthLabel = {
     let label = UILabel()
     label.text = "8월"
+    label.setCharacterSpacing(-0.4)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     label.textAlignment = .center
@@ -56,10 +66,7 @@ final class FaceChartView: UIView {
     view.layer.cornerRadius = 14
     view.layer.borderColor = BudgetBuddiesAsset.AppColor.logoLine1.color.cgColor
     view.layer.borderWidth = 1
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.setShadow(opacity: 1, Radius: 3.28, offSet: CGSize(width: 0, height: 0.82))
     return view
   }()
 
@@ -125,6 +132,7 @@ final class FaceChartView: UIView {
   }
 
   private func setup() {
+    self.addSubviews(backView)
 
     [beforeButton, monthLabel, afterButton].forEach {
       self.monthStackView.addArrangedSubview($0)
@@ -134,13 +142,18 @@ final class FaceChartView: UIView {
       monthStackView, pieChartView, centerImageView, commentView, commentLabel, spendTitleLabel,
       totalSpendLabel, separatorView, remainTitleLabel, totalRemainLabel,
     ].forEach {
-      self.addSubview($0)
+      backView.addSubview($0)
     }
 
     commentView.addSubview(commentLabel)
   }
 
   private func setConst() {
+    backView.snp.makeConstraints { make in
+      make.leading.trailing.top.equalToSuperview()
+      make.bottom.equalTo(self.separatorView.snp.bottom).offset(20)
+    }
+
     beforeButton.snp.makeConstraints {
       $0.width.equalTo(4)
       $0.height.equalTo(14)
@@ -170,13 +183,13 @@ final class FaceChartView: UIView {
 
     commentView.snp.makeConstraints {
       $0.top.equalTo(pieChartView.snp.bottom).offset(16)
-      $0.leading.equalToSuperview().offset(40)
-      $0.trailing.equalToSuperview().offset(-40)
+      $0.leading.trailing.equalToSuperview().inset(43)
     }
 
     commentLabel.snp.makeConstraints {
       $0.edges.equalToSuperview().inset(8)
     }
+
     spendTitleLabel.snp.makeConstraints {
       $0.top.equalTo(commentView.snp.bottom).offset(30)
       $0.leading.equalToSuperview().offset(70)

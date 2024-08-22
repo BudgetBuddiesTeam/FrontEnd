@@ -13,6 +13,8 @@ final class TopStackView: UIView {
   let titleLabel = {
     let label = UILabel()
     label.text = "제목"
+    label.setCharacterSpacing(-0.45)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     label.font = .systemFont(ofSize: 18, weight: .semibold)
     label.textColor = .black
     return label

@@ -18,6 +18,7 @@ class ConsumedHistoryTableViewCell: UITableViewCell {
 
   private var categoryIcon: UIImageView = {
     let imageView = UIImageView()
+    imageView.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
@@ -80,18 +81,18 @@ class ConsumedHistoryTableViewCell: UITableViewCell {
     contentView.addSubviews(categoryIcon, spentPriceLabel, descriptionLabel)
 
     categoryIcon.snp.makeConstraints { make in
-      make.width.height.equalTo(40)
+      make.width.height.equalTo(47)
       make.leading.equalToSuperview().inset(25)
       make.centerY.equalToSuperview()
     }
 
     spentPriceLabel.snp.makeConstraints { make in
-      make.top.equalTo(categoryIcon.snp.top)
+      make.top.equalTo(categoryIcon.snp.top).offset(5)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(20)
     }
 
     descriptionLabel.snp.makeConstraints { make in
-      make.bottom.equalTo(categoryIcon.snp.bottom)
+      make.top.equalTo(spentPriceLabel.snp.bottom).offset(2)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(20)
     }
   }

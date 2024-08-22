@@ -25,6 +25,7 @@ final class AccountBookCell: UITableViewCell {
   let iconImageView = {
     let image = UIImageView()
     image.contentMode = .scaleAspectFit
+    image.setShadow(opacity: 1, Radius: 3.6, offSet: CGSize(width: 0, height: 0))
     return image
   }()
 
@@ -77,17 +78,17 @@ final class AccountBookCell: UITableViewCell {
     iconImageView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.leading.equalToSuperview().offset(24)
-      $0.width.height.equalTo(40)
+      $0.width.height.equalTo(48)
     }
 
     amountLabel.snp.makeConstraints {
-      $0.top.equalTo(iconImageView.snp.top)
+      $0.top.equalTo(iconImageView.snp.top).offset(5)
       $0.leading.equalTo(iconImageView.snp.trailing).offset(20)
     }
 
     descriptionLabel.snp.makeConstraints {
       $0.leading.equalTo(amountLabel)
-      $0.bottom.equalTo(iconImageView.snp.bottom)
+      $0.top.equalTo(amountLabel.snp.bottom).offset(2)
     }
 
     //        moreButton.snp.makeConstraints {

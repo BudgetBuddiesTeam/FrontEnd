@@ -15,6 +15,10 @@ import UIKit
 final class AnalysisReportViewController: UIViewController {
 
   // MARK: - Property
+  // 네비바
+  var previousScrollOffset: CGFloat = 0.0
+  var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+
   @Published private var userName = String()
 
   private let userRouterProvider = MoyaProvider<UserRouter>()
@@ -51,8 +55,9 @@ final class AnalysisReportViewController: UIViewController {
   let titleLabel = {
     let label = UILabel()
     label.text = "김혜인님 또래는 \n어떻게 소비했을까요?"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 22, weight: .bold)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.setCharacterSpacing(-0.6)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 24)
     label.numberOfLines = 0
     return label
   }()
@@ -60,20 +65,21 @@ final class AnalysisReportViewController: UIViewController {
   let ageGenderLabel = {
     let label = UILabel()
     label.text = "23~26세 여성"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 14, weight: .medium)
+    label.setCharacterSpacing(-0.35)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     return label
   }()
 
   lazy var rangeEditButton = {
     let button = UIButton(type: .custom)
     button.setTitle("범위변경", for: .normal)
-    button.setTitleColor(.orange, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    button.backgroundColor = BudgetBuddiesAsset.AppColor.face.color
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.logoLine2.color, for: .normal)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    button.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
     button.layer.cornerRadius = 10
     button.layer.borderWidth = 1
-    button.layer.borderColor = UIColor.systemOrange.cgColor
+    button.layer.borderColor = BudgetBuddiesAsset.AppColor.lemon.color.cgColor
     button.addTarget(self, action: #selector(ageEditButtonTapped), for: .touchUpInside)
     return button
   }()
@@ -81,13 +87,8 @@ final class AnalysisReportViewController: UIViewController {
   let ageView = {
     let view = UIView()
     view.backgroundColor = .white
-    view.layer.cornerRadius = 16
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.layer.cornerRadius = 15
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -102,12 +103,7 @@ final class AnalysisReportViewController: UIViewController {
     let view = GoalChartView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -123,12 +119,7 @@ final class AnalysisReportViewController: UIViewController {
     let view = ReportBarChartView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -152,6 +143,10 @@ final class AnalysisReportViewController: UIViewController {
     setupViews()
     setupConstraints()
     setupPieChart()
+
+    self.scrollView.delegate = self
+    self.scrollView.showsVerticalScrollIndicator = false
+    self.scrollView.showsHorizontalScrollIndicator = false
   }
   // 탭바에 가려지는 요소 보이게 하기
   override func viewDidLayoutSubviews() {
@@ -162,7 +157,7 @@ final class AnalysisReportViewController: UIViewController {
   // MARK: - Methods
 
   private func setupViews() {
-    view.backgroundColor = .white
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
@@ -180,13 +175,10 @@ final class AnalysisReportViewController: UIViewController {
   }
 
   private func setNavi() {
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "또래 비교 분석 레포트"
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setupConstraints() {
@@ -249,7 +241,7 @@ final class AnalysisReportViewController: UIViewController {
       $0.leading.equalTo(contentView).offset(16)
       $0.trailing.equalTo(contentView).offset(-16)
       $0.bottom.equalTo(contentView).offset(-16)
-      $0.height.equalTo(300)
+      $0.height.equalTo(260)
     }
   }
 
@@ -268,10 +260,10 @@ final class AnalysisReportViewController: UIViewController {
   private func setupChart(_ topGoals: [GetTopGoalsResponse.GetTopGoalsResult]) {
     // 차트에 사용할 색상 배열
     let colors: [UIColor] = [
-      UIColor.systemBlue,
-      UIColor.systemYellow,
-      UIColor.systemOrange,
-      UIColor.systemCyan,
+      BudgetBuddiesAsset.AppColor.coreBlue.color,
+      BudgetBuddiesAsset.AppColor.sky3.color,
+      BudgetBuddiesAsset.AppColor.orange2.color,
+      BudgetBuddiesAsset.AppColor.coreYellow.color,
     ]
 
     // 최대 4개의 topGoals 데이터만 사용
@@ -322,6 +314,12 @@ final class AnalysisReportViewController: UIViewController {
     if let firstSpend = chartData.first {
       reportBarChartView.updateFirstSpend(category: firstSpend.category)
     }
+  }
+
+  // MARK: - Selector
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
   }
 
   @objc func ageEditButtonTapped() {
@@ -442,5 +440,25 @@ extension AnalysisReportViewController {
         print("Failed to load Top goals: \(error)")
       }
     }
+  }
+}
+
+extension AnalysisReportViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let currentOffset = scrollView.contentOffset.y
+    let offsetDifference = currentOffset - previousScrollOffset
+
+    if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+      navigationController?.setNavigationBarHidden(true, animated: true)
+
+    } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    }
+
+    previousScrollOffset = currentOffset
   }
 }

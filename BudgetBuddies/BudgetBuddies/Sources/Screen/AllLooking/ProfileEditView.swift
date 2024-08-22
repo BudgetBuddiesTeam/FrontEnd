@@ -12,12 +12,12 @@ class ProfileEditView: UIView {
   // MARK: - Properties
 
   // 텍스트 빌드 레이아웃 값
-  private static let textFieldWidth = 343
+  //  private static let textFieldWidth = 343
   private static let textFieldHeight = 54
 
   // 버튼 레이아웃 값
-  private static let buttonWidth = 342
-  private static let buttonHeight = 63
+  //  private static let buttonWidth = 342
+  private static let buttonHeight = 60
 
   // 공통 레이아웃 값
   private static let cornerRadius: CGFloat = 15
@@ -28,6 +28,7 @@ class ProfileEditView: UIView {
   private let nameText: UILabel = {
     let label = UILabel()
     label.text = "이름"
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -37,12 +38,12 @@ class ProfileEditView: UIView {
   public let nameTextField: UITextField = {
     let textField = UITextField()
     textField.snp.makeConstraints { make in
-      make.width.equalTo(ProfileEditView.textFieldWidth)
       make.height.equalTo(ProfileEditView.textFieldHeight)
     }
     textField.layer.cornerRadius = ProfileEditView.cornerRadius
     textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
 
+    textField.addLeftView(width: 16, height: 16)
     return textField
   }()
 
@@ -50,6 +51,7 @@ class ProfileEditView: UIView {
   private let emailText: UILabel = {
     let label = UILabel()
     label.text = "이메일"
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -59,7 +61,6 @@ class ProfileEditView: UIView {
   public let emailTextField: UITextField = {
     let textField = UITextField()
     textField.snp.makeConstraints { make in
-      make.width.equalTo(ProfileEditView.textFieldWidth)
       make.height.equalTo(ProfileEditView.textFieldHeight)
     }
     textField.layer.cornerRadius = ProfileEditView.cornerRadius
@@ -67,6 +68,7 @@ class ProfileEditView: UIView {
 
     textField.keyboardType = .emailAddress
 
+    textField.addLeftView(width: 16, height: 16)
     return textField
   }()
 
@@ -74,12 +76,13 @@ class ProfileEditView: UIView {
   public let saveButton: UIButton = {
     let button = UIButton()
     button.snp.makeConstraints { make in
-      make.width.equalTo(ProfileEditView.textFieldWidth)
-      make.height.equalTo(ProfileEditView.textFieldHeight)
+      make.height.equalTo(ProfileEditView.buttonHeight)
     }
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.layer.cornerRadius = ProfileEditView.cornerRadius
     button.setTitle("저장하기", for: .normal)
+    button.setCharacterSpacing(-0.45)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
     return button
   }()
@@ -103,27 +106,30 @@ class ProfileEditView: UIView {
 
     nameText.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(73)
+      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(32)
     }
 
     nameTextField.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(98)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.top.equalTo(nameText.snp.bottom).offset(7)
     }
 
     emailText.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(179)
+      make.top.equalTo(nameTextField.snp.bottom).offset(28)
     }
 
     emailTextField.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(204)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.top.equalTo(emailText.snp.bottom).offset(7)
     }
 
     saveButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(30)
+      make.leading.trailing.equalToSuperview().inset(16)
     }
   }
 }

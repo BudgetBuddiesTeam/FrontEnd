@@ -162,10 +162,11 @@ final class ReportBarChartView: UIView {
     }
 
     barView.snp.makeConstraints {
-      $0.leading.equalTo(categoryLabel.snp.trailing).offset(8)
+      //      $0.leading.equalTo(categoryLabel.snp.trailing).offset(8)
+      $0.centerX.equalToSuperview().offset(-30)
       $0.centerY.equalToSuperview()
       $0.height.equalTo(24)
-      $0.width.equalTo(value * 30)
+      $0.width.equalTo(value * 10)
     }
 
     return containerView

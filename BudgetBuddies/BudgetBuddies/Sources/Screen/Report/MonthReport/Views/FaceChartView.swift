@@ -12,7 +12,7 @@ import UIKit
 final class FaceChartView: UIView {
   let monthLabel = {
     let label = UILabel()
-    label.text = "6월"
+    label.text = "8월"
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
     label.textAlignment = .center

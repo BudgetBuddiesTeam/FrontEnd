@@ -8,6 +8,11 @@
 import UIKit
 
 extension UIViewController {
+    
+    
+    /// 기본 네비게이션바 세팅하는 함수입니다.
+    ///
+    /// - Parameter backgroundColor: 배경 색입니다.
     func setupDefaultNavigationBar(backgroundColor: UIColor) {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
@@ -29,5 +34,22 @@ extension UIViewController {
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    /// 네비게이션바 회색 백 버튼을 설정하는 함수입니다.
+    ///
+    /// - Parameter selector: selector함수입니다. #selector(<함수이름>)형식입니다.
+    func addBackButton(selector: Selector) {
+        lazy var backButton: UIBarButtonItem = {
+          let btn = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .done,
+            target: self,
+            action: selector)
+          btn.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
+          return btn
+        }()
+
+        navigationItem.leftBarButtonItem = backButton
     }
 }

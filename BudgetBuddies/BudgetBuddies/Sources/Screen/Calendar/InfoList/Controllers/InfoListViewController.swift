@@ -137,40 +137,14 @@ final class InfoListViewController: UIViewController {
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithDefaultBackground()
-    appearance.shadowColor = nil
-
+      self.setupDefaultNavigationBar(backgroundColor: .clear)
     // 뒤로가기 제스처 추가
     self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
-    // 네비게이션 바 타이틀 폰트, 자간 설정
-    let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
-    let titleAttributes: [NSAttributedString.Key: Any] = [
-      .font: titleFont,
-      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,
-      .kern: -0.45,
-    ]
-
-    appearance.titleTextAttributes = titleAttributes
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
     navigationController?.navigationBar.isHidden = false
 
     // 백 버튼
-    lazy var backButton: UIBarButtonItem = {
-      let btn = UIBarButtonItem(
-        image: UIImage(systemName: "chevron.left"),
-        style: .done,
-        target: self,
-        action: #selector(didTapBarButtonItem))
-      btn.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
-      return btn
-    }()
-
-    navigationItem.leftBarButtonItem = backButton
+      addBackButton(selector: #selector(didTapBarButtonItem))
   }
 
   // MARK: - Set up TableView

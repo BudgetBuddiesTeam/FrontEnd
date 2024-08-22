@@ -20,7 +20,7 @@ class ConsumeView: UIView {
   private let stringWidth = 100
   private let stringHeight = 24
 //  private let rectangleWidth = 343
-  private let rectangleHeight = 54
+  private let rectangleHeight = 60
 
   // MARK: - UI Components
 
@@ -159,9 +159,9 @@ class ConsumeView: UIView {
     // 소비금액 텍스트필드
     consumedPriceTextField.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(16)
-      make.height.equalTo(rectangleHeight)
+      make.height.equalTo(54)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedPriceText.snp.bottom)
+        make.top.equalTo(consumedPriceText.snp.bottom).offset(4)
     }
 
     // 소비내용 텍스트
@@ -175,9 +175,9 @@ class ConsumeView: UIView {
     // 소비내용 텍스트필드
     consumedContentTextField.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(16)
-      make.height.equalTo(rectangleHeight)
+      make.height.equalTo(54)
       make.centerX.equalToSuperview()
-      make.top.equalTo(consumedContentText.snp.bottom)
+        make.top.equalTo(consumedContentText.snp.bottom).offset(4)
     }
 
     // 지출일시 텍스트

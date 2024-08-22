@@ -134,7 +134,7 @@ final class AgeEditViewController: UIViewController {
     }
 
   private func setup() {
-    view.backgroundColor = .white
+      view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
     [titleLabel, genderLabel, buttonStackView, ageLabel, saveButton].forEach {
       view.addSubviews($0)
@@ -175,7 +175,7 @@ final class AgeEditViewController: UIViewController {
     for (index, button) in ageButtons.enumerated() {
       button.snp.makeConstraints {
         if index == 0 {
-          $0.top.equalTo(ageLabel.snp.bottom).offset(20)
+          $0.top.equalTo(ageLabel.snp.bottom).offset(10)
         } else {
           $0.top.equalTo(ageButtons[index - 1].snp.bottom).offset(20)
         }

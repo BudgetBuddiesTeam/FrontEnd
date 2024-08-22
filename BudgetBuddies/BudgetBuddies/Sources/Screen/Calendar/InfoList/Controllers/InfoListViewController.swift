@@ -379,18 +379,18 @@ extension InfoListViewController: InformationCellDelegate {
           print("좋아요 성공")
 
           if response.result.likeCount > likesCount {
-            AlertManager.showAlert(
-              on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false
-            ) { _ in
-              self.setupData()
-            }
+              AlertManager.showAlert(
+                on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+              ) { _ in
+                self.setupData()
+              }
 
           } else {
-            AlertManager.showAlert(
-              on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false
-            ) { _ in
-              self.setupData()
-            }
+              AlertManager.showAlert(
+                on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+              ) { _ in
+                self.setupData()
+              }
           }
 
         case .failure(let error):
@@ -404,18 +404,18 @@ extension InfoListViewController: InformationCellDelegate {
           print("좋아요 성공")
 
           if response.result.likeCount > likesCount {
-            AlertManager.showAlert(
-              on: self, title: "좋아요를 눌렀습니다.", message: nil, needsCancelButton: false
-            ) { _ in
-              self.setupData()
-            }
+              AlertManager.showAlert(
+                on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+              ) { _ in
+                self.setupData()
+              }
 
           } else {
-            AlertManager.showAlert(
-              on: self, title: "좋아요를 취소했습니다.", message: nil, needsCancelButton: false
-            ) { _ in
-              self.setupData()
-            }
+              AlertManager.showAlert(
+                on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+              ) { _ in
+                self.setupData()
+              }
           }
 
         case .failure(let error):

@@ -134,12 +134,23 @@ class CommentCell: UITableViewCell {
 
   // MARK: - Configure
   func configure(userId: Int) {
+      hideModifyDeleteButtons()
     guard let commentsUserId = self.userId else { return }
+      
+      print("받은 id: \(userId), 현재 셀의 id: \(commentsUserId)")
     if userId == commentsUserId {
       // 유저번호가 같은 댓글만 수정,삭제 버튼 보이게
       setupModifyDeleteButtons()
     }
   }
+    
+    // MARK: - Hide Modify, Delete Buttons
+    private func hideModifyDeleteButtons() {
+        buttonBackView.removeFromSuperview()
+        verticalSeparator.removeFromSuperview()
+        editButtonImageView.removeFromSuperview()
+        deleteButtonImageView.removeFromSuperview()
+    }
 
   // MARK: - Set up UI
   private func setupUI() {

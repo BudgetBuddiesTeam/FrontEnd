@@ -134,6 +134,8 @@ final class SummaryInfoContainerView: UIView {
 
   // MARK: - Methods
   private func setLayout() {
+      self.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
+      
     self.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     self.layer.cornerRadius = 20
 

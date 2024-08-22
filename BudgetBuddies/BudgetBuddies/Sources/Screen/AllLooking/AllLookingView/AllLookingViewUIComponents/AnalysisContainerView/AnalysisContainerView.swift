@@ -5,8 +5,8 @@
 //  Created by Jiwoong CHOI on 7/26/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 class AnalysisContainerView: UIView {
 
@@ -16,7 +16,7 @@ class AnalysisContainerView: UIView {
   private let analysisText: UILabel = {
     let label = UILabel()
     label.text = "분석"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
@@ -47,7 +47,7 @@ class AnalysisContainerView: UIView {
   private let thisMonthReportText: UILabel = {
     let label = UILabel()
     label.text = "이번 달 레포트"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -89,7 +89,7 @@ class AnalysisContainerView: UIView {
   private let peerComsumedAnalysisReportText: UILabel = {
     let label = UILabel()
     label.text = "또래 소비분석 리포트"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -134,12 +134,12 @@ class AnalysisContainerView: UIView {
 
     thisMonthReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(52)
-        make.leading.trailing.equalToSuperview().inset(20)
+      make.leading.trailing.equalToSuperview().inset(20)
     }
 
     peerConsumedAnalysisReportContainer.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(96)
-        make.leading.trailing.equalToSuperview().inset(20)
+      make.leading.trailing.equalToSuperview().inset(20)
     }
 
     thisMonthReportContainer.addSubviews(

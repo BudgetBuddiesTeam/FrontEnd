@@ -16,7 +16,7 @@ class ProfileContainerView: UIView {
   public var userNameText: UILabel = {
     let label = UILabel()
     label.text = "빈주머니즈"
-      label.setCharacterSpacing(-0.45)
+    label.setCharacterSpacing(-0.45)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label

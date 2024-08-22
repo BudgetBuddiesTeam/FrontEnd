@@ -5,13 +5,13 @@
 //  Created by Jiwoong CHOI on 7/26/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 class AllServiceContainerView: UIView {
 
   // MARK: - Properties
-//  private static let containerWidth = 320
+  //  private static let containerWidth = 320
   private static let containerHeight = 29
 
   private static let chevronWidth = 10
@@ -22,7 +22,7 @@ class AllServiceContainerView: UIView {
   private let allServiceText: UILabel = {
     let label = UILabel()
     label.text = "전체 서비스"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
@@ -52,7 +52,7 @@ class AllServiceContainerView: UIView {
   private let pocketCalendarText: UILabel = {
     let label = UILabel()
     label.text = "주머니 캘린더"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -94,7 +94,7 @@ class AllServiceContainerView: UIView {
   private let priceEventInfoConfirmText: UILabel = {
     let label = UILabel()
     label.text = "이번 달 할인정보 확인하기"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -138,7 +138,7 @@ class AllServiceContainerView: UIView {
   private let supportInfoConfirmText: UILabel = {
     let label = UILabel()
     label.text = "이번 달 지원정보 확인하기"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -187,17 +187,17 @@ class AllServiceContainerView: UIView {
     }
 
     pocketCalendarContainer.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(20)
+      make.leading.trailing.equalToSuperview().inset(20)
       make.top.equalToSuperview().inset(50)
     }
 
     priceEventInfoContainer.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(20)
+      make.leading.trailing.equalToSuperview().inset(20)
       make.top.equalTo(pocketCalendarContainer.snp.bottom).offset(12)
     }
 
     supportInfoConfirmContainer.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(20)
+      make.leading.trailing.equalToSuperview().inset(20)
       make.top.equalTo(priceEventInfoContainer.snp.bottom).offset(12)
     }
 
@@ -218,7 +218,7 @@ class AllServiceContainerView: UIView {
 
     pocketCalendarText.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-        make.leading.equalTo(pocketCalendarIcon.snp.trailing).offset(distanceBetweenIconAndText)
+      make.leading.equalTo(pocketCalendarIcon.snp.trailing).offset(distanceBetweenIconAndText)
     }
 
     pocketCalendarRightChevron.snp.makeConstraints { make in

@@ -84,8 +84,8 @@ class AllLookingViewController: UIViewController {
   }
 
   private func setNavi() {
-      self.navigationController?.setNavigationBarHidden(false, animated: true)
-      
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+
     let appearance = UINavigationBarAppearance()
     appearance.configureWithOpaqueBackground()
     appearance.backgroundColor = .white

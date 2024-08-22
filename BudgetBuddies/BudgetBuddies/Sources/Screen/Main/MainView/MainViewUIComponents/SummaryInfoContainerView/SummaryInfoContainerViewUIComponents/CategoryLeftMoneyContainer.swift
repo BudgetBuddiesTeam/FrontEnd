@@ -16,11 +16,11 @@ class CategoryLeftMoneyContainer: UIView {
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFit
-      imageView.layer.cornerRadius = 15
-      imageView.backgroundColor = .white
-      imageView.layer.masksToBounds = true
-      imageView.layer.borderWidth = 1
-      imageView.layer.borderColor = BudgetBuddiesAsset.AppColor.mainBoxStroke.color.cgColor
+    imageView.layer.cornerRadius = 15
+    imageView.backgroundColor = .white
+    imageView.layer.masksToBounds = true
+    imageView.layer.borderWidth = 1
+    imageView.layer.borderColor = BudgetBuddiesAsset.AppColor.mainBoxStroke.color.cgColor
     return imageView
   }()
 
@@ -34,26 +34,26 @@ class CategoryLeftMoneyContainer: UIView {
 
   // 동적 UI 컴포넌트
   private let leftPriceLabel = LeftPriceUILabel()
-    
-    // 라벨 스택뷰
-    lazy var labelStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [categoryTextLabel, leftPriceLabel])
-        sv.axis = .vertical
-        sv.spacing = 0
-        sv.alignment = .leading
-        sv.distribution = .fill
-        return sv
-    }()
-    
-    lazy var iconlabelStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [iconImageView, labelStackView])
-        sv.axis = .horizontal
-        sv.distribution = .fill
-        sv.spacing = 0
-        sv.alignment = .center
-        sv.spacing = 7
-        return sv
-    }()
+
+  // 라벨 스택뷰
+  lazy var labelStackView: UIStackView = {
+    let sv = UIStackView(arrangedSubviews: [categoryTextLabel, leftPriceLabel])
+    sv.axis = .vertical
+    sv.spacing = 0
+    sv.alignment = .leading
+    sv.distribution = .fill
+    return sv
+  }()
+
+  lazy var iconlabelStackView: UIStackView = {
+    let sv = UIStackView(arrangedSubviews: [iconImageView, labelStackView])
+    sv.axis = .horizontal
+    sv.distribution = .fill
+    sv.spacing = 0
+    sv.alignment = .center
+    sv.spacing = 7
+    return sv
+  }()
 
   // MARK: - Initializer
 
@@ -127,28 +127,26 @@ class CategoryLeftMoneyContainer: UIView {
     )
 
     iconImageView.snp.makeConstraints { make in
-        make.height.width.equalTo(40)
+      make.height.width.equalTo(40)
     }
 
     categoryTextLabel.snp.makeConstraints { make in
-        make.height.equalTo(18)
+      make.height.equalTo(18)
     }
 
     leftPriceLabel.snp.makeConstraints { make in
-        make.height.equalTo(18)
+      make.height.equalTo(18)
     }
-      
-      labelStackView.snp.makeConstraints { make in
-          make.height.equalTo(36)
-      }
-      
-      iconlabelStackView.snp.makeConstraints { make in
-          make.center.equalToSuperview()
-          make.leading.trailing.equalToSuperview().inset(12)
-          make.height.equalTo(40)
-      }
-      
-      
-      
+
+    labelStackView.snp.makeConstraints { make in
+      make.height.equalTo(36)
+    }
+
+    iconlabelStackView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.leading.trailing.equalToSuperview().inset(12)
+      make.height.equalTo(40)
+    }
+
   }
 }

@@ -21,7 +21,7 @@ final class GoalReportViewController: UIViewController {
   let mainLabel = {
     let label = UILabel()
     label.text = "또래 친구들은\n문화생활에 가장\n큰 목표예산을 세웠어요"
-      label.setCharacterSpacing(-0.55)
+    label.setCharacterSpacing(-0.55)
     label.textColor = .black
     label.numberOfLines = 0
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
@@ -68,32 +68,32 @@ final class GoalReportViewController: UIViewController {
     setup()
     setConsts()
   }
-    
-    // 탭바에 가려지는 요소 보이게 하기
-    override func viewDidLayoutSubviews() {
-      super.viewDidLayoutSubviews()
-      self.tableView.contentInset.bottom = 15
-    }
+
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tableView.contentInset.bottom = 15
+  }
 
   // MARK: - Methods
 
   private func setNavigationSetting() {
-      navigationController?.setNavigationBarHidden(false, animated: true)
+    navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "소비목표 레포트"
-      
-      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
-      self.addBackButton(selector: #selector(didTapBarButton))
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setTableView() {
-      self.tableView.showsVerticalScrollIndicator = false
-      self.tableView.showsHorizontalScrollIndicator = false
+    self.tableView.showsVerticalScrollIndicator = false
+    self.tableView.showsHorizontalScrollIndicator = false
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(
       ReportTableViewCell.self, forCellReuseIdentifier: ReportTableViewCell.identifier)
     tableView.separatorStyle = .none
-      tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
   }
 
   private func setup() {
@@ -161,12 +161,12 @@ final class GoalReportViewController: UIViewController {
 
     mainLabel.attributedText = attributedText
   }
-    
-    // MARK: - Selectors
-    @objc
-    private func didTapBarButton() {
-        self.navigationController?.popViewController(animated: true)
-    }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource

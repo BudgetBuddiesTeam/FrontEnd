@@ -137,14 +137,14 @@ final class InfoListViewController: UIViewController {
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
-      self.setupDefaultNavigationBar(backgroundColor: .clear)
+    self.setupDefaultNavigationBar(backgroundColor: .clear)
     // 뒤로가기 제스처 추가
     self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
     navigationController?.navigationBar.isHidden = false
 
     // 백 버튼
-      addBackButton(selector: #selector(didTapBarButtonItem))
+    addBackButton(selector: #selector(didTapBarButtonItem))
   }
 
   // MARK: - Set up TableView
@@ -353,18 +353,18 @@ extension InfoListViewController: InformationCellDelegate {
           print("좋아요 성공")
 
           if response.result.likeCount > likesCount {
-              AlertManager.showAlert(
-                on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
-              ) { _ in
-                self.setupData()
-              }
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
 
           } else {
-              AlertManager.showAlert(
-                on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
-              ) { _ in
-                self.setupData()
-              }
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
           }
 
         case .failure(let error):
@@ -378,18 +378,18 @@ extension InfoListViewController: InformationCellDelegate {
           print("좋아요 성공")
 
           if response.result.likeCount > likesCount {
-              AlertManager.showAlert(
-                on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
-              ) { _ in
-                self.setupData()
-              }
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
 
           } else {
-              AlertManager.showAlert(
-                on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
-              ) { _ in
-                self.setupData()
-              }
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
           }
 
         case .failure(let error):

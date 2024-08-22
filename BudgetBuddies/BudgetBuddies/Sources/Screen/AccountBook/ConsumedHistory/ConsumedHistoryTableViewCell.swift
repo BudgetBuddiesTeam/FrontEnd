@@ -18,7 +18,7 @@ class ConsumedHistoryTableViewCell: UITableViewCell {
 
   private var categoryIcon: UIImageView = {
     let imageView = UIImageView()
-      imageView.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
+    imageView.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
@@ -87,12 +87,12 @@ class ConsumedHistoryTableViewCell: UITableViewCell {
     }
 
     spentPriceLabel.snp.makeConstraints { make in
-        make.top.equalTo(categoryIcon.snp.top).offset(5)
+      make.top.equalTo(categoryIcon.snp.top).offset(5)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(20)
     }
 
     descriptionLabel.snp.makeConstraints { make in
-        make.top.equalTo(spentPriceLabel.snp.bottom).offset(2)
+      make.top.equalTo(spentPriceLabel.snp.bottom).offset(2)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(20)
     }
   }

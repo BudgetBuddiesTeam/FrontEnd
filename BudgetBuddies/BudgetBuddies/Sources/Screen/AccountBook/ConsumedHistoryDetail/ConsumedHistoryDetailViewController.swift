@@ -74,9 +74,9 @@ final class ConsumedHistoryDetailViewController: UIViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       image: UIImage(systemName: "trash.fill"), style: .plain, target: self,
       action: #selector(trashRightBarButtonTapped))
-      navigationController?.navigationBar.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
-      
-      self.addBackButton(selector: #selector(didTapBarButton))
+    navigationController?.navigationBar.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
+
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setButtonAction() {
@@ -283,11 +283,11 @@ extension ConsumedHistoryDetailViewController {
 // MARK: - Object C Methods
 
 extension ConsumedHistoryDetailViewController {
-    @objc
-    private func didTapBarButton() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
+
   @objc
   private func categorySettingButtonTapped() {
     navigationItem.backBarButtonItem = UIBarButtonItem()

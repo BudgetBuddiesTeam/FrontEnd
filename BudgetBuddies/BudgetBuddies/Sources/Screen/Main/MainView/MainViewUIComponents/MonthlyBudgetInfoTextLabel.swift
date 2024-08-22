@@ -34,6 +34,6 @@ class MonthlyBudgetInfoTextLabel: UILabel {
     self.text = "\(month)월 주머니 정보"
     self.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     self.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
-      self.setCharacterSpacing(-0.45)
+    self.setCharacterSpacing(-0.45)
   }
 }

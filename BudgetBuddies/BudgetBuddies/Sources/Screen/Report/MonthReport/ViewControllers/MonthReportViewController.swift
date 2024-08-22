@@ -60,7 +60,7 @@ final class MonthReportViewController: UIViewController {
     let view = UITableView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 15
-      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -135,12 +135,12 @@ final class MonthReportViewController: UIViewController {
 
   let faceChartView = {
     let view = FaceChartView()
-//    view.backgroundColor = .white
-//    view.layer.cornerRadius = 20
-//    view.layer.borderWidth = 1
-//    view.layer.borderColor = UIColor.white.cgColor
-//      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: -1))
-//    
+    //    view.backgroundColor = .white
+    //    view.layer.cornerRadius = 20
+    //    view.layer.borderWidth = 1
+    //    view.layer.borderColor = UIColor.white.cgColor
+    //      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: -1))
+    //
     return view
   }()
 
@@ -198,7 +198,7 @@ final class MonthReportViewController: UIViewController {
       description: "과자"),
   ]
 
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
@@ -218,11 +218,11 @@ final class MonthReportViewController: UIViewController {
     self.scrollView.contentInset.bottom = 15
   }
 
-    // MARK: - Set Navi
+  // MARK: - Set Navi
   private func setNavi() {
     navigationItem.title = "이번달 리포트"
-      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.coreYellow.color)
-      self.addBackButton(selector: #selector(didTapBarButton))
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.coreYellow.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setup() {
@@ -238,11 +238,11 @@ final class MonthReportViewController: UIViewController {
   }
 
   private func setTableView() {
-      self.scrollView.showsVerticalScrollIndicator = false
-      self.scrollView.showsHorizontalScrollIndicator = false
-      
-      spendGoalTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
-      accountBookTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    self.scrollView.showsVerticalScrollIndicator = false
+    self.scrollView.showsHorizontalScrollIndicator = false
+
+    spendGoalTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    accountBookTableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     spendGoalTableView.delegate = self
     spendGoalTableView.dataSource = self
     spendGoalTableView.register(
@@ -268,7 +268,7 @@ final class MonthReportViewController: UIViewController {
     tableFooterView.frame = CGRect(x: 0, y: 0, width: accountBookTableView.frame.width, height: 50)
   }
 
-    // MARK: - Set Const
+  // MARK: - Set Const
   private func setConst() {
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -288,8 +288,8 @@ final class MonthReportViewController: UIViewController {
 
     faceChartView.snp.makeConstraints {
       $0.top.equalTo(contentView).offset(20)
-        $0.leading.trailing.equalToSuperview().inset(16)
-        $0.height.equalTo(faceChartView.backView.snp.height)
+      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.height.equalTo(faceChartView.backView.snp.height)
     }
 
     spendGoalView.snp.makeConstraints {
@@ -301,7 +301,7 @@ final class MonthReportViewController: UIViewController {
 
     spendGoalTableView.snp.makeConstraints {
       $0.top.equalTo(spendGoalView.snp.bottom).offset(10)
-        $0.leading.trailing.equalTo(contentView)
+      $0.leading.trailing.equalTo(contentView)
       //            $0.bottom.equalTo(contentView).offset(-100)
       $0.height.equalTo(600)  // Adjust height as needed
     }
@@ -412,12 +412,12 @@ final class MonthReportViewController: UIViewController {
     }
   }
 
-    // MARK: - Selectors
-    @objc
-    private func didTapBarButton() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
+
   @objc func spendGoalButtonTapped() {
     if let naviController = self.navigationController {
       let goalTotalVC = GoalTotalViewController()

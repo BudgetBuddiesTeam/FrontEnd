@@ -17,7 +17,7 @@ final class ReportTableViewCell: UITableViewCell {
     let view = UIView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 15
-      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
     view.layer.masksToBounds = false
     return view
   }()
@@ -34,25 +34,25 @@ final class ReportTableViewCell: UITableViewCell {
     imageView.contentMode = .scaleAspectFit
     imageView.layer.cornerRadius = 15
     imageView.layer.masksToBounds = true
-      imageView.setShadow(opacity: 1, Radius: 3.6, offSet: CGSize(width: 0, height: 0))
+    imageView.setShadow(opacity: 1, Radius: 3.6, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
   let titleLabel = {
     let label = UILabel()
-      label.text = " "
-      label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
-      label.setCharacterSpacing(-0.4)
-      label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.text = " "
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.setCharacterSpacing(-0.4)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
   }()
 
   let amountLabel = {
     let label = UILabel()
-      label.text = " "
-      label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
-      label.setCharacterSpacing(-0.35)
-      label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.text = " "
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    label.setCharacterSpacing(-0.35)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
   }()
 
@@ -92,8 +92,8 @@ final class ReportTableViewCell: UITableViewCell {
   // MARK: - Setup Constraints
   private func setConsts() {
     backView.snp.makeConstraints {
-        $0.top.bottom.equalToSuperview().inset(8)
-        $0.leading.trailing.equalToSuperview().inset(16)
+      $0.top.bottom.equalToSuperview().inset(8)
+      $0.leading.trailing.equalToSuperview().inset(16)
     }
 
     logoImageView.snp.makeConstraints {
@@ -117,8 +117,8 @@ final class ReportTableViewCell: UITableViewCell {
     }
 
     descriptionLabel.snp.makeConstraints {
-        $0.height.equalTo(34)
-        $0.leading.trailing.equalToSuperview().inset(12)
+      $0.height.equalTo(34)
+      $0.leading.trailing.equalToSuperview().inset(12)
       $0.bottom.equalToSuperview().offset(-12)
     }
   }

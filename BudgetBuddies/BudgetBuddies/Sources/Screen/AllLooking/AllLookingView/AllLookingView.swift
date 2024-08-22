@@ -21,7 +21,7 @@ class AllLookingView: UIView {
   private let allLookingTitleText: UILabel = {
     let label = UILabel()
     label.text = "전체보기"
-      label.setCharacterSpacing(-0.45)
+    label.setCharacterSpacing(-0.45)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -52,11 +52,11 @@ class AllLookingView: UIView {
   // MARK: - Methods
 
   private func setLayout() {
-      // 그림자 설정
-      profileContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
-      analysisContainverView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
-      allServiceContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
-      
+    // 그림자 설정
+    profileContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
+    analysisContainverView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
+    allServiceContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
+
     addSubviews(
       allLookingTitleText,
       profileContainerView,
@@ -71,22 +71,22 @@ class AllLookingView: UIView {
     profileContainerView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(allLookingTitleText.snp.bottom).offset(19)
-        make.leading.trailing.equalToSuperview().inset(16)
-        make.height.equalTo(81)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(81)
     }
 
     analysisContainverView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(profileContainerView.snp.bottom).offset(15)
-        make.leading.trailing.equalToSuperview().inset(16)
-        make.height.equalTo(144)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(144)
     }
 
     allServiceContainerView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(analysisContainverView.snp.bottom).offset(15)
-        make.leading.trailing.equalToSuperview().inset(16)
-        make.height.equalTo(183)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(183)
     }
 
   }

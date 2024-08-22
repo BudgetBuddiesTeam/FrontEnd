@@ -43,7 +43,7 @@ class MainCalendarView: UIView {
     let view = UIView()
     view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     view.layer.cornerRadius = 15
-      view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 0))
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 0))
     return view
   }()
 

@@ -18,7 +18,7 @@ final class SpendGoalCell: UITableViewCell {
     let view = UIView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 15
-      view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
     return view
   }()
 
@@ -27,25 +27,25 @@ final class SpendGoalCell: UITableViewCell {
     imageView.contentMode = .scaleAspectFit
     imageView.layer.cornerRadius = 15
     imageView.layer.masksToBounds = true
-      imageView.setShadow(opacity: 1, Radius: 3.6, offSet: CGSize(width: 0, height: 0))
+    imageView.setShadow(opacity: 1, Radius: 3.6, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
   let titleLabel = {
     let label = UILabel()
-      label.text = " "
-      label.setCharacterSpacing(-0.35)
-      label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
-      label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.text = " "
+    label.setCharacterSpacing(-0.35)
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
   }()
 
   let amountLabel = {
     let label = UILabel()
-      label.text = " "
-      label.setCharacterSpacing(-0.4)
-      label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
-      label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.text = " "
+    label.setCharacterSpacing(-0.4)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 16)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
   }()
 
@@ -60,19 +60,19 @@ final class SpendGoalCell: UITableViewCell {
 
   let consumptionLabel = {
     let label = UILabel()
-      label.text = " "
-      label.setCharacterSpacing(-0.3)
-      label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
-      label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.text = " "
+    label.setCharacterSpacing(-0.3)
+    label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
   }()
 
   let remainingLabel = {
     let label = UILabel()
-      label.text = " "
-      label.setCharacterSpacing(-0.3)
-      label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
-      label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.text = " "
+    label.setCharacterSpacing(-0.3)
+    label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     return label
   }()
 
@@ -101,8 +101,8 @@ final class SpendGoalCell: UITableViewCell {
   // MARK: - Setup Constraints
   private func setConsts() {
     backView.snp.makeConstraints {
-        $0.leading.trailing.equalToSuperview().inset(16)
-        $0.top.bottom.equalToSuperview().inset(7)
+      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.top.bottom.equalToSuperview().inset(7)
     }
 
     logoImageView.snp.makeConstraints {
@@ -111,7 +111,7 @@ final class SpendGoalCell: UITableViewCell {
     }
 
     titleLabel.snp.makeConstraints {
-        $0.top.equalTo(logoImageView.snp.top).offset(5)
+      $0.top.equalTo(logoImageView.snp.top).offset(5)
       $0.leading.equalTo(logoImageView.snp.trailing).offset(11)
     }
 

@@ -34,15 +34,15 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
 
   // MARK: - UI Components
 
-    // 최하단 backVIew
-    public let whiteBackView: UIView = {
-        let view = UIView()
-        view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
-        view.layer.cornerRadius = 15
-        view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
-        return view
-    }()
-    
+  // 최하단 backVIew
+  public let whiteBackView: UIView = {
+    let view = UIView()
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.white.color
+    view.layer.cornerRadius = 15
+    view.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
+    return view
+  }()
+
   // 정보 구분 배경색
   public let colorBackground: UIView = {
     let view = UIView()
@@ -166,10 +166,10 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
 
     // Add Subviews
-      
-      addSubviews(whiteBackView)
-      
-      whiteBackView.addSubviews(
+
+    addSubviews(whiteBackView)
+
+    whiteBackView.addSubviews(
       colorBackground,
       infoCategoryBackground,
       titleTextLabel,
@@ -180,11 +180,11 @@ class MonthlyBudgetInfoCollectionViewCell: UICollectionViewCell {
     infoCategoryBackground.addSubview(infoCategoryTextLabel)
 
     // Make UI Components Contraints
-      // 최하단 백뷰
-      whiteBackView.snp.makeConstraints { make in
-          make.edges.equalToSuperview()
-      }
-      
+    // 최하단 백뷰
+    whiteBackView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+
     // 정보 구분 배경색
     colorBackground.snp.makeConstraints { make in
       make.height.equalTo(47)

@@ -47,13 +47,13 @@ final class ConsumedHistoryTableViewController: UIViewController {
     setNavigationSetting()
     setViewSetting()
   }
-    
-    // 탭바에 가려지는 요소 보이게 하기
-    override func viewDidLayoutSubviews() {
-      super.viewDidLayoutSubviews()
-        self.consumedHistoryTableView.contentInset.bottom = 30
-    }
-    
+
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.consumedHistoryTableView.contentInset.bottom = 30
+  }
+
   // MARK: - Methods
 
   /// 모델 객체이 데이터를 서버에서 가져오고 난 후 UX 제어 함수
@@ -89,7 +89,7 @@ final class ConsumedHistoryTableViewController: UIViewController {
   }
 
   private func setNavigationSetting() {
-      self.addBackButton(selector: #selector(didTapBarButton))
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setUITableViewSetting() {
@@ -131,11 +131,11 @@ final class ConsumedHistoryTableViewController: UIViewController {
 // MARK: - Object C Methods
 
 extension ConsumedHistoryTableViewController {
-    @objc
-    private func didTapBarButton() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
+
   @objc
   private func consumedHistoryHeaderViewPreviousMonthButtonTapped() {
     let calendar = Calendar.current

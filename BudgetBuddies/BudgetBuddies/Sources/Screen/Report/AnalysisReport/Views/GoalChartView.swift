@@ -13,17 +13,17 @@ final class GoalChartView: UIView {
   let planLabel: UILabel = {
     let label = UILabel()
     label.text = "패션에 가장 큰 \n계획을 세웠어요"
-      label.setCharacterSpacing(-0.55)
-      label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
+    label.setCharacterSpacing(-0.55)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
     label.numberOfLines = 0
     return label
   }()
 
   let dateLabel: UILabel = {
     let label = UILabel()
-      label.text = " "
-      label.setCharacterSpacing(-0.3)
-      label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.text = " "
+    label.setCharacterSpacing(-0.3)
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     label.font = .systemFont(ofSize: 12, weight: .regular)
 
     // 현재 날짜 및 시간 가져오기
@@ -42,19 +42,19 @@ final class GoalChartView: UIView {
     return label
   }()
 
-    let pieChartBackImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "pieChartBackImage")
-        iv.contentMode = .scaleAspectFill
-        return iv
-    }()
-    
+  let pieChartBackImageView: UIImageView = {
+    let iv = UIImageView()
+    iv.image = UIImage(named: "pieChartBackImage")
+    iv.contentMode = .scaleAspectFill
+    return iv
+  }()
+
   let pieChartView = PieChartView()
 
   let firstLabel = {
     let label = UILabel()
     label.text = "패션"
-      label.setCharacterSpacing(-0.45)
+    label.setCharacterSpacing(-0.45)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.textAlignment = .center
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
@@ -64,7 +64,7 @@ final class GoalChartView: UIView {
   let firstPrice = {
     let label = UILabel()
     label.text = "120,000원"
-      label.setCharacterSpacing(-0.35)
+    label.setCharacterSpacing(-0.35)
     label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
     label.textAlignment = .center
     label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)
@@ -75,8 +75,8 @@ final class GoalChartView: UIView {
     let sv = UIStackView()
     sv.axis = .vertical
     sv.spacing = 36
-      sv.alignment = .leading
-      sv.distribution = .fill
+    sv.alignment = .leading
+    sv.distribution = .fill
     return sv
   }()
 
@@ -85,11 +85,11 @@ final class GoalChartView: UIView {
     sv.axis = .vertical
     sv.spacing = 36
     sv.distribution = .fillEqually
-      
+
     return sv
   }()
 
-    // MARK: - Init
+  // MARK: - Init
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
@@ -101,12 +101,14 @@ final class GoalChartView: UIView {
   }
 
   private func setup() {
-    [planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView, stackView].forEach
-    {
+    [
+      planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
+      stackView,
+    ].forEach {
       self.addSubview($0)
     }
-      
-      pieChartBackImageView.addSubviews(pieChartView)
+
+    pieChartBackImageView.addSubviews(pieChartView)
   }
 
   private func setConst() {
@@ -119,18 +121,18 @@ final class GoalChartView: UIView {
       $0.top.equalTo(planLabel.snp.bottom).offset(8)
       $0.leading.equalToSuperview().offset(20)
     }
-      
-      pieChartBackImageView.snp.makeConstraints { make in
-          make.top.equalTo(dateLabel.snp.bottom).offset(30)
-          make.leading.equalToSuperview().offset(20)
-          make.width.equalTo(215)
-          make.height.equalTo(pieChartView.snp.width)
-      }
 
-      pieChartView.snp.makeConstraints { make in
-          make.center.equalToSuperview()
-          make.height.width.equalTo(200)
-      }
+    pieChartBackImageView.snp.makeConstraints { make in
+      make.top.equalTo(dateLabel.snp.bottom).offset(30)
+      make.leading.equalToSuperview().offset(20)
+      make.width.equalTo(215)
+      make.height.equalTo(pieChartView.snp.width)
+    }
+
+    pieChartView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.height.width.equalTo(200)
+    }
 
     firstLabel.snp.makeConstraints {
       $0.centerX.equalTo(pieChartView)
@@ -144,8 +146,8 @@ final class GoalChartView: UIView {
 
     legendStackView.snp.makeConstraints {
       $0.centerY.equalTo(pieChartView)
-        $0.trailing.equalToSuperview().inset(10)
-        $0.width.equalTo(70)
+      $0.trailing.equalToSuperview().inset(10)
+      $0.width.equalTo(70)
     }
 
     stackView.snp.makeConstraints {
@@ -159,10 +161,10 @@ final class GoalChartView: UIView {
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "소비습관")
     dataSet.colors = [
-        BudgetBuddiesAsset.AppColor.coreBlue.color,
-        BudgetBuddiesAsset.AppColor.sky3.color,
-        BudgetBuddiesAsset.AppColor.orange2.color,
-        BudgetBuddiesAsset.AppColor.coreYellow.color
+      BudgetBuddiesAsset.AppColor.coreBlue.color,
+      BudgetBuddiesAsset.AppColor.sky3.color,
+      BudgetBuddiesAsset.AppColor.orange2.color,
+      BudgetBuddiesAsset.AppColor.coreYellow.color,
     ]
     dataSet.drawValuesEnabled = false
     dataSet.sliceSpace = 2
@@ -231,7 +233,7 @@ final class GoalChartView: UIView {
     let valueLabel: UILabel = {
       let label = UILabel()
       label.text = "\(value.formatted())원"
-        label.setCharacterSpacing(-0.35)
+      label.setCharacterSpacing(-0.35)
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
       return label
@@ -245,7 +247,7 @@ final class GoalChartView: UIView {
       $0.leading.equalToSuperview()
       $0.centerY.equalToSuperview()
       $0.width.equalTo(32)
-        $0.height.equalTo(20)
+      $0.height.equalTo(20)
     }
 
     categoryLabel.snp.makeConstraints {

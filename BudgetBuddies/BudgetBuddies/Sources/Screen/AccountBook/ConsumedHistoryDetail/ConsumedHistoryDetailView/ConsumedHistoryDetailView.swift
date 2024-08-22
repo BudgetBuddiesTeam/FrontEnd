@@ -18,7 +18,7 @@ class ConsumedHistoryDetailView: UIView {
     imageView.snp.makeConstraints { make in
       make.width.height.equalTo(58)
     }
-      imageView.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
+    imageView.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
@@ -85,7 +85,7 @@ class ConsumedHistoryDetailView: UIView {
   public var saveButton: UIButton = {
     let button = UIButton()
     button.setTitle("저장하기", for: .normal)
-      button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.white.color, for: .normal)
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.layer.cornerRadius = 15
@@ -121,13 +121,13 @@ class ConsumedHistoryDetailView: UIView {
 
     // 카테고리 텍스트
     expenseDescriptionLabel.snp.makeConstraints { make in
-        make.top.equalTo(categoryIcon.snp.top).offset(6)
+      make.top.equalTo(categoryIcon.snp.top).offset(6)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(12)
     }
 
     // 금액 텍스트
     priceLabel.snp.makeConstraints { make in
-        make.top.equalTo(expenseDescriptionLabel.snp.bottom)
+      make.top.equalTo(expenseDescriptionLabel.snp.bottom)
       make.leading.equalTo(categoryIcon.snp.trailing).offset(12)
     }
 

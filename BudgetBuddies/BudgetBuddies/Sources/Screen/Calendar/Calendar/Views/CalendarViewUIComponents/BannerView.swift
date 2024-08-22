@@ -17,7 +17,7 @@ class BannerView: UIView {
     view.layer.cornerRadius = 15
     view.layer.borderWidth = 1.0
     view.layer.borderColor = BudgetBuddiesAsset.AppColor.logoLine1.color.cgColor
-      view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 0))
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 0))
     return view
   }()
 

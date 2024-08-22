@@ -43,7 +43,7 @@ final class ConsumeViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-      setNavigation()
+    setNavigation()
   }
 
   override func viewDidLoad() {
@@ -72,9 +72,9 @@ final class ConsumeViewController: UIViewController {
      */
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
-      
-      self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
-      
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+
   }
 
   private func setUITextFieldDelegate() {

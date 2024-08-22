@@ -22,14 +22,14 @@ class CategorySelectTableViewCell: UITableViewCell {
     let container = UIView()
     container.layer.cornerRadius = 15
     container.backgroundColor = .white
-      container.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
+    container.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
     return container
   }()
 
   // 카테고리 아이콘
   private var categoryIcon: UIImageView = {
     let imageView = UIImageView()
-      imageView.setShadow(opacity: 1, Radius: 4, offSet: CGSize(width: 0, height: 0))
+    imageView.setShadow(opacity: 1, Radius: 4, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
@@ -92,12 +92,12 @@ class CategorySelectTableViewCell: UITableViewCell {
   }
 
   private func setLayout() {
-      contentView.addSubview(cellContainer)
+    contentView.addSubview(cellContainer)
     cellContainer.addSubviews(categoryIcon, categoryText)
 
     // 셀 컨테이너
     cellContainer.snp.makeConstraints { make in
-        make.width.equalToSuperview().inset(16)
+      make.width.equalToSuperview().inset(16)
       make.height.equalTo(containerHeight)
       make.center.equalToSuperview()
     }

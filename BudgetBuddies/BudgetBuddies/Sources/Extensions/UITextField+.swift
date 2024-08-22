@@ -20,17 +20,16 @@ extension UITextField {
       .kern, value: spacing, range: NSRange(location: 0, length: attributedString.length))
     self.attributedText = attributedString
   }
-    
-    
-    /// 텍스트필드 왼쪽에 빈 뷰를 추가하는 함수입니다.
-    ///
-    /// - Parameters:
-    ///   - width: 빈뷰의 너비값입니다.
-    ///   - height: 빈뷰의 높이값입니다.
-    func addLeftView(width: Int, height: Int) {
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        
-        self.leftView = leftView
-        self.leftViewMode = .always
-    }
+
+  /// 텍스트필드 왼쪽에 빈 뷰를 추가하는 함수입니다.
+  ///
+  /// - Parameters:
+  ///   - width: 빈뷰의 너비값입니다.
+  ///   - height: 빈뷰의 높이값입니다.
+  func addLeftView(width: Int, height: Int) {
+    let leftView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+
+    self.leftView = leftView
+    self.leftViewMode = .always
+  }
 }

@@ -33,7 +33,9 @@ let budgetBuddiesInfoPlist: InfoPlist = .extendingDefault(with: [
   // iPhone Orientation 지정
   "UISupportedInterfaceOrientations": [
     "UIInterfaceOrientationPortrait"
-  ]
+  ],
+  "CFBundleVersion": "1.1.0",
+  "CFBundleShortVersionString": "1.1.0"
 ])
 
 let project = Project(

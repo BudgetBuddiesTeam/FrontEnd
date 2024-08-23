@@ -31,8 +31,7 @@ final class CategoryRouterTests: XCTestCase {
   /// /categories/add/{userId} 엔드포인트 테스트 메소드
   func testAddCategory() {
     // Request Variable
-    let categoryRequestDTO = CategoryRequestDTO(
-      userID: self.userId, name: "프론트엔드 화이팅", isDefault: false)
+    let categoryRequestDTO = CategoryRequestDTO(name: "프론트엔드 화이팅", isDefault: false)
 
     // Network Transmitting Code
     provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
@@ -74,7 +73,7 @@ final class CategoryRouterTests: XCTestCase {
     // - none
 
     // Network Transmitting Code
-    provider.request(.getCategory(userId: self.userId)) { result in
+    provider.request(.getCategories(userId: self.userId)) { result in
       defer { self.expectation.fulfill() }
 
       switch result {
@@ -106,4 +105,26 @@ final class CategoryRouterTests: XCTestCase {
 
   // MARK: - 카테고리 제거
 
+  func testDeleteCategory() {
+    let categoryId = 13
+    provider.request(.deleteCategory(userId: self.userId, categoryId: categoryId)) { result in
+      defer { self.expectation.fulfill() }
+
+      switch result {
+      case .success(let response):
+        debugPrint("/categories/delete/{categoryId} API 연결 성공")
+        debugPrint(response.statusCode)
+        XCTAssertEqual(response.statusCode, 200, ErrorMessage.TellsWhatRightStatusCodeIs)
+        debugPrint(response.request?.url as Any)
+      case .failure(let error):
+        XCTFail("/categories/delete/{categoryId} API 연결 실패 : \(error.localizedDescription)")
+      }
+    }
+
+    waitForExpectations(timeout: self.timeoutValue) { error in
+      if let error = error {
+        XCTFail("카테고리 제거 테스팅 간 에러 발생 : \(error.localizedDescription)")
+      }
+    }
+  }
 }

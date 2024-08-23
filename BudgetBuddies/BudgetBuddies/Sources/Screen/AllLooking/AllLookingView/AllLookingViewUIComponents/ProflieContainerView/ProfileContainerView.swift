@@ -16,6 +16,7 @@ class ProfileContainerView: UIView {
   public var userNameText: UILabel = {
     let label = UILabel()
     label.text = "빈주머니즈"
+    label.setCharacterSpacing(-0.45)
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     return label
@@ -28,7 +29,7 @@ class ProfileContainerView: UIView {
     imageView.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
     imageView.snp.makeConstraints { make in
       make.width.equalTo(10)
-      make.height.equalTo(21)
+      make.height.equalTo(19)
     }
     return imageView
   }()
@@ -50,20 +51,16 @@ class ProfileContainerView: UIView {
 
   private func setLayout() {
     self.layer.cornerRadius = 15
-    self.snp.makeConstraints { make in
-      make.width.equalTo(343)
-      make.height.equalTo(81)
-    }
 
     addSubviews(userNameText, rightChevronIconForProfile)
 
     userNameText.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(21.36)
+      make.leading.equalToSuperview().inset(20)
       make.centerY.equalToSuperview()
     }
 
     rightChevronIconForProfile.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(21.36)
+      make.trailing.equalToSuperview().inset(20)
       make.centerY.equalToSuperview()
     }
   }

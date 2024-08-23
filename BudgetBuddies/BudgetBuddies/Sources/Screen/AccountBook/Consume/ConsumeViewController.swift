@@ -43,6 +43,7 @@ final class ConsumeViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    setNavigation()
   }
 
   override func viewDidLoad() {
@@ -55,12 +56,21 @@ final class ConsumeViewController: UIViewController {
     observeSelectedCategory()
   }
 
+  // 키보드 내림
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
+
   // MARK: - Methods
 
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
+
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: "소비기록", image: UIImage(systemName: "list.clipboard"), target: self,
+      title: "소비기록", image: UIImage(systemName: "list.clipboard.fill"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))
 
     navigationItem.backBarButtonItem = UIBarButtonItem()
@@ -71,6 +81,9 @@ final class ConsumeViewController: UIViewController {
      */
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+
   }
 
   private func setUITextFieldDelegate() {
@@ -120,7 +133,7 @@ extension ConsumeViewController {
 
     /*
      해야 할 일
-     - 서버로 보낼 날짜 데이터 형식으로 전환해야 함
+     - 문자열 데이터 타입으로 보관하는 코드 작성
      */
   }
 
@@ -142,14 +155,15 @@ extension ConsumeViewController {
      - ViewController에 있는 비즈니스 로직 코드도 XCTest 프레임워크 기반으로 개발할 수 있는지 연구
      */
     let categoryId = self.selectedCategoryId
-    let amount: Int
+    let amount = Int(self.writtenConsumedPriceText) ?? 0
     let description = self.writtenConsumedContentText
     let expenseDate: String
-    if let writtenConsumedPrice = Int(self.writtenConsumedPriceText) {
-      amount = writtenConsumedPrice
-    } else {
-      amount = 0
-    }
+
+    /*
+     해야 할 일
+     - 모델 객체에서 날짜를 저장하는 형식을 문자열로 보관
+     - 문자열 형식 전환 처리는 날짜를 선택한 object c 메소드에 작성할 것
+     */
 
     let dateFormatter = DateFormatter()
     /*
@@ -173,6 +187,11 @@ extension ConsumeViewController {
 
 // MARK: - Network
 
+/*
+ 해야 할 일
+ - 모델 객체로 분리
+ */
+
 extension ConsumeViewController {
   private func postNewExpense(newExpenseRequestDTO: NewExpenseRequestDTO) {
     provider.request(
@@ -183,7 +202,19 @@ extension ConsumeViewController {
       case .success:
         let postSuccessAlertController = UIAlertController(
           title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
-        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+          self?.consumeView.consumedPriceTextField.text = String()
+          self?.consumeView.consumedContentTextField.text = String()
+          self?.consumeView.consumedDatePicker.date = Date()
+
+          /*
+           설명
+           - 카테고리 선택 버튼은 CategorySelectTableViewController의 모델 객체의 데이터를 추종하는 성격이 있습니다.
+           - 그래서 데이터를 직접 변경하면, ConsumeView의 addButton UI도 변경됩니다.
+           */
+          self?.categorySelectTableViewController.selectedCategoryName = "카테고리를 선택하세요"
+          self?.categorySelectTableViewController.selectedCateogryId = 0
+        }
         postSuccessAlertController.addAction(confirmedButtonAction)
         self.present(postSuccessAlertController, animated: true)
       case .failure:
@@ -223,6 +254,13 @@ extension ConsumeViewController: UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    return true
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension ConsumeViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     return true
   }
 }

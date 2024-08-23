@@ -49,6 +49,7 @@ class AllLookingViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    setNavi()
     hideNavigationBar()
     self.fetchUserData(userId: self.userId)
   }
@@ -80,6 +81,19 @@ class AllLookingViewController: UIViewController {
 
   private func showNavigationBar() {
     navigationController?.navigationBar.isHidden = false
+  }
+
+  private func setNavi() {
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+
+    let appearance = UINavigationBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
+    appearance.shadowColor = nil
+
+    navigationController?.navigationBar.standardAppearance = appearance
+    navigationController?.navigationBar.compactAppearance = appearance
+    navigationController?.navigationBar.scrollEdgeAppearance = appearance
   }
 
   private func observeUserNameProperty() {
@@ -170,7 +184,7 @@ extension AllLookingViewController {
 // MARK: - Network
 
 extension AllLookingViewController {
-  private func fetchUserData(userId: Int) {
+  public func fetchUserData(userId: Int) {
     provider.request(.find(userId: userId)) { result in
       switch result {
       case .success(let response):

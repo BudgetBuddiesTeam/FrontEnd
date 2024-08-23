@@ -137,37 +137,14 @@ final class InfoListViewController: UIViewController {
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithDefaultBackground()
-    appearance.shadowColor = nil
+    self.setupDefaultNavigationBar(backgroundColor: .clear)
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
-    // 네비게이션 바 타이틀 폰트, 자간 설정
-    let titleFont = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
-    let titleAttributes: [NSAttributedString.Key: Any] = [
-      .font: titleFont,
-      .foregroundColor: BudgetBuddiesAsset.AppColor.textBlack.color,
-      .kern: -0.45,
-    ]
-
-    appearance.titleTextAttributes = titleAttributes
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
     navigationController?.navigationBar.isHidden = false
 
     // 백 버튼
-    lazy var backButton: UIBarButtonItem = {
-      let btn = UIBarButtonItem(
-        image: UIImage(systemName: "chevron.left"),
-        style: .done,
-        target: self,
-        action: #selector(didTapBarButtonItem))
-      btn.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
-      return btn
-    }()
-
-    navigationItem.leftBarButtonItem = backButton
+    addBackButton(selector: #selector(didTapBarButtonItem))
   }
 
   // MARK: - Set up TableView
@@ -342,6 +319,7 @@ extension InfoListViewController: UITableViewDelegate {
     }
   }
 
+  // MARK: - ScrollView Delegate
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y
     let offsetDifference = currentOffset - previousScrollOffset
@@ -363,6 +341,64 @@ extension InfoListViewController: UITableViewDelegate {
 
 // MARK: - InformationCell Delegate
 extension InfoListViewController: InformationCellDelegate {
+  // 좋아요 눌리는 시점
+  func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
+  {
+    print("좋아요 눌린: \(infoId)")
+    print("InfoListViewController: 좋아요 눌림")
+    switch infoType {
+    case .discount:
+      discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    case .support:
+      supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    }
+  }
 
   // informationCell: 사이트 바로가기 버튼이 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {
@@ -380,5 +416,12 @@ extension InfoListViewController: InformationCellDelegate {
 extension InfoListViewController: BottomSheetViewControllerDelegate {
   func didBottomSheetViewControllerDismissed() {
     setupData()
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension InfoListViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

@@ -24,6 +24,9 @@ final class CalendarViewController: UIViewController {
 
   var commentManager = CommentManager.shared
 
+  var discountInfoManager = DiscountInfoManager.shared
+  var supportInfoManager = SupportInfoManager.shared
+
   // MARK: - UI Components
   // 뷰
   var calendarView = CalendarView()
@@ -83,7 +86,9 @@ final class CalendarViewController: UIViewController {
   }
 
   // MARK: - Set up Data
-  private func setupData() {
+
+  /// 캘린더의 데이터를 가져오는 메소드입니다.
+  public func setupData() {
     print("-----------캘린더 메인 fetch-----------")
     guard let yearMonth = self.yearMonth else { return }
 
@@ -219,6 +224,13 @@ final class CalendarViewController: UIViewController {
 
   @objc
   private func switchToCalendarHandler() {
+    if let navigationController = self.navigationController {
+      // CalendarViewController가 네비게이션 스택의 루트가 아닌 경우 pop
+      if navigationController.viewControllers.last != self {
+        navigationController.popToViewController(self, animated: true)
+      }
+    }
+
     // 다른 뷰컨에서 넘어온 경우에 스크롤 처음으로
     let topInset = self.calendarView.scrollView.adjustedContentInset.top
     self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)
@@ -376,6 +388,65 @@ extension CalendarViewController: MonthPickerViewControllerDelegate {
 }
 
 extension CalendarViewController: InformationCellDelegate {
+  // 좋아요 버튼 눌리는 시점
+  func didTapLikesButton(in cell: InformationCell, likesCount: Int, infoType: InfoType, infoId: Int)
+  {
+    print("좋아요 눌린: \(infoId)")
+    print("CalendarViewController: 좋아요 눌림")
+    switch infoType {
+    case .discount:
+      discountInfoManager.postDiscountsLikes(userId: 1, discountInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+
+    case .support:
+      supportInfoManager.postSupportsLikes(userId: 1, supportInfoId: infoId) { result in
+        switch result {
+        case .success(let response):
+          print("좋아요 성공")
+
+          if response.result.likeCount > likesCount {
+            AlertManager.showAlert(
+              on: self, title: "추천하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          } else {
+            AlertManager.showAlert(
+              on: self, title: "추천을 취소하시겠습니까?", message: nil, needsCancelButton: true
+            ) { _ in
+              self.setupData()
+            }
+          }
+
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    }
+  }
+
+  // 사이트 바로가기 버튼 눌리는 시점
   func didTapWebButton(in cell: InformationCell, urlString: String) {
     guard let url = URL(string: urlString) else {
       print("Error: 유효하지 않은 url \(urlString)")

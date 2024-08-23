@@ -6,21 +6,23 @@
 //
 
 import Charts
+import Combine
 import DGCharts
+import Moya
 import SnapKit
 import UIKit
 
 final class AnalysisReportViewController: UIViewController {
-  //    func didUpdateAgeAndGender(ageRange: (Int, Int), gender: String) {
-  //        // 전달받은 나이와 성별로 UI 업데이트
-  //                ageGenderLabel.text = "\(ageRange.0)~\(ageRange.1)세 \(gender == "male" ? "남성" : "여성")"
-  //
-  //                // 새로운 나이와 성별로 데이터 로드 (예: 네트워크 호출)
-  //                loadTop4()
-  //                loadTop3()
-  //    }
 
   // MARK: - Property
+  // 네비바
+  var previousScrollOffset: CGFloat = 0.0
+  var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+
+  @Published private var userName = String()
+
+  private let userRouterProvider = MoyaProvider<UserRouter>()
+
   var services = Services()
   var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
   var getTopGoalResponse: GetTopGoalResponse? = nil
@@ -33,13 +35,29 @@ final class AnalysisReportViewController: UIViewController {
   let scrollView = UIScrollView()
   let contentView = UIView()
 
+  // Combine
+  private var canecellable = Set<AnyCancellable>()
+
+  private let userId = 1
+
+  // MARK: - Methods
+
+  private func observeDataModel() {
+    self.$userName
+      .sink { [weak self] newUserName in
+        self?.titleLabel.text = "\(newUserName)님 또래는 \n어떻게 소비했을까요?"
+      }
+      .store(in: &canecellable)
+  }
+
   // MARK: - UI Components
 
   let titleLabel = {
     let label = UILabel()
-    label.text = "혜인님 또래는 \n어떻게 소비했을까요?"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 22, weight: .bold)
+    label.text = "김혜인님 또래는 \n어떻게 소비했을까요?"
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.setCharacterSpacing(-0.6)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 24)
     label.numberOfLines = 0
     return label
   }()
@@ -47,20 +65,21 @@ final class AnalysisReportViewController: UIViewController {
   let ageGenderLabel = {
     let label = UILabel()
     label.text = "23~26세 여성"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 14, weight: .medium)
+    label.setCharacterSpacing(-0.35)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
     return label
   }()
 
   lazy var rangeEditButton = {
     let button = UIButton(type: .custom)
     button.setTitle("범위변경", for: .normal)
-    button.setTitleColor(.orange, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    button.backgroundColor = BudgetBuddiesAsset.AppColor.face.color
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.logoLine2.color, for: .normal)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
+    button.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
     button.layer.cornerRadius = 10
     button.layer.borderWidth = 1
-    button.layer.borderColor = UIColor.systemOrange.cgColor
+    button.layer.borderColor = BudgetBuddiesAsset.AppColor.lemon.color.cgColor
     button.addTarget(self, action: #selector(ageEditButtonTapped), for: .touchUpInside)
     return button
   }()
@@ -68,13 +87,8 @@ final class AnalysisReportViewController: UIViewController {
   let ageView = {
     let view = UIView()
     view.backgroundColor = .white
-    view.layer.cornerRadius = 16
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.layer.cornerRadius = 15
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -89,12 +103,7 @@ final class AnalysisReportViewController: UIViewController {
     let view = GoalChartView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -110,12 +119,7 @@ final class AnalysisReportViewController: UIViewController {
     let view = ReportBarChartView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 20
-    view.layer.borderWidth = 1
-    view.layer.borderColor = UIColor.white.cgColor
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view.layer.shadowRadius = 4
+    view.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     return view
   }()
 
@@ -125,6 +129,9 @@ final class AnalysisReportViewController: UIViewController {
     super.viewWillAppear(animated)
 
     navigationController?.navigationBar.isHidden = false
+    setNavi()
+    loadPeerInfo()
+    setupPieChart()
   }
 
   override func viewDidLoad() {
@@ -136,6 +143,10 @@ final class AnalysisReportViewController: UIViewController {
     setupViews()
     setupConstraints()
     setupPieChart()
+
+    self.scrollView.delegate = self
+    self.scrollView.showsVerticalScrollIndicator = false
+    self.scrollView.showsHorizontalScrollIndicator = false
   }
   // 탭바에 가려지는 요소 보이게 하기
   override func viewDidLayoutSubviews() {
@@ -146,7 +157,7 @@ final class AnalysisReportViewController: UIViewController {
   // MARK: - Methods
 
   private func setupViews() {
-    view.backgroundColor = .white
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
@@ -164,10 +175,13 @@ final class AnalysisReportViewController: UIViewController {
   }
 
   private func setNavi() {
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "또래 비교 분석 레포트"
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setupConstraints() {
@@ -230,7 +244,7 @@ final class AnalysisReportViewController: UIViewController {
       $0.leading.equalTo(contentView).offset(16)
       $0.trailing.equalTo(contentView).offset(-16)
       $0.bottom.equalTo(contentView).offset(-16)
-      $0.height.equalTo(300)
+      $0.height.equalTo(260)
     }
   }
 
@@ -249,10 +263,10 @@ final class AnalysisReportViewController: UIViewController {
   private func setupChart(_ topGoals: [GetTopGoalsResponse.GetTopGoalsResult]) {
     // 차트에 사용할 색상 배열
     let colors: [UIColor] = [
-      UIColor.systemBlue,
-      UIColor.systemYellow,
-      UIColor.systemOrange,
-      UIColor.systemCyan,
+      BudgetBuddiesAsset.AppColor.coreBlue.color,
+      BudgetBuddiesAsset.AppColor.sky3.color,
+      BudgetBuddiesAsset.AppColor.orange2.color,
+      BudgetBuddiesAsset.AppColor.coreYellow.color,
     ]
 
     // 최대 4개의 topGoals 데이터만 사용
@@ -305,6 +319,12 @@ final class AnalysisReportViewController: UIViewController {
     }
   }
 
+  // MARK: - Selector
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
+
   @objc func ageEditButtonTapped() {
     if let naviController = self.navigationController {
       let AnalysisReportVC = AgeEditViewController()
@@ -330,6 +350,23 @@ final class AnalysisReportViewController: UIViewController {
 // MARK: - 네트워킹
 
 extension AnalysisReportViewController {
+  private func fetchUserDataFromServer(userId: Int) {
+    userRouterProvider.request(.find(userId: self.userId)) { result in
+      switch result {
+      case .success(let response):
+        do {
+          let decodedData = try JSONDecoder().decode(
+            ApiResponseResponseUserDto.self, from: response.data)
+          self.userName = decodedData.result.name
+        } catch (let error) {
+          self.userName = "익명"
+        }
+      case .failure(let error):
+        self.userName = "익명"
+      }
+    }
+  }
+
   func loadPeerInfo() {
     services.consumeGoalService.getPeerInfo(
       userId: 1, peerAgeStart: 23, peerAgeEnd: 25, peerGender: "male"
@@ -390,7 +427,7 @@ extension AnalysisReportViewController {
   // Top 3 데이터 로드하고 차트에 반영하는 메소드
   func loadTop3(peerAgeStart: Int, peerAgeEnd: Int, peerGender: String) {
     services.consumeGoalService.getTopConsumptions(
-      userId: 1, peerAgeStart: peerAgeStart, peerAgeEnd: peerAgeEnd, peerGender: peerGender
+      userId: userId, peerAgeStart: peerAgeStart, peerAgeEnd: peerAgeEnd, peerGender: peerGender
     ) { result in
       switch result {
       case .success(let response):
@@ -406,5 +443,32 @@ extension AnalysisReportViewController {
         print("Failed to load Top goals: \(error)")
       }
     }
+  }
+}
+
+extension AnalysisReportViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let currentOffset = scrollView.contentOffset.y
+    let offsetDifference = currentOffset - previousScrollOffset
+
+    if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+      navigationController?.setNavigationBarHidden(true, animated: true)
+
+    } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    }
+
+    previousScrollOffset = currentOffset
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension AnalysisReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

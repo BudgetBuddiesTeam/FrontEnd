@@ -21,6 +21,7 @@ final class GoalReportViewController: UIViewController {
   let mainLabel = {
     let label = UILabel()
     label.text = "또래 친구들은\n문화생활에 가장\n큰 목표예산을 세웠어요"
+    label.setCharacterSpacing(-0.55)
     label.textColor = .black
     label.numberOfLines = 0
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
@@ -68,20 +69,34 @@ final class GoalReportViewController: UIViewController {
     setConsts()
   }
 
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tableView.contentInset.bottom = 15
+  }
+
   // MARK: - Methods
 
   private func setNavigationSetting() {
-    navigationController?.navigationBar.isHidden = false
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+    navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "소비목표 레포트"
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setTableView() {
+    self.tableView.showsVerticalScrollIndicator = false
+    self.tableView.showsHorizontalScrollIndicator = false
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(
       ReportTableViewCell.self, forCellReuseIdentifier: ReportTableViewCell.identifier)
     tableView.separatorStyle = .none
-    tableView.backgroundColor = .white
+    tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
   }
 
   private func setup() {
@@ -149,6 +164,12 @@ final class GoalReportViewController: UIViewController {
 
     mainLabel.attributedText = attributedText
   }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -212,9 +233,25 @@ extension BudgetBuddiesAsset.AppImage.CategoryIcon {
       return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
     case "교통":
       return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
-    // 필요한 경우 더 많은 카테고리 추가
+    case "기타":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    case "유흥":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case "경조사":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case "정기결제":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case "카페":
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
     default:
-      return UIImage()  // 기본 이미지
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

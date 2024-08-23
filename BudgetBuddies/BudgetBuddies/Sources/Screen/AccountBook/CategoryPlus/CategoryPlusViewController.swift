@@ -6,32 +6,51 @@
 //
 
 import Moya
+import PromiseKit
 import SnapKit
 import UIKit
 
 class CategoryPlusViewController: UIViewController {
   // MARK: - Properties
+
+  // View Properties
   private let categoryPlusView = CategoryPlusView()
 
+  // Network Properties
   private let provider = MoyaProvider<CategoryRouter>()
 
+  // Variable Properties
   private let userId = 1
-  /*
-   주의
-   - 서버에서 "임의의 카테고리"가 확인될 시, 시뮬레이터의 키보드로 텍스트필드에 접근하지 않았기 때문입니다.
-   - PC 키보드로 카테고리를 입력하면 안됩니다.
-   */
-  private var name = "임의의 카테고리"
+  private var categoryName = String()
   private let isDefault = false
 
+  // Modal Dismissed Handler Closure
+  public var dismissHandler: (() -> Void)?
+
   // MARK: - View Life Cycle
+
+  override func loadView() {
+    view = categoryPlusView
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setUITextFieldDelegate()
-    connectCategoryPlusView()
     setButtonAction()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    if isBeingDismissed {
+      self.dismissHandler?()
+    }
+  }
+
+  // 키보드 내림
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
   }
 
   // MARK: - Methods
@@ -40,38 +59,58 @@ class CategoryPlusViewController: UIViewController {
     self.categoryPlusView.userCategoryTextField.delegate = self
   }
 
-  private func connectCategoryPlusView() {
-    view.addSubview(categoryPlusView)
-    categoryPlusView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
-    }
-  }
-
   private func setButtonAction() {
     categoryPlusView.addButton.addTarget(
       self, action: #selector(addButtonTapped), for: .touchUpInside)
   }
 
+  private func generateAlertController(message: String) {
+    let alertController = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
+    let alertAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+      self?.dismiss(animated: true)
+    }
+    alertController.addAction(alertAction)
+    self.present(alertController, animated: true)
+  }
+
   @objc
   private func addButtonTapped() {
-    let categoryRequestDTO = CategoryRequestDTO(
-      userID: self.userId, name: self.name, isDefault: self.isDefault)
-    debugPrint(categoryRequestDTO.name)
-    provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
-      result in
-      switch result {
-      case .success(let response):
-        debugPrint("새로 추가한 카테고리를 서버에 전달 성공")
-        debugPrint(response.statusCode)
-      case .failure(let error):
-        debugPrint("새로 추가한 카테고리를 서버에 전달 실패")
-        debugPrint(error.localizedDescription)
-      }
+    let categoryRequestDTO = CategoryRequestDTO(name: self.categoryName, isDefault: self.isDefault)
+    firstly {
+      self.addCategory(categoryRequestDTO: categoryRequestDTO)
+    }.done { [weak self] _ in
+      self?.dismissHandler?()
+      self?.generateAlertController(message: "카테고리를 추가했습니다")
+    }.catch { [weak self] _ in
+      self?.generateAlertController(message: "카테고리 추가를 실패했습니다")
     }
-
-    dismiss(animated: true)
   }
 }
+
+// MARK: - Network
+
+extension CategoryPlusViewController {
+  private func addCategory(categoryRequestDTO: CategoryRequestDTO) -> Promise<Void> {
+    return Promise { seal in
+      provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
+        result in
+        switch result {
+        case .success(let response):
+          do {
+            let decodedData = try JSONDecoder().decode(CategoryResponseDTO.self, from: response.data)
+          } catch (let decodingError){
+            seal.reject(decodingError)
+          }
+          seal.fulfill(())
+        case .failure(let connectionError):
+          seal.reject(connectionError)
+        }
+      }
+    }
+  }
+}
+
+// MARK: - UITextFieldDelegate
 
 /*
  주의!
@@ -81,7 +120,7 @@ class CategoryPlusViewController: UIViewController {
 extension CategoryPlusViewController: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     if let text = textField.text {
-      self.name = text
+      self.categoryName = text
     }
   }
 

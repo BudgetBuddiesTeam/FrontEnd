@@ -24,6 +24,19 @@ final class MainView: UIView {
   private static let height = 1200
 
   // MARK: - UI Components
+  // 스크롤뷰 여기서 생성
+  var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.showsHorizontalScrollIndicator = false
+    sv.showsVerticalScrollIndicator = false
+    //        sv.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    return sv
+  }()
+
+  var contentView: UIView = {
+    let view = UIView()
+    return view
+  }()
 
   // Core Yellow 색 배경
   private let coreYellowColorBackgroundView = CoreYellowBackground()
@@ -85,13 +98,11 @@ final class MainView: UIView {
   // MARK: - Methods
 
   private func setLayout() {
-    backgroundColor = BudgetBuddiesAsset.AppColor.background.color
-    self.snp.makeConstraints { make in
-      make.width.equalTo(MainView.width)
-      make.height.equalTo(MainView.height)
-    }
 
-    self.addSubviews(
+    self.addSubviews(scrollView)
+    scrollView.addSubviews(contentView)
+
+    contentView.addSubviews(
       coreYellowColorBackgroundView,
       homeTextLabel,
       summaryInfoContainerView,
@@ -104,16 +115,27 @@ final class MainView: UIView {
       comsumedAnalysisSecondItem
     )
 
+    scrollView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.leading.trailing.equalToSuperview()
+    }
+
+    contentView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalTo(scrollView)
+      make.bottom.equalTo(comsumedAnalysisSecondItem.snp.bottom)
+    }
+
     coreYellowColorBackgroundView.snp.makeConstraints { make in
-      make.top.equalToSuperview()
       make.centerX.equalToSuperview()
-      make.width.equalToSuperview()
-      make.height.equalTo(270)
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(2000)  // 위로 스크롤해도 계속 보이게
+      make.bottom.equalTo(homeTextLabel.snp.bottom).offset(184)
     }
 
     homeTextLabel.snp.makeConstraints { make in
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(14)
-      make.leading.equalTo(summaryInfoContainerView.snp.leading).inset(13)
+      make.top.equalToSuperview().inset(14)
+      make.leading.equalToSuperview().inset(29)
     }
 
     summaryInfoContainerView.snp.makeConstraints { make in
@@ -138,14 +160,14 @@ final class MainView: UIView {
 
     monthlyBudgetInfoCollectionView.snp.makeConstraints { make in
       make.width.equalToSuperview()
-      make.height.equalTo(162)
-      make.top.equalTo(monthlyBudgetInfoTextLabel.snp.bottom).offset(7)
+      make.height.equalTo(176)
+      make.top.equalTo(monthlyBudgetInfoTextLabel.snp.bottom) /*.offset(7)*/
       make.centerX.equalToSuperview()
     }
 
     monthlyConsumedAnalysisTextLabel.snp.makeConstraints { make in
       make.leading.equalTo(monthlyBudgetInfoTextLabel.snp.leading)
-      make.top.equalTo(monthlyBudgetInfoCollectionView.snp.bottom).offset(32)
+      make.top.equalTo(monthlyBudgetInfoCollectionView.snp.bottom).offset(25)
     }
 
     monthlyConsumedAnalysisLookEntireButton.snp.makeConstraints { make in

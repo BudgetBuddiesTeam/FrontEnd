@@ -14,15 +14,17 @@ final class ReportBarChartView: UIView {
   let titleLabel = {
     let label = UILabel()
     label.text = "패션에 가장 많이 \n소비했어요"
-    label.font = .systemFont(ofSize: 22, weight: .semibold)
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
+    label.setCharacterSpacing(-0.55)
     label.numberOfLines = 0
     return label
   }()
 
   let dateLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .gray
-    label.font = .systemFont(ofSize: 12, weight: .regular)
+    label.text = " "
+    label.textColor = BudgetBuddiesAsset.AppColor.subGray.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 12)
 
     // 현재 날짜 및 시간 가져오기
     let currentDate = Date()
@@ -78,10 +80,10 @@ final class ReportBarChartView: UIView {
     }
 
     stackView.snp.makeConstraints {
-      $0.top.equalTo(dateLabel.snp.bottom).offset(10)
+      $0.top.equalTo(dateLabel.snp.bottom).offset(25)
       $0.leading.equalToSuperview().offset(20)
       $0.trailing.equalToSuperview().offset(-20)
-      $0.bottom.equalToSuperview().offset(-10)
+      $0.height.equalTo(125)
     }
   }
 
@@ -109,11 +111,12 @@ final class ReportBarChartView: UIView {
       label.text = rank
       label.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 14)
       label.textColor = BudgetBuddiesAsset.AppColor.logoLine2.color
-      label.backgroundColor = BudgetBuddiesAsset.AppColor.face.color
+      label.backgroundColor = BudgetBuddiesAsset.AppColor.lemon2.color
       label.textAlignment = .center
-      label.layer.cornerRadius = 4
+      label.layer.cornerRadius = 8
       label.layer.borderWidth = 1
-      label.layer.borderColor = BudgetBuddiesAsset.AppColor.calendarYellow.color.cgColor
+      label.layer.borderColor = BudgetBuddiesAsset.AppColor.lemon.color.cgColor
+      label.layer.masksToBounds = true
       return label
     }()
 
@@ -137,6 +140,7 @@ final class ReportBarChartView: UIView {
       let view = UIView()
       view.backgroundColor = color
       view.layer.cornerRadius = 4
+      view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
       return view
     }()
 
@@ -148,6 +152,7 @@ final class ReportBarChartView: UIView {
       $0.leading.equalToSuperview()
       $0.centerY.equalToSuperview()
       $0.width.equalTo(32)
+      $0.height.equalTo(20)
 
     }
 
@@ -162,10 +167,11 @@ final class ReportBarChartView: UIView {
     }
 
     barView.snp.makeConstraints {
-      $0.leading.equalTo(categoryLabel.snp.trailing).offset(8)
+      //      $0.leading.equalTo(categoryLabel.snp.trailing).offset(8)
+      $0.leading.equalTo(rankLabel.snp.trailing).offset(65)
       $0.centerY.equalToSuperview()
       $0.height.equalTo(24)
-      $0.width.equalTo(value * 30)
+      $0.width.equalTo(value * 10)
     }
 
     return containerView

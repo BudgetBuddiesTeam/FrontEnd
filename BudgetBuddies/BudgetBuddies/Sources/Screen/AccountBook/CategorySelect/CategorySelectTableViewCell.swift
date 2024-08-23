@@ -22,21 +22,14 @@ class CategorySelectTableViewCell: UITableViewCell {
     let container = UIView()
     container.layer.cornerRadius = 15
     container.backgroundColor = .white
+    container.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 1))
     return container
   }()
 
   // 카테고리 아이콘
   private var categoryIcon: UIImageView = {
     let imageView = UIImageView()
-    /*
-     해야 할 일
-     1. 카테고리 아이콘의 그림자 효과 처리 코드를 모듈화할 것
-     2. 그림자 shadowColor는 Asset에 컬러로 등록할 수 있는지 확인
-     */
-    imageView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-    imageView.layer.shadowOpacity = 1
-    imageView.layer.shadowRadius = 10
-    imageView.layer.masksToBounds = false
+    imageView.setShadow(opacity: 1, Radius: 4, offSet: CGSize(width: 0, height: 0))
     return imageView
   }()
 
@@ -104,7 +97,7 @@ class CategorySelectTableViewCell: UITableViewCell {
 
     // 셀 컨테이너
     cellContainer.snp.makeConstraints { make in
-      make.width.equalTo(containerWidth)
+      make.width.equalToSuperview().inset(16)
       make.height.equalTo(containerHeight)
       make.center.equalToSuperview()
     }

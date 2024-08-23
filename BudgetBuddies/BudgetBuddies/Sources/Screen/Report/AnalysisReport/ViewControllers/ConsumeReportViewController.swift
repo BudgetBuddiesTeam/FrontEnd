@@ -21,6 +21,7 @@ final class ConsumeReportViewController: UIViewController {
   let mainLabel = {
     let label = UILabel()
     label.text = "또래 친구들은\n패션에 가장 많이\n소비했어요"
+    label.setCharacterSpacing(-0.55)
     label.textColor = .black
     label.numberOfLines = 0
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
@@ -54,7 +55,7 @@ final class ConsumeReportViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
+    loadConsume()
     setNavigationSetting()
   }
 
@@ -69,19 +70,33 @@ final class ConsumeReportViewController: UIViewController {
     setConsts()
   }
 
+  // 탭바에 가려지는 요소 보이게 하기
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tableView.contentInset.bottom = 15
+  }
+
   // MARK: - Methods
   private func setNavigationSetting() {
-    navigationController?.navigationBar.isHidden = false
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+    navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "소비 레포트"
+
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setTableView() {
+    self.tableView.showsVerticalScrollIndicator = false
+    self.tableView.showsHorizontalScrollIndicator = false
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(
       ReportTableViewCell.self, forCellReuseIdentifier: ReportTableViewCell.identifier)
     tableView.separatorStyle = .none
-    tableView.backgroundColor = .white
+    tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
   }
 
   private func setup() {
@@ -150,6 +165,12 @@ final class ConsumeReportViewController: UIViewController {
     mainLabel.attributedText = attributedText
 
   }
+
+  // MARK: - Selectors
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -196,5 +217,12 @@ extension ConsumeReportViewController {
         print("Failed to load Top goals: \(error)")
       }
     }
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension ConsumeReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

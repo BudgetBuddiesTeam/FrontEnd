@@ -35,7 +35,7 @@ class CommentTextLabel: UILabel {
     numberFormatter.numberStyle = .decimal
 
     if let formattedString = numberFormatter.string(from: NSNumber(value: leftMoney)) {
-      let mainText = "총\(formattedString)원을 더 쓸 수 있어요"
+      let mainText = "총 \(formattedString)원을 더 쓸 수 있어요"
       let attributedString = NSMutableAttributedString(string: mainText)
 
       if let range = mainText.range(of: formattedString) {
@@ -60,7 +60,7 @@ class CommentTextLabel: UILabel {
     numberFormatter.numberStyle = .decimal
 
     if let formattedString = numberFormatter.string(from: NSNumber(value: leftMoney)) {
-      let mainText = "총\(formattedString)원을 더 쓸 수 있어요"
+      let mainText = "총 \(formattedString)원을 더 쓸 수 있어요"
       let attributedString = NSMutableAttributedString(string: mainText)
 
       if let range = mainText.range(of: formattedString) {

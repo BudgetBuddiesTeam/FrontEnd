@@ -12,6 +12,7 @@ import Moya
 
 enum SupportInfoRouter {
   case getSupports(request: InfoRequestDTO)
+  case postSupportsLikes(userId: Int, supportInfoId: Int)
 }
 
 extension SupportInfoRouter: TargetType {
@@ -26,6 +27,9 @@ extension SupportInfoRouter: TargetType {
     switch self {  // 여기서 {id}필요하면 사용
     case .getSupports:
       return "/supports"
+
+    case .postSupportsLikes(_, let supportInfoId):
+      return "/supports/likes/\(supportInfoId)"
     }
   }
 
@@ -34,6 +38,9 @@ extension SupportInfoRouter: TargetType {
     switch self {
     case .getSupports:
       return .get
+
+    case .postSupportsLikes:
+      return .post
     }
   }
 
@@ -48,15 +55,18 @@ extension SupportInfoRouter: TargetType {
         "size": request.size,
       ]
       return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+
+    case .postSupportsLikes(let userId, let supportInfoId):
+      let parameters: [String: Any] = [
+        "userId": userId
+      ]
+      return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
     }
   }
 
   // 헤더값 (고정)
   var headers: [String: String]? {
-    switch self {
-    case .getSupports:
-      return ["Content-type": "application/json"]
-    }
+    return ["Content-type": "application/json"]
   }
 
 }

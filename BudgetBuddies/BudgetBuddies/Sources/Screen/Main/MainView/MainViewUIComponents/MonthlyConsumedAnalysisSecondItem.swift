@@ -43,6 +43,7 @@ class MonthlyConsumedAnalysisSecondItem: UIView {
   // MARK: - Methods
 
   private func setLayout() {
+    self.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))
     backgroundColor = BudgetBuddiesAsset.AppColor.white.color
     layer.cornerRadius = 15
 

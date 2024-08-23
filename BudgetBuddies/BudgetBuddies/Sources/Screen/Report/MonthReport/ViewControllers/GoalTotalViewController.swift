@@ -10,9 +10,16 @@ import UIKit
 
 final class GoalTotalViewController: UIViewController {
 
+  // MARK: - Property
+  var previousScrollOffset: CGFloat = 0.0
+  var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+
+  var services = Services()
+  var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
+
   let tableView = UITableView()
 
-  let spendGoals: [SpendGoalModel] = [
+  var spendGoals: [SpendGoalModel] = [
     SpendGoalModel(
       categoryImage: BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image, title: "식비",
       amount: "123,180", progress: 0.66,
@@ -51,39 +58,37 @@ final class GoalTotalViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     setNavi()
+    loadTotalConsumeGoal()
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    loadTotalConsumeGoal()
     setup()
     setTableView()
     setConsts()
   }
 
+  // MARK: - SetNavi
   private func setNavi() {
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.title = "소비 목표"
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
-    appearance.shadowColor = nil
-
-    navigationController?.navigationBar.standardAppearance = appearance
-    navigationController?.navigationBar.compactAppearance = appearance
-    navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)  // title 부분 수정
-    backBarButtonItem.tintColor = .black
-    self.navigationItem.backBarButtonItem = backBarButtonItem
+    self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
+    self.addBackButton(selector: #selector(didTapBarButton))
   }
 
   private func setup() {
-    view.backgroundColor = .white
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     [tableView, editButton].forEach {
       view.addSubview($0)
     }
   }
 
   private func setTableView() {
+    tableView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(SpendGoalCell.self, forCellReuseIdentifier: SpendGoalCell.identifier)
@@ -102,6 +107,46 @@ final class GoalTotalViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
       $0.height.equalTo(60)
     }
+  }
+
+  private func setCategoryIconImage(categoryId: Int) -> UIImage {
+    switch categoryId {
+    case 1:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.foodIcon2.image
+    case 2:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.shoppingIcon2.image
+    case 3:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.fashionIcon2.image
+    case 4:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cultureIcon2.image
+    case 5:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.trafficIcon2.image
+    case 6:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.cafeIcon2.image
+    case 7:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.playIcon2.image
+    case 8:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.eventIcon2.image
+    case 9:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.regularPaymentIcon2.image
+    case 10:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.etcIcon2.image
+    default:
+      return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
+    }
+  }
+
+  private func updateUI(with spendGoals: [SpendGoalModel]) {
+    self.spendGoals = spendGoals
+    DispatchQueue.main.async {
+      self.tableView.reloadData()
+    }
+  }
+
+  // MARK: - Selector
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
   }
 
   @objc private func editButtonTapped() {
@@ -134,8 +179,84 @@ extension GoalTotalViewController: UITableViewDelegate, UITableViewDataSource {
 
     return cell
   }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let currentOffset = scrollView.contentOffset.y
+    let offsetDifference = currentOffset - previousScrollOffset
+
+    if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+      navigationController?.setNavigationBarHidden(true, animated: true)
+
+    } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
+
+    }
+
+    previousScrollOffset = currentOffset
+  }
 }
 
-extension MonthReportViewController {
+extension GoalTotalViewController {
 
+  func loadTotalConsumeGoal() {
+    services.consumeGoalService.getConsumeGoal(date: "2024-08-18", userId: 1) { result in
+      switch result {
+      case .success(let response):
+        self.getConsumeGoalResponse = response
+        dump(response)
+
+        // 받아온 값을 업데이트
+        guard let totalGoalAmount = response.result?.totalGoalAmount,
+          let totalSpentAmount = response.result?.totalConsumptionAmount,
+          let totalRemainingBalance = response.result?.totalRemainingBalance,
+          let consumptionGoalList = response.result?.consumptionGoalList
+        else {
+          print("Some values are nil")
+          return
+        }
+
+        let numberFormatter: NumberFormatter = {
+          let formatter = NumberFormatter()
+          formatter.numberStyle = .decimal
+          formatter.groupingSeparator = ","
+          formatter.maximumFractionDigits = 0  // 소수점을 표시하지 않도록 설정
+          return formatter
+        }()
+
+        let spendGoals = consumptionGoalList.map { item -> SpendGoalModel in
+          let goalAmount =
+            numberFormatter.string(from: NSNumber(value: item.goalAmount ?? 0)) ?? "0"
+          let consumeAmount =
+            numberFormatter.string(from: NSNumber(value: item.consumeAmount ?? 0)) ?? "0"
+          let remainingBalance =
+            numberFormatter.string(from: NSNumber(value: item.remainingBalance ?? 0)) ?? "0"
+
+          return SpendGoalModel(
+            categoryImage: self.setCategoryIconImage(categoryId: item.categoryId!),
+            title: item.categoryName ?? "",
+            amount: "\(goalAmount)",
+            progress: item.goalAmount! > 0
+              ? Float(item.consumeAmount!) / Float(item.goalAmount!) : 0.0,
+            consumption: "\(consumeAmount)",
+            remaining: "\(remainingBalance)"
+          )
+        }
+
+        self.updateUI(with: spendGoals)
+
+      case .failure(let error):
+        print("Failed to load Top goal: \(error)")
+      }
+    }
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalTotalViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
 }

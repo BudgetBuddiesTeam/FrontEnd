@@ -23,8 +23,8 @@ final class AgeEditViewController: UIViewController {
   let titleLabel = {
     let label = UILabel()
     label.text = "성별과 연령대를\n선택해주세요"
-    label.textColor = .black
-    label.font = .systemFont(ofSize: 22, weight: .bold)
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
+    label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 22)
     label.numberOfLines = 0
     return label
   }()
@@ -32,7 +32,7 @@ final class AgeEditViewController: UIViewController {
   let genderLabel = {
     let label = UILabel()
     label.text = "성별"
-    label.textColor = .black
+    label.textColor = BudgetBuddiesAsset.AppColor.textBlack.color
     label.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 14)
     return label
   }()
@@ -48,13 +48,11 @@ final class AgeEditViewController: UIViewController {
   lazy var femaleButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("여성", for: .normal)
-    button.setTitleColor(.black, for: .normal)
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.textBlack.color, for: .normal)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)
     button.layer.cornerRadius = 15
-    button.layer.borderColor = UIColor.lightGray.cgColor
-    button.layer.borderWidth = 1
-    button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-    button.layer.shadowOpacity = 1
-    button.layer.shadowRadius = 10  //반경
+
+    button.setShadow(opacity: 1, Radius: 8, offSet: CGSize(width: 0, height: 1))
     button.addTarget(self, action: #selector(selectGender(_:)), for: .touchUpInside)
     button.tag = 0
     return button
@@ -63,16 +61,23 @@ final class AgeEditViewController: UIViewController {
   lazy var maleButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("남성", for: .normal)
-    button.setTitleColor(.black, for: .normal)
+    button.setTitleColor(BudgetBuddiesAsset.AppColor.textBlack.color, for: .normal)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)
     button.layer.cornerRadius = 15
-    button.layer.borderColor = UIColor.lightGray.cgColor
-    button.layer.borderWidth = 1
-    button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-    button.layer.shadowOpacity = 1
-    button.layer.shadowRadius = 10  //반경
+
+    button.setShadow(opacity: 1, Radius: 8, offSet: CGSize(width: 0, height: 1))
     button.addTarget(self, action: #selector(selectGender(_:)), for: .touchUpInside)
     button.tag = 1
     return button
+  }()
+
+  lazy var buttonStackView: UIStackView = {
+    let sv = UIStackView(arrangedSubviews: [femaleButton, maleButton])
+    sv.axis = .horizontal
+    sv.distribution = .fillEqually
+    sv.alignment = .center
+    sv.spacing = 11
+    return sv
   }()
 
   let ageLabel = {
@@ -88,15 +93,13 @@ final class AgeEditViewController: UIViewController {
     let titles = ["20-22세", "23-25세", "26-28세", "29세 이상"]
     return titles.enumerated().map { index, title in
       let button = UIButton(type: .system)
+      button.backgroundColor = UIColor.white
       button.setTitle(title, for: .normal)
+      button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)
       button.titleLabel?.textAlignment = .left
       button.setTitleColor(.black, for: .normal)
       button.layer.cornerRadius = 15
-      button.layer.borderColor = UIColor.lightGray.cgColor
-      button.layer.borderWidth = 1
-      button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-      button.layer.shadowOpacity = 1
-      button.layer.shadowRadius = 10  //반경
+      button.setShadow(opacity: 1, Radius: 8, offSet: CGSize(width: 0, height: 1))
       button.addTarget(self, action: #selector(selectAge(_:)), for: .touchUpInside)
       button.tag = index
       return button
@@ -106,6 +109,8 @@ final class AgeEditViewController: UIViewController {
   lazy var saveButton = {
     let button = UIButton(type: .custom)
     button.setTitle("저장하기", for: .normal)
+    button.setCharacterSpacing(-0.45)
+    button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.semiBold.font(size: 18)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color
     button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
@@ -113,18 +118,25 @@ final class AgeEditViewController: UIViewController {
     return button
   }()
 
+  // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setup()
     setConsts()
     loadPeerInfo()
+    setupNavigationBar()
+  }
+
+  // MARK: - Set up NavigationBar
+  private func setupNavigationBar() {
+    self.navigationController?.navigationBar.isHidden = true
   }
 
   private func setup() {
-    view.backgroundColor = .white
+    view.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
 
-    [titleLabel, genderLabel, femaleButton, maleButton, ageLabel, saveButton].forEach {
+    [titleLabel, genderLabel, buttonStackView, ageLabel, saveButton].forEach {
       view.addSubviews($0)
     }
     ageButtons.forEach { view.addSubview($0) }
@@ -143,28 +155,27 @@ final class AgeEditViewController: UIViewController {
     }
 
     femaleButton.snp.makeConstraints {
-      $0.top.equalTo(genderLabel.snp.bottom).offset(10)
-      $0.leading.equalToSuperview().offset(16)
-      $0.width.equalTo(160)
       $0.height.equalTo(50)
     }
 
     maleButton.snp.makeConstraints {
-      $0.top.equalTo(genderLabel.snp.bottom).offset(10)
-      $0.trailing.equalToSuperview().offset(-16)
-      $0.width.equalTo(160)
       $0.height.equalTo(50)
     }
 
+    buttonStackView.snp.makeConstraints { make in
+      make.top.equalTo(genderLabel.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview().inset(16)
+    }
+
     ageLabel.snp.makeConstraints {
-      $0.top.equalTo(femaleButton.snp.bottom).offset(20)
+      $0.top.equalTo(buttonStackView.snp.bottom).offset(20)
       $0.leading.equalToSuperview().offset(16)
     }
 
     for (index, button) in ageButtons.enumerated() {
       button.snp.makeConstraints {
         if index == 0 {
-          $0.top.equalTo(ageLabel.snp.bottom).offset(20)
+          $0.top.equalTo(ageLabel.snp.bottom).offset(10)
         } else {
           $0.top.equalTo(ageButtons[index - 1].snp.bottom).offset(20)
         }
@@ -174,9 +185,8 @@ final class AgeEditViewController: UIViewController {
     }
 
     saveButton.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
       $0.height.equalTo(60)
     }
   }
@@ -238,9 +248,9 @@ extension UIButton {
       self.layer.borderWidth = 2
       self.backgroundColor = UIColor.white
     } else {
-      self.layer.borderColor = UIColor.lightGray.cgColor
-      self.layer.borderWidth = 1
-      self.backgroundColor = UIColor.clear
+      self.layer.borderWidth = 0
+      self.setShadow(opacity: 1, Radius: 8, offSet: CGSize(width: 0, height: 1))
+      self.backgroundColor = UIColor.white
     }
   }
 }

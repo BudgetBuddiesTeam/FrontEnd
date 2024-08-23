@@ -86,7 +86,9 @@ final class CalendarViewController: UIViewController {
   }
 
   // MARK: - Set up Data
-  private func setupData() {
+
+  /// 캘린더의 데이터를 가져오는 메소드입니다.
+  public func setupData() {
     print("-----------캘린더 메인 fetch-----------")
     guard let yearMonth = self.yearMonth else { return }
 

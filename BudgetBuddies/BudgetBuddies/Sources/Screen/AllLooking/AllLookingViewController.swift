@@ -184,7 +184,7 @@ extension AllLookingViewController {
 // MARK: - Network
 
 extension AllLookingViewController {
-  private func fetchUserData(userId: Int) {
+  public func fetchUserData(userId: Int) {
     provider.request(.find(userId: userId)) { result in
       switch result {
       case .success(let response):

@@ -63,6 +63,9 @@ final class MainViewController: UIViewController {
   ]
 
   // MARK: - View Life Cycle
+  override func loadView() {
+    self.view = mainView
+  }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -75,7 +78,7 @@ final class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setScrollViewSetting()
-    setLayout()
+    //    setLayout()
     setUICollectionViewDelegate()
     setNavigationSetting()
     setButtonAction()
@@ -86,7 +89,7 @@ final class MainViewController: UIViewController {
   // 탭바에 가려지는 요소 보이게 하기
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.mainScrollView.contentInset.bottom = 10
+    self.mainView.scrollView.contentInset.bottom = 22
   }
 
   // MARK: - Methods
@@ -108,10 +111,7 @@ final class MainViewController: UIViewController {
 
   // Methods in ViewDidLoad method
   private func setScrollViewSetting() {
-    mainScrollView.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
     mainScrollView.contentInsetAdjustmentBehavior = .never
-    mainScrollView.showsVerticalScrollIndicator = false
-    mainScrollView.showsHorizontalScrollIndicator = false
   }
 
   private func setLayout() {

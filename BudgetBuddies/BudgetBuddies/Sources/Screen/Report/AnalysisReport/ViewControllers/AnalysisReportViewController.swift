@@ -175,6 +175,9 @@ final class AnalysisReportViewController: UIViewController {
   }
 
   private func setNavi() {
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "또래 비교 분석 레포트"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
@@ -460,5 +463,12 @@ extension AnalysisReportViewController: UIScrollViewDelegate {
     }
 
     previousScrollOffset = currentOffset
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension AnalysisReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

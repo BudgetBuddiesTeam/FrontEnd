@@ -56,10 +56,19 @@ final class ConsumeViewController: UIViewController {
     observeSelectedCategory()
   }
 
+  // 키보드 내림
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
+
   // MARK: - Methods
 
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
+
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: "소비기록", image: UIImage(systemName: "list.clipboard.fill"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))
@@ -245,6 +254,13 @@ extension ConsumeViewController: UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    return true
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension ConsumeViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     return true
   }
 }

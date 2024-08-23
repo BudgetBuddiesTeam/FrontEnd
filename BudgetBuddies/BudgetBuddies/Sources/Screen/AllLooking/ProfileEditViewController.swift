@@ -46,6 +46,10 @@ class ProfileEditViewController: UIViewController {
 
   private func setNavigation() {
     navigationItem.title = "마이페이지"
+
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationController?.navigationBar.tintColor = BudgetBuddiesAsset.AppColor.subGray.color
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
     self.addBackButton(selector: #selector(didTapBarButton))
@@ -60,6 +64,12 @@ class ProfileEditViewController: UIViewController {
     profileEditView.saveButton.addTarget(
       self, action: #selector(saveButtonTapped), for: .touchUpInside)
   }
+
+  // 키보드 내림
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
+
 }
 
 // MARK: - Network
@@ -128,6 +138,13 @@ extension ProfileEditViewController: UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    return true
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension ProfileEditViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     return true
   }
 }

@@ -76,6 +76,9 @@ final class GoalEditViewController: UIViewController {
 
   // MARK: - Set Navi
   private func setNavi() {
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationController?.navigationBar.isHidden = false
 
     navigationItem.title = "6월 소비목표"
@@ -133,6 +136,8 @@ final class GoalEditViewController: UIViewController {
       textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
       textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
       textField.leftViewMode = .always
+      textField.setComfortableTextField()
+      textField.keyboardType = .numberPad
 
       let stack = UIStackView(arrangedSubviews: [label, textField])
       stack.axis = .vertical
@@ -161,5 +166,12 @@ extension GoalEditViewController: UITextFieldDelegate {
   //화면 터치시 키보드 내림
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalEditViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

@@ -138,6 +138,8 @@ final class GoalEditViewController: UIViewController {
       textField.leftViewMode = .always
       textField.setComfortableTextField()
       textField.keyboardType = .numberPad
+      textField.textAlignment = .left
+      textField.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 14)  // 폰트 설정
 
       let stack = UIStackView(arrangedSubviews: [label, textField])
       stack.axis = .vertical

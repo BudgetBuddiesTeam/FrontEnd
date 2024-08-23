@@ -220,6 +220,9 @@ final class MonthReportViewController: UIViewController {
 
   // MARK: - Set Navi
   private func setNavi() {
+      // 뒤로가기 제스처
+      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+      
     navigationItem.title = "이번달 리포트"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.coreYellow.color)
     self.addBackButton(selector: #selector(didTapBarButton))
@@ -636,4 +639,11 @@ extension MonthReportViewController {
   //      }
   //    }
   //  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension MonthReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
 }

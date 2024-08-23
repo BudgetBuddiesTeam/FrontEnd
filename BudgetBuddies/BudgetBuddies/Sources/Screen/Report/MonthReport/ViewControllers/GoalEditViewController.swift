@@ -76,6 +76,9 @@ final class GoalEditViewController: UIViewController {
 
   // MARK: - Set Navi
   private func setNavi() {
+      // 뒤로가기 제스처
+      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+      
     navigationController?.navigationBar.isHidden = false
 
     navigationItem.title = "6월 소비목표"
@@ -161,5 +164,12 @@ extension GoalEditViewController: UITextFieldDelegate {
   //화면 터치시 키보드 내림
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalEditViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

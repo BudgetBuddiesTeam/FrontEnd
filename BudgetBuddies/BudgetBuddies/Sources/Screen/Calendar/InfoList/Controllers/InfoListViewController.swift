@@ -418,7 +418,7 @@ extension InfoListViewController: BottomSheetViewControllerDelegate {
   }
 }
 
-// MARK: - 뒤로 가기 제스처 추가
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
 extension InfoListViewController: UIGestureRecognizerDelegate {
   func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     return true

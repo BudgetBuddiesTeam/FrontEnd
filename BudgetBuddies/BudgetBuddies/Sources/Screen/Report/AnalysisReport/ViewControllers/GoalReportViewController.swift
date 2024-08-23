@@ -78,6 +78,9 @@ final class GoalReportViewController: UIViewController {
   // MARK: - Methods
 
   private func setNavigationSetting() {
+      // 뒤로가기 제스처
+      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+      
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "소비목표 레포트"
 
@@ -243,5 +246,12 @@ extension BudgetBuddiesAsset.AppImage.CategoryIcon {
     default:
       return BudgetBuddiesAsset.AppImage.CategoryIcon.personal2.image
     }
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalReportViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

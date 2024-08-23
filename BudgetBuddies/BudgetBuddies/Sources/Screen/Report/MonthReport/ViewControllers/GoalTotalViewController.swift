@@ -70,7 +70,11 @@ final class GoalTotalViewController: UIViewController {
     setConsts()
   }
 
+    // MARK: - SetNavi
   private func setNavi() {
+      // 뒤로가기 제스처
+      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+      
     navigationItem.title = "소비 목표"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
     self.addBackButton(selector: #selector(didTapBarButton))
@@ -247,5 +251,12 @@ extension GoalTotalViewController {
         print("Failed to load Top goal: \(error)")
       }
     }
+  }
+}
+
+// MARK: - 뒤로 가기 슬라이드 제스처 추가
+extension GoalTotalViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
 }

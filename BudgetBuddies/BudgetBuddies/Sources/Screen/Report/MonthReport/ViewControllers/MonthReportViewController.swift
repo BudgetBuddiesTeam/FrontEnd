@@ -12,6 +12,9 @@ import UIKit
 final class MonthReportViewController: UIViewController {
 
   // MARK: - Property
+    var previousScrollOffset: CGFloat = 0.0
+    var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+    
   var services = Services()
   var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
   var getTopGoalResponse: GetTopGoalResponse? = nil
@@ -283,10 +286,10 @@ final class MonthReportViewController: UIViewController {
     }
 
     topView.snp.makeConstraints {
-      $0.top.equalTo(contentView.snp.top)
       $0.leading.trailing.equalTo(contentView)
-      $0.height.equalTo(280)
+      $0.height.equalTo(2000)
       $0.centerX.equalTo(contentView)
+        $0.bottom.equalTo(faceChartView.snp.bottom).offset(-170)
     }
 
     faceChartView.snp.makeConstraints {
@@ -464,24 +467,6 @@ extension MonthReportViewController: UITableViewDelegate, UITableViewDataSource 
     return 0
   }
 
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let offsetY = scrollView.contentOffset.y
-
-    if offsetY > lastContentOffset && offsetY > 0 {  // 스크롤을 아래로 내리는 중이고, offsetY가 0보다 클 때
-      UIView.animate(withDuration: 0.3) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-      }
-
-    } else if offsetY < lastContentOffset {  // 스크롤을 위로 올리는 중
-      UIView.animate(withDuration: 0.3) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-      }
-    }
-
-    lastContentOffset = offsetY
-
-  }
-
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == spendGoalTableView {
       guard
@@ -510,6 +495,45 @@ extension MonthReportViewController: UITableViewDelegate, UITableViewDataSource 
 
     return UITableViewCell()
   }
+}
+
+// MARK: - ScrollView Delegate
+extension MonthReportViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        //
+        let offsetY = scrollView.contentOffset.y
+
+        let currentOffset = scrollView.contentOffset.y
+        let offsetDifference = currentOffset - previousScrollOffset
+
+        if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+          navigationController?.setNavigationBarHidden(false, animated: true)
+
+        } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+          navigationController?.setNavigationBarHidden(true, animated: true)
+
+        } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+          navigationController?.setNavigationBarHidden(false, animated: true)
+
+        }
+
+        previousScrollOffset = currentOffset
+
+        // MARK: - 네비 색상 변경
+        let threshold = 126.0 // 이 값은 조정 가능. 스크롤에 따른 색상 변화의 임계값
+        
+        // 배경색 설정 (예제: 특정 offsetY에서 배경색을 변경)
+        let backgroundColor: UIColor
+        if offsetY > threshold {
+            backgroundColor = .clear
+        } else {
+            backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color // 스크롤이 일정 위치를 넘었을 때 배경색을 흰색으로
+        }
+        
+        // 네비게이션 바 업데이트
+        setupDefaultNavigationBar(backgroundColor: backgroundColor)
+    }
 }
 
 // MARK: - 네트워킹

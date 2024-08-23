@@ -43,6 +43,9 @@ class ConsumeView: UIView {
     textField.addLeftView(width: 16, height: 16)
     textField.setCharacterSpacing(-0.4)
     textField.setComfortableTextField()
+    textField.placeholder = "ex) 20,000"
+    textField.textAlignment = .left
+    textField.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)  // 폰트 설정
     return textField
   }()
 
@@ -64,6 +67,9 @@ class ConsumeView: UIView {
     textField.addLeftView(width: 16, height: 16)
     textField.setCharacterSpacing(-0.4)
     textField.setComfortableTextField()
+    textField.placeholder = "ex) 타코야끼"
+    textField.textAlignment = .left
+    textField.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)  // 폰트 설정
     return textField
   }()
 

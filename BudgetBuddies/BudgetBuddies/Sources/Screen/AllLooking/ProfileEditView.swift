@@ -45,6 +45,10 @@ class ProfileEditView: UIView {
 
     textField.addLeftView(width: 16, height: 16)
     textField.setComfortableTextField()
+
+    textField.placeholder = "ex) 홍길동"
+    textField.textAlignment = .left
+    textField.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)  // 폰트 설정
     return textField
   }()
 
@@ -71,6 +75,10 @@ class ProfileEditView: UIView {
 
     textField.addLeftView(width: 16, height: 16)
     textField.setComfortableTextField()
+
+    textField.placeholder = "ex) example@email.com"
+    textField.textAlignment = .left
+    textField.font = BudgetBuddiesFontFamily.Pretendard.regular.font(size: 16)  // 폰트 설정
     return textField
   }()
 

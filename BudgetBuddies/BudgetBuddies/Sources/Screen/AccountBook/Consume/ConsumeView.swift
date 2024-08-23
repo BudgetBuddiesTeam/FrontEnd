@@ -97,7 +97,12 @@ class ConsumeView: UIView {
     let button = UIButton()
 
     // 버튼 타이틀 설정 코드
-    button.setTitle("식비", for: .normal)
+    /*
+     설명
+     - 버튼의 타이틀은 CategorySelectTableViewController에서 선택한 값이 반영이 되어야 합니다.
+     - 그런데 해당 클래스에서 버튼의 타이틀을 설정하는 코드를 넣게 된다면, loadView 메소드가 호출될 때 마다, 설정한 초기 UI로 설정됩니다.
+     */
+    // button.setTitle("식비", for: .normal)
     button.setCharacterSpacing(-0.4)
     button.setTitleColor(BudgetBuddiesAsset.AppColor.subGray.color, for: .normal)
     button.titleLabel?.font = BudgetBuddiesFontFamily.Pretendard.medium.font(size: 16)

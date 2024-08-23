@@ -156,6 +156,7 @@ class CategorySelectTableViewController: UITableViewController {
   private func plusButtonTapped() {
     let categoryPlusViewController = CategoryPlusViewController()
     categoryPlusViewController.dismissHandler = {
+      self.getCategoriesFromServer()
       self.tableView.reloadData()
     }
     self.present(categoryPlusViewController, animated: true)

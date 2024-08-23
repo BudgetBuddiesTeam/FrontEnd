@@ -31,8 +31,7 @@ final class CategoryRouterTests: XCTestCase {
   /// /categories/add/{userId} 엔드포인트 테스트 메소드
   func testAddCategory() {
     // Request Variable
-    let categoryRequestDTO = CategoryRequestDTO(
-      userID: self.userId, name: "프론트엔드 화이팅", isDefault: false)
+    let categoryRequestDTO = CategoryRequestDTO(name: "프론트엔드 화이팅", isDefault: false)
 
     // Network Transmitting Code
     provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {

@@ -70,11 +70,11 @@ class CategoryPlusViewController: UIViewController {
 
   @objc
   private func addButtonTapped() {
-    let categoryRequestDTO = CategoryRequestDTO(
-      userID: self.userId, name: self.categoryName, isDefault: self.isDefault)
+    let categoryRequestDTO = CategoryRequestDTO(name: self.categoryName, isDefault: self.isDefault)
     firstly {
       self.addCategory(categoryRequestDTO: categoryRequestDTO)
     }.done { [weak self] _ in
+      self?.dismissHandler?()
       self?.generateAlertController(message: "카테고리를 추가했습니다")
     }.catch { [weak self] _ in
       self?.generateAlertController(message: "카테고리 추가를 실패했습니다")
@@ -90,10 +90,15 @@ extension CategoryPlusViewController {
       provider.request(.addCategory(userId: self.userId, categoryRequest: categoryRequestDTO)) {
         result in
         switch result {
-        case .success:
+        case .success(let response):
+          do {
+            let decodedData = try JSONDecoder().decode(CategoryResponseDTO.self, from: response.data)
+          } catch (let decodingError){
+            seal.reject(decodingError)
+          }
           seal.fulfill(())
-        case .failure:
-          seal.fulfill(())
+        case .failure(let connectionError):
+          seal.reject(connectionError)
         }
       }
     }

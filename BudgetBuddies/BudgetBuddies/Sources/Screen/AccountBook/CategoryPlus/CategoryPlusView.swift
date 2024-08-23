@@ -24,6 +24,7 @@ class CategoryPlusView: UIView {
   public var userCategoryTextField: UITextField = {
     let textField = UITextField()
     textField.placeholder = "카테고리를 입력하세요."
+      textField.setComfortableTextField()
     return textField
   }()
 

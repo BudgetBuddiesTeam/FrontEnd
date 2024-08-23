@@ -47,6 +47,11 @@ class CategoryPlusViewController: UIViewController {
       self.dismissHandler?()
     }
   }
+    
+    // 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 
   // MARK: - Methods
 

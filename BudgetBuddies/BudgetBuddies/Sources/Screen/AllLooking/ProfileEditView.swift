@@ -44,6 +44,7 @@ class ProfileEditView: UIView {
     textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
 
     textField.addLeftView(width: 16, height: 16)
+      textField.setComfortableTextField()
     return textField
   }()
 
@@ -69,6 +70,7 @@ class ProfileEditView: UIView {
     textField.keyboardType = .emailAddress
 
     textField.addLeftView(width: 16, height: 16)
+      textField.setComfortableTextField()
     return textField
   }()
 

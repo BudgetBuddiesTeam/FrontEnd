@@ -124,7 +124,7 @@ extension ConsumeViewController {
 
     /*
      해야 할 일
-     - 서버로 보낼 날짜 데이터 형식으로 전환해야 함
+     - 문자열 데이터 타입으로 보관하는 코드 작성
      */
   }
 
@@ -146,14 +146,15 @@ extension ConsumeViewController {
      - ViewController에 있는 비즈니스 로직 코드도 XCTest 프레임워크 기반으로 개발할 수 있는지 연구
      */
     let categoryId = self.selectedCategoryId
-    let amount: Int
+    let amount = Int(self.writtenConsumedPriceText) ?? 0
     let description = self.writtenConsumedContentText
     let expenseDate: String
-    if let writtenConsumedPrice = Int(self.writtenConsumedPriceText) {
-      amount = writtenConsumedPrice
-    } else {
-      amount = 0
-    }
+   
+    /*
+     해야 할 일
+     - 모델 객체에서 날짜를 저장하는 형식을 문자열로 보관
+     - 문자열 형식 전환 처리는 날짜를 선택한 object c 메소드에 작성할 것
+     */
 
     let dateFormatter = DateFormatter()
     /*
@@ -177,6 +178,11 @@ extension ConsumeViewController {
 
 // MARK: - Network
 
+/*
+ 해야 할 일
+ - 모델 객체로 분리
+ */
+
 extension ConsumeViewController {
   private func postNewExpense(newExpenseRequestDTO: NewExpenseRequestDTO) {
     provider.request(
@@ -187,7 +193,19 @@ extension ConsumeViewController {
       case .success:
         let postSuccessAlertController = UIAlertController(
           title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
-        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default)
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self]_ in
+          self?.consumeView.consumedPriceTextField.text = String()
+          self?.consumeView.consumedContentTextField.text = String()
+          self?.consumeView.consumedDatePicker.date = Date()
+          
+          /*
+           설명
+           - 카테고리 선택 버튼은 CategorySelectTableViewController의 모델 객체의 데이터를 추종하는 성격이 있습니다.
+           - 그래서 데이터를 직접 변경하면, ConsumeView의 addButton UI도 변경됩니다.
+           */
+          self?.categorySelectTableViewController.selectedCategoryName = "카테고리를 선택하세요"
+          self?.categorySelectTableViewController.selectedCateogryId = 0
+        }
         postSuccessAlertController.addAction(confirmedButtonAction)
         self.present(postSuccessAlertController, animated: true)
       case .failure:

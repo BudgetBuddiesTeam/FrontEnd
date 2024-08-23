@@ -261,7 +261,7 @@ extension MainViewController {
 
 extension MainViewController {
 
-  private func fetchUserDataFromServer(userId: Int) {
+  public func fetchUserDataFromServer(userId: Int) {
     userRouterProvider.request(.find(userId: self.userId)) { result in
       switch result {
       case .success(let response):
@@ -282,7 +282,7 @@ extension MainViewController {
   ///
   /// # 설명
   /// - 메인화면에서 보여지는 데이터들을 가져오기 위해서 사용합니다.
-  private func fetchDataFromMainPageAPI(userId: Int) {
+  public func fetchDataFromMainPageAPI(userId: Int) {
     mainRouterProvider.request(.get(userId: userId)) { result in
       switch result {
       case let .success(moyaResponse):

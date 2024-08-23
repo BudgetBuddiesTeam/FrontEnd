@@ -149,7 +149,7 @@ extension ConsumeViewController {
     let amount = Int(self.writtenConsumedPriceText) ?? 0
     let description = self.writtenConsumedContentText
     let expenseDate: String
-   
+
     /*
      해야 할 일
      - 모델 객체에서 날짜를 저장하는 형식을 문자열로 보관
@@ -193,11 +193,11 @@ extension ConsumeViewController {
       case .success:
         let postSuccessAlertController = UIAlertController(
           title: "알림", message: "새로운 소비 내역을 추가했습니다", preferredStyle: .alert)
-        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self]_ in
+        let confirmedButtonAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
           self?.consumeView.consumedPriceTextField.text = String()
           self?.consumeView.consumedContentTextField.text = String()
           self?.consumeView.consumedDatePicker.date = Date()
-          
+
           /*
            설명
            - 카테고리 선택 버튼은 CategorySelectTableViewController의 모델 객체의 데이터를 추종하는 성격이 있습니다.

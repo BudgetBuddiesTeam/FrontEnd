@@ -1,6 +1,10 @@
 import ProjectDescription
 
-let settings: Settings = .settings(configurations: [
+let budgetBuddiesSettings: Settings = .settings(
+  base: [
+    "DEVELOPMENT_LANGUAGE": "ko"
+  ],
+  configurations: [
   .debug(name: "Debug", xcconfig: "BudgetBuddies/Resources/Debug.xcconfig"),
   .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig"),
 ])
@@ -34,12 +38,20 @@ let budgetBuddiesInfoPlist: InfoPlist = .extendingDefault(with: [
   "UISupportedInterfaceOrientations": [
     "UIInterfaceOrientationPortrait"
   ],
+  // 배포용 버전 지정
   "CFBundleVersion": "1.1.0",
   "CFBundleShortVersionString": "1.1.0",
+  // 사용 국가 지정
+  "CFBundleDevelopmentRegion": "ko",
 ])
 
 let project = Project(
   name: "BudgetBuddies",
+  options: .options(
+    defaultKnownRegions: ["ko"],
+    developmentRegion: "ko"
+  ),
+  settings: budgetBuddiesSettings,
   targets: [
     .target(
       name: "BudgetBuddies",
@@ -58,7 +70,7 @@ let project = Project(
         .external(name: "Kingfisher", condition: .none),
         .external(name: "PromiseKit", condition: .none),
       ],
-      settings: settings
+      settings: budgetBuddiesSettings
     ),
     .target(
       name: "BudgetBuddiesTests",

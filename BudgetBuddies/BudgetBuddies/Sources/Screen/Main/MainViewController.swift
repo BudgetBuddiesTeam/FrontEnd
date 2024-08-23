@@ -63,9 +63,9 @@ final class MainViewController: UIViewController {
   ]
 
   // MARK: - View Life Cycle
-    override func loadView() {
-        self.view = mainView
-    }
+  override func loadView() {
+    self.view = mainView
+  }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -78,7 +78,7 @@ final class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setScrollViewSetting()
-//    setLayout()
+    //    setLayout()
     setUICollectionViewDelegate()
     setNavigationSetting()
     setButtonAction()
@@ -89,7 +89,7 @@ final class MainViewController: UIViewController {
   // 탭바에 가려지는 요소 보이게 하기
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-      self.mainView.scrollView.contentInset.bottom = 22
+    self.mainView.scrollView.contentInset.bottom = 22
   }
 
   // MARK: - Methods
@@ -123,7 +123,7 @@ final class MainViewController: UIViewController {
     mainScrollView.addSubview(mainView)
     mainView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-        make.width.equalToSuperview()
+      make.width.equalToSuperview()
     }
   }
 
@@ -231,7 +231,7 @@ extension MainViewController {
   @objc private func budgetInfoLookEntireButtonContainerTapped() {
     if let rootTabBarController = self.navigationController?.parent as? RootTabBarController {
       rootTabBarController.selectedIndex = 2  // CalendarViewController가 있는 인덱스로 설정
-              
+
       // 노티로 시점 전달 (CalendarViewController에게)
       NotificationCenter.default.post(
         name: NSNotification.Name("AllLookingToCalendar"), object: nil)

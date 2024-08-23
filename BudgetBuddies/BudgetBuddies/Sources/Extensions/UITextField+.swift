@@ -32,12 +32,12 @@ extension UITextField {
     self.leftView = leftView
     self.leftViewMode = .always
   }
-    
-    /// TextField에서 사용하기 불편한 세팅을 제거합니다.
-    func setComfortableTextField() {
-        self.autocapitalizationType = .none // 첫 글자 자동 대문자
-        self.autocorrectionType = .no // 추천 글자를 보여줄지
-        self.spellCheckingType = .no // 오류난 글자를 고쳐줄지
-        self.clearButtonMode = .always // 텍스트필드에 전체 지우기 버튼 생성
-    }
+
+  /// TextField에서 사용하기 불편한 세팅을 제거합니다.
+  func setComfortableTextField() {
+    self.autocapitalizationType = .none  // 첫 글자 자동 대문자
+    self.autocorrectionType = .no  // 추천 글자를 보여줄지
+    self.spellCheckingType = .no  // 오류난 글자를 고쳐줄지
+    self.clearButtonMode = .always  // 텍스트필드에 전체 지우기 버튼 생성
+  }
 }

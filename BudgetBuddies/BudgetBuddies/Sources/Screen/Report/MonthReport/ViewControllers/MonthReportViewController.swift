@@ -12,9 +12,9 @@ import UIKit
 final class MonthReportViewController: UIViewController {
 
   // MARK: - Property
-    var previousScrollOffset: CGFloat = 0.0
-    var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
-    
+  var previousScrollOffset: CGFloat = 0.0
+  var scrollThreshold: CGFloat = 10.0  // 네비게이션 바가 나타나거나 사라질 스크롤 오프셋 차이
+
   var services = Services()
   var getConsumeGoalResponse: GetConsumeGoalResponse? = nil
   var getTopGoalResponse: GetTopGoalResponse? = nil
@@ -223,9 +223,9 @@ final class MonthReportViewController: UIViewController {
 
   // MARK: - Set Navi
   private func setNavi() {
-      // 뒤로가기 제스처
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.title = "이번달 리포트"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.coreYellow.color)
     self.addBackButton(selector: #selector(didTapBarButton))
@@ -289,7 +289,7 @@ final class MonthReportViewController: UIViewController {
       $0.leading.trailing.equalTo(contentView)
       $0.height.equalTo(2000)
       $0.centerX.equalTo(contentView)
-        $0.bottom.equalTo(faceChartView.snp.bottom).offset(-170)
+      $0.bottom.equalTo(faceChartView.snp.bottom).offset(-170)
     }
 
     faceChartView.snp.makeConstraints {
@@ -499,41 +499,41 @@ extension MonthReportViewController: UITableViewDelegate, UITableViewDataSource 
 
 // MARK: - ScrollView Delegate
 extension MonthReportViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        //
-        let offsetY = scrollView.contentOffset.y
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
-        let currentOffset = scrollView.contentOffset.y
-        let offsetDifference = currentOffset - previousScrollOffset
+    //
+    let offsetY = scrollView.contentOffset.y
 
-        if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
-          navigationController?.setNavigationBarHidden(false, animated: true)
+    let currentOffset = scrollView.contentOffset.y
+    let offsetDifference = currentOffset - previousScrollOffset
 
-        } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
-          navigationController?.setNavigationBarHidden(true, animated: true)
+    if currentOffset <= 0 {  // 스크롤을 완전히 위로 올렸을 때 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
 
-        } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
-          navigationController?.setNavigationBarHidden(false, animated: true)
+    } else if offsetDifference > scrollThreshold {  // 스크롤이 아래로 일정 이상 이동한 경우 네비게이션 바 숨김
+      navigationController?.setNavigationBarHidden(true, animated: true)
 
-        }
+    } else if offsetDifference < -scrollThreshold {  // 스크롤이 위로 일정 이상 이동한 경우 네비게이션 바 나타냄
+      navigationController?.setNavigationBarHidden(false, animated: true)
 
-        previousScrollOffset = currentOffset
-
-        // MARK: - 네비 색상 변경
-        let threshold = 126.0 // 이 값은 조정 가능. 스크롤에 따른 색상 변화의 임계값
-        
-        // 배경색 설정 (예제: 특정 offsetY에서 배경색을 변경)
-        let backgroundColor: UIColor
-        if offsetY > threshold {
-            backgroundColor = .clear
-        } else {
-            backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color // 스크롤이 일정 위치를 넘었을 때 배경색을 흰색으로
-        }
-        
-        // 네비게이션 바 업데이트
-        setupDefaultNavigationBar(backgroundColor: backgroundColor)
     }
+
+    previousScrollOffset = currentOffset
+
+    // MARK: - 네비 색상 변경
+    let threshold = 126.0  // 이 값은 조정 가능. 스크롤에 따른 색상 변화의 임계값
+
+    // 배경색 설정 (예제: 특정 offsetY에서 배경색을 변경)
+    let backgroundColor: UIColor
+    if offsetY > threshold {
+      backgroundColor = .clear
+    } else {
+      backgroundColor = BudgetBuddiesAsset.AppColor.coreYellow.color  // 스크롤이 일정 위치를 넘었을 때 배경색을 흰색으로
+    }
+
+    // 네비게이션 바 업데이트
+    setupDefaultNavigationBar(backgroundColor: backgroundColor)
+  }
 }
 
 // MARK: - 네트워킹

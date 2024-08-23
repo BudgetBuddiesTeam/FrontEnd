@@ -70,11 +70,11 @@ final class GoalTotalViewController: UIViewController {
     setConsts()
   }
 
-    // MARK: - SetNavi
+  // MARK: - SetNavi
   private func setNavi() {
-      // 뒤로가기 제스처
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.title = "소비 목표"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)
     self.addBackButton(selector: #selector(didTapBarButton))

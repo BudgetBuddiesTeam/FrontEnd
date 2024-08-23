@@ -319,7 +319,7 @@ extension InfoListViewController: UITableViewDelegate {
     }
   }
 
-    // MARK: - ScrollView Delegate
+  // MARK: - ScrollView Delegate
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentOffset = scrollView.contentOffset.y
     let offsetDifference = currentOffset - previousScrollOffset

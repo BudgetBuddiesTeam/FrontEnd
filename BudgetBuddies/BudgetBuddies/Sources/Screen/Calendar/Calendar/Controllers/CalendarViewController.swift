@@ -224,13 +224,13 @@ final class CalendarViewController: UIViewController {
 
   @objc
   private func switchToCalendarHandler() {
-      if let navigationController = self.navigationController {
-          // CalendarViewController가 네비게이션 스택의 루트가 아닌 경우 pop
-          if navigationController.viewControllers.last != self {
-              navigationController.popToViewController(self, animated: true)
-          }
+    if let navigationController = self.navigationController {
+      // CalendarViewController가 네비게이션 스택의 루트가 아닌 경우 pop
+      if navigationController.viewControllers.last != self {
+        navigationController.popToViewController(self, animated: true)
       }
-      
+    }
+
     // 다른 뷰컨에서 넘어온 경우에 스크롤 처음으로
     let topInset = self.calendarView.scrollView.adjustedContentInset.top
     self.calendarView.scrollView.setContentOffset(CGPoint(x: 0, y: -topInset), animated: true)

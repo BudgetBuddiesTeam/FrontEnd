@@ -5,9 +5,9 @@ let budgetBuddiesSettings: Settings = .settings(
     "DEVELOPMENT_LANGUAGE": "ko"
   ],
   configurations: [
-  .debug(name: "Debug", xcconfig: "BudgetBuddies/Resources/Debug.xcconfig"),
-  .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig"),
-])
+    .debug(name: "Debug", xcconfig: "BudgetBuddies/Resources/Debug.xcconfig"),
+    .release(name: "Release", xcconfig: "BudgetBuddies/Resources/Release.xcconfig"),
+  ])
 
 let budgetBuddiesInfoPlist: InfoPlist = .extendingDefault(with: [
   "UILaunchStoryboardName": "LaunchScreen.storyboard",

@@ -78,9 +78,9 @@ final class GoalReportViewController: UIViewController {
   // MARK: - Methods
 
   private func setNavigationSetting() {
-      // 뒤로가기 제스처
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "소비목표 레포트"
 

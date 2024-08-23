@@ -76,9 +76,9 @@ final class GoalEditViewController: UIViewController {
 
   // MARK: - Set Navi
   private func setNavi() {
-      // 뒤로가기 제스처
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationController?.navigationBar.isHidden = false
 
     navigationItem.title = "6월 소비목표"
@@ -136,8 +136,8 @@ final class GoalEditViewController: UIViewController {
       textField.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color
       textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
       textField.leftViewMode = .always
-        textField.setComfortableTextField()
-        textField.keyboardType = .numberPad
+      textField.setComfortableTextField()
+      textField.keyboardType = .numberPad
 
       let stack = UIStackView(arrangedSubviews: [label, textField])
       stack.axis = .vertical

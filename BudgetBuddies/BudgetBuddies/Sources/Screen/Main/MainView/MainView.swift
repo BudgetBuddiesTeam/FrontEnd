@@ -24,19 +24,19 @@ final class MainView: UIView {
   private static let height = 1200
 
   // MARK: - UI Components
-    // 스크롤뷰 여기서 생성
-    var scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsHorizontalScrollIndicator = false
-        sv.showsVerticalScrollIndicator = false
-//        sv.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
-        return sv
-    }()
-    
-    var contentView: UIView = {
-        let view = UIView()
-        return view
-    }()
+  // 스크롤뷰 여기서 생성
+  var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.showsHorizontalScrollIndicator = false
+    sv.showsVerticalScrollIndicator = false
+    //        sv.backgroundColor = BudgetBuddiesAsset.AppColor.background.color
+    return sv
+  }()
+
+  var contentView: UIView = {
+    let view = UIView()
+    return view
+  }()
 
   // Core Yellow 색 배경
   private let coreYellowColorBackgroundView = CoreYellowBackground()
@@ -98,10 +98,10 @@ final class MainView: UIView {
   // MARK: - Methods
 
   private func setLayout() {
-      
-      self.addSubviews(scrollView)
-      scrollView.addSubviews(contentView)
-      
+
+    self.addSubviews(scrollView)
+    scrollView.addSubviews(contentView)
+
     contentView.addSubviews(
       coreYellowColorBackgroundView,
       homeTextLabel,
@@ -114,27 +114,27 @@ final class MainView: UIView {
       comsumedAnalysisFirstItem,
       comsumedAnalysisSecondItem
     )
-      
-      scrollView.snp.makeConstraints { make in
-          make.edges.equalToSuperview()
-          make.leading.trailing.equalToSuperview()
-      }
-      
-      contentView.snp.makeConstraints { make in
-          make.edges.equalToSuperview()
-          make.width.equalTo(scrollView)
-          make.bottom.equalTo(comsumedAnalysisSecondItem.snp.bottom)
-      }
+
+    scrollView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.leading.trailing.equalToSuperview()
+    }
+
+    contentView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalTo(scrollView)
+      make.bottom.equalTo(comsumedAnalysisSecondItem.snp.bottom)
+    }
 
     coreYellowColorBackgroundView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-        make.leading.trailing.equalToSuperview()
-        make.height.equalTo(2000) // 위로 스크롤해도 계속 보이게
-        make.bottom.equalTo(homeTextLabel.snp.bottom).offset(184)
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(2000)  // 위로 스크롤해도 계속 보이게
+      make.bottom.equalTo(homeTextLabel.snp.bottom).offset(184)
     }
 
     homeTextLabel.snp.makeConstraints { make in
-        make.top.equalToSuperview().inset(14)
+      make.top.equalToSuperview().inset(14)
       make.leading.equalToSuperview().inset(29)
     }
 

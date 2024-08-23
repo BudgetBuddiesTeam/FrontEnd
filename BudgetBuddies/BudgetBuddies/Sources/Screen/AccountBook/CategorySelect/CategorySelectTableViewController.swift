@@ -77,8 +77,8 @@ class CategorySelectTableViewController: UITableViewController {
 
   private func setNavigation() {
     navigationItem.title = "카테고리 설정"
-        // 뒤로가기 제스처 추가
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
     // 커스텀 수정 버튼
     navigationItem.rightBarButtonItem = UIBarButtonItem(

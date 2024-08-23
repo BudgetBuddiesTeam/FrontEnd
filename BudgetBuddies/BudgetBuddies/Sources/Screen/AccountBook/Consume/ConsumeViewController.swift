@@ -55,20 +55,20 @@ final class ConsumeViewController: UIViewController {
     setDatePickerAction()
     observeSelectedCategory()
   }
-    
-    // 키보드 내림
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+
+  // 키보드 내림
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
 
   // MARK: - Methods
 
   private func setNavigation() {
     navigationItem.title = "소비 추가하기"
-      
-      // 뒤로가기 제스처 추가
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+
+    // 뒤로가기 제스처 추가
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: "소비기록", image: UIImage(systemName: "list.clipboard.fill"), target: self,
       action: #selector(rightBarButtonItemButtonTapped))

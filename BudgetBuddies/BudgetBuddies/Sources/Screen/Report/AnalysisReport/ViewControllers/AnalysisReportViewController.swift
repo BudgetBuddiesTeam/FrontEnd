@@ -175,9 +175,9 @@ final class AnalysisReportViewController: UIViewController {
   }
 
   private func setNavi() {
-      // 뒤로가기 제스처
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      
+    // 뒤로가기 제스처
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "또래 비교 분석 레포트"
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.background.color)

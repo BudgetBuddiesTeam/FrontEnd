@@ -42,7 +42,7 @@ class ConsumeView: UIView {
     textField.keyboardType = .numberPad
     textField.addLeftView(width: 16, height: 16)
     textField.setCharacterSpacing(-0.4)
-      textField.setComfortableTextField()
+    textField.setComfortableTextField()
     return textField
   }()
 
@@ -63,7 +63,7 @@ class ConsumeView: UIView {
     textField.layer.backgroundColor = BudgetBuddiesAsset.AppColor.textBox.color.cgColor
     textField.addLeftView(width: 16, height: 16)
     textField.setCharacterSpacing(-0.4)
-      textField.setComfortableTextField()
+    textField.setComfortableTextField()
     return textField
   }()
 

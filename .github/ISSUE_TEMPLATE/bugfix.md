@@ -2,8 +2,8 @@
 name: BugFix
 about: 오류 해결 과정 기록
 title: ''
-labels: ":hammer_and_wrench: fix"
-assignees: ''
+labels: "\U0001FA84 Refactoring"
+assignees: jayn2u
 
 ---
 

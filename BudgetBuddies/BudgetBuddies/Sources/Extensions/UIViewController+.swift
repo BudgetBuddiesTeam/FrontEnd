@@ -54,7 +54,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func hasPreviousViewController() -> Bool {
-        return self.navigationController?.viewControllers.count ?? 0 > 1
-    }
+  func hasPreviousViewController() -> Bool {
+    return self.navigationController?.viewControllers.count ?? 0 > 1
+  }
 }

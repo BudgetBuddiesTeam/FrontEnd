@@ -130,9 +130,9 @@ final class AgeEditViewController: UIViewController {
 
   // MARK: - Set up NavigationBar
   private func setupNavigationBar() {
-//    self.navigationController?.navigationBar.isHidden = true
-      self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-      self.navigationController?.setNavigationBarHidden(true, animated: true) // 이 코드를 작성해야 뒤로 끌었다 취소했을 때 기본 네비바가 생성되지 않음
+    //    self.navigationController?.navigationBar.isHidden = true
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    self.navigationController?.setNavigationBarHidden(true, animated: true)  // 이 코드를 작성해야 뒤로 끌었다 취소했을 때 기본 네비바가 생성되지 않음
   }
 
   private func setup() {
@@ -285,7 +285,6 @@ extension AgeEditViewController {
 protocol AgeEditViewControllerDelegate: AnyObject {
   func didUpdateAgeAndGender(ageRange: (Int, Int), gender: String)
 }
-
 
 // MARK: - 뒤로 가기 슬라이드 제스처 추가
 extension AgeEditViewController: UIGestureRecognizerDelegate {

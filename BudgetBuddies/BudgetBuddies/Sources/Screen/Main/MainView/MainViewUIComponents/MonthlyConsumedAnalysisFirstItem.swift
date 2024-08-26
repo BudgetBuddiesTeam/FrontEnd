@@ -9,14 +9,14 @@ import SnapKit
 import UIKit
 
 class MonthlyConsumedAnalysisFirstItem: UIView {
-    
-    // MARK: - Properties
-    // mainView에서 userName을 전달받으면 이름 설정 함수 실행
-    var userName: String? {
-        didSet {
-            setUserName()
-        }
+
+  // MARK: - Properties
+  // mainView에서 userName을 전달받으면 이름 설정 함수 실행
+  var userName: String? {
+    didSet {
+      setUserName()
     }
+  }
 
   // MARK: - UI Componenets
 
@@ -48,10 +48,10 @@ class MonthlyConsumedAnalysisFirstItem: UIView {
   }
 
   // MARK: - Methods
-    private func setUserName() {
-        guard let userName = self.userName else { return }
-        self.textLabel.text = "\(userName)님 또래는\n패션에 가장 큰 목표를 세웠어요"
-    }
+  private func setUserName() {
+    guard let userName = self.userName else { return }
+    self.textLabel.text = "\(userName)님 또래는\n패션에 가장 큰 목표를 세웠어요"
+  }
 
   private func setLayout() {
     self.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))

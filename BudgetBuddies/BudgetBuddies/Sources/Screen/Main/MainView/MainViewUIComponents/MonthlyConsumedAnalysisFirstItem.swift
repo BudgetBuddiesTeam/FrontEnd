@@ -9,7 +9,9 @@ import SnapKit
 import UIKit
 
 class MonthlyConsumedAnalysisFirstItem: UIView {
+    
     // MARK: - Properties
+    // mainView에서 userName을 전달받으면 이름 설정 함수 실행
     var userName: String? {
         didSet {
             setUserName()

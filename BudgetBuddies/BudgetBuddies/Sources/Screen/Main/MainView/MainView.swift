@@ -22,6 +22,15 @@ final class MainView: UIView {
   // MARK: - Properties
   private static let width = UIScreen.main.bounds.width
   private static let height = 1200
+    
+    var userName: String? {
+        didSet {
+            guard let userName = self.userName else { return }
+            comsumedAnalysisFirstItem.userName = userName
+            comsumedAnalysisSecondItem.userName = userName
+            
+        }
+    }
 
   // MARK: - UI Components
   // 스크롤뷰 여기서 생성

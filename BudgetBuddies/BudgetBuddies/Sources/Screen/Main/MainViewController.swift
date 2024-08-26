@@ -269,11 +269,17 @@ extension MainViewController {
           let decodedData = try JSONDecoder().decode(
             ApiResponseResponseUserDto.self, from: response.data)
           self.userName = decodedData.result.name
+          self.mainView.userName = self.userName  // mainView에 이름 넘김
+
         } catch (let error) {
+          print(error.localizedDescription)
           self.userName = "익명"
+          self.mainView.userName = "익명"
         }
       case .failure(let error):
+        print(error.localizedDescription)
         self.userName = "익명"
+        self.mainView.userName = "익명"
       }
     }
   }

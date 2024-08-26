@@ -79,10 +79,16 @@ final class ConsumeViewController: UIViewController {
      해야 할 일
      1. rightBarButtonItem의 색상을 Asset에 등록하고 사용하도록 설계
      */
+
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.rightBarButtonItem?.tintColor = UIColor(
       red: 0.463, green: 0.463, blue: 0.463, alpha: 1)
 
     self.setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAsset.AppColor.white.color)
+    // 이전 뷰컨이 있으면 백 버튼 표시
+    if self.hasPreviousViewController() {
+      self.addBackButton(selector: #selector(didTapBarButton))
+    }
 
   }
 
@@ -127,6 +133,11 @@ final class ConsumeViewController: UIViewController {
 // MARK: - Object C Methods
 
 extension ConsumeViewController {
+  @objc
+  private func didTapBarButton() {
+    self.navigationController?.popViewController(animated: true)
+  }
+
   @objc
   private func dateChanged(_ sender: UIDatePicker) {
     self.selectedDate = sender.date

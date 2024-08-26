@@ -9,6 +9,14 @@ import UIKit
 
 class MonthlyConsumedAnalysisSecondItem: UIView {
 
+  // MARK: - Properties
+  // mainView에서 userName을 전달받으면 이름 설정 함수 실행
+  var userName: String? {
+    didSet {
+      setUserName()
+    }
+  }
+
   // MARK: - UI Componenets
 
   // 텍스트 레이블
@@ -41,6 +49,10 @@ class MonthlyConsumedAnalysisSecondItem: UIView {
   }
 
   // MARK: - Methods
+  private func setUserName() {
+    guard let userName = self.userName else { return }
+    self.textLabel.text = "\(userName)님 또래는\n이번 주 패션에 5만원 사용했어요"
+  }
 
   private func setLayout() {
     self.setShadow(opacity: 1, Radius: 5, offSet: CGSize(width: 0, height: 0))

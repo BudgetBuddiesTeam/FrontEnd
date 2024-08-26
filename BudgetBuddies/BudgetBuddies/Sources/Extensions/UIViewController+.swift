@@ -52,3 +52,9 @@ extension UIViewController {
     navigationItem.leftBarButtonItem = backButton
   }
 }
+
+extension UIViewController {
+    func hasPreviousViewController() -> Bool {
+        return self.navigationController?.viewControllers.count ?? 0 > 1
+    }
+}

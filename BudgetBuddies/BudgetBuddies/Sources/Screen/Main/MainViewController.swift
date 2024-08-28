@@ -140,7 +140,7 @@ final class MainViewController: UIViewController {
 
     // 사용자 이름을 View에 할당
     self.mainView.summaryInfoContainerView.mainTextLabel.userName = userName
-      self.mainView.userName = userName
+    self.mainView.userName = userName
 
     let mainPageResponseData = self.mainModel.apiResponseMainPageResponseData.result
     let consumptionGoalResponseListData = mainPageResponseData.consumptionGoalResponseListDto

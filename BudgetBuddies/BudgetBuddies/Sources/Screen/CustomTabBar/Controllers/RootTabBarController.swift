@@ -7,37 +7,43 @@
 
 import UIKit
 
-class RootTabBarController: CustomTabBarController {
+final class RootTabBarController: CustomTabBarController {
+
   // MARK: - Properties
 
+  // Model
+  internal let mainModel: MainModel
+
   // Controller
+  internal let mainViewController: MainViewController
+  internal let consumeViewController: ConsumeViewController
+  internal let calendarViewController: CalendarViewController
+  internal let allLookingViewController: AllLookingViewController
 
-  public let mainViewController: MainViewController!
-  public let consumeViewController: ConsumeViewController!
-  public let calendarViewController: CalendarViewController!
-  public let allLookingViewController: AllLookingViewController!
+  // Navigtation Controller
+  private let mainViewNavigationController: UINavigationController
+  private let consumeViewNavigationController: UINavigationController
+  private let calendarViewNavigationController: UINavigationController
+  private let allLookingViewNavigationController: UINavigationController
 
-  private let mainViewNavigationController: UINavigationController!
-  private let consumeViewNavigationController: UINavigationController!
-  private let calendarViewNavigationController: UINavigationController!
-  private let allLookingViewNavigationController: UINavigationController!
+  init(userId: Int) {
+    self.mainModel = MainModel(userId: userId)
 
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    self.mainViewController = MainViewController(mainModel: self.mainModel)
+    self.consumeViewController = ConsumeViewController()
+    self.calendarViewController = CalendarViewController()
+    self.allLookingViewController = AllLookingViewController()
 
-    mainViewController = MainViewController()
-    consumeViewController = ConsumeViewController()
-    calendarViewController = CalendarViewController()
-    allLookingViewController = AllLookingViewController()
+    self.mainViewNavigationController = UINavigationController(
+      rootViewController: self.mainViewController)
+    self.consumeViewNavigationController = UINavigationController(
+      rootViewController: self.consumeViewController)
+    self.calendarViewNavigationController = UINavigationController(
+      rootViewController: self.calendarViewController)
+    self.allLookingViewNavigationController = UINavigationController(
+      rootViewController: self.allLookingViewController)
 
-    mainViewNavigationController = UINavigationController(rootViewController: mainViewController)
-    consumeViewNavigationController = UINavigationController(
-      rootViewController: consumeViewController)
-    calendarViewNavigationController = UINavigationController(
-      rootViewController: calendarViewController)
-    allLookingViewNavigationController = UINavigationController(
-      rootViewController: allLookingViewController)
-
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    super.init(nibName: nil, bundle: nil)
   }
 
   required init?(coder: NSCoder) {

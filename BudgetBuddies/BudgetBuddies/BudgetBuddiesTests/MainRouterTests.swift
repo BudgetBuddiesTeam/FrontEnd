@@ -38,7 +38,7 @@ final class MainRouterTests: XCTestCase {
 
         do {
           let decodedData = try JSONDecoder().decode(
-            APIResponseMainPageResponseDto.self, from: response.data)
+            ApiResponseMainPageResponseDto.self, from: response.data)
           debugPrint("/main API에서 가져온 데이터 디코딩 성공")
           debugPrint(decodedData)
         } catch (let error) {

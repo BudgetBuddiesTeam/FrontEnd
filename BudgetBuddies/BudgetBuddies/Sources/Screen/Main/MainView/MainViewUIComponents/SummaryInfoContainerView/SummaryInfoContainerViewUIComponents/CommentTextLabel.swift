@@ -11,7 +11,7 @@ import UIKit
 class CommentTextLabel: UILabel {
   // MARK: - Properties
 
-  private var leftMoney = 130200
+  private var leftMoney = 0
 
   // MARK: - Initializer
 

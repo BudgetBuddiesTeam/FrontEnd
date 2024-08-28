@@ -7,14 +7,14 @@ assignees: jayn2u, SeungEEE, SeungWon1125
 
 ---
 
-# 🛠️ Bug Report
+## 🛠️ Bug Report
 
-## ⚠️ 설명
+### ⚠️ 설명
 
 > 버그에 대해서 설명해주세요!
 
 - 예시: 로그인 화면 구현
 
-## 📝 ETC
+### 📝 ETC
 
 > 기타 설명이 필요하다면 작성해주세요!

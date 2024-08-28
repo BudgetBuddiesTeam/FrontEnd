@@ -23,6 +23,15 @@ final class MainView: UIView {
   private static let width = UIScreen.main.bounds.width
   private static let height = 1200
 
+  // mainViewController에서 userName을 받으면 아래 두 뷰에게 userName전달
+  var userName: String? {
+    didSet {
+      guard let userName = self.userName else { return }
+      comsumedAnalysisFirstItem.userName = userName
+      comsumedAnalysisSecondItem.userName = userName
+    }
+  }
+
   // MARK: - UI Components
   // 스크롤뷰 여기서 생성
   var scrollView: UIScrollView = {

@@ -39,8 +39,8 @@ let budgetBuddiesInfoPlist: InfoPlist = .extendingDefault(with: [
     "UIInterfaceOrientationPortrait"
   ],
   // 배포용 버전 지정
-  "CFBundleVersion": "1.2.0",
-  "CFBundleShortVersionString": "1.2.0",
+  "CFBundleVersion": "1.2.1",
+  "CFBundleShortVersionString": "1.2.1",
   // 사용 국가 지정
   "CFBundleDevelopmentRegion": "ko",
 ])

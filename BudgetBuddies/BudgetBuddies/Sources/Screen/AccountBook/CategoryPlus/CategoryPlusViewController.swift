@@ -97,8 +97,9 @@ extension CategoryPlusViewController {
         switch result {
         case .success(let response):
           do {
-            let decodedData = try JSONDecoder().decode(CategoryResponseDTO.self, from: response.data)
-          } catch (let decodingError){
+            let decodedData = try JSONDecoder().decode(
+              CategoryResponseDTO.self, from: response.data)
+          } catch (let decodingError) {
             seal.reject(decodingError)
           }
           seal.fulfill(())

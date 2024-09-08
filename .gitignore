@@ -67,7 +67,7 @@ graph.dot
 Derived/
 
 ### Tuist managed dependencies ###
-BudgetBuddies/Tuist/.build
+Tuist/.build
 
 ### Configuration files ###
 *.xcconfig

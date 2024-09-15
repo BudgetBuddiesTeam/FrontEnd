@@ -51,11 +51,23 @@ final class RootTabBarController: CustomTabBarController {
   }
 
   // MARK: - Life Cycle
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentAuthentication() // 임시로 바로 로그인 화면으로 가도록 함
+    }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupTabBar()
   }
+    
+    // MARK: - Present Authentication
+    private func presentAuthentication() {
+        let vc = NumberAuthenticationViewController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
 
   // MARK: - Set up TabBar
   private func setupTabBar() {

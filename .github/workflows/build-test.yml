@@ -1,0 +1,45 @@
+name: Build Tests
+
+on:
+  push:
+    branches:
+      - qa
+
+jobs:
+  Build_Test:
+    runs-on: macos-latest
+    environment: Configuration File Secrets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+
+      - name: Install Fastlane
+        run: |
+          gem install fastlane
+
+      - name: Install Ruby Dependencies
+        run: |
+          bundle install
+
+      - name: Create Release & Debug Configuration Files
+        env:
+          BASE_DOMAIN: ${{ secrets.BASE_DOMAIN }}
+        run: |
+          echo "BASE_DOMAIN = $BASE_DOMAIN" >> Release.xcconfig
+          cat Release.xcconfig
+          mv Release.xcconfig BudgetBuddiesApp/BudgetBuddiesApp/Resources
+
+          echo "BASE_DOMAIN  = $BASE_DOMAIN" >> Debug.xcconfig
+          cat Debug.xcconfig
+          mv Debug.xcconfig BudgetBuddiseApp/BudgetBuddiesApp/Resources 
+
+      - name: Install Dependencies
+        run: |
+          tuist install
+      
+      - name: Build Project
+        run: |
+          tuist build

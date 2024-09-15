@@ -1,19 +1,19 @@
 import XCTest
 
-@testable import BudgetBuddies
+@testable import BudgetBuddiesApp
 
-class BudgetBuddiesUITests: XCTestCase {
+class BudgetBuddiesAppUITests: XCTestCase {
 
-  var app: XCUIApplication!
-
+  @MainActor
   override func setUp() {
-    app = XCUIApplication()
+    let app = XCUIApplication()
     continueAfterFailure = false
+    setupSnapshot(app)
     app.launch()
   }
 
-  override func tearDown() {
-    app.terminate()
+  @MainActor
+  func testTakingSnapShot() {
+    snapshot("01_MainScreen")
   }
-
 }

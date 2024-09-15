@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import BudgetBuddies
+@testable import BudgetBuddiesApp
 
 class BudgetBuddiesTests: XCTestCase {
   func testExample() {

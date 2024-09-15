@@ -8,7 +8,7 @@
 import Moya
 import XCTest
 
-@testable import BudgetBuddies
+@testable import BudgetBuddiesApp
 
 final class ExpenseRouterTests: XCTestCase {
   var provider: MoyaProvider<ExpenseRouter>!

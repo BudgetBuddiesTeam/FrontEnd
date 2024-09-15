@@ -74,7 +74,6 @@ let project = Project(
       destinations: .iOS,
       product: .unitTests,
       bundleId: "com.budgetbuddiesteam.app.tests",
-      infoPlist: budgetBuddiesAppInfoPlist,
       sources: [
         "BudgetBuddiesApp/BudgetBuddiesAppTests/**"
       ],
@@ -87,7 +86,6 @@ let project = Project(
       destinations: .iOS,
       product: .unitTests,
       bundleId: "com.budgetbuddiesteam.app.UITests",
-      infoPlist: budgetBuddiesAppInfoPlist,
       sources: [
         "BudgetBuddiesApp/BudgetBuddiesAppUITests/**"
       ],

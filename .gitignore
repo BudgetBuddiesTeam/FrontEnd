@@ -71,3 +71,6 @@ Tuist/.build
 
 ### Configuration files ###
 *.xcconfig
+
+### Fastlane ###
+fastlane/screenshots

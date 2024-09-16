@@ -35,6 +35,7 @@ extension UILabel {
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineSpacing = lineSpacing
     paragraphStyle.lineHeightMultiple = lineHeightMultiple
+      paragraphStyle.alignment = self.textAlignment // 현재 UILabel의 textAlignment 적용
 
     let attributedString: NSMutableAttributedString
     if let labelAttributedText = self.attributedText {

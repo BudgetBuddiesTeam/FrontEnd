@@ -14,13 +14,8 @@ class StartView: UIView {
     let nextButton = YellowRectangleButton(buttonType: .start)
     
     // 이미 계정이 있나요? 로그인
-    let alreadyHaveLabel: UILabel = {
-        let lb = UILabel()
-        lb.text = "이미 계정이 있나요? 로그인"
-        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
-        lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
-        return lb
-    }()
+    let alreadyHaveLabel = SubLabel(grayText: "이미 계정이 있나요?", yellowText: "로그인")
+
     
     // 로고 이미지
     let logoImage: UIImageView = {
@@ -41,31 +36,21 @@ class StartView: UIView {
     }()
     
     // 빈 주머니로도 경험 ...
-    let subTitle1: UILabel = {
+    let subTitle: UILabel = {
         let lb = UILabel()
-        lb.numberOfLines = 1
-        lb.text = "빈 주머니로도 경험을 사고픈 청춘들의"
+        lb.numberOfLines = 0
+        lb.text = "빈 주머니로도 경험을 사고픈 청춘들의\n폼 나게 허리띠 졸라매는 법"
         lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
         lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
         lb.textAlignment = .center
         lb.setCharacterSpacing(-0.35)
-        return lb
-    }()
-    
-    let subTitle2: UILabel = {
-        let lb = UILabel()
-        lb.numberOfLines = 1
-        lb.text = "폼 나게 허리띠 졸라매는 법"
-        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
-        lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
-        lb.textAlignment = .center
-        lb.setCharacterSpacing(-0.35)
+        lb.setLineSpacing(lineSpacing: 0.0, lineHeightMultiple: 1.26)
         return lb
     }()
     
     // 라벨 스택뷰
     lazy var stackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [logoImage, title, subTitle1, subTitle2])
+        let sv = UIStackView(arrangedSubviews: [logoImage, title, subTitle])
         sv.axis = .vertical
         sv.distribution = .fill
         sv.alignment = .center
@@ -115,12 +100,8 @@ class StartView: UIView {
             make.height.equalTo(36)
         }
         
-        subTitle1.snp.makeConstraints { make in
-            make.height.equalTo(16)
-        }
-        
-        subTitle2.snp.makeConstraints { make in
-            make.height.equalTo(16)
+        subTitle.snp.makeConstraints { make in
+            make.height.equalTo(43)
         }
         
         stackView.snp.makeConstraints { make in

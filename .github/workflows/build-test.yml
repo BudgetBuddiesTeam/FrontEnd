@@ -3,6 +3,10 @@ name: Build Tests
 on:
   push:
     branches:
+      - build-test
+
+  pull_request:
+    branches:
       - qa
 
 jobs:
@@ -28,13 +32,13 @@ jobs:
         env:
           BASE_DOMAIN: ${{ secrets.BASE_DOMAIN }}
         run: |
-          echo "BASE_DOMAIN = $BASE_DOMAIN" >> Release.xcconfig
+          echo "Base_Domain = $BASE_DOMAIN" >> Release.xcconfig
           cat Release.xcconfig
           mv Release.xcconfig BudgetBuddiesApp/BudgetBuddiesApp/Resources
 
-          echo "BASE_DOMAIN  = $BASE_DOMAIN" >> Debug.xcconfig
+          echo "Base_Domain  = $BASE_DOMAIN" >> Debug.xcconfig
           cat Debug.xcconfig
-          mv Debug.xcconfig BudgetBuddiseApp/BudgetBuddiesApp/Resources 
+          mv Debug.xcconfig BudgetBuddiesApp/BudgetBuddiesApp/Resources 
 
       - name: Install Dependencies
         run: |

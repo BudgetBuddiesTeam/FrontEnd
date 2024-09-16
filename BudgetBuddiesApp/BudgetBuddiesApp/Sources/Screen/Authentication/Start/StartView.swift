@@ -14,7 +14,7 @@ class StartView: UIView {
     let nextButton = YellowRectangleButton(buttonType: .start)
     
     // 이미 계정이 있나요? 로그인
-    let alreadyHaveLabel = SubLabel(grayText: "이미 계정이 있나요?", yellowText: "로그인")
+    let alreadyHaveLabel = SubLabel(grayText: "이미 계정이 있나요?", yellowText: "로그인", isLined: true)
 
     
     // 로고 이미지
@@ -59,16 +59,38 @@ class StartView: UIView {
         return sv
     }()
     
+    /*
+     임시 버튼
+     */
+    let tempButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("메인화면으로 가기", for: .normal)
+        btn.setTitleColor(.red, for: .normal)
+        return btn
+    }()
     
     // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+        setTempButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    /*
+     임시 버튼 함수임 나중에 지우기
+     */
+    private func setTempButton() {
+        self.addSubview(tempButton)
+        
+        tempButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(50)
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(50)
+        }
     }
     
     // MARK: - Set up UI

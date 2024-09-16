@@ -25,6 +25,8 @@ final class StartViewController: UIViewController {
     
     // MARK: - Set Button Action
     private func setButtonAction() {
+        startView.tempButton.addTarget(self, action: #selector(didTapTempButton), for: .touchUpInside)
+        
         startView.nextButton.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
     }
     
@@ -34,5 +36,10 @@ final class StartViewController: UIViewController {
         let numberAuthenticationVC = NumberAuthenticationViewController()
         self.navigationController?.pushViewController(numberAuthenticationVC, animated: true)
         
+    }
+    
+    @objc
+    private func didTapTempButton() {
+        dismiss(animated: true, completion: nil)
     }
 }

@@ -11,11 +11,13 @@ class SubLabel: UILabel {
     // MARK: - Properties
     private var grayText: String
     private var yellowText: String
+    private var isLined: Bool
     
     // MARK: - Init
-    init(grayText: String, yellowText: String = "") {
+    init(grayText: String, yellowText: String = "", isLined: Bool) {
         self.grayText = grayText
         self.yellowText = yellowText
+        self.isLined = isLined
         
         super.init(frame: .zero)
         
@@ -47,7 +49,9 @@ class SubLabel: UILabel {
             let nsRange = NSRange(loginRange, in: fullText)
             
             attributedString.addAttribute(.foregroundColor, value: BudgetBuddiesAppAsset.AppColor.coreYellow.color, range: nsRange) // 노란색 적용
-//            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange) // 밑줄 적용
+            if isLined {
+                attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange) // 밑줄 적용
+            }
         }
         
         // AttributedString을 label에 적용

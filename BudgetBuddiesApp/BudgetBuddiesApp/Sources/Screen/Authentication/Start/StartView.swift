@@ -1,0 +1,132 @@
+//
+//  StartView.swift
+//  BudgetBuddiesApp
+//
+//  Created by 김승원 on 9/16/24.
+//
+
+import UIKit
+import SnapKit
+
+class StartView: UIView {
+    // MARK: - UI Components
+    // 시작하기 버튼
+    let nextButton = YellowRectangleButton(buttonType: .start)
+    
+    // 이미 계정이 있나요? 로그인
+    let alreadyHaveLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "이미 계정이 있나요? 로그인"
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
+        return lb
+    }()
+    
+    // 로고 이미지
+    let logoImage: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "readyInfoImage")
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }()
+    
+    // 빈주머니즈
+    let title: UILabel = {
+        let lb = UILabel()
+        lb.text = "빈주머니즈"
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 24)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
+        lb.setCharacterSpacing(-0.6)
+        return lb
+    }()
+    
+    // 빈 주머니로도 경험 ...
+    let subTitle1: UILabel = {
+        let lb = UILabel()
+        lb.numberOfLines = 1
+        lb.text = "빈 주머니로도 경험을 사고픈 청춘들의"
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
+        lb.textAlignment = .center
+        lb.setCharacterSpacing(-0.35)
+        return lb
+    }()
+    
+    let subTitle2: UILabel = {
+        let lb = UILabel()
+        lb.numberOfLines = 1
+        lb.text = "폼 나게 허리띠 졸라매는 법"
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 14)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.subGray.color
+        lb.textAlignment = .center
+        lb.setCharacterSpacing(-0.35)
+        return lb
+    }()
+    
+    // 라벨 스택뷰
+    lazy var stackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [logoImage, title, subTitle1, subTitle2])
+        sv.axis = .vertical
+        sv.distribution = .fill
+        sv.alignment = .center
+        sv.spacing = 4
+
+        return sv
+    }()
+    
+    
+    // MARK: - init
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Set up UI
+    private func setupUI() {
+        self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
+        
+        self.addSubviews(alreadyHaveLabel, nextButton, stackView)
+        setupConstraints()
+    }
+
+    // MARK: - Set up Constraints
+    private func setupConstraints() {
+        alreadyHaveLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(24)
+            make.centerX.equalToSuperview()
+        }
+        
+        nextButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(54)
+            make.bottom.equalTo(self.alreadyHaveLabel.snp.top).offset(-13)
+        }
+        
+        logoImage.snp.makeConstraints { make in
+            make.height.width.equalTo(116)
+        }
+        
+        title.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        subTitle1.snp.makeConstraints { make in
+            make.height.equalTo(16)
+        }
+        
+        subTitle2.snp.makeConstraints { make in
+            make.height.equalTo(16)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-50)
+            make.leading.trailing.equalToSuperview()
+        }
+    }
+}

@@ -64,9 +64,10 @@ final class RootTabBarController: CustomTabBarController {
     
     // MARK: - Present Authentication
     private func presentAuthentication() {
-        let vc = NumberAuthenticationViewController()
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        let startVC = StartViewController()
+        let nav = UINavigationController(rootViewController: startVC)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
 
   // MARK: - Set up TabBar

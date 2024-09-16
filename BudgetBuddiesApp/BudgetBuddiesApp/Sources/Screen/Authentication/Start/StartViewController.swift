@@ -1,0 +1,37 @@
+//
+//  StartViewController.swift
+//  BudgetBuddiesApp
+//
+//  Created by 김승원 on 9/16/24.
+//
+
+import UIKit
+
+final class StartViewController: UIViewController {
+    // MARK: - Properties
+    let startView = StartView()
+    
+    
+    // MARK: - Life Cycle
+    override func loadView() {
+        self.view = startView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setButtonAction()
+    }
+    
+    // MARK: - Set Button Action
+    private func setButtonAction() {
+        startView.nextButton.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+    }
+    
+    // MARK: - Selectors
+    @objc
+    private func didTapStartButton() {
+        let NumberAuthenticationVC = NumberAuthenticationViewController()
+        
+    }
+}

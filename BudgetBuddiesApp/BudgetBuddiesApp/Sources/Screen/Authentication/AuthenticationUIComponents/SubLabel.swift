@@ -56,5 +56,6 @@ class SubLabel: UILabel {
         
         // AttributedString을 label에 적용
         self.attributedText = attributedString
+        self.textAlignment = .center
     }
 }

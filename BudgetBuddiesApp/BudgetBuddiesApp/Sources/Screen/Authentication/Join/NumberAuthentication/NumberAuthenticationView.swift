@@ -12,6 +12,7 @@ class NumberAuthenticationView: UIView {
     // MARK: - UI Components
     let stepDot = StepDotView(steps: .firstStep)
     
+    // 안녕하세요! 휴대폰 번호로 가입해주세요
     let bigTitleLabel: UILabel = {
         let lb = UILabel()
         lb.text = "안녕하세요!\n휴대폰 번호로 가입해주세요"
@@ -41,8 +42,33 @@ class NumberAuthenticationView: UIView {
         return sv
     }()
     
-    // 텍스트필드
-    let numberTextFieldView = ClearTextFieldView(textFieldType: .phoneNumber)
+    // 휴대폰 번호
+    let numberLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "휴대폰 번호"
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 14)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
+        lb.setCharacterSpacing(-0.35)
+        lb.textAlignment = .left
+        return lb
+    }()
+    
+    // 번호 입력 텍스트필드
+    let numberTextField = ClearBackgroundTextFieldView(textFieldType: .phoneNumber)
+    
+    let sendAuthNumberButton = ClearBackgroundButton()
+    
+    lazy var textFieldStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [numberTextField, sendAuthNumberButton])
+        sv.axis = .vertical
+        sv.spacing = 12
+        sv.alignment = .center
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    // 문제가 있으신가요? 이메일로 계정찾기
+    let problemLabel = SubLabel(grayText: "문제가 있으신가요?", yellowText: "이메일로 계정찾기", isLined: true)
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -59,8 +85,7 @@ class NumberAuthenticationView: UIView {
     private func setupUI() {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         
-        self.addSubviews(stepDot, titleStackView)
-        self.addSubviews(numberTextFieldView)
+        self.addSubviews(stepDot, titleStackView, numberLabel, textFieldStackView, problemLabel)
         setupConstraints()
     }
     
@@ -89,11 +114,32 @@ class NumberAuthenticationView: UIView {
             make.top.equalTo(stepDot.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(16)
         }
-        
-        numberTextFieldView.snp.makeConstraints { make in
+
+        numberLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(titleStackView.snp.bottom).offset(32)
+        }
+        
+        numberTextField.snp.makeConstraints { make in
             make.height.equalTo(52)
-            make.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+            make.width.equalTo(textFieldStackView.snp.width)
+        }
+        
+        sendAuthNumberButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+            make.width.equalTo(textFieldStackView.snp.width)
+        }
+        
+        textFieldStackView.snp.makeConstraints { make in
+            make.top.equalTo(numberLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(52 + 52 + 12)
+        }
+        
+        problemLabel.snp.makeConstraints { make in
+            make.top.equalTo(textFieldStackView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+//            make.leading.trailing.equalToSuperview()
         }
     }
 }

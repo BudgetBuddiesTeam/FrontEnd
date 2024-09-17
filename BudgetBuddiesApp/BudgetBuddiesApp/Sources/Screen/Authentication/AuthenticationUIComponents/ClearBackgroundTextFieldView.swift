@@ -1,5 +1,5 @@
 //
-//  ClearTextFieldView.swift
+//  ClearBackgroundTextFieldView.swift
 //  BudgetBuddiesApp
 //
 //  Created by 김승원 on 9/17/24.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ClearTextFieldView: UIView {
+class ClearBackgroundTextFieldView: UIView {
     // MARK: - Properties
     enum TextFieldType: String {
         case phoneNumber = "휴대폰 번호 (-없이 숫자만 입력)"

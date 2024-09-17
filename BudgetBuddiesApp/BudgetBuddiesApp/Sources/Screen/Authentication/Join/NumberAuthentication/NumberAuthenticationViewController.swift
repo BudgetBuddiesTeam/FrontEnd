@@ -58,7 +58,9 @@ class NumberAuthenticationViewController: UIViewController {
     
     @objc
     private func didTapCompleteAuthButton() {
-        print("complete auth")
+        let basicInformationVC = BasicInformationViewController()
+        basicInformationVC.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(basicInformationVC, animated: true)
     }
 }
 

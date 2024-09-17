@@ -20,7 +20,6 @@ class NumberAuthenticationView: UIView {
         lb.numberOfLines = 0
         lb.textAlignment = .left
         lb.setCharacterAndLineSpacing(characterSpacing: -0.6, lineSpacing: 0.0, lineHeightMultiple: 1.26)
-        
         return lb
     }()
     
@@ -36,11 +35,14 @@ class NumberAuthenticationView: UIView {
     lazy var titleStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [bigTitleLabel, subTitleLabel])
         sv.axis = .vertical
-        sv.spacing = 8
+        sv.spacing = 9
         sv.alignment = .leading
         sv.distribution = .fill
         return sv
     }()
+    
+    // 텍스트필드
+    let numberTextFieldView = ClearTextFieldView(textFieldType: .phoneNumber)
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -58,6 +60,7 @@ class NumberAuthenticationView: UIView {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         
         self.addSubviews(stepDot, titleStackView)
+        self.addSubviews(numberTextFieldView)
         setupConstraints()
     }
     
@@ -65,7 +68,7 @@ class NumberAuthenticationView: UIView {
     private func setupConstraints() {
         let bigTitleHeight = 72 + 1 // 여유값 + 1
         let subTitleHeight = 21
-        let titleStackHeight = bigTitleHeight + subTitleHeight + 8
+        let titleStackHeight = bigTitleHeight + subTitleHeight + 9
         
         stepDot.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -85,6 +88,12 @@ class NumberAuthenticationView: UIView {
             make.height.equalTo(titleStackHeight)
             make.top.equalTo(stepDot.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        numberTextFieldView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(52)
+            make.top.equalTo(subTitleLabel.snp.bottom).offset(20)
         }
     }
 }

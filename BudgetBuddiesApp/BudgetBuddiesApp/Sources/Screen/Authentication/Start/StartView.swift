@@ -11,7 +11,7 @@ import SnapKit
 class StartView: UIView {
     // MARK: - UI Components
     // 시작하기 버튼
-    let nextButton = YellowRectangleButton(buttonType: .start)
+    let nextButton = YellowRectangleButton(.start, isButtonEnabled: true)
     
     // 이미 계정이 있나요? 로그인
     let alreadyHaveLabel = SubLabel(grayText: "이미 계정이 있나요?", yellowText: "로그인", isLined: true)

@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class NumberAuthenticationView: UIView {
+    // MARK: - Properties
+    var isTextFieldAdded: Bool = false
+    
     // MARK: - UI Components
     let stepDot = StepDotView(steps: .firstStep)
     
@@ -56,6 +59,8 @@ class NumberAuthenticationView: UIView {
     // 번호 입력 텍스트필드
     let numberTextField = ClearBackgroundTextFieldView(textFieldType: .phoneNumber)
     
+    lazy var authNumberTextField = ClearBackgroundTextFieldView(textFieldType: .AuthNumber)
+    
     let sendAuthNumberButton = ClearBackgroundButton()
     
     lazy var textFieldStackView: UIStackView = {
@@ -70,6 +75,13 @@ class NumberAuthenticationView: UIView {
     // 문제가 있으신가요? 이메일로 계정찾기
     let problemLabel = SubLabel(grayText: "문제가 있으신가요?", yellowText: "이메일로 계정찾기", isLined: true)
     
+    // 인증 완료 버튼
+    lazy var completeAuthButton: YellowRectangleButton = {
+        let btn = YellowRectangleButton(.completeAuth, isButtonEnabled: false)
+        btn.alpha = 0
+        return btn
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,11 +93,52 @@ class NumberAuthenticationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Add TextField
+    func addTextField() {
+        if !isTextFieldAdded {
+            // 인증번호 입력 칸을 추가하되, 처음에는 불투명도로 설정
+            self.authNumberTextField.alpha = 0
+            self.textFieldStackView.insertArrangedSubview(self.authNumberTextField, at: 1)
+
+            // 중간에 빈 공간 추가
+            let tempView = UIView()
+            tempView.frame.size.height = 12
+            self.textFieldStackView.addArrangedSubview(tempView)
+
+            // 다시 버튼 추가
+            self.textFieldStackView.addArrangedSubview(self.sendAuthNumberButton)
+
+            // 제약조건 추가
+            self.authNumberTextField.snp.makeConstraints { make in
+                make.height.equalTo(52)
+                make.width.equalTo(self.textFieldStackView.snp.width)
+            }
+
+            self.sendAuthNumberButton.snp.makeConstraints { make in
+                make.height.equalTo(52)
+                make.width.equalTo(self.textFieldStackView.snp.width)
+            }
+
+            // 인증번호 입력 칸의 불투명도 애니메이션
+            UIView.animate(withDuration: 0.4, animations: {
+                self.completeAuthButton.alpha = 1
+                self.layoutIfNeeded()
+            }) { _ in
+                // 첫 번째 애니메이션 완료 후 두 번째 애니메이션 실행
+                UIView.animate(withDuration: 0.2) {
+                    self.authNumberTextField.alpha = 1
+                }
+            }
+
+            self.isTextFieldAdded = true
+        }
+    }
+    
     // MARK: - Set up UI
     private func setupUI() {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         
-        self.addSubviews(stepDot, titleStackView, numberLabel, textFieldStackView, problemLabel)
+        self.addSubviews(stepDot, titleStackView, numberLabel, textFieldStackView, problemLabel, completeAuthButton)
         setupConstraints()
     }
     
@@ -133,12 +186,18 @@ class NumberAuthenticationView: UIView {
         textFieldStackView.snp.makeConstraints { make in
             make.top.equalTo(numberLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(52 + 52 + 12)
+            
         }
         
         problemLabel.snp.makeConstraints { make in
             make.top.equalTo(textFieldStackView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+        }
+        
+        completeAuthButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(54)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
     }
 }

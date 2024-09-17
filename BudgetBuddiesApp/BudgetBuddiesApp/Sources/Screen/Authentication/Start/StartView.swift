@@ -65,7 +65,7 @@ class StartView: UIView {
     let tempButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("메인화면으로 가기", for: .normal)
-        btn.setTitleColor(.red, for: .normal)
+        btn.setTitleColor(.lightGray, for: .normal)
         return btn
     }()
     

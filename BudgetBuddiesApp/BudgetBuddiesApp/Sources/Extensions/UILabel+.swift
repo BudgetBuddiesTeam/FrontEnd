@@ -51,4 +51,37 @@ extension UILabel {
 
     self.attributedText = attributedString
   }
+    
+    /// 레이블의 자간과 행간을 동시에 조절합니다.
+    ///
+    /// - Parameters:
+    ///   - characterSpacing: 각 문자 사이에 추가할 자간의 양입니다.
+    ///     양수 값은 자간을 넓히고, 음수 값은 자간을 좁힙니다.
+    ///   - lineSpacing: 행간의 값 (선택 사항).
+    ///   - lineHeightMultiple: 줄 높이 배율 (선택 사항).
+    func setCharacterAndLineSpacing(characterSpacing: CGFloat, lineSpacing: CGFloat = 0.0, lineHeightMultiple: CGFloat = 0.0) {
+        guard let labelText = self.text else { return }
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        paragraphStyle.lineHeightMultiple = lineHeightMultiple
+        paragraphStyle.alignment = self.textAlignment // 현재 UILabel의 textAlignment 적용
+        
+        let attributedString: NSMutableAttributedString
+        if let labelAttributedText = self.attributedText {
+            attributedString = NSMutableAttributedString(attributedString: labelAttributedText)
+        } else {
+            attributedString = NSMutableAttributedString(string: labelText)
+        }
+        
+        // 자간 설정
+        attributedString.addAttribute(
+            .kern, value: characterSpacing, range: NSRange(location: 0, length: attributedString.length))
+        
+        // 행간 설정
+        attributedString.addAttribute(
+            .paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        
+        self.attributedText = attributedString
+    }
 }

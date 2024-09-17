@@ -139,7 +139,6 @@ class NumberAuthenticationView: UIView {
         problemLabel.snp.makeConstraints { make in
             make.top.equalTo(textFieldStackView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
-//            make.leading.trailing.equalToSuperview()
         }
     }
 }

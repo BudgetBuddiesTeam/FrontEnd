@@ -8,16 +8,35 @@
 import UIKit
 
 class ClearBackgroundButton: UIButton {
+    // MARK: - Properties
+    var isButtonEnabled: Bool = false {
+        didSet {
+            setupButton()
+        }
+    }
     
     // MARK: - Init
     init() {
         super.init(frame: .zero)
         
         setupUI()
+        setupButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Set up Button
+    private func setupButton() {
+        if isButtonEnabled {
+            self.isEnabled = true
+            self.setTitleColor(BudgetBuddiesAppAsset.AppColor.textBlack.color, for: .normal)
+            
+        } else {
+            self.isEnabled = false
+            self.setTitleColor(BudgetBuddiesAppAsset.AppColor.textExample.color, for: .normal)
+        }
     }
     
     // MARK: - Set up UI
@@ -33,13 +52,20 @@ class ClearBackgroundButton: UIButton {
         self.setTitleColor(BudgetBuddiesAppAsset.AppColor.textExample.color, for: .normal)
         self.titleLabel?.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16)
         self.setCharacterSpacing(-0.4)
-        
-        
-        setupConstraints()
     }
     
-    // MARK: - Set up Constraints
-    private func setupConstraints() {
-        
+    // MARK: - 터치했을 때 버튼 반응 추가
+    override var isHighlighted: Bool {
+        didSet {
+            if isHighlighted {
+                // 버튼이 눌렸을 때 살짝 어두워짐
+                self.alpha = 0.6
+                
+            } else {
+                // 원래 상태로 돌아옴
+                self.alpha = 1.0
+                
+            }
+        }
     }
 }

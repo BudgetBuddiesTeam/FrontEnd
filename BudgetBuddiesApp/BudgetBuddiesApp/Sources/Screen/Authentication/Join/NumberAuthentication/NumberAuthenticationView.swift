@@ -164,7 +164,7 @@ class NumberAuthenticationView: UIView {
         
         titleStackView.snp.makeConstraints { make in
             make.height.equalTo(titleStackHeight)
-            make.top.equalTo(stepDot.snp.bottom).offset(12)
+            make.top.equalTo(stepDot.snp.bottom).offset(0)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 

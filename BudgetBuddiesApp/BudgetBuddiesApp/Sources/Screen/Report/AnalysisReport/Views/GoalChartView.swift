@@ -9,7 +9,7 @@ import DGCharts
 import SnapKit
 import UIKit
 
-final class GoalChartView: UIView {
+final class GoalChartView: BaseView {
   let planLabel: UILabel = {
     let label = UILabel()
     label.text = "패션에 가장 큰 \n계획을 세웠어요"
@@ -88,75 +88,63 @@ final class GoalChartView: UIView {
 
     return sv
   }()
+    
+    override func initUI() {
+        [ planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
+          stackView,
+        ].forEach {
+          self.addSubview($0)
+        }
 
-  // MARK: - Init
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setup()
-    setConst()
-  }
-
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
-
-  private func setup() {
-    [
-      planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
-      stackView,
-    ].forEach {
-      self.addSubview($0)
+        pieChartBackImageView.addSubviews(pieChartView)
     }
+    
+    override func initLayout() {
+        planLabel.snp.makeConstraints {
+          $0.top.equalToSuperview().offset(20)
+          $0.leading.equalToSuperview().offset(20)
+        }
 
-    pieChartBackImageView.addSubviews(pieChartView)
-  }
+        dateLabel.snp.makeConstraints {
+          $0.top.equalTo(planLabel.snp.bottom).offset(8)
+          $0.leading.equalToSuperview().offset(20)
+        }
 
-  private func setConst() {
-    planLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(20)
-      $0.leading.equalToSuperview().offset(20)
+        pieChartBackImageView.snp.makeConstraints { make in
+          make.top.equalTo(dateLabel.snp.bottom).offset(30)
+          make.leading.equalToSuperview().offset(20)
+          make.width.equalTo(215)
+          make.height.equalTo(pieChartView.snp.width)
+        }
+
+        pieChartView.snp.makeConstraints { make in
+          make.center.equalToSuperview()
+          make.height.width.equalTo(200)
+        }
+
+        firstLabel.snp.makeConstraints {
+          $0.centerX.equalTo(pieChartView)
+          $0.centerY.equalTo(pieChartView).offset(-10)
+        }
+
+        firstPrice.snp.makeConstraints {
+          $0.top.equalTo(firstLabel.snp.bottom).offset(4)
+          $0.centerX.equalTo(firstLabel)
+        }
+
+        legendStackView.snp.makeConstraints {
+          $0.centerY.equalTo(pieChartView)
+          $0.trailing.equalToSuperview().inset(10)
+          $0.width.equalTo(70)
+        }
+
+        stackView.snp.makeConstraints {
+          $0.top.equalTo(pieChartView.snp.bottom).offset(50)
+          $0.leading.equalToSuperview().offset(20)
+          $0.trailing.equalToSuperview().offset(-20)
+          $0.bottom.equalToSuperview().offset(-30)
+        }
     }
-
-    dateLabel.snp.makeConstraints {
-      $0.top.equalTo(planLabel.snp.bottom).offset(8)
-      $0.leading.equalToSuperview().offset(20)
-    }
-
-    pieChartBackImageView.snp.makeConstraints { make in
-      make.top.equalTo(dateLabel.snp.bottom).offset(30)
-      make.leading.equalToSuperview().offset(20)
-      make.width.equalTo(215)
-      make.height.equalTo(pieChartView.snp.width)
-    }
-
-    pieChartView.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-      make.height.width.equalTo(200)
-    }
-
-    firstLabel.snp.makeConstraints {
-      $0.centerX.equalTo(pieChartView)
-      $0.centerY.equalTo(pieChartView).offset(-10)
-    }
-
-    firstPrice.snp.makeConstraints {
-      $0.top.equalTo(firstLabel.snp.bottom).offset(4)
-      $0.centerX.equalTo(firstLabel)
-    }
-
-    legendStackView.snp.makeConstraints {
-      $0.centerY.equalTo(pieChartView)
-      $0.trailing.equalToSuperview().inset(10)
-      $0.width.equalTo(70)
-    }
-
-    stackView.snp.makeConstraints {
-      $0.top.equalTo(pieChartView.snp.bottom).offset(50)
-      $0.leading.equalToSuperview().offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
-      $0.bottom.equalToSuperview().offset(-30)
-    }
-  }
 
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "소비습관")

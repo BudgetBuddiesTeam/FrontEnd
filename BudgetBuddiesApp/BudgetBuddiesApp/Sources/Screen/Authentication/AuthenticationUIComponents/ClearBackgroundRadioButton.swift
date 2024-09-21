@@ -19,8 +19,8 @@ class ClearBackgroundRadioButton: UIButton {
 
     // MARK: - init
     init(buttonTitle: String) {
-        super.init(frame: .zero)
         self.buttonTitle = buttonTitle
+        super.init(frame: .zero)
         
         setupUI()
         setupButton()

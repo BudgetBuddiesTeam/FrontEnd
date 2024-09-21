@@ -62,8 +62,72 @@ class BasicInformationView: UIView {
     // 성별
     let genderLabel = basicLabel("성별")
     
-    // 연령
+    let manButton = ClearBackgroundRadioButton(buttonTitle: "남성")
+    let womanButton = ClearBackgroundRadioButton(buttonTitle: "여성")
     
+    lazy var genderButtonStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [manButton, womanButton])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var genderStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [genderLabel, genderButtonStackView])
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.alignment = .leading
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    // 연령
+    let ageLabel = basicLabel("연령")
+    
+    let leastTwentyButton = ClearBackgroundRadioButton(buttonTitle: "20세 미만")
+    let twentyToTwentyTwoButton = ClearBackgroundRadioButton(buttonTitle: "20세-22세")
+    let twentyThreeToTwentyFiveButton = ClearBackgroundRadioButton(buttonTitle: "23세-25세")
+    let twentySixToTwentyEightButton = ClearBackgroundRadioButton(buttonTitle: "26세-28세")
+    let overTwentyNineButton = ClearBackgroundRadioButton(buttonTitle: "29세 이상")
+    let tempView = UIView()
+    
+    lazy var firstAgeButtonStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [leastTwentyButton, twentyToTwentyTwoButton])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var secondAgeButtonStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [twentyThreeToTwentyFiveButton, twentySixToTwentyEightButton])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var thirdAgeButtonStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [overTwentyNineButton, tempView])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var ageStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [firstAgeButtonStackView, secondAgeButtonStackView, thirdAgeButtonStackView])
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.alignment = .leading
+        sv.distribution = .fill
+        return sv
+    }()
     
     // 계속하기 버튼
     lazy var keepGoingButton: YellowRectangleButton = {
@@ -89,7 +153,7 @@ class BasicInformationView: UIView {
         self.addSubviews(scrollView, keepGoingButton)
         scrollView.addSubviews(contentView)
         
-        contentView.addSubviews(stepDot, titleStackView, nameStackView)
+        contentView.addSubviews(stepDot, titleStackView, nameStackView, genderStackView, ageStackView)
         setupConstraints()
     }
     
@@ -102,10 +166,9 @@ class BasicInformationView: UIView {
         }
         
         contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-//            make.bottom.equalTo(titleStackView.snp.bottom)
+            make.edges.equalToSuperview() // 가장자리를 먼저 고정시킨 뒤에
+            make.bottom.equalTo(ageStackView.snp.bottom).offset(40) // bottom을 고정시키는 것이 스크롤뷰가 제대로 작동한다
             make.width.equalTo(scrollView.snp.width)
-            make.height.equalTo(1000)
         }
         
         stepDot.snp.makeConstraints { make in
@@ -113,6 +176,7 @@ class BasicInformationView: UIView {
             make.height.equalTo(32)
         }
         
+        // 상단 타이틀
         bigTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(36)
         }
@@ -127,12 +191,14 @@ class BasicInformationView: UIView {
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
+        // 계속하기 버튼
         keepGoingButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(54)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
         
+        // 이름 (닉네임)
         nameLabel.snp.makeConstraints { make in
             make.height.equalTo(18)
         }
@@ -145,6 +211,74 @@ class BasicInformationView: UIView {
         nameStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(self.titleStackView.snp.bottom).offset(72)
+        }
+        
+        // 성별
+        genderLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        manButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        womanButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        genderButtonStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        genderStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(self.nameStackView.snp.bottom).offset(40)
+        }
+        
+        // 연령
+        ageLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        leastTwentyButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        twentyToTwentyTwoButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        twentyThreeToTwentyFiveButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        twentySixToTwentyEightButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        overTwentyNineButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        tempView.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        firstAgeButtonStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        secondAgeButtonStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        thirdAgeButtonStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        ageStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(genderStackView.snp.bottom).offset(40)
         }
     }
 }

@@ -20,7 +20,6 @@ class YellowRectangleButton: UIButton {
     
     var isButtonEnabled: Bool {
         didSet {
-            print("dakl;fj;asdkj;k")
             setupButton()
         }
     }

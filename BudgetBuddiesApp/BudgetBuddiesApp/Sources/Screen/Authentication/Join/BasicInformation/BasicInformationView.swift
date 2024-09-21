@@ -45,6 +45,13 @@ class BasicInformationView: UIView {
         return sv
     }()
     
+    // 이름(닉네임)
+    
+    // 성별
+    
+    // 연령
+    
+    
     // 계속하기 버튼
     lazy var keepGoingButton: YellowRectangleButton = {
         let btn = YellowRectangleButton(.conti, isButtonEnabled: true)

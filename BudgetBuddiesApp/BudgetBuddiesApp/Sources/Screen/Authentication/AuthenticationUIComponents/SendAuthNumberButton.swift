@@ -1,5 +1,5 @@
 //
-//  ClearBackgroundButton.swift
+//  SendAuthNumberButton.swift
 //  BudgetBuddiesApp
 //
 //  Created by 김승원 on 9/17/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ClearBackgroundButton: UIButton {
+class SendAuthNumberButton: UIButton {
     // MARK: - Properties
     var isButtonEnabled: Bool = false {
         didSet {

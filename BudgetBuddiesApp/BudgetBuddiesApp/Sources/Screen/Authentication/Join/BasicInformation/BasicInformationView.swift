@@ -46,8 +46,21 @@ class BasicInformationView: UIView {
     }()
     
     // 이름(닉네임)
+    let nameLabel = basicLabel("이름 (닉네임)")
+    
+    lazy var nameTextField = ClearBackgroundTextFieldView(textFieldType: .Name)
+    
+    lazy var nameStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [nameLabel, nameTextField])
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.alignment = .leading
+        sv.distribution = .fill
+        return sv
+    }()
     
     // 성별
+    let genderLabel = basicLabel("성별")
     
     // 연령
     
@@ -76,7 +89,7 @@ class BasicInformationView: UIView {
         self.addSubviews(scrollView, keepGoingButton)
         scrollView.addSubviews(contentView)
         
-        contentView.addSubviews(stepDot, titleStackView)
+        contentView.addSubviews(stepDot, titleStackView, nameStackView)
         setupConstraints()
     }
     
@@ -118,6 +131,20 @@ class BasicInformationView: UIView {
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(54)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
+        }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        nameTextField.snp.makeConstraints { make in
+            make.height.equalTo(52)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        nameStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(self.titleStackView.snp.bottom).offset(72)
         }
     }
 }

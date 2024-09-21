@@ -46,22 +46,14 @@ class NumberAuthenticationView: UIView {
     }()
     
     // 휴대폰 번호
-    let numberLabel: UILabel = {
-        let lb = UILabel()
-        lb.text = "휴대폰 번호"
-        lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 14)
-        lb.textColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
-        lb.setCharacterSpacing(-0.35)
-        lb.textAlignment = .left
-        return lb
-    }()
+    let numberLabel = basicLabel("휴대폰 번호")
     
     // 번호 입력 텍스트필드
     let numberTextField = ClearBackgroundTextFieldView(textFieldType: .phoneNumber)
     
     lazy var authNumberTextField = ClearBackgroundTextFieldView(textFieldType: .AuthNumber)
     
-    let sendAuthNumberButton = ClearBackgroundButton()
+    let sendAuthNumberButton = SendAuthNumberButton()
     
     lazy var textFieldStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [numberTextField, sendAuthNumberButton])

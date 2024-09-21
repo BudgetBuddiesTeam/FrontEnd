@@ -132,66 +132,66 @@ final class AgeEditViewController: BaseViewController {
     self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     self.navigationController?.setNavigationBarHidden(true, animated: true)  // 이 코드를 작성해야 뒤로 끌었다 취소했을 때 기본 네비바가 생성되지 않음
   }
-    
-    override func setUpViewProperty() {
-        view.backgroundColor = BudgetBuddiesAppAsset.AppColor.background.color
-    }
 
-    override func setUp() {
+  override func setUpViewProperty() {
+    view.backgroundColor = BudgetBuddiesAppAsset.AppColor.background.color
+  }
+
+  override func setUp() {
     [titleLabel, genderLabel, buttonStackView, ageLabel, saveButton].forEach {
       view.addSubviews($0)
     }
     ageButtons.forEach { view.addSubview($0) }
   }
-    
-    override func setLayout() {
-        titleLabel.snp.makeConstraints {
-          $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-          $0.leading.equalToSuperview().offset(16)
-          $0.trailing.equalToSuperview().offset(-16)
-        }
 
-        genderLabel.snp.makeConstraints {
-          $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-          $0.leading.equalToSuperview().offset(16)
-        }
-
-        femaleButton.snp.makeConstraints {
-          $0.height.equalTo(50)
-        }
-
-        maleButton.snp.makeConstraints {
-          $0.height.equalTo(50)
-        }
-
-        buttonStackView.snp.makeConstraints { make in
-          make.top.equalTo(genderLabel.snp.bottom).offset(10)
-          make.leading.trailing.equalToSuperview().inset(16)
-        }
-
-        ageLabel.snp.makeConstraints {
-          $0.top.equalTo(buttonStackView.snp.bottom).offset(20)
-          $0.leading.equalToSuperview().offset(16)
-        }
-
-        for (index, button) in ageButtons.enumerated() {
-          button.snp.makeConstraints {
-            if index == 0 {
-              $0.top.equalTo(ageLabel.snp.bottom).offset(10)
-            } else {
-              $0.top.equalTo(ageButtons[index - 1].snp.bottom).offset(20)
-            }
-            $0.leading.trailing.equalTo(view).inset(16)
-            $0.height.equalTo(50)
-          }
-        }
-
-        saveButton.snp.makeConstraints {
-          $0.leading.trailing.equalToSuperview().inset(16)
-          $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
-          $0.height.equalTo(60)
-        }
+  override func setLayout() {
+    titleLabel.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.leading.equalToSuperview().offset(16)
+      $0.trailing.equalToSuperview().offset(-16)
     }
+
+    genderLabel.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+      $0.leading.equalToSuperview().offset(16)
+    }
+
+    femaleButton.snp.makeConstraints {
+      $0.height.equalTo(50)
+    }
+
+    maleButton.snp.makeConstraints {
+      $0.height.equalTo(50)
+    }
+
+    buttonStackView.snp.makeConstraints { make in
+      make.top.equalTo(genderLabel.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview().inset(16)
+    }
+
+    ageLabel.snp.makeConstraints {
+      $0.top.equalTo(buttonStackView.snp.bottom).offset(20)
+      $0.leading.equalToSuperview().offset(16)
+    }
+
+    for (index, button) in ageButtons.enumerated() {
+      button.snp.makeConstraints {
+        if index == 0 {
+          $0.top.equalTo(ageLabel.snp.bottom).offset(10)
+        } else {
+          $0.top.equalTo(ageButtons[index - 1].snp.bottom).offset(20)
+        }
+        $0.leading.trailing.equalTo(view).inset(16)
+        $0.height.equalTo(50)
+      }
+    }
+
+    saveButton.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
+      $0.height.equalTo(60)
+    }
+  }
 
   @objc private func selectGender(_ sender: UIButton) {
     selectedGender = sender.tag == 0 ? "female" : "male"

@@ -88,63 +88,64 @@ final class GoalChartView: BaseView {
 
     return sv
   }()
-    
-    override func initUI() {
-        [ planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
-          stackView,
-        ].forEach {
-          self.addSubview($0)
-        }
 
-        pieChartBackImageView.addSubviews(pieChartView)
+  override func initUI() {
+    [
+      planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
+      stackView,
+    ].forEach {
+      self.addSubview($0)
     }
-    
-    override func initLayout() {
-        planLabel.snp.makeConstraints {
-          $0.top.equalToSuperview().offset(20)
-          $0.leading.equalToSuperview().offset(20)
-        }
 
-        dateLabel.snp.makeConstraints {
-          $0.top.equalTo(planLabel.snp.bottom).offset(8)
-          $0.leading.equalToSuperview().offset(20)
-        }
+    pieChartBackImageView.addSubviews(pieChartView)
+  }
 
-        pieChartBackImageView.snp.makeConstraints { make in
-          make.top.equalTo(dateLabel.snp.bottom).offset(30)
-          make.leading.equalToSuperview().offset(20)
-          make.width.equalTo(215)
-          make.height.equalTo(pieChartView.snp.width)
-        }
-
-        pieChartView.snp.makeConstraints { make in
-          make.center.equalToSuperview()
-          make.height.width.equalTo(200)
-        }
-
-        firstLabel.snp.makeConstraints {
-          $0.centerX.equalTo(pieChartView)
-          $0.centerY.equalTo(pieChartView).offset(-10)
-        }
-
-        firstPrice.snp.makeConstraints {
-          $0.top.equalTo(firstLabel.snp.bottom).offset(4)
-          $0.centerX.equalTo(firstLabel)
-        }
-
-        legendStackView.snp.makeConstraints {
-          $0.centerY.equalTo(pieChartView)
-          $0.trailing.equalToSuperview().inset(10)
-          $0.width.equalTo(70)
-        }
-
-        stackView.snp.makeConstraints {
-          $0.top.equalTo(pieChartView.snp.bottom).offset(50)
-          $0.leading.equalToSuperview().offset(20)
-          $0.trailing.equalToSuperview().offset(-20)
-          $0.bottom.equalToSuperview().offset(-30)
-        }
+  override func initLayout() {
+    planLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(20)
+      $0.leading.equalToSuperview().offset(20)
     }
+
+    dateLabel.snp.makeConstraints {
+      $0.top.equalTo(planLabel.snp.bottom).offset(8)
+      $0.leading.equalToSuperview().offset(20)
+    }
+
+    pieChartBackImageView.snp.makeConstraints { make in
+      make.top.equalTo(dateLabel.snp.bottom).offset(30)
+      make.leading.equalToSuperview().offset(20)
+      make.width.equalTo(215)
+      make.height.equalTo(pieChartView.snp.width)
+    }
+
+    pieChartView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.height.width.equalTo(200)
+    }
+
+    firstLabel.snp.makeConstraints {
+      $0.centerX.equalTo(pieChartView)
+      $0.centerY.equalTo(pieChartView).offset(-10)
+    }
+
+    firstPrice.snp.makeConstraints {
+      $0.top.equalTo(firstLabel.snp.bottom).offset(4)
+      $0.centerX.equalTo(firstLabel)
+    }
+
+    legendStackView.snp.makeConstraints {
+      $0.centerY.equalTo(pieChartView)
+      $0.trailing.equalToSuperview().inset(10)
+      $0.width.equalTo(70)
+    }
+
+    stackView.snp.makeConstraints {
+      $0.top.equalTo(pieChartView.snp.bottom).offset(50)
+      $0.leading.equalToSuperview().offset(20)
+      $0.trailing.equalToSuperview().offset(-20)
+      $0.bottom.equalToSuperview().offset(-30)
+    }
+  }
 
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "소비습관")

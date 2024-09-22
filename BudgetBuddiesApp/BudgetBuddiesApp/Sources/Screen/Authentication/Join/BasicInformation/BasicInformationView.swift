@@ -94,7 +94,7 @@ class BasicInformationView: UIView {
     let twentyThreeToTwentyFiveButton = ClearBackgroundRadioButton(buttonTitle: "23세-25세")
     let twentySixToTwentyEightButton = ClearBackgroundRadioButton(buttonTitle: "26세-28세")
     let overTwentyNineButton = ClearBackgroundRadioButton(buttonTitle: "29세 이상")
-    let tempView = UIView()
+    let emptySpaceView = UIView()
     
     
     lazy var firstAgeButtonStackView: UIStackView = {
@@ -116,7 +116,7 @@ class BasicInformationView: UIView {
     }()
     
     lazy var thirdAgeButtonStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [overTwentyNineButton, tempView])
+        let sv = UIStackView(arrangedSubviews: [overTwentyNineButton, emptySpaceView])
         sv.axis = .horizontal
         sv.spacing = 13
         sv.alignment = .fill
@@ -295,7 +295,7 @@ class BasicInformationView: UIView {
             make.height.equalTo(52)
         }
         
-        tempView.snp.makeConstraints { make in
+        emptySpaceView.snp.makeConstraints { make in
             make.height.equalTo(52)
         }
         

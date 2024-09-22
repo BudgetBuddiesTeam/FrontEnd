@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class BasicInformationView: UIView {
+    // MARK: - Properties
+    var ageButtonArray: [ClearBackgroundRadioButton] = []
+    
     // MARK: - UI Components
     let contentView = UIView()
     let scrollView = UIScrollView()
@@ -62,11 +65,11 @@ class BasicInformationView: UIView {
     // 성별
     let genderLabel = basicLabel("성별")
     
-    let manButton = ClearBackgroundRadioButton(buttonTitle: "남성")
-    let womanButton = ClearBackgroundRadioButton(buttonTitle: "여성")
+    let maleButton = ClearBackgroundRadioButton(buttonTitle: "남성")
+    let femaleButton = ClearBackgroundRadioButton(buttonTitle: "여성")
     
     lazy var genderButtonStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [manButton, womanButton])
+        let sv = UIStackView(arrangedSubviews: [maleButton, femaleButton])
         sv.axis = .horizontal
         sv.spacing = 13
         sv.alignment = .fill
@@ -92,6 +95,7 @@ class BasicInformationView: UIView {
     let twentySixToTwentyEightButton = ClearBackgroundRadioButton(buttonTitle: "26세-28세")
     let overTwentyNineButton = ClearBackgroundRadioButton(buttonTitle: "29세 이상")
     let tempView = UIView()
+    
     
     lazy var firstAgeButtonStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [leastTwentyButton, twentyToTwentyTwoButton])
@@ -121,7 +125,7 @@ class BasicInformationView: UIView {
     }()
     
     lazy var ageStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [firstAgeButtonStackView, secondAgeButtonStackView, thirdAgeButtonStackView])
+        let sv = UIStackView(arrangedSubviews: [ageLabel, firstAgeButtonStackView, secondAgeButtonStackView, thirdAgeButtonStackView])
         sv.axis = .vertical
         sv.spacing = 8
         sv.alignment = .leading
@@ -140,10 +144,41 @@ class BasicInformationView: UIView {
         super.init(frame: frame)
         
         setupUI()
+        addButtonsToArray()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    // MARK: - Add Buttons to Array
+    private func addButtonsToArray() {
+        self.ageButtonArray.append(leastTwentyButton)
+        self.ageButtonArray.append(twentyToTwentyTwoButton)
+        self.ageButtonArray.append(twentyThreeToTwentyFiveButton)
+        self.ageButtonArray.append(twentySixToTwentyEightButton)
+        self.ageButtonArray.append(overTwentyNineButton)
+    }
+    
+    // MARK: - Gender RadioButton Toggle
+    func genderRadioButtonToggle(_ button: ClearBackgroundRadioButton) {
+        if button == maleButton {
+            maleButton.isButtonTapped = true
+            femaleButton.isButtonTapped = false
+        } else {
+            maleButton.isButtonTapped = false
+            femaleButton.isButtonTapped = true
+        }
+    }
+    
+    // MARK: - Age RadioButton Toggle
+    func ageRadioButtonToggle(_ button: ClearBackgroundRadioButton) {
+        
+        ageButtonArray.forEach { button in
+            button.isButtonTapped = false
+        }
+        
+        button.isButtonTapped = true
+        
     }
     
     // MARK: - Set up UI
@@ -218,11 +253,11 @@ class BasicInformationView: UIView {
             make.height.equalTo(18)
         }
         
-        manButton.snp.makeConstraints { make in
+        maleButton.snp.makeConstraints { make in
             make.height.equalTo(52)
         }
         
-        womanButton.snp.makeConstraints { make in
+        femaleButton.snp.makeConstraints { make in
             make.height.equalTo(52)
         }
         

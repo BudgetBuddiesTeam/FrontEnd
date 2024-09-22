@@ -22,6 +22,7 @@ class BasicInformationViewController: UIViewController {
         setupNavigationBar()
         setupTextField()
         setupKeyboardDismiss()
+        setupButtonActions()
     }
     
     // MARK: - Set up KeyBoardDismiss
@@ -45,6 +46,19 @@ class BasicInformationViewController: UIViewController {
         addBackButton(selector: #selector (didTapBackButton))
     }
     
+    // MARK: - Set up Button Actions
+    private func setupButtonActions() {
+        // 성별 버튼
+        basicInformationView.maleButton.addTarget(self, action: #selector(didTapGenderButton), for: .touchUpInside)
+        basicInformationView.femaleButton.addTarget(self, action: #selector(didTapGenderButton), for: .touchUpInside)
+        
+        // 나이 버튼
+        basicInformationView.ageButtonArray.forEach { $0.addTarget(self, action: #selector(didTapAgeRadioButton), for: .touchUpInside) }
+        
+        // 계속하기 버튼
+        basicInformationView.keepGoingButton.addTarget(self, action: #selector(didTapKeepGoingButton), for: .touchUpInside)
+    }
+    
     // MARK: - Selectors
     @objc
     private func didTapBackButton() {
@@ -55,12 +69,30 @@ class BasicInformationViewController: UIViewController {
     private func didScrollViewTapped() {
         self.view.endEditing(true)
     }
+    
+    @objc
+    private func didTapGenderButton(sender: ClearBackgroundRadioButton) {
+        basicInformationView.genderRadioButtonToggle(sender)
+    }
+    
+    @objc
+    private func didTapAgeRadioButton(sender: ClearBackgroundRadioButton) {
+        basicInformationView.ageRadioButtonToggle(sender)
+    }
+    
+    @objc
+    private func didTapKeepGoingButton() {
+        print(#function)
+        /*
+         해야할 일
+         버튼을 눌렀을 때 이름, 성별, 연력을 선택하지 않았을 경우 알람창 뜨게
+         */
+    }
 }
 
 // MARK: - UITextField Delegate
 extension BasicInformationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("dhfaluioh")
         self.view.endEditing(true)
         return true
     }

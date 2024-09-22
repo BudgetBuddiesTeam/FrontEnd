@@ -10,6 +10,11 @@ import UIKit
 class BasicInformationViewController: UIViewController {
     // MARK: - Properties
     let basicInformationView = BasicInformationView()
+    
+    // 이름 작성되었는지 확인하는 변수
+    var isNameFilled: Bool = false
+    var isGenderSelected: Bool = false
+    var isAgeSelected: Bool = false
 
     // MARK: - Life Cycle
     override func loadView() {
@@ -72,21 +77,30 @@ class BasicInformationViewController: UIViewController {
     
     @objc
     private func didTapGenderButton(sender: ClearBackgroundRadioButton) {
+        self.isGenderSelected = true
         basicInformationView.genderRadioButtonToggle(sender)
     }
     
     @objc
     private func didTapAgeRadioButton(sender: ClearBackgroundRadioButton) {
+        self.isAgeSelected = true
         basicInformationView.ageRadioButtonToggle(sender)
     }
     
     @objc
     private func didTapKeepGoingButton() {
-        print(#function)
-        /*
-         해야할 일
-         버튼을 눌렀을 때 이름, 성별, 연력을 선택하지 않았을 경우 알람창 뜨게
-         */
+        if isNameFilled && isGenderSelected && isAgeSelected { // 모두 작성, 선택되어야 pushViewController실행
+            print(#function)
+            
+        } else if !isNameFilled { // 이름이 작성되지 않았을 경우
+            print("이름 작성x")
+            
+        } else if !isGenderSelected { // 성별이 선택되지 않았을 경우
+            print("성별 선택x")
+            
+        } else { // 나이가 선택되지 않았을 경우
+            print("나이 선택x")
+        }
     }
 }
 
@@ -95,5 +109,17 @@ extension BasicInformationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // textField 작성이 끝났을 때 빈칸인지 아닌지 판단
+        if let currentText = textField.text {
+            if currentText.isEmpty {
+                self.isNameFilled = false
+                
+            } else {
+                self.isNameFilled = true
+            }
+        }
     }
 }

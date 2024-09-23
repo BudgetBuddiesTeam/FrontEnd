@@ -35,9 +35,9 @@ final class StartViewController: UIViewController {
     private func didTapStartButton() {
         // ⭐️ 임시로 다른 뷰컨으로 가도록 함 나중에 꼭 수정
         let numberAuthenticationVC = NumberAuthenticationViewController()
-        let basicInformationVC = BasicInformationViewController()
+        let additionalInformationVC = AdditionalInformationViewController()
 //        self.navigationController?.pushViewController(numberAuthenticationVC, animated: true)
-        self.navigationController?.pushViewController(basicInformationVC, animated: true)
+        self.navigationController?.pushViewController(additionalInformationVC, animated: true)
         
     }
     

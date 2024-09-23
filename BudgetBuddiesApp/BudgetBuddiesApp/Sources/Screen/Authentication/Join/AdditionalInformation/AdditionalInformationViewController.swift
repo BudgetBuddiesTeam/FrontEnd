@@ -8,22 +8,30 @@
 import UIKit
 
 class AdditionalInformationViewController: UIViewController {
+    // MARK: - Properties
+    let additionalInformationView = AdditionalInformationView()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    // MARK: - Life Cycle
+    override func loadView() {
+        self.view = additionalInformationView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupNavigationBar()
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
-
+    
+    // MARK: - Set up Navigation Bar
+    private func setupNavigationBar() {
+        setupDefaultNavigationBar(backgroundColor: BudgetBuddiesAppAsset.AppColor.white.color)
+        addBackButton(selector: #selector(didTapBackButton))
+    }
+    
+    // MARK: - Selectors
+    @objc
+    private func didTapBackButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }

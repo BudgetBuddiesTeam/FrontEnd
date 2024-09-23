@@ -12,6 +12,7 @@ class BasicInformationView: UIView {
     // MARK: - Properties
     var ageButtonArray: [ClearBackgroundRadioButton] = []
     
+    
     // MARK: - UI Components
     let contentView = UIView()
     let scrollView = UIScrollView()

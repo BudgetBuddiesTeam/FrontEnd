@@ -95,7 +95,7 @@ class BasicInformationView: UIView {
     let twentyThreeToTwentyFiveButton = ClearBackgroundRadioButton(buttonTitle: "23세-25세")
     let twentySixToTwentyEightButton = ClearBackgroundRadioButton(buttonTitle: "26세-28세")
     let overTwentyNineButton = ClearBackgroundRadioButton(buttonTitle: "29세 이상")
-    let emptySpaceView = UIView()
+    private let emptySpaceView = UIView()
     
     
     lazy var firstAgeButtonStackView: UIStackView = {

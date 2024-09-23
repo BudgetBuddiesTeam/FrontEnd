@@ -20,7 +20,7 @@ class AdditionalInformationViewController: UIViewController {
         super.viewDidLoad()
         
         setupNavigationBar()
-
+        setupButtonActions()
     }
     
     // MARK: - Set up Navigation Bar
@@ -29,9 +29,35 @@ class AdditionalInformationViewController: UIViewController {
         addBackButton(selector: #selector(didTapBackButton))
     }
     
+    // MARK: - Set up Button Actions
+    private func setupButtonActions() {
+        // 통신사 버튼 actions
+        additionalInformationView.mobileCarrierButtonArray.forEach {
+            $0.addTarget(self, action: #selector(didTapMobileCarrierButton), for: .touchUpInside)
+        }
+        
+        // 관심 카테고리 actions
+        additionalInformationView.interestedCategoryButtonArray.forEach {
+            $0.addTarget(self, action: #selector(didTapInterestedCategoryButton), for: .touchUpInside)
+        }
+    }
+    
     // MARK: - Selectors
     @objc
     private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc
+    private func didTapMobileCarrierButton(sender: ClearBackgroundRadioButton) {
+        additionalInformationView.moblieCarrierRadioButtonToggle(sender)
+        
+        
+    }
+    
+    @objc
+    private func didTapInterestedCategoryButton(sender: ClearBackgroundCheckBoxButton) {
+        sender.toggleButton()
+        print("\(sender.interestedCategory) \(sender.isButtonTapped)")
     }
 }

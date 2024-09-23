@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 
 class AdditionalInformationView: UIView {
+    // MARK: - Properties
+    var mobileCarrierButtonArray: [ClearBackgroundRadioButton] = []
+    var interestedCategoryButtonArray: [ClearBackgroundCheckBoxButton] = []
+    
     // MARK: - UI Components
     let contentView = UIView()
     let scrollView = UIScrollView()
@@ -45,26 +49,175 @@ class AdditionalInformationView: UIView {
         return sv
     }()
     
+    // 건너뛰기, 선택 후 계속하기 버튼
+    lazy var skipButton: YellowRectangleButton = {
+        let btn = YellowRectangleButton(.skip, isButtonEnabled: false)
+        btn.isEnabled = true // 회색 바탕이어도 버튼 작동
+        return btn
+    }()
+    
+    lazy var continueButton: YellowRectangleButton = {
+        let btn = YellowRectangleButton(.selectAndConti, isButtonEnabled: true)
+        return btn
+    }()
+    
+    lazy var buttonStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [skipButton, continueButton])
+        sv.axis = .horizontal
+        sv.spacing = 12
+        sv.alignment = .fill
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    // 거주지역
+    let regionLabel = basicLabel("거주지역")
+    
+    let regionPickerView = DropDownMenuView()
+    
+    lazy var regionStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [regionLabel, regionPickerView])
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.alignment = .leading
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    // 통신사
+    let mobileCarrierLabel = basicLabel("통신사")
+    
+    let sktButton = ClearBackgroundRadioButton(buttonTitle: "SKT")
+    let ktButton = ClearBackgroundRadioButton(buttonTitle: "KT")
+    let lgUPlusButton = ClearBackgroundRadioButton(buttonTitle: "LG U+")
+    let thriftyPhoneButton = ClearBackgroundRadioButton(buttonTitle: "알뜰폰")
+    let elseButton = ClearBackgroundRadioButton(buttonTitle: "기타")
+    private let emptySpaceView = UIView()
+    
+    lazy var firstMCStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [sktButton, ktButton])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var secondMCStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [lgUPlusButton, thriftyPhoneButton])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var thirdMCStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [elseButton, emptySpaceView])
+        sv.axis = .horizontal
+        sv.spacing = 13
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var mobileCarrierStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [mobileCarrierLabel, firstMCStackView, secondMCStackView, thirdMCStackView])
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.alignment = .fill
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    // 관심 카테고리
+    let interestedCategorylabel = basicLabel("관심 카테고리")
+    
+    let foodExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .foodExpenses)
+    let entertainmentExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .entertainmentExpenses)
+    let cafeExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .cafeExpenses)
+    let shoppingExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .shoppingExpenses)
+    let fashionExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .fashionExpenses)
+    let cultureExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .cultureExpenses)
+    let transportationExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .transportationExpenses)
+    let familyExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .familyEventExpenses)
+    let regularPaymentExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .regularPaymentExpenses)
+    
+    lazy var firstICStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [
+            foodExpensesButton,
+            entertainmentExpensesButton,
+            cafeExpensesButton,
+            shoppingExpensesButton,
+            fashionExpensesButton
+        ])
+        sv.axis = .horizontal
+        sv.spacing = 8
+        sv.alignment = .fill
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var secondICStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [
+            cultureExpensesButton,
+            transportationExpensesButton,
+            familyExpensesButton,
+            regularPaymentExpensesButton
+        ])
+        sv.axis = .horizontal
+        sv.spacing = 8
+        sv.alignment = .fill
+        sv.distribution = .fillProportionally
+        return sv
+    }()
+    
+    lazy var interestedCategoryStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [interestedCategorylabel, firstICStackView, secondICStackView])
+        sv.axis = .vertical
+        sv.spacing = 12
+        sv.alignment = .fill
+        sv.distribution = .fill
+        return sv
+    }()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+        addButtonsToArray()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Add Buttons to Array
+    private func addButtonsToArray() {
+        self.mobileCarrierButtonArray.append(contentsOf: [sktButton, ktButton, lgUPlusButton, thriftyPhoneButton, elseButton])
+        
+        self.interestedCategoryButtonArray.append(contentsOf:[foodExpensesButton, entertainmentExpensesButton, cafeExpensesButton, shoppingExpensesButton, fashionExpensesButton, cultureExpensesButton, transportationExpensesButton, familyExpensesButton, regularPaymentExpensesButton])
+    }
+    
+    // MARK: - Moblie Carrier RadioButton Toggle
+    func moblieCarrierRadioButtonToggle(_ button: ClearBackgroundRadioButton) {
+        
+        mobileCarrierButtonArray.forEach { button in
+            button.isButtonTapped = false
+        }
+        
+        button.isButtonTapped = true
+    }
+    
     // MARK: - Set up UI
     private func setupUI() {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         
-        self.addSubviews(scrollView)
+        self.addSubviews(scrollView, buttonStackView)
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews(stepDot, titleStackView)
+        contentView.addSubviews(stepDot, titleStackView, regionStackView, mobileCarrierStackView, interestedCategoryStackView)
         
         setupConstraints()
     }
@@ -78,14 +231,13 @@ class AdditionalInformationView: UIView {
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
-            // bottom 버튼 top에 맞추기
+            make.bottom.equalTo(buttonStackView.snp.top).offset(-16)
         }
         
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.bottom.equalTo(interestedCategoryStackView.snp.bottom).offset(40)
             make.width.equalTo(scrollView.snp.width)
-            make.height.equalTo(1000)
         }
         
         stepDot.snp.makeConstraints { make in
@@ -93,6 +245,7 @@ class AdditionalInformationView: UIView {
             make.height.equalTo(32)
         }
         
+        // 상단 타이틀
         bigTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(bigTitleHeight)
         }
@@ -105,6 +258,137 @@ class AdditionalInformationView: UIView {
             make.height.equalTo(titleStackHeight)
             make.top.equalTo(stepDot.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        // 건너뛰기, 선택 후 계속하기 버튼
+        skipButton.snp.makeConstraints { make in
+            make.height.equalTo(54)
+            make.width.equalTo(self.snp.width).multipliedBy(0.4)
+        }
+        
+        continueButton.snp.makeConstraints { make in
+            make.height.equalTo(54)
+        }
+        
+        buttonStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(54)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
+        }
+        
+        // 거주지역
+        regionLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        regionPickerView.snp.makeConstraints { make in
+            make.height.equalTo(52)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        regionStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(titleStackView.snp.bottom).offset(36)
+        }
+        
+        // 통신사
+        mobileCarrierLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        sktButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        ktButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        lgUPlusButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        thriftyPhoneButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        elseButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        emptySpaceView.snp.makeConstraints { make in
+            make.height.equalTo(52)
+        }
+        
+        firstMCStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        secondMCStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        thirdMCStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        mobileCarrierStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(regionStackView.snp.bottom).offset(40)
+        }
+        
+        // 관심 카테고리
+        interestedCategorylabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+        }
+        
+        foodExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        entertainmentExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        cafeExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        shoppingExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        fashionExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        cultureExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        transportationExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        familyExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        regularPaymentExpensesButton.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        firstICStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        secondICStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        interestedCategoryStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(mobileCarrierStackView.snp.bottom).offset(40)
         }
     }
 }

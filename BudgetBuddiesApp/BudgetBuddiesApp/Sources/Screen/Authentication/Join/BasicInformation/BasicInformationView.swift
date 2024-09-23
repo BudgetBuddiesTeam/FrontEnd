@@ -132,6 +132,8 @@ class BasicInformationView: UIView {
         sv.distribution = .fill
         return sv
     }()
+    // 미작성 항목 알람 뷰
+    let notWrittenPopUpView = NotWrittenPopUpView()
     
     // 계속하기 버튼
     lazy var keepGoingButton: YellowRectangleButton = {
@@ -150,6 +152,7 @@ class BasicInformationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - Add Buttons to Array
     private func addButtonsToArray() {
         self.ageButtonArray.append(leastTwentyButton)
@@ -189,6 +192,8 @@ class BasicInformationView: UIView {
         scrollView.addSubviews(contentView)
         
         contentView.addSubviews(stepDot, titleStackView, nameStackView, genderStackView, ageStackView)
+        
+        self.addSubviews(notWrittenPopUpView)
         setupConstraints()
     }
     
@@ -314,6 +319,13 @@ class BasicInformationView: UIView {
         ageStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(genderStackView.snp.bottom).offset(40)
+        }
+        
+        // 미작성 항목 알람 뷰
+        notWrittenPopUpView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(52)
+            make.bottom.equalTo(keepGoingButton.snp.top).offset(-28)
         }
     }
 }

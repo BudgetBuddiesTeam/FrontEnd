@@ -94,12 +94,15 @@ class BasicInformationViewController: UIViewController {
             
         } else if !isNameFilled { // 이름이 작성되지 않았을 경우
             print("이름 작성x")
+            self.basicInformationView.notWrittenPopUpView.popUp(with: .name)
             
         } else if !isGenderSelected { // 성별이 선택되지 않았을 경우
             print("성별 선택x")
+            self.basicInformationView.notWrittenPopUpView.popUp(with: .gender)
             
         } else { // 나이가 선택되지 않았을 경우
             print("나이 선택x")
+            self.basicInformationView.notWrittenPopUpView.popUp(with: .age)
         }
     }
 }
@@ -114,6 +117,8 @@ extension BasicInformationViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         // textField 작성이 끝났을 때 빈칸인지 아닌지 판단
         if let currentText = textField.text {
+            print("작성된 이름: \(currentText)")
+            
             if currentText.isEmpty {
                 self.isNameFilled = false
                 

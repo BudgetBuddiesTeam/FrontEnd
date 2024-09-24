@@ -31,6 +31,9 @@ class AdditionalInformationViewController: UIViewController {
     
     // MARK: - Set up Button Actions
     private func setupButtonActions() {
+        // 거주지역 선택 tapGesture
+        additionalInformationView.regionPickerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRegionPicker)))
+        
         // 통신사 버튼 actions
         additionalInformationView.mobileCarrierButtonArray.forEach {
             $0.addTarget(self, action: #selector(didTapMobileCarrierButton), for: .touchUpInside)
@@ -59,5 +62,15 @@ class AdditionalInformationViewController: UIViewController {
     private func didTapInterestedCategoryButton(sender: ClearBackgroundCheckBoxButton) {
         sender.toggleButton()
         print("\(sender.interestedCategory) \(sender.isButtonTapped)")
+    }
+    
+    // 거주지역 바꾸는 selector
+    @objc
+    private func didTapRegionPicker() {
+        print(#function)
+        let regionPickerVC = RegionPickerViewController()
+        regionPickerVC.modalPresentationStyle = .overFullScreen
+        self.present(regionPickerVC, animated: true, completion: nil)
+        additionalInformationView.regionPickerView.changeTitleToSelectedRegion("서울")
     }
 }

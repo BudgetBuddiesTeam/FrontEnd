@@ -39,8 +39,15 @@ class DropDownMenuView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Set View Name
+    func changeTitleToSelectedRegion(_ region: String) {
+        self.regionLabel.text = region
+    }
+    
     // MARK: - Set up UI
     private func setupUI() {
+        self.isUserInteractionEnabled = true
+        
         self.backgroundColor = .clear
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 12

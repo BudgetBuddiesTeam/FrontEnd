@@ -37,7 +37,7 @@ class RegionPicker: UIView {
         return view
     }()
     
-    let tempView = UIView()
+    let regionTableView = UITableView()
     
     let stackView: UIStackView = {
         let sv = UIStackView()
@@ -73,6 +73,7 @@ class RegionPicker: UIView {
     
     // MARK: - Set up UI
     private func setupUI() {
+        self.regionTableView.backgroundColor = .red
         // backView (자기 자신)
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         self.layer.masksToBounds = true
@@ -82,7 +83,7 @@ class RegionPicker: UIView {
         
         self.addSubviews(topRectView, stackView)
         stackView.addArrangedSubview(regionView)
-        stackView.addArrangedSubview(tempView)
+        stackView.addArrangedSubview(regionTableView)
         self.regionView.addSubviews(selectRegionLabel)
         
         setupConstraints()
@@ -105,6 +106,10 @@ class RegionPicker: UIView {
         
         regionView.snp.makeConstraints { make in
             make.height.equalTo(52)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        regionTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
         

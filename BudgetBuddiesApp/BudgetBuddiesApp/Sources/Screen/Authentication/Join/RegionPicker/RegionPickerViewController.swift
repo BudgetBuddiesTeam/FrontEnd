@@ -26,6 +26,18 @@ class RegionPickerViewController: DimmedViewController {
         
         setupRegionPicker()
         setupTapGestures()
+        setupTableView()
+    }
+    
+    // MARK: - Set up TableView
+    private func setupTableView() {
+        registerCells()
+        
+    }
+    
+    // 셀 등록
+    private func registerCells() {
+        
     }
     
     // MARK: - Set up TapGestures

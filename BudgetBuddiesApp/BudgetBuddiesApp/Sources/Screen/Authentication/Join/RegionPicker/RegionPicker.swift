@@ -73,7 +73,6 @@ class RegionPicker: UIView {
     
     // MARK: - Set up UI
     private func setupUI() {
-        self.regionTableView.backgroundColor = .red
         // backView (자기 자신)
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         self.layer.masksToBounds = true

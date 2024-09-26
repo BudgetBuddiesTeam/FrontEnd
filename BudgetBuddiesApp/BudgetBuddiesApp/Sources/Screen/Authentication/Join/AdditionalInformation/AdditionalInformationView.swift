@@ -57,7 +57,7 @@ class AdditionalInformationView: UIView {
     }()
     
     lazy var continueButton: YellowRectangleButton = {
-        let btn = YellowRectangleButton(.selectAndConti, isButtonEnabled: true)
+        let btn = YellowRectangleButton(.selectAndConti, isButtonEnabled: false)
         return btn
     }()
     

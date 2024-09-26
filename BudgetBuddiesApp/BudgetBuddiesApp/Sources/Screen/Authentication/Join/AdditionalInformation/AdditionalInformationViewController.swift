@@ -10,6 +10,14 @@ import UIKit
 class AdditionalInformationViewController: UIViewController {
     // MARK: - Properties
     let additionalInformationView = AdditionalInformationView()
+    
+    // 임시로 선택한 장소를 담을 변수 + 뷰에 지역 이름 변경
+    var selectedRegionFromPicker: String? {
+        didSet {
+            guard let region = selectedRegionFromPicker else { return }
+            additionalInformationView.regionPickerView.changeTitleToSelectedRegion(region)
+        }
+    }
 
     // MARK: - Life Cycle
     override func loadView() {
@@ -69,8 +77,15 @@ class AdditionalInformationViewController: UIViewController {
     private func didTapRegionPicker() {
         print(#function)
         let regionPickerVC = RegionPickerViewController()
+        regionPickerVC.delegate = self
         regionPickerVC.modalPresentationStyle = .overFullScreen
         self.present(regionPickerVC, animated: true, completion: nil)
-        additionalInformationView.regionPickerView.changeTitleToSelectedRegion("서울")
+    }
+}
+
+// MARK: - RegionPickerViewController Delegate
+extension AdditionalInformationViewController: RegionPickerViewControllerDelegate {
+    func didRegionSelected(_ region: String) {
+        self.selectedRegionFromPicker = region
     }
 }

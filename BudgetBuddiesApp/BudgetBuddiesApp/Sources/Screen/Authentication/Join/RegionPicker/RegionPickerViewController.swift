@@ -8,8 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol RegionPickerViewControllerDelegate: AnyObject {
+    func didRegionSelected(_ region: String)
+}
+
 class RegionPickerViewController: DimmedViewController {
     // MARK: - Properties
+    weak var delegate: RegionPickerViewControllerDelegate?
+    
     private let regionPicker = RegionPicker()
     
     private var regionPickerValue: CGFloat {
@@ -111,5 +117,9 @@ extension RegionPickerViewController: UITableViewDataSource {
 
 // MARK: - UITableView Delegate
 extension RegionPickerViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedRegion = regionArray[indexPath.row]
+        delegate?.didRegionSelected(selectedRegion)
+        dismiss(animated: true)
+    }
 }

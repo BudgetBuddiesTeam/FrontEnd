@@ -51,6 +51,9 @@ class AdditionalInformationViewController: UIViewController {
         additionalInformationView.interestedCategoryButtonArray.forEach {
             $0.addTarget(self, action: #selector(didTapInterestedCategoryButton), for: .touchUpInside)
         }
+        
+        // 건너뛰기 버튼
+        additionalInformationView.skipButton.addTarget(self, action: #selector(didTapSkipButton), for: .touchUpInside)
     }
     
     // MARK: - Selectors
@@ -62,8 +65,6 @@ class AdditionalInformationViewController: UIViewController {
     @objc
     private func didTapMobileCarrierButton(sender: ClearBackgroundRadioButton) {
         additionalInformationView.moblieCarrierRadioButtonToggle(sender)
-        
-        
     }
     
     @objc
@@ -80,6 +81,13 @@ class AdditionalInformationViewController: UIViewController {
         regionPickerVC.delegate = self
         regionPickerVC.modalPresentationStyle = .overFullScreen
         self.present(regionPickerVC, animated: true, completion: nil)
+    }
+    
+    // 건너뛰기 selector
+    @objc
+    private func didTapSkipButton() {
+        let registerCompleteVC = RegisterCompleteViewController()
+        self.navigationController?.pushViewController(registerCompleteVC, animated: true)
     }
 }
 

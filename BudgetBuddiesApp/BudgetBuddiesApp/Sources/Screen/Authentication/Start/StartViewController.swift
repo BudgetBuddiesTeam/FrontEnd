@@ -34,7 +34,9 @@ final class StartViewController: UIViewController {
     @objc
     private func didTapStartButton() {
         let numberAuthenticationVC = NumberAuthenticationViewController()
-        self.navigationController?.pushViewController(numberAuthenticationVC, animated: true)
+        
+        let additionalInfoVC = AdditionalInformationViewController()
+        self.navigationController?.pushViewController(additionalInfoVC, animated: true)
         
     }
     

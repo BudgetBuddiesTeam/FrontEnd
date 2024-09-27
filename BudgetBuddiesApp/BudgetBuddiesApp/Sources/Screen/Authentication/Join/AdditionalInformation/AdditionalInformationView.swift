@@ -50,11 +50,7 @@ class AdditionalInformationView: UIView {
     }()
     
     // 건너뛰기, 선택 후 계속하기 버튼
-    lazy var skipButton: YellowRectangleButton = {
-        let btn = YellowRectangleButton(.skip, isButtonEnabled: false)
-        btn.isEnabled = true // 회색 바탕이어도 버튼 작동
-        return btn
-    }()
+    lazy var skipButton = ClearRectangleButton()
     
     lazy var continueButton: YellowRectangleButton = {
         let btn = YellowRectangleButton(.selectAndConti, isButtonEnabled: false)

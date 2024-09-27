@@ -9,7 +9,7 @@ import UIKit
 
 class ClearBackgroundCheckBoxButton: UIButton {
     // MARK: - Properties
-    enum InterestedCategory: String {
+    public enum InterestCategory: String {
         case foodExpenses = "식비"
         case entertainmentExpenses = "유흥"
         case cafeExpenses = "카페"
@@ -21,7 +21,7 @@ class ClearBackgroundCheckBoxButton: UIButton {
         case regularPaymentExpenses = "정기결제"
     }
     
-    let interestedCategory: InterestedCategory
+    let interestCategory: InterestCategory
     
     var isButtonTapped: Bool = false {
         didSet {
@@ -30,8 +30,8 @@ class ClearBackgroundCheckBoxButton: UIButton {
     }
 
     // MARK: - Init
-    init(interestedCategory: InterestedCategory) {
-        self.interestedCategory = interestedCategory
+    init(interestCategory: InterestCategory) {
+        self.interestCategory = interestCategory
         
         super.init(frame: .zero)
         
@@ -69,7 +69,7 @@ class ClearBackgroundCheckBoxButton: UIButton {
     
     // MARK: - Set up UI
     private func setupUI() {
-        self.setTitle(self.interestedCategory.rawValue, for: .normal)
+        self.setTitle(self.interestCategory.rawValue, for: .normal)
         self.titleLabel?.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 16)
         self.setTitleColor(BudgetBuddiesAppAsset.AppColor.textBlack.color, for: .normal)
     

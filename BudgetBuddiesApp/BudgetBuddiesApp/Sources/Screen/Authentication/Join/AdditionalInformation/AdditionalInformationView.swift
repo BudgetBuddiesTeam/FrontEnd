@@ -11,7 +11,7 @@ import SnapKit
 class AdditionalInformationView: UIView {
     // MARK: - Properties
     var mobileCarrierButtonArray: [ClearBackgroundRadioButton] = []
-    var interestedCategoryButtonArray: [ClearBackgroundCheckBoxButton] = []
+    var interestCategoryButtonArray: [ClearBackgroundCheckBoxButton] = []
     
     // MARK: - UI Components
     let contentView = UIView()
@@ -127,17 +127,17 @@ class AdditionalInformationView: UIView {
     }()
     
     // 관심 카테고리
-    let interestedCategorylabel = basicLabel("관심 카테고리")
+    let interestCategorylabel = basicLabel("관심 카테고리")
     
-    let foodExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .foodExpenses)
-    let entertainmentExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .entertainmentExpenses)
-    let cafeExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .cafeExpenses)
-    let shoppingExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .shoppingExpenses)
-    let fashionExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .fashionExpenses)
-    let cultureExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .cultureExpenses)
-    let transportationExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .transportationExpenses)
-    let familyExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .familyEventExpenses)
-    let regularPaymentExpensesButton = ClearBackgroundCheckBoxButton(interestedCategory: .regularPaymentExpenses)
+    let foodExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .foodExpenses)
+    let entertainmentExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .entertainmentExpenses)
+    let cafeExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .cafeExpenses)
+    let shoppingExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .shoppingExpenses)
+    let fashionExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .fashionExpenses)
+    let cultureExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .cultureExpenses)
+    let transportationExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .transportationExpenses)
+    let familyExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .familyEventExpenses)
+    let regularPaymentExpensesButton = ClearBackgroundCheckBoxButton(interestCategory: .regularPaymentExpenses)
     
     lazy var firstICStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [
@@ -169,7 +169,7 @@ class AdditionalInformationView: UIView {
     }()
     
     lazy var interestedCategoryStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [interestedCategorylabel, firstICStackView, secondICStackView])
+        let sv = UIStackView(arrangedSubviews: [interestCategorylabel, firstICStackView, secondICStackView])
         sv.axis = .vertical
         sv.spacing = 12
         sv.alignment = .fill
@@ -189,11 +189,20 @@ class AdditionalInformationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Continue Button Toggle
+    func continueButtonToggle(_ region: Bool, _ moblieCarrier: Bool, _ interestCategories: Bool) {
+        if region || moblieCarrier || interestCategories {
+            self.continueButton.isButtonEnabled = true
+        } else {
+            self.continueButton.isButtonEnabled = false
+        }
+    }
+    
     // MARK: - Add Buttons to Array
     private func addButtonsToArray() {
         self.mobileCarrierButtonArray.append(contentsOf: [sktButton, ktButton, lgUPlusButton, thriftyPhoneButton, elseButton])
         
-        self.interestedCategoryButtonArray.append(contentsOf:[foodExpensesButton, entertainmentExpensesButton, cafeExpensesButton, shoppingExpensesButton, fashionExpensesButton, cultureExpensesButton, transportationExpensesButton, familyExpensesButton, regularPaymentExpensesButton])
+        self.interestCategoryButtonArray.append(contentsOf:[foodExpensesButton, entertainmentExpensesButton, cafeExpensesButton, shoppingExpensesButton, fashionExpensesButton, cultureExpensesButton, transportationExpensesButton, familyExpensesButton, regularPaymentExpensesButton])
     }
     
     // MARK: - Moblie Carrier RadioButton Toggle
@@ -334,7 +343,7 @@ class AdditionalInformationView: UIView {
         }
         
         // 관심 카테고리
-        interestedCategorylabel.snp.makeConstraints { make in
+        interestCategorylabel.snp.makeConstraints { make in
             make.height.equalTo(18)
         }
         

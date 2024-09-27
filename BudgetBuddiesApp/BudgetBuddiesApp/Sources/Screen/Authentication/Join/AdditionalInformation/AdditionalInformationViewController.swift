@@ -88,6 +88,7 @@ class AdditionalInformationViewController: UIViewController {
         additionalInformationView.skipButton.addTarget(self, action: #selector(didTapSkipButton), for: .touchUpInside)
         
         // 선택 후 계속하기 버튼
+        additionalInformationView.continueButton.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
     }
     
     // MARK: - Selectors
@@ -122,6 +123,17 @@ class AdditionalInformationViewController: UIViewController {
     // 건너뛰기 selector
     @objc
     private func didTapSkipButton() {
+        nextViewController()
+    }
+    
+    // 선택 후 계속하기 selector
+    @objc
+    private func didTapContinueButton() {
+        nextViewController()
+    }
+    
+    // MARK: - Functions
+    private func nextViewController() {
         let registerCompleteVC = RegisterCompleteViewController()
         self.navigationController?.pushViewController(registerCompleteVC, animated: true)
     }

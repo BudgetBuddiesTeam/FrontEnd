@@ -28,6 +28,9 @@ final class StartViewController: UIViewController {
         startView.tempButton.addTarget(self, action: #selector(didTapTempButton), for: .touchUpInside)
         
         startView.nextButton.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        
+        startView.alreadyHaveLabel.isUserInteractionEnabled = true
+        startView.alreadyHaveLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLoginLabel)))
     }
     
     // MARK: - Selectors
@@ -41,5 +44,11 @@ final class StartViewController: UIViewController {
     @objc
     private func didTapTempButton() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc
+    private func didTapLoginLabel() {
+        let loginVC = LoginViewController()
+        self.navigationController?.pushViewController(loginVC, animated: true)
     }
 }

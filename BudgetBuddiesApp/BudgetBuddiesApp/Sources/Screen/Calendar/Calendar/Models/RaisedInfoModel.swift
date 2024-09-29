@@ -43,7 +43,7 @@ extension RaisedInfoModel {
   private func positionOfDate(for date: Date) -> (row: Int, column: Int)? {
     guard let startDay = startOfMonth(for: date),
       //      let numberOfDays = numberOfDaysInMonth(for: date)
-      let _ = numberOfDaysInMonth(for: date)
+      numberOfDaysInMonth(for: date) != nil
     else {
       return nil
     }

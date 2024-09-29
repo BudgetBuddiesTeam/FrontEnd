@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-final class AgeEditViewController: UIViewController {
+final class AgeEditViewController: BaseViewController {
 
   // MARK: - Property
   var services = Services()
@@ -122,8 +122,6 @@ final class AgeEditViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    setup()
-    setConsts()
     loadPeerInfo()
     setupNavigationBar()
   }
@@ -135,16 +133,18 @@ final class AgeEditViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(true, animated: true)  // 이 코드를 작성해야 뒤로 끌었다 취소했을 때 기본 네비바가 생성되지 않음
   }
 
-  private func setup() {
+  override func setUpViewProperty() {
     view.backgroundColor = BudgetBuddiesAppAsset.AppColor.background.color
+  }
 
+  override func setUp() {
     [titleLabel, genderLabel, buttonStackView, ageLabel, saveButton].forEach {
       view.addSubviews($0)
     }
     ageButtons.forEach { view.addSubview($0) }
   }
 
-  private func setConsts() {
+  override func setLayout() {
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
       $0.leading.equalToSuperview().offset(16)

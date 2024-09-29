@@ -9,7 +9,7 @@ import DGCharts
 import SnapKit
 import UIKit
 
-final class GoalChartView: UIView {
+final class GoalChartView: BaseView {
   let planLabel: UILabel = {
     let label = UILabel()
     label.text = "패션에 가장 큰 \n계획을 세웠어요"
@@ -89,18 +89,7 @@ final class GoalChartView: UIView {
     return sv
   }()
 
-  // MARK: - Init
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setup()
-    setConst()
-  }
-
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
-
-  private func setup() {
+  override func initUI() {
     [
       planLabel, dateLabel, pieChartBackImageView, firstLabel, firstPrice, legendStackView,
       stackView,
@@ -111,7 +100,7 @@ final class GoalChartView: UIView {
     pieChartBackImageView.addSubviews(pieChartView)
   }
 
-  private func setConst() {
+  override func initLayout() {
     planLabel.snp.makeConstraints {
       $0.top.equalToSuperview().offset(20)
       $0.leading.equalToSuperview().offset(20)

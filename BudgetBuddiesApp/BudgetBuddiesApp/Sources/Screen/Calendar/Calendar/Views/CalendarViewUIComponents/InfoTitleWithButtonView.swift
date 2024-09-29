@@ -86,7 +86,8 @@ class InfoTitleWithButtonView: UIView {
   private func updateColor() {
     let color: UIColor =
       isEnabled
-      ? BudgetBuddiesAppAsset.AppColor.subGray.color : BudgetBuddiesAppAsset.AppColor.background.color
+      ? BudgetBuddiesAppAsset.AppColor.subGray.color
+      : BudgetBuddiesAppAsset.AppColor.background.color
     showDetailLabel.textColor = color
     chevronImageView.tintColor = color
 

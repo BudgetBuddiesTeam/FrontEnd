@@ -48,7 +48,7 @@ class SendAuthNumberButton: UIButton {
         self.layer.borderColor = BudgetBuddiesAppAsset.AppColor.textExample.color.cgColor
         self.layer.masksToBounds = true
         
-        self.setTitle("인증문자 받기", for: .normal)
+//        self.setTitle("인증문자 받기", for: .normal)
         self.setTitleColor(BudgetBuddiesAppAsset.AppColor.textExample.color, for: .normal)
         self.titleLabel?.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16)
         self.setCharacterSpacing(-0.4)

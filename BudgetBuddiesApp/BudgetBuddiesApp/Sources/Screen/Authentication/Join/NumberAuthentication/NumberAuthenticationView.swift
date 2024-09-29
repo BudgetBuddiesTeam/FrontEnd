@@ -10,7 +10,15 @@ import SnapKit
 
 class NumberAuthenticationView: UIView {
     // MARK: - Properties
-    var isTextFieldAdded: Bool = false
+    var isTextFieldAdded: Bool = false {
+        didSet {
+            if isTextFieldAdded {
+                self.sendAuthNumberButton.setTitle("재전송", for: .normal)
+            }
+        }
+    }
+    
+    var timer: Timer?
     
     // MARK: - UI Components
     let stepDot = StepDotView(steps: .firstStep)
@@ -53,7 +61,12 @@ class NumberAuthenticationView: UIView {
     
     lazy var authNumberTextField = ClearBackgroundTextFieldView(textFieldType: .AuthNumber)
     
-    let sendAuthNumberButton = SendAuthNumberButton()
+//    let sendAuthNumberButton = SendAuthNumberButton()
+    let sendAuthNumberButton: SendAuthNumberButton = {
+        let btn = SendAuthNumberButton()
+        btn.setTitle("인증문자 받기", for: .normal)
+        return btn
+    }()
     
     lazy var textFieldStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [numberTextField, sendAuthNumberButton])
@@ -72,6 +85,16 @@ class NumberAuthenticationView: UIView {
         let btn = YellowRectangleButton(.completeAuth, isButtonEnabled: false)
         btn.alpha = 0
         return btn
+    }()
+    
+    let timerLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = " "
+        lb.font = BudgetBuddiesAppFontFamily.Pretendard.regular.font(size: 16)
+        lb.textColor = UIColor(red: 0.72, green: 0.72, blue: 0.72, alpha: 1)
+        lb.textAlignment = .right
+        lb.setCharacterSpacing(-0.4)
+        return lb
     }()
     
     // MARK: - Init
@@ -110,6 +133,15 @@ class NumberAuthenticationView: UIView {
                 make.height.equalTo(52)
                 make.width.equalTo(self.textFieldStackView.snp.width)
             }
+            
+            self.authNumberTextField.addSubviews(timerLabel)
+            timerLabel.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().inset(16)
+                make.centerY.equalToSuperview()
+                make.height.equalTo(20)
+            }
+            
+            setTimer()
 
             // 인증번호 입력 칸의 불투명도 애니메이션
             UIView.animate(withDuration: 0.4, animations: {
@@ -123,6 +155,30 @@ class NumberAuthenticationView: UIView {
             }
 
             self.isTextFieldAdded = true
+        } else {
+            setTimer()
+        }
+    }
+    
+    // MARK: - Add Timer
+    func setTimer() {
+        
+        timer?.invalidate() // 타이머가 이미 있으면 삭제
+        var remainingTime: Int = 300 // 5분 (300초)
+        timerLabel.text = "5:00"
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            if remainingTime > 0 {
+                remainingTime -= 1
+                
+                let minutes = remainingTime / 60
+                let seconds = remainingTime % 60
+                
+                self.timerLabel.text = String(format: "%d:%02d", minutes, seconds)
+            } else {
+                timer.invalidate()
+                self.timerLabel.text = "0:00"
+            }
         }
     }
     

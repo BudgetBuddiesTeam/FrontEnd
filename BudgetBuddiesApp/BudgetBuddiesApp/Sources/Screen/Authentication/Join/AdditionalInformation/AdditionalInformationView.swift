@@ -215,6 +215,14 @@ class AdditionalInformationView: UIView {
         button.isButtonTapped = true
     }
     
+    // MARK: - Scroll To Bottom
+    func scrollToBottom(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+        if bottomOffset.y > 0 {
+            scrollView.setContentOffset(bottomOffset, animated: animated)
+        }
+    }
+    
     // MARK: - Set up UI
     private func setupUI() {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color

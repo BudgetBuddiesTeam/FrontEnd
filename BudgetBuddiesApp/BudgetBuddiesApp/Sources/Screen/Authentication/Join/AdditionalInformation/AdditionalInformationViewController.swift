@@ -19,6 +19,7 @@ class AdditionalInformationViewController: UIViewController {
     
     var isMobileCarrierSelected: Bool = false {
         didSet {
+            self.additionalInformationView.scrollToBottom(animated: true)
             additionalInformationView.continueButtonToggle(isRegionPicked, isMobileCarrierSelected, isInterestCategoriesSelected)
         }
     }

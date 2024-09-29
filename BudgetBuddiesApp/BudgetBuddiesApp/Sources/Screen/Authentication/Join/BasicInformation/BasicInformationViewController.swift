@@ -13,7 +13,11 @@ class BasicInformationViewController: UIViewController {
     
     // 이름 작성되었는지 확인하는 변수
     var isNameFilled: Bool = false
-    var isGenderSelected: Bool = false
+    var isGenderSelected: Bool = false {
+        didSet {
+            self.basicInformationView.scrollToBottom(animated: true)
+        }
+    }
     var isAgeSelected: Bool = false
 
     // MARK: - Life Cycle

@@ -25,12 +25,13 @@ class StartView: UIView {
         return iv
     }()
     
-    // 빈주머니즈
+    // 빈주머니즈
     let title: UILabel = {
         let lb = UILabel()
         lb.text = "빈주머니즈"
-        lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 24)
-        lb.textColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
+//        lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 24)
+        lb.font = BudgetBuddiesAppFontFamily.HakgyoansimDunggeunmisoOTF.b.font(size: 24)
+        lb.textColor = BudgetBuddiesAppAsset.AppColor.coreYellow.color
         lb.setCharacterSpacing(-0.6)
         return lb
     }()

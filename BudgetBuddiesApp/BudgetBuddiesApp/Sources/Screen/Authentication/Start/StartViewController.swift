@@ -48,7 +48,7 @@ final class StartViewController: UIViewController {
     
     @objc
     private func didTapLoginLabel() {
-        let loginVC = LoginViewController()
+        let loginVC = LoginWithNumberViewController()
         self.navigationController?.pushViewController(loginVC, animated: true)
     }
 }

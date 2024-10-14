@@ -7,13 +7,13 @@
 
 import UIKit
 
-class NumberAuthenticationViewController: UIViewController {
+class JoinWithNumberViewController: UIViewController {
     // MARK: - Properties
-    let numberAuthenticationView = NumberAuthenticationView()
+    let joinView = NumberAuthenticationView(.join)
     
     // MARK: - Life Cycle
     override func loadView() {
-        self.view = numberAuthenticationView
+        self.view = joinView
     }
     
     override func viewDidLoad() {
@@ -30,8 +30,8 @@ class NumberAuthenticationViewController: UIViewController {
     
     // MARK: - Set up TextField
     private func setupTextField() {
-        self.numberAuthenticationView.numberTextField.textField.delegate = self
-        self.numberAuthenticationView.authNumberTextField.textField.delegate = self
+        self.joinView.numberTextField.textField.delegate = self
+        self.joinView.authNumberTextField.textField.delegate = self
     }
     
     // MARK: - Set up Navigation Bar
@@ -41,11 +41,11 @@ class NumberAuthenticationViewController: UIViewController {
     
     // MARK: - Set up Button Actions
     private func setupButtonActions() {
-        self.numberAuthenticationView.sendAuthNumberButton.addTarget(self, action: #selector(didTapSendAuthNumberButton), for: .touchUpInside)
-        self.numberAuthenticationView.completeAuthButton.addTarget(self, action: #selector(didTapCompleteAuthButton), for: .touchUpInside)
+        self.joinView.sendAuthNumberButton.addTarget(self, action: #selector(didTapSendAuthNumberButton), for: .touchUpInside)
+        self.joinView.completeAuthButton.addTarget(self, action: #selector(didTapCompleteAuthButton), for: .touchUpInside)
     }
     
-    // MARK: - Selecors
+    // MARK: - Selectors
     @objc
     private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
@@ -53,7 +53,7 @@ class NumberAuthenticationViewController: UIViewController {
     
     @objc
     private func didTapSendAuthNumberButton() {
-        self.numberAuthenticationView.addTextField()
+        self.joinView.addTextField()
     }
     
     @objc
@@ -65,24 +65,24 @@ class NumberAuthenticationViewController: UIViewController {
 }
 
 // MARK: - UITextFieldDelegate
-extension NumberAuthenticationViewController: UITextFieldDelegate {
+extension JoinWithNumberViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         // 휴대폰 번호 텍스트필드
-        if textField == self.numberAuthenticationView.numberTextField.textField {
+        if textField == self.joinView.numberTextField.textField {
             // 텍스트 필드에 텍스트가 없으면 버튼 비활성화
             if let text = textField.text, text.isEmpty {
-                self.numberAuthenticationView.sendAuthNumberButton.isButtonEnabled = false
+                self.joinView.sendAuthNumberButton.isButtonEnabled = false
             } else {
-                self.numberAuthenticationView.sendAuthNumberButton.isButtonEnabled = true
+                self.joinView.sendAuthNumberButton.isButtonEnabled = true
             }
         }
         
         // 인증번호 텍스트필드
-        if textField == self.numberAuthenticationView.authNumberTextField.textField {
+        if textField == self.joinView.authNumberTextField.textField {
             if let text = textField.text, text.isEmpty {
-                self.numberAuthenticationView.completeAuthButton.isButtonEnabled = false
+                self.joinView.completeAuthButton.isButtonEnabled = false
             } else {
-                self.numberAuthenticationView.completeAuthButton.isButtonEnabled = true
+                self.joinView.completeAuthButton.isButtonEnabled = true
             }
         }
     }

@@ -36,7 +36,7 @@ final class StartViewController: UIViewController {
     // MARK: - Selectors
     @objc
     private func didTapStartButton() {
-        let numberAuthenticationVC = NumberAuthenticationViewController()
+        let numberAuthenticationVC = JoinWithNumberViewController()
         self.navigationController?.pushViewController(numberAuthenticationVC, animated: true)
         
     }

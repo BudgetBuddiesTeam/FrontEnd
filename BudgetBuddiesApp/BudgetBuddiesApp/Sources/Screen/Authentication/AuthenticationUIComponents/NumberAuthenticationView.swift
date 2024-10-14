@@ -10,6 +10,13 @@ import SnapKit
 
 class NumberAuthenticationView: UIView {
     // MARK: - Properties
+    enum AuthType {
+        case join
+        case login
+    }
+    
+    private let authType: AuthType
+    
     var isTextFieldAdded: Bool = false {
         didSet {
             if isTextFieldAdded {
@@ -21,12 +28,12 @@ class NumberAuthenticationView: UIView {
     var timer: Timer?
     
     // MARK: - UI Components
-    let stepDot = StepDotView(steps: .firstStep)
+    lazy var stepDot = StepDotView(steps: .firstStep)
     
     // 안녕하세요! 휴대폰 번호로 가입해주세요
     let bigTitleLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "안녕하세요!\n휴대폰 번호로 가입해주세요"
+        lb.text = " "
         lb.textColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
         lb.font = BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 24)
         lb.numberOfLines = 0
@@ -98,14 +105,26 @@ class NumberAuthenticationView: UIView {
     }()
     
     // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ authType: AuthType) {
+        self.authType = authType
+        super.init(frame: .zero)
         
         setupUI()
+        setupTitle()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Set up Title
+    private func setupTitle() {
+        switch authType {
+        case .join:
+            self.bigTitleLabel.text = "안녕하세요!\n휴대폰 번호로 가입해주세요"
+        case .login:
+            self.bigTitleLabel.text = "안녕하세요!\n휴대폰 번호로 로그인해주세요"
+        }
     }
     
     // MARK: - Add TextField
@@ -186,8 +205,24 @@ class NumberAuthenticationView: UIView {
     private func setupUI() {
         self.backgroundColor = BudgetBuddiesAppAsset.AppColor.white.color
         
-        self.addSubviews(stepDot, titleStackView, numberLabel, textFieldStackView, problemLabel, completeAuthButton)
+        switch authType {
+        case .join:
+            self.addSubviews(stepDot, titleStackView, numberLabel, textFieldStackView, problemLabel, completeAuthButton)
+            setupStepDotConstraints()
+        case .login:
+            self.addSubviews(titleStackView, numberLabel, textFieldStackView, problemLabel, completeAuthButton)
+        }
+        
         setupConstraints()
+    }
+    
+    // MARK: - Set up StepDot Constraints
+    private func setupStepDotConstraints() {
+        stepDot.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(32)
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(8)
+        }
     }
     
     // MARK: - Set up Constraints
@@ -195,12 +230,6 @@ class NumberAuthenticationView: UIView {
         let bigTitleHeight = 72 + 1 // 여유값 + 1
         let subTitleHeight = 21
         let titleStackHeight = bigTitleHeight + subTitleHeight + 9
-        
-        stepDot.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(32)
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(8)
-        }
         
         bigTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(bigTitleHeight)
@@ -212,7 +241,7 @@ class NumberAuthenticationView: UIView {
         
         titleStackView.snp.makeConstraints { make in
             make.height.equalTo(titleStackHeight)
-            make.top.equalTo(stepDot.snp.bottom).offset(0)
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(32)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 

@@ -9,7 +9,7 @@ import UIKit
 
 class LoginWithNumberViewController: UIViewController {
     // MARK: - Properties
-    let loginView = NumberAuthenticationView()
+    let loginView = NumberAuthenticationView(.login)
 
     // MARK: - Life Cycle
     override func loadView() {
@@ -21,6 +21,7 @@ class LoginWithNumberViewController: UIViewController {
 
         setupNavigationBar()
         setupTextField()
+        setupButtonActions()
     }
     
     // MARK: - Set up TextField
@@ -34,10 +35,26 @@ class LoginWithNumberViewController: UIViewController {
         addBackButton(selector: #selector (didTapBackButton))
     }
     
+    // MARK: - Set up Button Actions
+    private func setupButtonActions() {
+        self.loginView.sendAuthNumberButton.addTarget(self, action: #selector(didTapSendAuthNumberButton), for: .touchUpInside)
+        self.loginView.completeAuthButton.addTarget(self, action: #selector(didTapCompleteAuthButton), for: .touchUpInside)
+    }
+    
     // MARK: - Selectors
     @objc
     private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc
+    private func didTapSendAuthNumberButton() {
+        self.loginView.addTextField()
+    }
+    
+    @objc
+    private func didTapCompleteAuthButton() {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

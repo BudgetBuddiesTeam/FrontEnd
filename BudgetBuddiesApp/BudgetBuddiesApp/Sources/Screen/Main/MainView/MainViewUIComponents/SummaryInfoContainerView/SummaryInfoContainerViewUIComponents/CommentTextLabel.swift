@@ -41,7 +41,8 @@ class CommentTextLabel: UILabel {
       if let range = mainText.range(of: formattedString) {
         let nsRange = NSRange(range, in: mainText)
         attributedString.addAttribute(
-          .font, value: BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16), range: nsRange)
+          .font, value: BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16),
+          range: nsRange)
         self.attributedText = attributedString
       } else {
         self.text = mainText
@@ -66,7 +67,8 @@ class CommentTextLabel: UILabel {
       if let range = mainText.range(of: formattedString) {
         let nsRange = NSRange(range, in: mainText)
         attributedString.addAttribute(
-          .font, value: BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16), range: nsRange)
+          .font, value: BudgetBuddiesAppFontFamily.Pretendard.semiBold.font(size: 16),
+          range: nsRange)
         self.attributedText = attributedString
       } else {
         self.text = mainText

@@ -79,7 +79,8 @@ class CustomTabBarIcon: UIView {
   func updateAppearance(isSelected: Bool) {
     tabBarIconColor =
       isSelected
-      ? BudgetBuddiesAppAsset.AppColor.coreYellow.color : BudgetBuddiesAppAsset.AppColor.barGray.color
+      ? BudgetBuddiesAppAsset.AppColor.coreYellow.color
+      : BudgetBuddiesAppAsset.AppColor.barGray.color
     tabBarIconImageView.tintColor = tabBarIconColor
     tabBarLabel.textColor = tabBarIconColor
   }

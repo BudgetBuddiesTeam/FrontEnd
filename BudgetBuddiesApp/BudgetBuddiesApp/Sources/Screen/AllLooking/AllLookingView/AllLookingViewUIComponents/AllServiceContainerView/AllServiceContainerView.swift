@@ -130,7 +130,8 @@ class AllServiceContainerView: UIView {
   private let supportInfoConfirmIcon: UIImageView = {
     let imageView = UIImageView()
     imageView.image =
-      BudgetBuddiesAppAsset.AppImage.IconForAllLookingView.AllServiceContainer.questionMarkCircle.image
+      BudgetBuddiesAppAsset.AppImage.IconForAllLookingView.AllServiceContainer.questionMarkCircle
+      .image
     return imageView
   }()
 

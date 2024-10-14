@@ -221,7 +221,8 @@ final class FaceChartView: UIView {
   func setupChart(entries: [PieChartDataEntry]) {
     let dataSet = PieChartDataSet(entries: entries, label: "")
     dataSet.colors = [
-      BudgetBuddiesAppAsset.AppColor.coreYellow.color, BudgetBuddiesAppAsset.AppColor.strokeGray1.color,
+      BudgetBuddiesAppAsset.AppColor.coreYellow.color,
+      BudgetBuddiesAppAsset.AppColor.strokeGray1.color,
     ]
     dataSet.drawValuesEnabled = false
     dataSet.sliceSpace = 2

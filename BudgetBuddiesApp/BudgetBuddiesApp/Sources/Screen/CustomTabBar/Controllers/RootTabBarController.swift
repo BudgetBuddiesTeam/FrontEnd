@@ -10,6 +10,9 @@ import UIKit
 final class RootTabBarController: CustomTabBarController {
 
   // MARK: - Properties
+    // 로그인 화면을 표시했는지 저장하는 플래그
+    // 나중에 로그인 여부와 함께 체크
+    var isLoginScreenPresented = false
 
   // Model
   internal let mainModel: MainModel
@@ -51,11 +54,29 @@ final class RootTabBarController: CustomTabBarController {
   }
 
   // MARK: - Life Cycle
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isLoginScreenPresented {
+            presentAuthentication()
+        }
+        
+    }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupTabBar()
   }
+    
+    // MARK: - Present Authentication
+    private func presentAuthentication() {
+        let startVC = StartViewController()
+        let nav = UINavigationController(rootViewController: startVC)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
+        
+        self.isLoginScreenPresented.toggle()
+    }
 
   // MARK: - Set up TabBar
   private func setupTabBar() {

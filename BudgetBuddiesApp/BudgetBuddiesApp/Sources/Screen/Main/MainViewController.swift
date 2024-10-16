@@ -115,7 +115,7 @@ final class MainViewController: UIViewController {
           title: "문제 발생", message: "데이터를 가져오지 못했습니다", preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "확인", style: .destructive)
         alertController.addAction(alertAction)
-        self?.present(alertController, animated: true)
+//        self?.present(alertController, animated: true)
       }
     }
   }

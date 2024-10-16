@@ -28,7 +28,7 @@ class DimmedViewController: UIViewController {
     super.viewWillAppear(animated)
 
     guard let presentingViewController = presentingViewController else { return }
-    dimmedView.backgroundColor = .black
+      dimmedView.backgroundColor = BudgetBuddiesAppAsset.AppColor.textBlack.color
     dimmedView.alpha = 0
 
     presentingViewController.view.addSubview(dimmedView)
@@ -38,7 +38,7 @@ class DimmedViewController: UIViewController {
     }
 
     UIView.animate(withDuration: 0.3) {
-      self.dimmedView.alpha = 0.25
+      self.dimmedView.alpha = 0.5
     }
   }
 

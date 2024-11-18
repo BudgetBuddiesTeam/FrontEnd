@@ -17,7 +17,9 @@ class AllLookingView: UIView {
 
   // MARK: - UI Components
 
-  // 전체보기 타이틀 텍스트
+  private let scrollView = UIScrollView()
+  private let contentView = UIView()
+
   private let allLookingTitleText: UILabel = {
     let label = UILabel()
     label.text = "전체보기"
@@ -27,14 +29,10 @@ class AllLookingView: UIView {
     return label
   }()
 
-  // 프로필 컨테이너
   public let profileContainerView = ProfileContainerView()
-
-  // 분석 컨테이너
   public let analysisContainverView = AnalysisContainerView()
-
-  // 전체 서비스 컨테이너
   public let allServiceContainerView = AllServiceContainerView()
+  public let etcContainerView = EtcContainerView()
 
   // MARK: - Initializer
 
@@ -52,20 +50,37 @@ class AllLookingView: UIView {
   // MARK: - Methods
 
   private func setLayout() {
+    // Scroll View 추가
+    addSubview(scrollView)
+    scrollView.addSubview(contentView)
+
+    scrollView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+
+    contentView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalToSuperview() // 가로 스크롤 방지
+    }
+
     // 그림자 설정
     profileContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     analysisContainverView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
     allServiceContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
+    etcContainerView.setShadow(opacity: 1, Radius: 10, offSet: CGSize(width: 0, height: 1))
 
-    addSubviews(
+    // 컨텐츠 뷰에 UI 추가
+    contentView.addSubviews(
       allLookingTitleText,
       profileContainerView,
       analysisContainverView,
-      allServiceContainerView)
+      allServiceContainerView,
+      etcContainerView
+    )
 
     allLookingTitleText.snp.makeConstraints { make in
-      make.leading.equalTo(safeAreaLayoutGuide.snp.leading).inset(16)
-      make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
+      make.leading.equalTo(contentView.snp.leading).inset(16)
+      make.top.equalTo(contentView.snp.top).inset(12)
     }
 
     profileContainerView.snp.makeConstraints { make in
@@ -89,6 +104,12 @@ class AllLookingView: UIView {
       make.height.equalTo(183)
     }
 
+    etcContainerView.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalTo(allServiceContainerView.snp.bottom).offset(15)
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.height.equalTo(183)
+      make.bottom.equalTo(contentView.snp.bottom).offset(-20) // 마지막 뷰 기준으로 contentView의 크기를 결정
+    }
   }
-
 }

@@ -29,6 +29,9 @@ class AllLookingViewController: UIViewController {
   private let calendarViewController = CalendarViewController()
   private let discountInfoListViewController = InfoListViewController(infoType: .discount)
   private let supportInfoListViewController = InfoListViewController(infoType: .support)
+    private let noticeViewController = NoticeViewController()
+    private let faqViewController = FAQViewController()
+    private let policyViewController = PolicyViewController()
 
   // Combine
   private var cancellable = Set<AnyCancellable>()
@@ -141,6 +144,22 @@ class AllLookingViewController: UIViewController {
       supportInfoConfirmContainerTapped)
 
     allLookingView.isUserInteractionEnabled = true
+      
+      // "기타"의 "공지사항" 탭
+      let noticeTapped = UITapGestureRecognizer(
+        target: self, action: #selector(noticeTapped))
+      allLookingView.etcContainerView.noticeContainer.addGestureRecognizer(noticeTapped)
+      
+      // "기타"의 "FAQ" 탭
+      let faqTapped = UITapGestureRecognizer(
+        target: self, action: #selector(faqTapped))
+      allLookingView.etcContainerView.faqContainer.addGestureRecognizer(faqTapped)
+      
+      // "기타"의 "이용약관 및 정책" 탭
+      let policyTapped = UITapGestureRecognizer(
+        target: self, action: #selector(policyTapped))
+      allLookingView.etcContainerView.policyContainer.addGestureRecognizer(policyTapped)
+      
   }
 }
 
@@ -179,6 +198,21 @@ extension AllLookingViewController {
     navigationController?.pushViewController(supportInfoListViewController, animated: true)
     supportInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
   }
+    
+    // 공지사항
+    @objc private func noticeTapped() {
+        navigationController?.pushViewController(noticeViewController, animated: true)
+    }
+    
+    // FAQ
+    @objc private func faqTapped() {
+        navigationController?.pushViewController(faqViewController, animated: true)
+    }
+    
+    // 이용약관 및 정책
+    @objc private func policyTapped() {
+        navigationController?.pushViewController(policyViewController, animated: true)
+    }
 }
 
 // MARK: - Network

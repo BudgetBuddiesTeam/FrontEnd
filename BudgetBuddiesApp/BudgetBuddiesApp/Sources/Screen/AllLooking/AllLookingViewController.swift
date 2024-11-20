@@ -9,6 +9,7 @@ import Combine
 import Moya
 import SnapKit
 import UIKit
+import SafariServices
 
 /*
  해야 할 일
@@ -30,7 +31,6 @@ class AllLookingViewController: UIViewController {
   private let discountInfoListViewController = InfoListViewController(infoType: .discount)
   private let supportInfoListViewController = InfoListViewController(infoType: .support)
     private let noticeViewController = NoticeViewController()
-    private let faqViewController = FAQViewController()
     private let policyViewController = PolicyViewController()
 
   // Combine
@@ -206,7 +206,13 @@ extension AllLookingViewController {
     
     // FAQ
     @objc private func faqTapped() {
-        navigationController?.pushViewController(faqViewController, animated: true)
+        guard let url = URL(string: "https://naver.com") else {
+            print("잘못된 URL입니다.")
+            return
+        }
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.modalPresentationStyle = .formSheet
+        present(safariViewController, animated: true)
     }
     
     // 이용약관 및 정책

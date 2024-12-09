@@ -24,7 +24,7 @@ class AllLookingViewController: UIViewController {
   private let allLookingView = AllLookingView()
 
   // ViewController
-  private let profileEditViewController = ProfileEditViewController()
+  private let profileViewController = ProfileViewController()
   private let monthReportViewController = MonthReportViewController()
   private let analysisReportViewController = AnalysisReportViewController()
   private let calendarViewController = CalendarViewController()
@@ -167,7 +167,7 @@ class AllLookingViewController: UIViewController {
 
 extension AllLookingViewController {
   @objc private func profileContainerViewTapped() {
-    navigationController?.pushViewController(profileEditViewController, animated: true)
+    navigationController?.pushViewController(profileViewController, animated: true)
   }
 
   @objc private func thisMonthReportContainerTapped() {

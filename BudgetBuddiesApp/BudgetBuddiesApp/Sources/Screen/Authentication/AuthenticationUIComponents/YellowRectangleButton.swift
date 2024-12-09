@@ -16,6 +16,7 @@ class YellowRectangleButton: UIButton {
         case skip = "건너뛰기"
         case selectAndConti = "선택 후 계속하기"
         case doneWrite = "작성완료"
+        case save = "저장하기"
     }
     
     var isButtonEnabled: Bool {

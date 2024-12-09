@@ -8,6 +8,6 @@
 import Foundation
 
 struct NotificationInfoModel {
-    let title: String
-    var isEnabled: Bool
+  let title: String
+  var isEnabled: Bool
 }

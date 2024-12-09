@@ -60,7 +60,7 @@ class AllLookingView: UIView {
 
     contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      make.width.equalToSuperview() // 가로 스크롤 방지
+      make.width.equalToSuperview()  // 가로 스크롤 방지
     }
 
     // 그림자 설정
@@ -109,7 +109,7 @@ class AllLookingView: UIView {
       make.top.equalTo(allServiceContainerView.snp.bottom).offset(15)
       make.leading.trailing.equalToSuperview().inset(16)
       make.height.equalTo(183)
-      make.bottom.equalTo(contentView.snp.bottom).offset(-20) // 마지막 뷰 기준으로 contentView의 크기를 결정
+      make.bottom.equalTo(contentView.snp.bottom).offset(-20)  // 마지막 뷰 기준으로 contentView의 크기를 결정
     }
   }
 }

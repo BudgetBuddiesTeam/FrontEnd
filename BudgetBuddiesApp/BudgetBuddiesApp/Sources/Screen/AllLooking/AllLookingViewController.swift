@@ -7,6 +7,7 @@
 
 import Combine
 import Moya
+import SafariServices
 import SnapKit
 import UIKit
 
@@ -23,12 +24,14 @@ class AllLookingViewController: UIViewController {
   private let allLookingView = AllLookingView()
 
   // ViewController
-  private let profileEditViewController = ProfileEditViewController()
+  private let profileViewController = ProfileViewController()
   private let monthReportViewController = MonthReportViewController()
   private let analysisReportViewController = AnalysisReportViewController()
   private let calendarViewController = CalendarViewController()
   private let discountInfoListViewController = InfoListViewController(infoType: .discount)
   private let supportInfoListViewController = InfoListViewController(infoType: .support)
+  private let noticeViewController = NoticeViewController()
+  private let policyViewController = PolicyViewController()
 
   // Combine
   private var cancellable = Set<AnyCancellable>()
@@ -141,6 +144,22 @@ class AllLookingViewController: UIViewController {
       supportInfoConfirmContainerTapped)
 
     allLookingView.isUserInteractionEnabled = true
+
+    // "기타"의 "공지사항" 탭
+    let noticeTapped = UITapGestureRecognizer(
+      target: self, action: #selector(noticeTapped))
+    allLookingView.etcContainerView.noticeContainer.addGestureRecognizer(noticeTapped)
+
+    // "기타"의 "FAQ" 탭
+    let faqTapped = UITapGestureRecognizer(
+      target: self, action: #selector(faqTapped))
+    allLookingView.etcContainerView.faqContainer.addGestureRecognizer(faqTapped)
+
+    // "기타"의 "이용약관 및 정책" 탭
+    let policyTapped = UITapGestureRecognizer(
+      target: self, action: #selector(policyTapped))
+    allLookingView.etcContainerView.policyContainer.addGestureRecognizer(policyTapped)
+
   }
 }
 
@@ -148,7 +167,7 @@ class AllLookingViewController: UIViewController {
 
 extension AllLookingViewController {
   @objc private func profileContainerViewTapped() {
-    navigationController?.pushViewController(profileEditViewController, animated: true)
+    navigationController?.pushViewController(profileViewController, animated: true)
   }
 
   @objc private func thisMonthReportContainerTapped() {
@@ -178,6 +197,27 @@ extension AllLookingViewController {
   @objc private func supportInfoConfirmContainerTapped() {
     navigationController?.pushViewController(supportInfoListViewController, animated: true)
     supportInfoListViewController.yearMonth = YearMonth.setNowYearMonth()
+  }
+
+  // 공지사항
+  @objc private func noticeTapped() {
+    navigationController?.pushViewController(noticeViewController, animated: true)
+  }
+
+  // FAQ
+  @objc private func faqTapped() {
+    guard let url = URL(string: "https://naver.com") else {
+      print("잘못된 URL입니다.")
+      return
+    }
+    let safariViewController = SFSafariViewController(url: url)
+    safariViewController.modalPresentationStyle = .formSheet
+    present(safariViewController, animated: true)
+  }
+
+  // 이용약관 및 정책
+  @objc private func policyTapped() {
+    navigationController?.pushViewController(policyViewController, animated: true)
   }
 }
 
